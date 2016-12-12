@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Oswald-Light.ttf">
+            <string>Oswald-Light</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaylistCell" rowHeight="89" id="KGk-i7-Jjw" customClass="PlaylistTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="84"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <frame key="frameInset" width="600" height="83"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ImagePlaylistPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="QhF-vd-Dfc">
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D4o-3H-tl5">
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="aBP-Dh-q7Q"/>
+                            <constraint firstAttribute="height" constant="30" id="erg-bI-ITK"/>
+                        </constraints>
+                        <inset key="contentEdgeInsets" minX="8" minY="5" maxX="0.0" maxY="5"/>
+                        <state key="normal" image="iconNext">
+                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" adjustsLetterSpacingToFitWidth="YES" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="cIo-y7-d1N" userLabel="Title Label">
+                        <constraints>
+                            <constraint firstAttribute="width" constant="399" id="Mgj-yR-fVp"/>
+                            <constraint firstAttribute="height" constant="49" id="y3n-mT-wXm"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Oswald-Light" family="Oswald" pointSize="40"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="QhF-vd-Dfc" firstAttribute="top" secondItem="cIo-y7-d1N" secondAttribute="bottom" constant="-58" id="1bd-2w-vMQ"/>
+                    <constraint firstItem="cIo-y7-d1N" firstAttribute="centerY" secondItem="QhF-vd-Dfc" secondAttribute="centerY" id="BgR-fo-xAA"/>
+                    <constraint firstItem="D4o-3H-tl5" firstAttribute="centerY" secondItem="QhF-vd-Dfc" secondAttribute="centerY" id="ORE-BW-8IP"/>
+                    <constraint firstItem="QhF-vd-Dfc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-8" id="PYg-rA-VPD"/>
+                    <constraint firstItem="QhF-vd-Dfc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-8" id="YEI-VG-jaD"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="D4o-3H-tl5" secondAttribute="trailing" constant="20" id="b5D-Mv-G4D"/>
+                    <constraint firstItem="D4o-3H-tl5" firstAttribute="centerY" secondItem="QhF-vd-Dfc" secondAttribute="centerY" id="eSG-uL-pDy"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="QhF-vd-Dfc" secondAttribute="trailing" constant="-8" id="flG-dY-S6l"/>
+                    <constraint firstItem="cIo-y7-d1N" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="i48-A5-034"/>
+                    <constraint firstItem="QhF-vd-Dfc" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" constant="8" id="k5F-HG-90b"/>
+                    <constraint firstItem="D4o-3H-tl5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-8" id="kv0-PX-c8L"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="1bd-2w-vMQ"/>
+                        <exclude reference="eSG-uL-pDy"/>
+                        <exclude reference="kv0-PX-c8L"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <connections>
+                <outlet property="buttonAction" destination="D4o-3H-tl5" id="c6o-k3-U1X"/>
+                <outlet property="imageThumbnail" destination="QhF-vd-Dfc" id="HKY-ZZ-kcT"/>
+                <outlet property="textTitle" destination="cIo-y7-d1N" id="vJy-zL-geI"/>
+            </connections>
+            <point key="canvasLocation" x="529" y="405"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ImagePlaylistPlaceholder" width="190" height="107"/>
+        <image name="iconNext" width="38" height="62"/>
+    </resources>
+</document>

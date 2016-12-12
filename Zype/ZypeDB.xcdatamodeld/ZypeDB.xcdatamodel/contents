@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.1">
+    <entity name="Favorite" representedClassName="Favorite" syncable="YES">
+        <attribute name="created_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="fId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isRemoved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="updated_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="video_id" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Guest" representedClassName="Guest" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="created_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="facebook" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="friendly_title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="full_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="short_bio" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="short_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailLocalPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="twitter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updated_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="youtube" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Notification" representedClassName="Notification" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="created_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="friendly_title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="full_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="scheduled" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updated_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    </entity>
+    <entity name="Playlist" representedClassName="Playlist" syncable="YES">
+        <attribute name="created_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="newItem" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="parent_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="playlist_item_count" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updated_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="playlistVideo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlaylistVideo" inverseName="playlist" inverseEntity="PlaylistVideo" syncable="YES"/>
+    </entity>
+    <entity name="PlaylistVideo" representedClassName="PlaylistVideo" syncable="YES">
+        <attribute name="orderingValue" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="playlist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Playlist" inverseName="playlistVideo" inverseEntity="Playlist" syncable="YES"/>
+        <relationship name="video" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="playlistVideo" inverseEntity="Video" syncable="YES"/>
+    </entity>
+    <entity name="Video" representedClassName="Video" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="categories" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="created_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="data_sources" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="downloadAudioLocalPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="downloadAudioUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="downloadTaskId" optional="YES" attributeType="Integer 16" defaultValueString="-1" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="downloadVideoLocalPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="downloadVideoUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="episode" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="expire_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="featured" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="full_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDownload" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isHighlight" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPlayed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPlaying" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="keywords" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="keywordsString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mature_content" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="on_air" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="playTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="published_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="season" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="segments" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="short_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="start_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subscription_required" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="thumbnailLocalPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updated_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="vId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zobject_ids" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="zobjectString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="playlistVideo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlaylistVideo" inverseName="video" inverseEntity="PlaylistVideo" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Favorite" positionX="-45" positionY="153" width="128" height="30"/>
+        <element name="Guest" positionX="-63" positionY="72" width="128" height="253"/>
+        <element name="Notification" positionX="-54" positionY="135" width="128" height="193"/>
+        <element name="Playlist" positionX="-54" positionY="135" width="128" height="195"/>
+        <element name="PlaylistVideo" positionX="-45" positionY="135" width="128" height="90"/>
+        <element name="Video" positionX="-63" positionY="-18" width="128" height="645"/>
+    </elements>
+</model>
