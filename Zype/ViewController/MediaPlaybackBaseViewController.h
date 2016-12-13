@@ -34,6 +34,7 @@
 - (void)removePlayer;
 - (void)removeWebView;
 - (void)showActivityIndicator;
+- (void)hideActivityIndicator;
 - (void)setupWebPlayerNotification;
 
 - (void)moviePlayerDidExitFullscreen;

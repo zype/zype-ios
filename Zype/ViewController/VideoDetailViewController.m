@@ -313,6 +313,8 @@ static NSString *GuestCellIdentifier = @"GuestCell";
 
 - (void)refreshPlayer{
     
+    [self showActivityIndicator];
+    
     if (self.isAudio) {
         
         NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];

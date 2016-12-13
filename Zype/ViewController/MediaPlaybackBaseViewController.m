@@ -33,8 +33,7 @@
 
 - (void)playVideoFromSource:(PlaybackSource *)source{
     
-    [self.view bringSubviewToFront:self.activityIndicator];
-    [self.activityIndicator startAnimating];
+    [self showActivityIndicator];
     
     NSURL *url = [NSURL URLWithString:source.urlString];
     
@@ -118,10 +117,14 @@
 #pragma mark - Activity Indicator
 
 - (void)showActivityIndicator{
-    
+    [self.activityIndicator setHidden:NO];
     [self.view bringSubviewToFront:self.activityIndicator];
     [self.activityIndicator startAnimating];
-    
+}
+
+- (void)hideActivityIndicator{
+    [self.activityIndicator setHidden:YES];
+    [self.activityIndicator stopAnimating];
 }
 
 
