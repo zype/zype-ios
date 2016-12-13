@@ -31,6 +31,8 @@
 
 #pragma mark analytics - Screen Names
 #define kAnalyticsScreenNameLatest          @"Latest View"
+#define kAnalyticsScreenNameHome            @"Home View"
+#define kAnalyticsScreenNamePlaylist        @"Playlist: %@"
 #define kAnalyticsScreenNameDownloads       @"Downloads View"
 #define kAnalyticsScreenNameFavorites       @"Favorites View"
 #define kAnalyticsScreenNameFavoritesDetail @"Favorites Detail"

@@ -289,7 +289,7 @@
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="GTr-a5-vgZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="GTr-a5-vgZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -665,8 +665,8 @@
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="AA8-zL-iAQ"/>
-                                <exclude reference="bvg-AV-grn"/>
                                 <exclude reference="dRF-72-I5H"/>
+                                <exclude reference="bvg-AV-grn"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -677,9 +677,9 @@
                             <mask key="constraints">
                                 <include reference="AA8-zL-iAQ"/>
                                 <exclude reference="HIB-nY-j1R"/>
-                                <include reference="bvg-AV-grn"/>
                                 <exclude reference="ZJB-8Q-a6R"/>
                                 <include reference="dRF-72-I5H"/>
+                                <include reference="bvg-AV-grn"/>
                             </mask>
                         </variation>
                     </view>
@@ -710,7 +710,7 @@
                     <tabBarItem key="tabBarItem" title="Downloads" image="IconDownloads" id="Fcq-xY-mpV"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="r2i-sF-ep4">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="r2i-sF-ep4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1186,7 +1186,7 @@
                     <tabBarItem key="tabBarItem" title="More" image="IconMore" id="2od-un-Wf1"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="rQF-OQ-duO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="rQF-OQ-duO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1464,10 +1464,10 @@
                                 <exclude reference="1z2-s0-eyn"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="JaI-ex-tfv"/>
                                 <exclude reference="Uoe-0d-KkF"/>
                                 <exclude reference="CIz-LW-Svm"/>
                                 <exclude reference="dJU-O9-TsU"/>
+                                <exclude reference="JaI-ex-tfv"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -1476,8 +1476,8 @@
                                 <include reference="1z2-s0-eyn"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="JaI-ex-tfv"/>
                                 <include reference="Uoe-0d-KkF"/>
+                                <include reference="JaI-ex-tfv"/>
                             </mask>
                         </variation>
                     </view>

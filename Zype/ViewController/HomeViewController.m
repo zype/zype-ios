@@ -69,8 +69,6 @@
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;
     
-    [self trackScreenName:kAnalyticsScreenNameLatest];
-    
     self.episodeController.episodeControllerMode = ACSEpisodeControllerModeLatest;
     
     self.start = [NSDate date];
@@ -88,12 +86,14 @@
 - (void)getPlaylistData {
     // Load playlists
     if (self.playlistItem != nil) {
+        [self trackScreenName:[NSString stringWithFormat:kAnalyticsScreenNamePlaylist, self.playlistItem.title]];
         self.title = self.playlistItem.title;
         [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:self.playlistItem.pId];
         
     } else {
         //playlist item is nil, load root
         [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:kRootPlaylistId];
+        [self trackScreenName:kAnalyticsScreenNameHome];
     }
 }
 
