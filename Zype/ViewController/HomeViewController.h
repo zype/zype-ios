@@ -15,7 +15,4 @@
 @property (nonatomic) Playlist *playlistItem;
 @property (nonatomic) BOOL isLivePictureLoaded;
 
-- (void)resetFilter;
-
-
 @end

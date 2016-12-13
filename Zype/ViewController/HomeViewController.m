@@ -53,13 +53,10 @@
 @property (nonatomic) BOOL isLiveStreamEmbedded;
 @property (nonatomic) BOOL showingLiveStream;
 
-- (void)filterVideosFromDate:(NSDate *)fromDate ToDate:(NSDate *)toDate;
-
 @end
 
 
 @implementation HomeViewController
-
 
 #pragma mark - Lifecycle
 
