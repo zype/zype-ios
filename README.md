@@ -1,4 +1,5 @@
 # Zype iOS Template
+
 Steps to build an app using Zype template:
 1. Clon repo
 2. removed .git directory
