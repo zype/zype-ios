@@ -29,7 +29,25 @@
 - (void)configureCell:(Playlist*)playlist{
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
+        //add activity indicator
+        __block UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicator.center = self.imageThumbnail.center;
+        activityIndicator.color = kBlueColor;
+        activityIndicator.hidesWhenStopped = YES;
+        [self.imageThumbnail addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        
+        [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl]
+                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                          [activityIndicator removeFromSuperview];
+                                          //check for error and add default placeholder
+                                          if (error) {
+                                              [self.imageThumbnail setImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
+                                              CLS_LOG(@"Placeholder thumbnail couldn't be loaded: %@", error);
+                                          }
+                                      }];
+        
+       // [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
         
         self.textTitle.text = playlist.title;
     });

@@ -233,6 +233,16 @@
     if (self.tabIndex == tabBarController.selectedIndex) {
         UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
         
+        switch (tabBarController.selectedIndex) {
+        case 0:
+            //
+                break;
+        default:
+            //
+                break;
+        }
+        
+        
         if (tabBarController.selectedIndex == 0) {
             UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:0];
             HomeViewController *latestViewController = (HomeViewController *)[[navigationController viewControllers] objectAtIndex:0];

@@ -39,6 +39,7 @@
     
     self.actionButton.enabled = YES;
     
+    [self setThumbnail:video];
     [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     self.titleLabel.text = video.title;
     self.titleLabel.textColor = [UIColor whiteColor];
@@ -112,6 +113,29 @@
         self.accessoryImage.hidden = YES;
     }
     
+}
+
+- (void)setThumbnail:(Video *)video {
+    
+    //add activity indicator
+    __block UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    activityIndicator.center = self.thumbnailImage.center;
+    activityIndicator.color = kBlueColor;
+    activityIndicator.hidesWhenStopped = YES;
+    [self.thumbnailImage addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+    
+    [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]
+                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                      [activityIndicator removeFromSuperview];
+                                      //check for error and add default placeholder
+                                      if (error) {
+                                          [self.thumbnailImage setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+                                          CLS_LOG(@"Video thumbnail couldn't be loaded: %@", error);
+                                      }
+                                  }];
+    
+    // [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
 }
 
 

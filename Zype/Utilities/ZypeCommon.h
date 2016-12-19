@@ -22,6 +22,8 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
+#define kDownloadsEnabled YES
+
 #pragma mark - Base settings
 
 #pragma mark MACROS
