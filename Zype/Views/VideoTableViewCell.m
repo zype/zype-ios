@@ -20,7 +20,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
     UIView * selectedBackgroundView = [[UIView alloc] init];
     [selectedBackgroundView setBackgroundColor:[UIColor darkGrayColor]];
@@ -110,6 +110,15 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         //[self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+        
+        if (kAppColorLight){
+            
+        } else {
+            self.contentView.backgroundColor = [UIColor blackColor];
+            
+            [self.textTitle setTextColor:[UIColor whiteColor]];
+            [self.labelSubtitle setTextColor:[UIColor lightGrayColor]];
+        }
         
         [self setThumbnail:video];
         
@@ -214,7 +223,7 @@
     }else{
         self.imageCloud.hidden = YES;
     }
-
+    
 }
 
 - (void)setThumbnail:(Video *)video {
@@ -223,7 +232,7 @@
     __block UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     // activityIndicator.center = self.imageThumbnail.center;
     activityIndicator.center = CGPointMake(self.imageThumbnail.center.x - 20.0, self.center.y - 10.0);
-    activityIndicator.color = kBlueColor;
+    activityIndicator.color = kClientColor;
     activityIndicator.hidesWhenStopped = YES;
     [self.imageThumbnail addSubview:activityIndicator];
     [activityIndicator startAnimating];

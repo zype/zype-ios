@@ -85,6 +85,17 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadVideos) name:@"ResultsFromPlaylistReturned" object:nil];
     
+    [self customizeSearchBar];
+}
+
+- (void) customizeSearchBar {
+    //[self.searchBar setBarStyle:UIBarStyleDefault];
+    if (kAppColorLight){
+        
+    } else {
+        [self.searchBar setSearchBarStyle:UISearchBarStyleDefault];
+    }
+    
 }
 
 - (void)getNewData {
@@ -106,13 +117,13 @@
     [super viewWillAppear:animated];
     
     [self loadVideos];
-   
+    
     [self setupHeader];
     
 }
 
 - (void)loadVideos{
-     [self.episodeController loadVideosFromPlaylistId:self.playlistId];
+    [self.episodeController loadVideosFromPlaylistId:self.playlistId];
 }
 
 - (void)dealloc{
@@ -168,7 +179,7 @@
 #pragma mark - Video Player Notifications
 
 - (void)moviePlayerDidExitFullscreen{
-   // [super moviePlayerDidExitFullscreen];
+    // [super moviePlayerDidExitFullscreen];
     
     [self setupHeader];
     
@@ -269,7 +280,7 @@
 }
 
 - (void)setupWKWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame{
-
+    
 }
 
 - (void)setupUIWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame{
@@ -278,7 +289,7 @@
 
 - (void)setupConstraintsForWebPlayerView:(UIView *)view{
     
-   
+    
     
 }
 
@@ -288,7 +299,7 @@
 #pragma mark - Stopping Stream
 
 - (void)stopLiveStream{
-
+    
     
 }
 
@@ -312,19 +323,19 @@
     
     [self dismissKeyboard];
     
-   // if ([ACStatusManager isUserSignedIn] == YES) {
-        
-        id tracker = [[GAI sharedInstance] defaultTracker];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search" label:@"Show Search Results" value:nil] build]];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search String" label:self.searchBar.text value:nil] build]];
-        [self performSegueWithIdentifier:@"showSearchResult" sender:self];
-        
-  /*  }else {
-        
-        [self.searchBar setText:@""];
-        [UIUtil showSignInViewFromViewController:self];
-        
-    }*/
+    // if ([ACStatusManager isUserSignedIn] == YES) {
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search" label:@"Show Search Results" value:nil] build]];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search String" label:self.searchBar.text value:nil] build]];
+    [self performSegueWithIdentifier:@"showSearchResult" sender:self];
+    
+    /*  }else {
+     
+     [self.searchBar setText:@""];
+     [UIUtil showSignInViewFromViewController:self];
+     
+     }*/
     
 }
 
@@ -410,13 +421,13 @@
 
 - (void)acActionSheetManagerDelegateListenLiveStreamTapped{
     
-   
+    
     
 }
 
 - (void)acActionSheetManagerDelegateWatchLiveStreamTapped{
     
-  
+    
     
 }
 

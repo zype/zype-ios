@@ -45,4 +45,16 @@
     
 }
 
+- (void)customizeAppearance {
+    if (kAppColorLight) {
+        self.view.backgroundColor = [UIColor whiteColor];
+    } else {
+        [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
+        self.view.backgroundColor = [UIColor blackColor];
+    }
+    
+    // self.navigationController.navigationBar.backgroundColor = [UIColor blackColor];
+    //  self.view.backgroundColor = [UIColor blackColor];
+}
+
 @end

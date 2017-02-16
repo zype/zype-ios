@@ -47,6 +47,16 @@
     // Set sign-out button
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) [self.buttonSignOut setHidden:NO];
     else [self.buttonSignOut setHidden:YES];
+    [self customizeAppearance];
+}
+
+- (void)customizeAppearance {
+    if (kAppColorLight){
+        
+    } else {
+        self.view.backgroundColor = [UIColor blackColor];
+    }
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -99,6 +109,7 @@
 
 - (void)configureView
 {
+    self.buttonSignOut.backgroundColor = kClientColor;
     switch (self.pageIndex.row) {
         case 0: {
             self.title = @"Settings";
@@ -123,14 +134,14 @@
             [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACWeb]]];
         }
             break;
-
+            
         case 5: {
             self.title = @"Instagram";
             [self.webView setHidden:NO];
             [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACInstagram]]];
         }
             break;
-
+            
         default:
             break;
     }
@@ -163,7 +174,7 @@
             break;
         case NO:
         {
-             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameSettings action:kAnalyticsActSwitchPressed label:kAnalyticsEventLabelAutoDLOff value:nil] build]];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameSettings action:kAnalyticsActSwitchPressed label:kAnalyticsEventLabelAutoDLOff value:nil] build]];
         }
         default:
             break;
@@ -203,7 +214,7 @@
     if (section == 0) {
         return 0; //hide rows in the first section
         /*if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f) return 2;
-        else return 3;*/
+         else return 3;*/
     }
     else if (section == 1) return 2;
     else return 0;
@@ -216,7 +227,12 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    //cell.textLabel.textColor = [UIColor whiteColor];
+    if (kAppColorLight){
+        
+    } else {
+        cell.textLabel.textColor = [UIColor whiteColor];
+    }
+    
     cell.textLabel.font = [UIFont fontWithName:kFontSemibold size:15];
     UIView * selectedBackgroundView = [[UIView alloc] init];
     [selectedBackgroundView setBackgroundColor:[UIColor darkGrayColor]];
@@ -256,7 +272,12 @@
                 UILabel *labelVersion = [[UILabel alloc] init];
                 NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
                 labelVersion.text = version;
-                //labelVersion.textColor = [UIColor whiteColor];
+                if (kAppColorLight){
+                    
+                } else {
+                    labelVersion.textColor = [UIColor whiteColor];
+                }
+                
                 [labelVersion sizeToFit];
                 cell.accessoryView = labelVersion;
                 break;
@@ -265,8 +286,8 @@
             {
                 cell.textLabel.text = @"Powered By Zype";
             }
-            break;
-            
+                break;
+                
         }
     }
     
@@ -332,6 +353,7 @@
         
         UIWebView *webview = [UIWebView new];
         webview.frame = viewController.view.bounds;
+        
         [viewController.view addSubview:webview];
         
         [webview loadHTMLString:htmlString baseURL:nil];

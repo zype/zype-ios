@@ -12,5 +12,6 @@
 
 - (BOOL)isRegularSizeClass;
 - (void)showBasicAlertWithTitle:(NSString *)title WithMessage:(NSString *)message;
+- (void)customizeAppearance;
 
 @end

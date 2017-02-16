@@ -30,7 +30,24 @@
     
     self.screenName = @"More";
     self.tableView.tableFooterView = [UIView new];
+    
+    [self customizeAppearance];
 }
+
+- (void)customizeAppearance {
+    self.buttonSignIn.backgroundColor = kClientColor;
+    
+    if (kAppColorLight) {
+        
+    } else {
+        [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
+        self.view.backgroundColor = [UIColor blackColor];
+    }
+    
+    // self.navigationController.navigationBar.backgroundColor = [UIColor blackColor];
+    //
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -100,7 +117,12 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-   // cell.textLabel.textColor = [UIColor whiteColor];
+    if (kAppColorLight) {
+        
+    } else {
+        cell.textLabel.textColor = [UIColor whiteColor];
+    }
+    
     cell.textLabel.font = [UIFont fontWithName:kFontSemibold size:15];
     UIView * selectedBackgroundView = [[UIView alloc] init];
     [selectedBackgroundView setBackgroundColor:[UIColor darkGrayColor]];
@@ -131,12 +153,12 @@
         }
             break;
         case 4: {
-             cell.textLabel.text = [NSString stringWithFormat:@"%@ on Web", bundleName];
-           // cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconTwitterBlue"]];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@ on Web", bundleName];
+            // cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconTwitterBlue"]];
         }
             break;
         case 5: {
-             cell.textLabel.text = [NSString stringWithFormat:@"%@ on Instagram", bundleName];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@ on Instagram", bundleName];
             //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconTwitterBlue"]];
         }
             break;

@@ -76,11 +76,6 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-
-    // Sync videos
-    NSDate *fromDate = [UIUtil startOfWeek:[NSDate date]];
-    NSDate *toDate = [UIUtil endOfWeek:[NSDate date]];
-    [[RESTServiceController sharedInstance] syncVideosFromDate:fromDate ToDate:toDate InPage:nil WithVideosInDB:nil WithExistingVideos:nil];
     
     [ACSDataManager syncHighlights];
     
@@ -127,7 +122,7 @@
     // where are you?
     CLS_LOG(@"Documents Directory: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
 #endif
-
+    
     
     // Set background fetch
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
@@ -184,14 +179,14 @@
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    // Sync videos
-    NSDate *fromDate = [UIUtil startOfWeek:[NSDate date]];
-    NSDate *toDate = [UIUtil endOfWeek:[NSDate date]];
-    
-    //TODO: Implement data manager class that returns a block so we can send the completionhandler the correct results
-    [[RESTServiceController sharedInstance] syncVideosFromDate:fromDate ToDate:toDate InPage:nil WithVideosInDB:nil WithExistingVideos:nil];
-    
-    completionHandler(UIBackgroundFetchResultNewData);
+    /* // Sync videos
+     NSDate *fromDate = [UIUtil startOfWeek:[NSDate date]];
+     NSDate *toDate = [UIUtil endOfWeek:[NSDate date]];
+     
+     //TODO: Implement data manager class that returns a block so we can send the completionhandler the correct results
+     [[RESTServiceController sharedInstance] syncVideosFromDate:fromDate ToDate:toDate InPage:nil WithVideosInDB:nil WithExistingVideos:nil];
+     
+     completionHandler(UIBackgroundFetchResultNewData);*/
     CLS_LOG(@"Fetch completed");
 }
 
@@ -234,11 +229,11 @@
         UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
         
         switch (tabBarController.selectedIndex) {
-        case 0:
-            //
+            case 0:
+                //
                 break;
-        default:
-            //
+            default:
+                //
                 break;
         }
         
@@ -246,24 +241,24 @@
         if (tabBarController.selectedIndex == 0) {
             UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:0];
             HomeViewController *latestViewController = (HomeViewController *)[[navigationController viewControllers] objectAtIndex:0];
-          //  [latestViewController resetFilter];
+            //  [latestViewController resetFilter];
             latestViewController.tableView.contentOffset = CGPointMake(0, 0 - latestViewController.tableView.contentInset.top);
         }
-      /*  else if (tabBarController.selectedIndex == 1) {
-            UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:1];
-            DownloadsViewController *downloadsViewController = (DownloadsViewController *)[[navigationController viewControllers] objectAtIndex:0];
-            downloadsViewController.tableView.contentOffset = CGPointMake(0, 0 - downloadsViewController.tableView.contentInset.top);
-        }*/
+        /*  else if (tabBarController.selectedIndex == 1) {
+         UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:1];
+         DownloadsViewController *downloadsViewController = (DownloadsViewController *)[[navigationController viewControllers] objectAtIndex:0];
+         downloadsViewController.tableView.contentOffset = CGPointMake(0, 0 - downloadsViewController.tableView.contentInset.top);
+         }*/
         else if (tabBarController.selectedIndex == 1) {
             UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:1];
             FavoritesViewController *favoritesViewController = (FavoritesViewController *)[[navigationController viewControllers] objectAtIndex:0];
             favoritesViewController.tableView.contentOffset = CGPointMake(0, 0 - favoritesViewController.tableView.contentInset.top);
         }
-//        else if (tabBarController.selectedIndex == 3) {
-//            UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:3];
-//            HighlightsViewController *highlightsViewController = (HighlightsViewController *)[[navigationController viewControllers] objectAtIndex:0];
-//            highlightsViewController.tableView.contentOffset = CGPointMake(0, 0 - highlightsViewController.tableView.contentInset.top);
-//        }
+        //        else if (tabBarController.selectedIndex == 3) {
+        //            UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:3];
+        //            HighlightsViewController *highlightsViewController = (HighlightsViewController *)[[navigationController viewControllers] objectAtIndex:0];
+        //            highlightsViewController.tableView.contentOffset = CGPointMake(0, 0 - highlightsViewController.tableView.contentInset.top);
+        //        }
     }
     
     self.tabIndex = tabBarController.selectedIndex;
@@ -276,36 +271,55 @@
     //set tint color of all views so UIActionView will have the correct color
     //[[UIView appearance] setTintColor:[UIColor ACMainTintColor]];
     
-    //reset the deselected tab bar item color due to bug when setting UIView tint color
-    [[UIView appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor darkGrayColor]];//color for inactive item
-    [UITabBar appearance].tintColor = [UIColor ZypeMainTintColor];//color for active item
+    
     
     // Set custom appearance
-   /* [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          kSystemWhite, NSForegroundColorAttributeName,
-                                                          [UIFont fontWithName:kFontRegular size:18.0], NSFontAttributeName,
-                                                          nil]];
+    /* [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+     kSystemWhite, NSForegroundColorAttributeName,
+     [UIFont fontWithName:kFontRegular size:18.0], NSFontAttributeName,
+     nil]];
+     
+     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+     [UIColor grayColor], NSForegroundColorAttributeName,
+     [UIFont fontWithName:kFontSemibold size:12.0], NSFontAttributeName,
+     nil] forState:UIControlStateNormal];
+     
+     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+     kSystemWhite, NSForegroundColorAttributeName,
+     [UIFont fontWithName:kFontSemibold size:12.0], NSFontAttributeName,
+     nil] forState:UIControlStateSelected];*/
     
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIColor grayColor], NSForegroundColorAttributeName,
-                                                       [UIFont fontWithName:kFontSemibold size:12.0], NSFontAttributeName,
-                                                       nil] forState:UIControlStateNormal];
+    /* [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+     forBarPosition:UIBarPositionAny
+     barMetrics:UIBarMetricsDefault];
+     
+     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];*/
     
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       kSystemWhite, NSForegroundColorAttributeName,
-                                                       [UIFont fontWithName:kFontSemibold size:12.0], NSFontAttributeName,
-                                                       nil] forState:UIControlStateSelected];*/
-    
-//    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
-//                                      forBarPosition:UIBarPositionAny
-//                                          barMetrics:UIBarMetricsDefault];
-    
-//    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-//    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    //set back botton color in navigation bar
+    [UINavigationBar appearance].tintColor = kClientColor;
     
     //status bar can be configured here or disabled here and configured in info.plist
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    
+    if (kAppColorLight){
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        
+        //reset the deselected tab bar item color due to bug when setting UIView tint color
+        [[UIView appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor darkGrayColor]];//color for inactive item
+        [UITabBar appearance].tintColor = [UIColor darkTextColor];//[UIColor ZypeMainTintColor];//color for active item
+        [UITabBar appearance].barTintColor = [UIColor whiteColor];
+        
+        [UITabBar appearance].backgroundColor = [UIColor whiteColor];
+    }
+    else {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        
+        //reset the deselected tab bar item color due to bug when setting UIView tint color
+        [[UIView appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor lightGrayColor]];//color for inactive item
+        [UITabBar appearance].tintColor = [UIColor whiteColor];//[UIColor ZypeMainTintColor];//color for active item
+        [UITabBar appearance].barTintColor = [UIColor blackColor];
+        
+        [UITabBar appearance].backgroundColor = [UIColor blackColor];
+    }
 }
 
 @end

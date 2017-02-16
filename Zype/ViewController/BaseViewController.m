@@ -46,6 +46,7 @@
     self.actionSheetManager = [ACActionSheetManager new];
     self.actionSheetManager.delegate = self;
     
+    [self customizeAppearance];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -101,7 +102,7 @@
         [cell setDownloadProgress:progress];
     }else{
         dispatch_async(dispatch_get_main_queue(), ^{
-        [cell setDownloadProgress:progress];
+            [cell setDownloadProgress:progress];
         });
     }
     
@@ -169,7 +170,7 @@
         NSNumber *taskID = [NSNumber numberWithUnsignedInteger:downloadTask.taskIdentifier];
         cell = [self.episodeController cellForDownloadTaskID:taskID];
     }
-
+    
     return cell;
     
 }
@@ -215,7 +216,7 @@
         [self.noResultsLabel setHidden:NO];
         
     }else {
-
+        
         if ([self isRegularSizeClass] == YES) {
             [self.collectionView setHidden:NO];
         }else{
@@ -233,7 +234,7 @@
     if ([[self.episodeController objectAtIndexPath:indexPath] isKindOfClass:[Video class]]){
         self.selectedVideo = (Video *)[self.episodeController objectAtIndexPath:indexPath];
         [self videoItemSelected];
-
+        
     } else if ([[self.episodeController objectAtIndexPath:indexPath] isKindOfClass:[Playlist class]]){
         Playlist *playlist = [self.episodeController objectAtIndexPath:indexPath];
         if ([playlist.playlist_item_count isEqual:@0]){
@@ -245,37 +246,37 @@
         }
     }
     /*
-    if ([ACStatusManager isUserSignedIn] == YES)
-    {
-        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]])
-            // 0 = not subscribed
-        {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kSettingKey_SubscribeTitleMessage message:kSettingKey_SubscribeMessage delegate:self cancelButtonTitle:kSettingKey_SubscribeCancelButtonTitle otherButtonTitles:kSettingKey_SubscribeButtontitle, nil];
-            alert.tag = 1;
-            [alert show];
-        }
-        else
-        {
-            
-            self.selectedVideo = (Video *)[self.episodeController objectAtIndexPath:indexPath];
-            
-            if (self.selectedVideo != nil) {
-                [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
-            }
-            
-        }
-    }
-    else
-    {
-        [UIUtil showSignInViewFromViewController:self];
-    }*/
+     if ([ACStatusManager isUserSignedIn] == YES)
+     {
+     if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]])
+     // 0 = not subscribed
+     {
+     
+     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kSettingKey_SubscribeTitleMessage message:kSettingKey_SubscribeMessage delegate:self cancelButtonTitle:kSettingKey_SubscribeCancelButtonTitle otherButtonTitles:kSettingKey_SubscribeButtontitle, nil];
+     alert.tag = 1;
+     [alert show];
+     }
+     else
+     {
+     
+     self.selectedVideo = (Video *)[self.episodeController objectAtIndexPath:indexPath];
+     
+     if (self.selectedVideo != nil) {
+     [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+     }
+     
+     }
+     }
+     else
+     {
+     [UIUtil showSignInViewFromViewController:self];
+     }*/
     
 }
 
 - (void)videoItemSelected{
     if (self.selectedVideo != nil) {
-    //check for Live and bypass all other checks
+        //check for Live and bypass all other checks
         if ([self.selectedVideo.on_air intValue] == 1){
             
             if ([ACStatusManager isUserSignedIn] == NO && [[ACLimitLivestreamManager sharedInstance] livestreamLimitReached]){
@@ -289,16 +290,16 @@
             
             
         }
-    //check for video with subscription
+        //check for video with subscription
         if ([ACStatusManager isUserSignedIn] == NO && [self.selectedVideo.subscription_required intValue] == 1){
             [UIUtil showSignInViewFromViewController:self];
             return;
         }
-    //no more checks for now
+        //no more checks for now
         [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
         
         
-       
+        
     }
 }
 
@@ -316,23 +317,23 @@
 - (void)episodeControllerDelegateButtonActionTappedAtIndexPath:(NSIndexPath *)indexPath{
     
     //if ([ACStatusManager isUserSignedIn] == YES) {
-        
-        self.indexPathInAction = indexPath;
-        
-        Video *selectedVideo = [self.episodeController objectAtIndexPath:indexPath];
-        self.actionVideo = selectedVideo;
-        CLS_LOG(@"selected video: %@", selectedVideo.title);
-        
-        id tracker = [[GAI sharedInstance] defaultTracker];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsCategoryVideoPlayed action:@"Video Selected" label:selectedVideo.title value:nil] build]];
-        
-        //show options action sheet for selected video
-        [self showEpisodeOptionsActionSheetWithVideo:selectedVideo];
-        
-   /* }
-    else {
-        [UIUtil showSignInViewFromViewController:self];
-    }*/
+    
+    self.indexPathInAction = indexPath;
+    
+    Video *selectedVideo = [self.episodeController objectAtIndexPath:indexPath];
+    self.actionVideo = selectedVideo;
+    CLS_LOG(@"selected video: %@", selectedVideo.title);
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsCategoryVideoPlayed action:@"Video Selected" label:selectedVideo.title value:nil] build]];
+    
+    //show options action sheet for selected video
+    [self showEpisodeOptionsActionSheetWithVideo:selectedVideo];
+    
+    /* }
+     else {
+     [UIUtil showSignInViewFromViewController:self];
+     }*/
     
 }
 
@@ -341,9 +342,9 @@
     if (!updates.hasChanges) {
         
         return;
-    
+        
     }
-
+    
     if (self.collectionView.superview != nil) {
         [self.collectionView reloadData];
     }else if (self.tableView.superview != nil){

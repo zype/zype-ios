@@ -78,6 +78,17 @@
     [ACSDataManager checkForLiveStream];
     [self getPlaylistData];
     
+    [self customizeSearchBar];
+}
+
+- (void) customizeSearchBar {
+    //[self.searchBar setBarStyle:UIBarStyleDefault];
+    if (kAppColorLight){
+        
+    } else {
+        [self.searchBar setSearchBarStyle:UISearchBarStyleDefault];
+    }
+    
 }
 
 - (void)getPlaylistData {
@@ -509,18 +520,18 @@
     [self dismissKeyboard];
     
     //if ([ACStatusManager isUserSignedIn] == YES) {
-        
-        id tracker = [[GAI sharedInstance] defaultTracker];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search" label:@"Show Search Results" value:nil] build]];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search String" label:self.searchBar.text value:nil] build]];
-        [self performSegueWithIdentifier:@"showSearchResult" sender:self];
-        
-   /* }else {
-        
-        [self.searchBar setText:@""];
-        [UIUtil showSignInViewFromViewController:self];
-        
-    }*/
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search" label:@"Show Search Results" value:nil] build]];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search String" label:self.searchBar.text value:nil] build]];
+    [self performSegueWithIdentifier:@"showSearchResult" sender:self];
+    
+    /* }else {
+     
+     [self.searchBar setText:@""];
+     [UIUtil showSignInViewFromViewController:self];
+     
+     }*/
     
 }
 
