@@ -120,7 +120,7 @@
     //add activity indicator
     __block UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     activityIndicator.center = self.thumbnailImage.center;
-    activityIndicator.color = kBlueColor;
+    activityIndicator.color = kClientColor;
     activityIndicator.hidesWhenStopped = YES;
     [self.thumbnailImage addSubview:activityIndicator];
     [activityIndicator startAnimating];

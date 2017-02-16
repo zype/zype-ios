@@ -51,7 +51,7 @@
     maskLayerTwo.frame = self.textFieldPassword.bounds;
     maskLayerTwo.path = maskPathTwo.CGPath;
     self.textFieldPassword.layer.mask = maskLayerTwo;
-
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -68,6 +68,9 @@
 
 - (void)configureView
 {
+    //change color for Sign In button
+    self.buttonSignIn.backgroundColor = kClientColor;
+    
     UIColor *color = [UIColor darkGrayColor];
     self.textFieldEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: color}];
     self.textFieldPassword.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: color}];
