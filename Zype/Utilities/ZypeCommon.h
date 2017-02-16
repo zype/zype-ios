@@ -22,7 +22,11 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
-#define kDownloadsEnabled YES
+#define kAppColorLight NO
+
+#define kClientColor    [UIUtil colorWithHex:0xF75532];
+
+#define kDownloadsEnabled NO
 
 #pragma mark - Base settings
 
@@ -80,7 +84,6 @@
 // UI_Action
 // Button Press
 // Play
-
 
 
 #define kYellowColor    [UIUtil colorWithHex:0xEAA824]
@@ -210,7 +213,7 @@
 #define kDeviceId @"5429b1c769702d2f7c120000"
 #define kGetVideos @"https://%@/videos/?app_key=%@&page=%@"
 
-#define kGetPlaylists @"https://%@/playlists/?app_key=%@&parent_id=%@"
+#define kGetPlaylists @"https://%@/playlists/?app_key=%@&parent_id=%@&per_page=500"
 //#define kGetPlaylists @"https://%@/playlists/?app_key=%@"
 
 #define kGetConsumer @"https://%@/consumers/?app_key=%@&id=%@"
