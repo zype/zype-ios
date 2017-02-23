@@ -180,7 +180,12 @@ static NSString *GuestCellIdentifier = @"GuestCell";
     self.isWebVideo = NO;
     self.isDownloadStarted = NO;
     [self.imageThumbnail setHidden:YES];
+    [self configureColors];
     
+}
+
+- (void)configureColors{
+    self.segmenedControl.tintColor = kClientColor;
 }
 
 - (void)setDetailItem:(id)newDetailItem {
