@@ -227,6 +227,8 @@
 
 + (void)updatePlaylist:(Playlist *)playlist withDictionary:(NSDictionary *)dictionary{
     
+    BOOL customThumbnailImageIsLoaded = false;
+    
     // Set values
     for (NSString *key in dictionary) {
         if ([dictionary valueForKey:key] != nil &&
@@ -235,9 +237,16 @@
             if ([key isEqualToString:kAppKey_Id]){
                 playlist.pId = [dictionary valueForKey:key];
             } else if ([key isEqualToString:kAppKey_Thumbnails]){
+                //don't load regular thumbnail if mobile image is added
+                if ( ! customThumbnailImageIsLoaded)
                 playlist.thumbnailUrl = [UIUtil thumbnailUrlFromArray:[dictionary valueForKey:key]];
-            }
-            else if ([playlist respondsToSelector:NSSelectorFromString(key)]) {
+            } else if ([key isEqualToString:kAppKey_Images]){
+                NSString *tempUrl = [UIUtil thumbnailUrlFromImageArray:[dictionary valueForKey:key]];
+                if ( ! [tempUrl isEqualToString:@""]){
+                    playlist.thumbnailUrl = tempUrl;
+                    customThumbnailImageIsLoaded = true;
+                }
+            } else if ([playlist respondsToSelector:NSSelectorFromString(key)]) {
                 if ([key stringContains:kAppKey_At])
                     [playlist setValue:[[UIUtil dateFormatter] dateFromString:[dictionary valueForKey:key]] forKey:key];
                     

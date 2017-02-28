@@ -296,6 +296,22 @@
     return url;
 }
 
+/*
+ * Look for an image that is called mobile and load it instead of default template
+ */
++ (NSString *)thumbnailUrlFromImageArray:(NSArray *)array
+{
+    NSString *url = @"";
+    
+    for (NSDictionary *dict in array) {
+        if ([[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"]) {
+            url = [dict valueForKey:kAppKey_Url];
+        }
+    }
+    
+    return url;
+}
+
 + (NSString *)stringDownloadProgressWithBytes:(double)totalBytesWritten WithTotalBytes:(double)totalBytesExpectedToWrite
 {
     NSString *result = @"";
