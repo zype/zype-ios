@@ -707,11 +707,11 @@
         <!--Downloads-->
         <scene sceneID="6iX-Ls-Kn1">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="clK-DC-feS" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationDownloadsViewController" automaticallyAdjustsScrollViewInsets="NO" id="clK-DC-feS" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Downloads" image="IconDownloads" id="Fcq-xY-mpV"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="r2i-sF-ep4">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="r2i-sF-ep4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

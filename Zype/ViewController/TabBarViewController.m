@@ -26,7 +26,7 @@
 
 - (void)addDownloadsViewController {
     NSMutableArray *tabViewControllers = [[NSMutableArray alloc] initWithArray:self.viewControllers];
-    UIViewController *downloadsViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"DownloadsViewController"];
+    UIViewController *downloadsViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NavigationDownloadsViewController"];
     [tabViewControllers addObject:downloadsViewController];
     [self setViewControllers:tabViewControllers];
 }
