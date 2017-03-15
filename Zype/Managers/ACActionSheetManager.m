@@ -377,23 +377,25 @@
     
     //disable download video
     //if duration is 0, the video is live/not-downloadable
-   /* if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
-        
-        if (downloadInfo.isDownloading == NO) {
-            if (video.downloadAudioLocalPath == nil) {
-                [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadAudio]];
+    if (kDownloadsEnabled){
+        if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
+            
+            if (downloadInfo.isDownloading == NO) {
+                if (video.downloadAudioLocalPath == nil) {
+                    [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadAudio]];
+                }
+                if (video.downloadVideoLocalPath == nil) {
+                    [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadVideo]];
+                    
+                }
             }
-            if (video.downloadVideoLocalPath == nil) {
-                [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadVideo]];
-
-            }
+            
+        }else if (video.duration.integerValue == 0 && video.isHighlight.boolValue == NO){
+            
+            actionSheet.title = @"This episode will be available for download roughly one hour after the broadcast ends.";
+            
         }
-        
-    }else if (video.duration.integerValue == 0 && video.isHighlight.boolValue == NO){
-    
-        actionSheet.title = @"This episode will be available for download roughly one hour after the broadcast ends.";
-    
-    }*/
+    }
     
     //add favorite or unfavorite button
     if (video.isFavorite.boolValue == YES) {
