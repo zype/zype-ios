@@ -27,7 +27,9 @@
 - (void)addDownloadsViewController {
     NSMutableArray *tabViewControllers = [[NSMutableArray alloc] initWithArray:self.viewControllers];
     UIViewController *downloadsViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NavigationDownloadsViewController"];
-    [tabViewControllers addObject:downloadsViewController];
+    //insert downloads at position before last one
+    [tabViewControllers insertObject:downloadsViewController atIndex:[self.viewControllers count] - 1];
+    //[tabViewControllers addObject:downloadsViewController];
     [self setViewControllers:tabViewControllers];
 }
 
