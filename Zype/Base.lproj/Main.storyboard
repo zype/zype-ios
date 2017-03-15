@@ -84,7 +84,7 @@
                                 <cells/>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="kyR-fu-dV8" userLabel="No Results Label">
-                                <rect key="frame" x="188" y="299.5" width="0.0" height="0.0"/>
+                                <rect key="frame" x="188" y="300" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -260,10 +260,10 @@
             </objects>
             <point key="canvasLocation" x="-996" y="-984"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="89b-Vz-cn2">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="ZNN-a5-bRb" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="ZNN-a5-bRb" customClass="TabBarViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="E3o-qm-lT8">
@@ -272,6 +272,7 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
+                        <outlet property="tabBar" destination="E3o-qm-lT8" id="NNG-d9-iQ9"/>
                         <segue destination="j04-F3-usS" kind="relationship" relationship="viewControllers" id="KLL-YU-ukx"/>
                         <segue destination="zYq-HD-JXc" kind="relationship" relationship="viewControllers" id="5bl-9f-zuQ"/>
                         <segue destination="RNC-7e-lwR" kind="relationship" relationship="viewControllers" id="Vlg-29-hfS"/>
@@ -305,7 +306,7 @@
         <!--Downloads-->
         <scene sceneID="iFn-gr-Coa">
             <objects>
-                <viewController id="Gmg-Sc-SmJ" customClass="DownloadsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DownloadsViewController" id="Gmg-Sc-SmJ" customClass="DownloadsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mwq-RJ-Bna"/>
                         <viewControllerLayoutGuide type="bottom" id="bgp-46-32H"/>
@@ -1512,7 +1513,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gyF-Kv-T9Z"/>
-        <segue reference="geA-c6-7dt"/>
+        <segue reference="eLX-aL-mae"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
 </document>

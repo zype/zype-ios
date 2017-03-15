@@ -37,6 +37,7 @@
 		A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A10797481D4015F700F84B61 /* PlaylistCollectionViewCell.m */; };
 		A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10797491D4015F700F84B61 /* PlaylistCollectionViewCell.xib */; };
 		A1149D851D89AB200021646B /* ACAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1149D841D89AB200021646B /* ACAdManager.m */; };
+		A11CBA4E1E78B5FD0006FC40 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A11CBA4D1E78B5FD0006FC40 /* TabBarViewController.m */; };
 		A136221D1D51133200866742 /* NSURLResponse+AK.m in Sources */ = {isa = PBXBuildFile; fileRef = A136221C1D51133200866742 /* NSURLResponse+AK.m */; };
 		A139DBE21DFF520800DC731B /* ZypeDB.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A139DBE01DFF520800DC731B /* ZypeDB.xcdatamodeld */; };
 		A13AF2BD1D36985A00DDA006 /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF2AA1D36985A00DDA006 /* Action.m */; };
@@ -147,6 +148,8 @@
 		A10797491D4015F700F84B61 /* PlaylistCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlaylistCollectionViewCell.xib; path = Views/PlaylistCollectionViewCell.xib; sourceTree = "<group>"; };
 		A1149D831D89AB200021646B /* ACAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACAdManager.h; path = Managers/ACAdManager.h; sourceTree = "<group>"; };
 		A1149D841D89AB200021646B /* ACAdManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACAdManager.m; path = Managers/ACAdManager.m; sourceTree = "<group>"; };
+		A11CBA4C1E78B5FD0006FC40 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabBarViewController.h; path = ViewController/TabBarViewController.h; sourceTree = "<group>"; };
+		A11CBA4D1E78B5FD0006FC40 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TabBarViewController.m; path = ViewController/TabBarViewController.m; sourceTree = "<group>"; };
 		A136221B1D51133200866742 /* NSURLResponse+AK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURLResponse+AK.h"; path = "Categories/NSURLResponse+AK.h"; sourceTree = "<group>"; };
 		A136221C1D51133200866742 /* NSURLResponse+AK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURLResponse+AK.m"; path = "Categories/NSURLResponse+AK.m"; sourceTree = "<group>"; };
 		A139DBE11DFF520800DC731B /* ZypeDB.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ZypeDB.xcdatamodel; sourceTree = "<group>"; };
@@ -635,6 +638,8 @@
 		F1BB52AE1A76D9B800E901F1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A11CBA4C1E78B5FD0006FC40 /* TabBarViewController.h */,
+				A11CBA4D1E78B5FD0006FC40 /* TabBarViewController.m */,
 				A13AF2EE1D369A2C00DDA006 /* BaseViewController.h */,
 				A13AF2EF1D369A2C00DDA006 /* BaseViewController.m */,
 				A13AF2F01D369A2C00DDA006 /* DownloadOperationController.h */,
@@ -902,6 +907,7 @@
 				A13AF3541D369CC600DDA006 /* ACSAlertViewManager.m in Sources */,
 				A13AF3171D369A2C00DDA006 /* VideoDetailViewController.m in Sources */,
 				A1149D851D89AB200021646B /* ACAdManager.m in Sources */,
+				A11CBA4E1E78B5FD0006FC40 /* TabBarViewController.m in Sources */,
 				A13AF3591D369CC600DDA006 /* ACStatusManager.m in Sources */,
 				A13AF36B1D369D1F00DDA006 /* NSURL+Encoding.m in Sources */,
 				A13AF2E21D36995000DDA006 /* BorderedTextField.m in Sources */,
