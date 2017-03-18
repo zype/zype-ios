@@ -26,7 +26,7 @@
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 
-#define kDownloadsEnabled YES
+#define kDownloadsEnabled NO
 
 #pragma mark - Base settings
 
