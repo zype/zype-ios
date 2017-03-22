@@ -20,7 +20,7 @@
     [super viewDidLoad];
     
     [self setupNotifications];
-
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -42,25 +42,33 @@
         [AppDelegate appDelegate].restrictRotation = NO;
         
         self.isWebVideo = NO;
-
+        
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
-      //  [self removeWebView];
+        //  [self removeWebView];
+        
+    } else if ([source.fileType stringContains:@"hls"]) {
+        [AppDelegate appDelegate].restrictRotation = NO;
+        
+        self.isWebVideo = NO;
+        
+        [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
+        
         
     }else if ([source.fileType stringContains:kApiKey_PlayerWeb]) {
         
         [AppDelegate appDelegate].restrictRotation = YES;
-
+        
         self.isWebVideo = YES;
-
+        
         [self setupWebPlayerNotification];
         [self setupWebPlayer:url];
         
     }else if ([source.fileType stringContains:@"file"]){
         
         [AppDelegate appDelegate].restrictRotation = NO;
-
+        
         self.isWebVideo = NO;
-
+        
         NSURL *fileURL = [NSURL fileURLWithPath:source.urlString];
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:fileURL waitUntilDone:NO];
         [self removeWebView];
@@ -256,7 +264,7 @@
 - (void)moviePlayerDidExitFullscreen{
     
     [self forceToPortrait];
-
+    
 }
 
 
