@@ -208,8 +208,8 @@ static NSString *GuestCellIdentifier = @"GuestCell";
         
         [self setThumbnailImage];
         [self hideSectionsForHighlightVideo];
-        [self setSummary];
-        [self setGuestList];
+        //[self setSummary];
+        //[self setGuestList];
         [self setTimeline];
         
         _videoShareTitleString = self.video.title;
