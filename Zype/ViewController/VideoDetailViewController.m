@@ -208,7 +208,7 @@ static NSString *GuestCellIdentifier = @"GuestCell";
         
         [self setThumbnailImage];
         [self hideSectionsForHighlightVideo];
-        //[self setSummary];
+        [self setSummary];
         //[self setGuestList];
         [self setTimeline];
         
@@ -250,7 +250,7 @@ static NSString *GuestCellIdentifier = @"GuestCell";
     self.webViewSummary.delegate = self;
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-    htmlString = [NSString stringWithFormat:htmlString, self.video.title, self.video.short_description, [UIUtil tagsWithKeywords:self.video.keywords]];
+    htmlString = [NSString stringWithFormat:htmlString, self.video.title, self.video.short_description, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.webViewSummary loadHTMLString:htmlString baseURL:nil];
     
 }
