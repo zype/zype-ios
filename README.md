@@ -48,7 +48,7 @@ A step by step series of examples that tell you how to get a new app running
 
 ## App Architecture
 
-<a href="https://drive.google.com/uc?export=view&id=KAZjO5c_N-99Z9zfXHnckvPNqr0iWp_VvjfDKbbZVt05KkTH3cGbIemS71ze8x_cCoS4jvh-N7nlt_A=w2632-h1510-rw"><img src="https://drive.google.com/uc?export=view&id=KAZjO5c_N-99Z9zfXHnckvPNqr0iWp_VvjfDKbbZVt05KkTH3cGbIemS71ze8x_cCoS4jvh-N7nlt_A=w2632-h1510-rw" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id=0B9aYmGA7O0ZYOEpjUERGd1hJTjQ"><img src="https://drive.google.com/uc?export=view&id=0B9aYmGA7O0ZYOEpjUERGd1hJTjQ" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 
 ## Contributing
