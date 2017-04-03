@@ -128,6 +128,7 @@
 		A13AF3A41D36D3B700DDA006 /* SIL Open Font License.txt in Resources */ = {isa = PBXBuildFile; fileRef = A13AF3941D36D3B700DDA006 /* SIL Open Font License.txt */; };
 		A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */; };
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
+		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
 		A1F98DFB1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F98DFA1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m */; };
 /* End PBXBuildFile section */
 
@@ -308,6 +309,7 @@
 		A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideosViewController.m; path = ViewController/VideosViewController.m; sourceTree = "<group>"; };
 		A15D10CB1DE4CF3C00BAB958 /* PlaylistVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistVideo.h; path = Models/PlaylistVideo.h; sourceTree = "<group>"; };
 		A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistVideo.m; path = Models/PlaylistVideo.m; sourceTree = "<group>"; };
+		A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = VideoSummaryLight.html; sourceTree = "<group>"; };
 		A1D84BA0F72FFDAA8DEC35F6 /* Pods-Zype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zype.release.xcconfig"; path = "Pods/Target Support Files/Pods-Zype/Pods-Zype.release.xcconfig"; sourceTree = "<group>"; };
 		A1F98DF91D8B2F3D0099FC39 /* ACLimitLivestreamManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACLimitLivestreamManager.h; path = Managers/ACLimitLivestreamManager.h; sourceTree = "<group>"; };
 		A1F98DFA1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACLimitLivestreamManager.m; path = Managers/ACLimitLivestreamManager.m; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 			children = (
 				A13AF3751D369DB600DDA006 /* LiveStream.html */,
 				A13AF3761D369DB600DDA006 /* VideoSummary.html */,
+				A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */,
 				A13AF3771D369DB600DDA006 /* YouTubePlayer.html */,
 			);
 			name = HtmlTemplates;
@@ -807,6 +810,7 @@
 				780AC6F71BDFD284007F1119 /* LaunchScreen.xib in Resources */,
 				A13AF3981D36D3B700DDA006 /* Oswald-DemiBold.ttf in Resources */,
 				A13AF37C1D369DB600DDA006 /* VideoSummary.html in Resources */,
+				A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */,
 				780AC6F91BDFD284007F1119 /* OpenSans-LightItalic.ttf in Resources */,
 				780AC6FA1BDFD284007F1119 /* OpenSans-Bold.ttf in Resources */,
 				A13AF3951D36D3B700DDA006 /* Oswald-Bold.ttf in Resources */,
