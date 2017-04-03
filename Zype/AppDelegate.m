@@ -83,12 +83,12 @@
     [self registerForNotification];
     
     // Sync notifications
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_LiveShowNotification]){
+    /*if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_LiveShowNotification]){
         [[RESTServiceController sharedInstance] syncNotificationsInPage:nil WithNotificationsInDB:nil WithExistingNotifications:nil];
-    }
+    }*/
     
     // Check live stream
-    [ACSDataManager checkForLiveStream];
+    //[ACSDataManager checkForLiveStream];
     
     if ([ACStatusManager isUserSignedIn] == YES) {
         [ACSDataManager loadUserInfo];
