@@ -22,11 +22,12 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
-#define kAppColorLight NO
+#define kAppColorLight YES
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 
 #define kDownloadsEnabled NO
+#define kLimitLivestremEnabled NO
 
 #pragma mark - Base settings
 

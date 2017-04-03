@@ -141,7 +141,8 @@
     
     // Sync App settings
     [[RESTServiceController sharedInstance] syncAppSetting];
-    [[RESTServiceController sharedInstance] syncLiveStreamZObject];
+    if (kLimitLivestremEnabled)
+        [[RESTServiceController sharedInstance] syncLiveStreamZObject];
     [[RESTServiceController sharedInstance] syncAppContent];
     
     // Set tab bar delegate
