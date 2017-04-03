@@ -50,6 +50,7 @@ A step by step series of examples that tell you how to get a new app running
 
 <a href="https://drive.google.com/uc?export=view&id=0B9aYmGA7O0ZYOEpjUERGd1hJTjQ"><img src="https://drive.google.com/uc?export=view&id=0B9aYmGA7O0ZYOEpjUERGd1hJTjQ" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
+Image made with draw.io and source file can be opened via the follwing link: https://drive.google.com/file/d/0B9aYmGA7O0ZYTFRXaVR2bzU5WGc/view?usp=sharing
 
 ## Contributing
 
