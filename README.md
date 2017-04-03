@@ -46,6 +46,11 @@ A step by step series of examples that tell you how to get a new app running
 * [Fabric](https://get.fabric.io/) - Analytics and Crashlitics
 * [OneSignal](https://onesignal.com/) - Multiplatform push notifications
 
+## App Architecture
+
+<a href="https://drive.google.com/uc?export=view&id=KAZjO5c_N-99Z9zfXHnckvPNqr0iWp_VvjfDKbbZVt05KkTH3cGbIemS71ze8x_cCoS4jvh-N7nlt_A=w2632-h1510-rw"><img src="https://drive.google.com/uc?export=view&id=KAZjO5c_N-99Z9zfXHnckvPNqr0iWp_VvjfDKbbZVt05KkTH3cGbIemS71ze8x_cCoS4jvh-N7nlt_A=w2632-h1510-rw" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+
 ## Contributing
 
 Please submit pull requests to us.
