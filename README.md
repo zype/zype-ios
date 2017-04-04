@@ -15,6 +15,15 @@ CocoaPods
 
 ### Installing
 
+```
+1. Clon repo
+2. run pod install
+3. Open the workspace 
+4. Click build and run
+```
+
+### Creating new iOS app based of Zype Template
+
 A step by step series of examples that tell you how to get a new app running
 
 ```
@@ -45,6 +54,7 @@ A step by step series of examples that tell you how to get a new app running
 * [CocoaPods](https://cocoapods.org) - Dependency Management
 * [Fabric](https://get.fabric.io/) - Analytics and Crashlitics
 * [OneSignal](https://onesignal.com/) - Multiplatform push notifications
+* [Zype API](http://dev.zype.com/api_docs/intro/) - Zype API docs
 
 ## App Architecture
 
