@@ -2,18 +2,18 @@ Don't know what Zype is? Check this [overview](http://www.zype.com/).
 
 # Zype iOS Template
 
-This is a core Zype iOS project. It is used to provide an API service layer to zype platform and display the data.
+This SDK allows you to set up an eye-catching, easy to use iOS video streaming app integrated with the Zype platform with minimal coding and configuration. The app is built with Objective-C and Zype API. With minimal setup you can have your iOS up and running.
 An example of fully functional app that is using a Zype sandbox account
 
 
-### Prerequisites
+## Prerequisites
 
 ```
 XCode
 CocoaPods
 ```
 
-### Installing
+## Installing
 
 ```
 1. Clon repo
@@ -22,7 +22,28 @@ CocoaPods
 4. Click build and run
 ```
 
-### Creating new iOS app based of Zype Template
+## Supported Features
+
+- Populates your app with content from enhanced playlists
+- Video Search
+- Live Streaming videos
+- Video Favorites 
+- Dynamic theme colors
+- Resume watch functionality
+
+## Unsupported Features
+
+- Midroll ads
+- Closed Caption Support
+- Native SVOD via In App Purchases
+
+## Monetizations Supported
+
+- Pre-roll Ads (VAST)
+- Universal SVOD via login
+
+
+## Creating new iOS app based of Zype Template
 
 A step by step series of examples that tell you how to get a new app running
 
