@@ -130,6 +130,8 @@
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
 		A1F98DFB1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F98DFA1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m */; };
+		FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */; };
+		FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -337,6 +339,10 @@
 		F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "Fonts/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		FA04A3EF1E9D4F95008E7BAC /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
+		FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -669,10 +675,14 @@
 				A13AF3051D369A2C00DDA006 /* SettingsViewController.m */,
 				A13AF3061D369A2C00DDA006 /* SignInViewController.h */,
 				A13AF3071D369A2C00DDA006 /* SignInViewController.m */,
+				FA04A3EF1E9D4F95008E7BAC /* RegisterViewController.h */,
+				FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */,
 				A13AF3081D369A2C00DDA006 /* VideoDetailViewController.h */,
 				A13AF3091D369A2C00DDA006 /* VideoDetailViewController.m */,
 				A13AF3AB1D37D90D00DDA006 /* VideosViewController.h */,
 				A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */,
+				FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */,
+				FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -857,7 +867,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		780AC7031BDFD284007F1119 /* ShellScript */ = {
@@ -922,6 +932,7 @@
 				A136221D1D51133200866742 /* NSURLResponse+AK.m in Sources */,
 				A13AF2BD1D36985A00DDA006 /* Action.m in Sources */,
 				A13AF3141D369A2C00DDA006 /* SettingsDetailViewController.m in Sources */,
+				FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */,
 				A13AF3551D369CC600DDA006 /* ACSDataManager.m in Sources */,
 				A13AF30E1D369A2C00DDA006 /* HighlightsViewController.m in Sources */,
 				A13AF3231D369AB300DDA006 /* RESTServiceController.m in Sources */,
@@ -929,6 +940,7 @@
 				A13AF2C41D36985A00DDA006 /* Timeline.m in Sources */,
 				A13AF3101D369A2C00DDA006 /* LatestViewController.m in Sources */,
 				A13AF3581D369CC600DDA006 /* ACSPersistenceManager.m in Sources */,
+				FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */,
 				A13AF3161D369A2C00DDA006 /* SignInViewController.m in Sources */,
 				A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */,
 				A13AF3821D36AC7700DDA006 /* PlaylistTableViewCell.m in Sources */,

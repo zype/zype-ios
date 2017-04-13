@@ -79,6 +79,8 @@
     [self getPlaylistData];
     
     [self customizeSearchBar];
+    
+    [self performSegueWithIdentifier:@"toIntro" sender:nil];
 }
 
 - (void) customizeSearchBar {
