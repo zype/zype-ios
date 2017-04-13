@@ -189,7 +189,7 @@
 #pragma mark - OAuth 2
 //#define KOAuth_GetTokenDomain @"login.uat.zype.com"
 #define KOAuth_GetTokenDomain @"login.zype.com"
-#define KOAuth_RegisterDomain @"https://api.zype.com/consumers"
+#define KOAuth_RegisterDomain @"https://api.zype.com/consumers?app_key=%@"
 #define kOAuth_GetToken @"https://%@/oauth/token"
 #define kOAuth_GetTokenInfo @"https://%@/oauth/token/info?access_token=%@"
 

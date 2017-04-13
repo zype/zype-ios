@@ -22,7 +22,6 @@
 #import "NSURL+Encoding.h"
 #import "ACStatusManager.h"
 #import "ACLimitLivestreamManager.h"
-#import "AFNetworking.h"
 #import "Playlist.h"
 
 @implementation RESTServiceController
@@ -69,67 +68,26 @@
 
 - (void)registerWithUsername:(NSString *)username WithPassword:(NSString *)password WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler{
     
-    
-    
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    
-//    NSDictionary *parameters = @{@"command": @"get_product_desc",
-//                                 @"place_id": [NSString stringWithFormat:@"%d", place],
-//                                 @"product_id":product,
-//                                 @"uid": self.uid};
-//    
-//    manager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-//    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
-//    
-//    [manager POST:API_URL parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        //
-//        
-//        if ([[responseObject objectForKey:@"status"] isEqualToString:@"ok"]) {
-//            //
-//            if (success){
-//                success(text);
-//            }
-//        } else {
-//            failure(1, [responseObject objectForKey:@"reason"]);
-//        }
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        //
-//        failure(statusCode, errorResponse);
-//    }];
-//    
-    
-    
-    
     NSString *encodedPassword = [password URLEncodedString];
     
     // Prepare parameters
     NSDictionary *parameters = @{
-                                 kOAuthProperty_Username : username,
+                                 kOAuthProperty_Email : username,
                                  kOAuthProperty_Password : encodedPassword,
                                  };
     NSDictionary *consumer = @{ kOAuthProperty_Consumer : parameters };
-    NSMutableString *parameterString = [NSMutableString string];
-    for (NSString *key in [parameters allKeys]) {
-        if ([parameterString length]) {
-            [parameterString appendString:@"&"];
-        }
-        [parameterString appendFormat:@"%@=%@", key, parameters[key]];
-    }
+    NSError *error = nil;
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:consumer options:0 error:&error];
     
     // Send request
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:kOAuth_GetToken, KOAuth_GetTokenDomain]]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:KOAuth_RegisterDomain, kAppKey]]];
     
     CLS_LOG(@"Sample Save Token URL: %@", request.URL);
-    NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:consumer options:kNilOptions error:&error];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody: [[NSString stringWithFormat:@"%@", jsonData] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody: requestData];
     
-    //[request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (completionHandler)
         {
