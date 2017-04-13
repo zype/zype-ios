@@ -23,6 +23,7 @@ typedef void(^urlBlock)(NSURL *url, NSError *error);
 + (BOOL)videoDownloadExistsForVideo:(Video *)video;
 
 + (void)loginWithUsername:(NSString *)username password:(NSString *)password  block:(successBlock)successBlock;
++ (void)registerWithUsername:(NSString *)username password:(NSString *)password block:(successBlock)successBlock;
 + (void)loadUserInfo;
 + (void)logout;
 

@@ -218,6 +218,54 @@
     
 }
 
++ (void)registerWithUsername:(NSString *)username password:(NSString *)password block:(successBlock)successBlock{
+    
+    __block NSString *blockUsername = username;
+    
+    [[RESTServiceController sharedInstance] registerWithUsername:blockUsername WithPassword:password WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (data != nil) {
+            
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            
+            if (parsedObject != nil){
+                
+                CLS_LOG(@"Login Parsed Object: %@", parsedObject);
+                
+                //allow notification sent directly to user
+                //                [[AppDelegate appDelegate].oneSignal setSubscription:true];
+                
+                [ACSTokenManager saveLoginAccessTokenData:data block:^(BOOL success, NSError *error) {
+                    
+                    if (successBlock) {
+                        successBlock(success, error);
+                    }
+                    
+                }];
+                
+            }else if (parsedObject != nil && parsedObject[@"error"] != nil) {
+                
+                CLS_LOG(@"sign in json error: %@", parsedObject[@"error"]);
+                
+                if (successBlock) {
+                    successBlock(NO, localError);
+                }
+                
+            }
+            
+        }else {
+            
+            if (successBlock) {
+                successBlock(NO, error);
+            }
+            
+        }
+        
+    }];
+    
+}
+
 + (void)loadUserInfo{
     
     [[RESTServiceController sharedInstance] getConsumerInformationWithID:[[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_ConsumerId] withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
