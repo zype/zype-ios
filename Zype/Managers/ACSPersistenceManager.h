@@ -40,6 +40,7 @@
 
 + (Playlist *)newPlaylist;
 + (Playlist *)playlistWithID:(NSString *)playlistID;
++ (void)resetPlaylistChilds:(NSString *)playlistID;
 + (void)populatePlaylistsFromDictionary:(NSDictionary *)dictionary;
 
 + (PlaylistVideo *)newPlaylistVideo;

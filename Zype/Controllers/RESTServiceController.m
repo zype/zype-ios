@@ -390,6 +390,9 @@
                 CLS_LOG(@"Failed: %@", localError);
             }
             else {
+                //remove old relationship
+                [ACSPersistenceManager resetPlaylistChilds:parentId];
+                
                 [ACSPersistenceManager populatePlaylistsFromDictionary:parsedObject];
                //CLS_LOG(@"parsedObject = %@", parsedObject);
             }
