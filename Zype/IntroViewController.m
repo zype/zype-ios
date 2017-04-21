@@ -7,6 +7,9 @@
 //
 
 #import "IntroViewController.h"
+#import <RMStore/RMStore.h>
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "ACPurchaseManager.h"
 
 @interface IntroViewController ()
 
@@ -20,6 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self confugureView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -30,7 +34,20 @@
 - (void)confugureView {
     self.loginButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.loginButton.layer.borderWidth = 0.5f;
+    self.loginButton.hidden = ([[ACPurchaseManager sharedInstance] isActiveSubscription]);
 }
+
+#pragma mark - Actions
+
+- (IBAction)restorePurchaseTapped:(id)sender {
+    [SVProgressHUD show];
+    [[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
+        [SVProgressHUD dismiss];
+    } failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+    }];
+}
+
 
 /*
 #pragma mark - Navigation

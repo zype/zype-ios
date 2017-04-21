@@ -22,6 +22,9 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
+#define kMonthlySubscription @"monthly_subscription"
+#define kYearlySubscription @"yearly_subscription"
+
 #define kAppColorLight YES
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
