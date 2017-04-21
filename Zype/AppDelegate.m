@@ -20,6 +20,7 @@
 #import "FavoritesViewController.h"
 #import "HighlightsViewController.h"
 #import "GAI.h"
+#import "ACPurchaseManager.h"
 
 #import "UIColor+AC.h"
 
@@ -144,6 +145,9 @@
     if (kLimitLivestremEnabled)
         [[RESTServiceController sharedInstance] syncLiveStreamZObject];
     [[RESTServiceController sharedInstance] syncAppContent];
+    
+    BOOL isSubscribed = [[ACPurchaseManager sharedInstance] isActiveSubscription];
+    NSLog(@"subscription %d", isSubscribed);
     
     // Set tab bar delegate
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
