@@ -80,7 +80,7 @@
     
     [self customizeSearchBar];
     
-    [self performSegueWithIdentifier:@"toIntro" sender:nil];
+    //[self performSegueWithIdentifier:@"toIntro" sender:nil];
 }
 
 - (void) customizeSearchBar {

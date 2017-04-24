@@ -12,6 +12,7 @@
 #import <RMStore/RMAppReceipt.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
+#import "ACSAlertViewManager.h"
 
 @interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate>
 
@@ -55,7 +56,9 @@
 #pragma mark - in app purchases
 
 - (void)requestProducts {
-    [SVProgressHUD show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD show];
+    });
     [[ACPurchaseManager sharedInstance] requestSubscriptions:^(NSArray *products) {
         [SVProgressHUD dismiss];
         self.products = products;
@@ -66,11 +69,14 @@
 }
 
 - (void)buySubscription:(NSString *)productID {
-    [SVProgressHUD show];
+    [SVProgressHUD showWithStatus:@"Purchasing..."];
     [[ACPurchaseManager sharedInstance] buySubscription:productID success:^{
-        [SVProgressHUD showSuccessWithStatus:@"Success!"];
+        NSLog(@"Success");
+        [SVProgressHUD dismiss];
+        [self dismisControllers];
     } failure:^(NSString *errorString) {
         [SVProgressHUD dismiss];
+        [ACSAlertViewManager showAlertWithTitle:nil WithMessage:errorString];
     }];
 }
 
@@ -115,9 +121,18 @@
 #pragma mark - Actions
 
 - (IBAction)cancelController:(id)sender {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self dismisControllers];
+    //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+
+- (void)dismisControllers {
+    if (self.presentingViewController.presentingViewController.presentingViewController) {
+        [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
 
 /*
 #pragma mark - Navigation

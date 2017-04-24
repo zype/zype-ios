@@ -11,6 +11,9 @@
 #import "SVProgressHUD.h"
 #import "ACSTokenManager.h"
 #import "ACSAlertViewManager.h"
+#import "UIUtil.h"
+#import "NSString+AC.h"
+#import "ACPurchaseManager.h"
 
 @interface RegisterViewController ()
 
@@ -18,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UITextField *emailField;
 @property (strong, nonatomic) IBOutlet UITextField *confirmEmailField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;
+@property (strong, nonatomic) IBOutlet UIButton *createButton;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *fieldViewBottomConstraintY;
 
@@ -41,6 +45,7 @@
 - (void)setupConfiguration {
     UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self.view addGestureRecognizer:tapRecognizer];
+    self.createButton.layer.cornerRadius = 5;
 }
 
 - (void)viewTapped:(UITapGestureRecognizer *)recognizer {
@@ -101,19 +106,67 @@
 #pragma mark - Actions
 
 - (IBAction)createLogin:(id)sender {
-    [self registerWithUsername:self.emailField.text WithPassword:self.passwordField.text];
+    NSString *errorString = [self validateCredentials];
+    if (errorString) {
+        UIAlertController * alert = [UIAlertController alertControllerWithTitle:nil message:errorString preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:true completion:nil];
+    } else {
+        [self registerWithUsername:self.emailField.text WithPassword:self.passwordField.text];
+    }
+}
+
+- (IBAction)cancelController:(id)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
+- (void)dismisControllers {
+    if (self.presentingViewController.presentingViewController) {
+        [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (NSString *)validateCredentials {
+    NSString *errorString;
+    
+    if ([self.emailField.text  isEqual: @""] || [self.confirmEmailField.text  isEqual: @""] || [self.passwordField.text  isEqual: @""]) {
+        return @"Не все поля заполнены";
+    }
+    
+    if (![self.emailField.text validateEmail]) {
+        return @"Email не корректен";
+    }
+    
+    if (![self.emailField.text isEqualToString:self.confirmEmailField.text]) {
+        return @"Email отличаются";
+    }
+    
+    return errorString;
 }
 
 #pragma mark - Register
 
 - (void)registerWithUsername:(NSString *)username WithPassword:(NSString *)password {
+    [SVProgressHUD show];
     [ACSDataManager registerWithUsername:username password:password block:^(BOOL success, NSError *error) {
-        [SVProgressHUD dismiss];
         if (success == YES) {
-            if (self != nil) {
-                [self dismissViewControllerAnimated:YES completion:^{ }];
-            }
+            [ACSDataManager loginWithUsername:username password:password block:^(BOOL success, NSError *error) {
+                if (success) {
+                    [SVProgressHUD dismiss];
+                    if (self != nil) {
+                        if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+                            [self dismisControllers];
+                        } else {
+                            [UIUtil showSubscriptionViewFromViewController:self];
+                        }
+                    }
+                } else {
+                    [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+                }
+            }];
         } else {
+            [SVProgressHUD dismiss];
             [ACSAlertViewManager showAlertWithTitle:kString_TitleSignInFail WithMessage:kString_MessageSignInFail];
         }
         

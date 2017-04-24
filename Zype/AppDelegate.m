@@ -146,6 +146,7 @@
         [[RESTServiceController sharedInstance] syncLiveStreamZObject];
     [[RESTServiceController sharedInstance] syncAppContent];
     
+    [[ACPurchaseManager sharedInstance] requestSubscriptions];
     BOOL isSubscribed = [[ACPurchaseManager sharedInstance] isActiveSubscription];
     NSLog(@"subscription %d", isSubscribed);
     

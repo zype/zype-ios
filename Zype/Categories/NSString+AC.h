@@ -12,4 +12,6 @@
 
 - (NSString *)URLEncodedString;
 
+- (BOOL)validateEmail;
+
 @end
