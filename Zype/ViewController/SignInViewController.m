@@ -214,7 +214,12 @@
         if (success == YES) {
             
             if (self != nil) {
-                [self dismissViewControllerAnimated:YES completion:^{ }];
+                if (self.presentingViewController.presentingViewController != nil) {
+                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                }
+                //[self dismissViewControllerAnimated:YES completion:^{ }];
             }
             
         }else{

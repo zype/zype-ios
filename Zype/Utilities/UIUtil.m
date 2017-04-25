@@ -16,6 +16,8 @@
 #import "Video.h"
 #import "HomeViewController.h"
 #import "VideosViewController.h"
+#import "IntroViewController.h"
+#import "SubsciptionViewController.h"
 
 @implementation UIUtil
 
@@ -138,6 +140,18 @@
 {
     SignInViewController *signInViewController = (SignInViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"signInViewController"];
     [viewController presentViewController:signInViewController animated:YES completion:nil];
+}
+
++ (void)showIntroViewFromViewController:(UIViewController *)viewController
+{
+    IntroViewController *introViewController = (IntroViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"IntroViewController"];
+    [viewController presentViewController:introViewController animated:YES completion:nil];
+}
+
++ (void)showSubscriptionViewFromViewController:(UIViewController *)viewController
+{
+    SubsciptionViewController *subscriptionViewController = (SubsciptionViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"SubscriptionViewController"];
+    [viewController presentViewController:subscriptionViewController animated:YES completion:nil];
 }
 
 + (NSString *)subtitleOfVideo:(Video *)video

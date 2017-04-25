@@ -60,14 +60,29 @@
     }];
 }
 
+- (void)requestSubscriptions {
+    [[RMStore defaultStore] requestProducts:self.subscriptions];
+}
+
 - (void)buySubscription:(NSString *)productID success:(void(^)())success failure:(void(^)(NSString *))failure {
     [[RMStore defaultStore] addPayment:productID success:^(SKPaymentTransaction *transaction) {
-        [[RMStore defaultStore].receiptVerificator verifyTransaction:transaction success:^{
+        if (success) {
             success();
+        }
+        [[RMStore defaultStore].receiptVerificator verifyTransaction:transaction success:^{
         } failure:^(NSError *error) {
-            failure(error.localizedDescription);
         }];
     } failure:^(SKPaymentTransaction *transaction, NSError *error) {
+        if (failure) {
+            failure(error.localizedDescription);
+        }
+    }];
+}
+
+- (void)restorePurchases:(void(^)())success failure:(void(^)(NSString *))failure {
+    [[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
+        success();
+    } failure:^(NSError *error) {
         failure(error.localizedDescription);
     }];
 }

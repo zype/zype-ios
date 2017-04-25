@@ -231,18 +231,22 @@
             
             if (parsedObject != nil){
                 
-                CLS_LOG(@"Login Parsed Object: %@", parsedObject);
+//                CLS_LOG(@"Login Parsed Object: %@", parsedObject);
+//                
+//                //allow notification sent directly to user
+//                //                [[AppDelegate appDelegate].oneSignal setSubscription:true];
+//                
+//                [ACSTokenManager saveLoginAccessTokenData:data block:^(BOOL success, NSError *error) {
+//                    
+//                    if (successBlock) {
+//                        successBlock(success, error);
+//                    }
+//                    
+//                }];
                 
-                //allow notification sent directly to user
-                //                [[AppDelegate appDelegate].oneSignal setSubscription:true];
-                
-                [ACSTokenManager saveLoginAccessTokenData:data block:^(BOOL success, NSError *error) {
-                    
-                    if (successBlock) {
-                        successBlock(success, error);
-                    }
-                    
-                }];
+                if (successBlock) {
+                    successBlock(YES, nil);
+                }
                 
             }else if (parsedObject != nil && parsedObject[@"error"] != nil) {
                 

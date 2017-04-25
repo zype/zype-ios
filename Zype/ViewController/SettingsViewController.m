@@ -16,6 +16,8 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "Timing.h"
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "ACPurchaseManager.h"
 
 @interface SettingsViewController ()
 @property (strong, nonatomic) UISwitch *switchAutoDownload;
@@ -216,7 +218,7 @@
         /*if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f) return 2;
          else return 3;*/
     }
-    else if (section == 1) return 2;
+    else if (section == 1) return 3;
     else return 0;
 }
 
@@ -268,6 +270,11 @@
                 break;
             case 1:
             {
+                cell.textLabel.text = @"Restore Purchases";
+            }
+                break;
+            case 2:
+            {
                 cell.textLabel.text = @"Version";
                 UILabel *labelVersion = [[UILabel alloc] init];
                 NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -281,10 +288,7 @@
                 [labelVersion sizeToFit];
                 cell.accessoryView = labelVersion;
                 break;
-            }
-            case 2:
-            {
-                cell.textLabel.text = @"Powered By Zype";
+                //cell.textLabel.text = @"Powered By Zype";
             }
                 break;
                 
@@ -327,7 +331,7 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1 && indexPath.row == 1) return nil;
+    if (indexPath.section == 1 && indexPath.row == 2) return nil;
     else return indexPath;
 }
 
@@ -360,9 +364,10 @@
         [self.navigationController pushViewController:viewController animated:YES];
         
     }
-    else if (indexPath.section == 1 && indexPath.row == 2)
+    else if (indexPath.section == 1 && indexPath.row == 1)
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kZypeURL]];
+        [self restorePurchases];
+        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:kZypeURL]];
     }
     else {
         [self performSegueWithIdentifier:@"showSettingsDetail" sender:self];
@@ -385,6 +390,15 @@
     // Go back
     [self.navigationController popToRootViewControllerAnimated:YES];
     
+}
+
+- (void)restorePurchases {
+    [SVProgressHUD show];
+    [[ACPurchaseManager sharedInstance] restorePurchases:^{
+        [SVProgressHUD showSuccessWithStatus:@"Success"];
+    } failure:^(NSString *errorString) {
+        [SVProgressHUD showErrorWithStatus:errorString];
+    }];
 }
 
 

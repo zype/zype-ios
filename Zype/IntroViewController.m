@@ -10,10 +10,13 @@
 #import <RMStore/RMStore.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
+#import "ACStatusManager.h"
 
 @interface IntroViewController ()
 
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
+@property (strong, nonatomic) IBOutlet UIButton *registerButton;
+
 
 @end
 
@@ -34,7 +37,15 @@
 - (void)confugureView {
     self.loginButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.loginButton.layer.borderWidth = 0.5f;
-    self.loginButton.hidden = ([[ACPurchaseManager sharedInstance] isActiveSubscription]);
+    self.loginButton.layer.cornerRadius = 5;
+    self.registerButton.layer.cornerRadius = 5;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
+    if ([ACStatusManager isUserSignedIn] == true) {
+        [self dismissViewControllerAnimated:false completion:nil];
+    }
 }
 
 #pragma mark - Actions
@@ -46,6 +57,10 @@
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:error.localizedDescription];
     }];
+}
+
+- (IBAction)cancelControllerTapped:(id)sender {
+    [self.presentingViewController dismissViewControllerAnimated:true completion:nil];
 }
 
 
