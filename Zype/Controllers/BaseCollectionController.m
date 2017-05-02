@@ -12,6 +12,12 @@
 #import "Video.h"
 #import "Playlist.h"
 
+#define kRowCellCountOrientationLandscape 3
+#define kRowCellCountOrientationPortrait 2
+#define kImageCellAcpectRatio 0.5625 // 9/16 ratio
+#define kPaddingBeetweenCells 10
+#define kPlaylistCollectionCellLabelHeight 25
+
 @interface BaseCollectionController ()
 
 @property (strong, nonatomic) NSMutableDictionary *objectChanges;
@@ -55,6 +61,7 @@
     [_collectionView registerNib:[UINib nibWithNibName:@"PlaylistCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reusePlaylistIdentifier];
     
     self.scrollView = _collectionView;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 
     return self;
 }
@@ -135,13 +142,40 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat width = 245.0;//355.0;//245
-    CGFloat height = 225.0;//180.0;//225
-    CGSize size = CGSizeMake(width, height);
+    int cellCountInLine = kRowCellCountOrientationPortrait;
+    CGFloat screenWidth = collectionView.frame.size.width;
+    if (isLandscape) {
+        cellCountInLine = kRowCellCountOrientationLandscape;
+    }
+    
+    CGFloat width = screenWidth / cellCountInLine;
+    CGFloat height = width * kImageCellAcpectRatio + kPlaylistCollectionCellLabelHeight;
+    CGSize size = CGSizeMake(width - kPaddingBeetweenCells - CGFLOAT_MIN, height);
     
     return size;
-    
 }
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0, kPaddingBeetweenCells * 2, 0, 0);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return CGFLOAT_MIN;
+}
+
+- (void)OrientationDidChange:(NSNotification*)notification
+{
+    [self reloadData];
+}
+
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+//    return 16;
+//}
+//
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+//    return 16;
+//}
 
 
 

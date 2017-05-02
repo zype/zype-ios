@@ -14,4 +14,10 @@
 #import "UIUtil.h"
 #import "ZypeCommon.h"
 
+#define dDeviceOrientation [[UIDevice currentDevice] orientation]
+#define isPortrait  UIDeviceOrientationIsPortrait(dDeviceOrientation)
+#define isLandscape UIDeviceOrientationIsLandscape(dDeviceOrientation)
+#define isFaceUp    dDeviceOrientation == UIDeviceOrientationFaceUp   ? YES : NO
+#define isFaceDown  dDeviceOrientation == UIDeviceOrientationFaceDown ? YES : NO
+
 #endif
