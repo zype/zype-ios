@@ -16,7 +16,7 @@
 #define kRowCellCountOrientationPortrait 2
 #define kImageCellAcpectRatio 0.5625 // 9/16 ratio
 #define kPaddingBeetweenCells 10
-#define kPlaylistCollectionCellLabelHeight 25
+#define kPlaylistCollectionCellLabelHeight 50
 
 @interface BaseCollectionController ()
 
@@ -61,7 +61,7 @@
     [_collectionView registerNib:[UINib nibWithNibName:@"PlaylistCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reusePlaylistIdentifier];
     
     self.scrollView = _collectionView;
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 
     return self;
 }
@@ -164,8 +164,9 @@
     return CGFLOAT_MIN;
 }
 
-- (void)OrientationDidChange:(NSNotification*)notification
-{
+// MARK: - Notification Center
+
+- (void)orientationDidChange:(NSNotification*)notification {
     [self reloadData];
 }
 

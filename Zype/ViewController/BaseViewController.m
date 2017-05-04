@@ -36,7 +36,7 @@
         
         self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
         
-    }else{
+    } else {
         
         self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
         
