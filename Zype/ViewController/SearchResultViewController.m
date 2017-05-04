@@ -105,7 +105,8 @@
                                                                             target:nil
                                                                             action:nil];
     self.title = @"Search Result";
-    [self.searchBar setText:self.searchString];
+    //[self.searchBar setText:self.searchString];
+    [self.searchBar becomeFirstResponder];
     [self initDismissSearchButton];
     self.selectedSegment = 0;
     
@@ -246,7 +247,9 @@
         [[RESTServiceController sharedInstance] searchVideos:self.searchString InPage:nil];
     }
     
-    [self.episodeController loadSearch:self.searchString searchMode:searchMode];
+    if (self.searchString != nil) {
+        [self.episodeController loadSearch:self.searchString searchMode:searchMode];
+    }
     
 }
 
