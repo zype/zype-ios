@@ -67,6 +67,7 @@
     [AppDelegate appDelegate].restrictRotation = YES;
     
     self.episodeController.episodeControllerMode = ACSEpisodeControllerModeLatest;
+    //self.episodeController.scrollView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     
     self.start = [NSDate date];
     
@@ -78,7 +79,7 @@
     [ACSDataManager checkForLiveStream];
     [self getPlaylistData];
     
-    [self customizeSearchBar];
+    //[self customizeSearchBar];
     
     //[self performSegueWithIdentifier:@"toIntro" sender:nil];
 }
@@ -208,9 +209,14 @@
     
 }
 
+- (IBAction)showSearchResult:(id)sender {
+    [self performSegueWithIdentifier:@"showSearchResult" sender:self];
+}
+
+
 #pragma mark - Header
 
-- (void)setupHeader{
+- (void)setupHeader {
     
     [self.episodeController setupSlidingHeader:self.headerView stickyView:self.viewFilter topLayoutConstraint:self.headerTopLayoutConstraint];
     
@@ -232,11 +238,11 @@
         
     }else if ([[segue identifier] isEqualToString:@"showSearchResult"]) {
         
-        CLS_LOG(@"====Search String==== %@", self.searchBar.text);
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsCategoryButtonPressed label:@"Show Search Result" value:nil] build]];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsActSearchString label:self.searchBar.text value:nil] build]];
-        [[segue destinationViewController] setSearchString:self.searchBar.text];
-        [self.searchBar setText:@""];
+//        CLS_LOG(@"====Search String==== %@", self.searchBar.text);
+//        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsCategoryButtonPressed label:@"Show Search Result" value:nil] build]];
+//        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsActSearchString label:self.searchBar.text value:nil] build]];
+//        [[segue destinationViewController] setSearchString:self.searchBar.text];
+//        [self.searchBar setText:@""];
         
     }
     
@@ -262,9 +268,9 @@
 #pragma mark - IBActions
 
 
-- (IBAction)dismissKeyboard{
+- (IBAction)dismissKeyboard {
     
-    [self.searchBar resignFirstResponder];
+    //[self.searchBar resignFirstResponder];
     [self.buttonDismissSearch setHidden:YES];
     
 }
@@ -344,7 +350,7 @@
     
 }
 
-- (void)setupSharedPlayerView{
+- (void)setupSharedPlayerView {
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
                                                           attribute:NSLayoutAttributeTrailing
@@ -372,13 +378,13 @@
 
 #pragma mark - Web View Player
 
-- (void)setupWebPlayer:(NSURL *)url{
+- (void)setupWebPlayer:(NSURL *)url {
     
     [self embedWebPlayer:url frame:self.imagePlaceholder.frame];
     
 }
 
-- (void)embedWebPlayer:(NSURL *)url frame:(CGRect)frame{
+- (void)embedWebPlayer:(NSURL *)url frame:(CGRect)frame {
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f) {
         
@@ -401,7 +407,7 @@
     
 }
 
-- (void)setupWKWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame{
+- (void)setupWKWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame {
     
     if (self.wkWebViewPlayer == nil || !self.wkWebViewPlayer.superview) {
         
@@ -424,7 +430,7 @@
     
 }
 
-- (void)setupUIWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame{
+- (void)setupUIWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame {
     
     if (self.webViewPlayer == nil || !self.webViewPlayer.superview) {
         
@@ -450,7 +456,7 @@
     
 }
 
-- (void)setupConstraintsForWebPlayerView:(UIView *)view{
+- (void)setupConstraintsForWebPlayerView:(UIView *)view {
     
     view.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -493,7 +499,7 @@
 
 #pragma mark - Stopping Stream
 
-- (void)stopLiveStream{
+- (void)stopLiveStream {
     
     [self removeWebView];
     self.isLiveStreamEmbedded = NO;
@@ -504,14 +510,14 @@
 
 #pragma mark - Search
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     
     [self.buttonDismissSearch setHidden:NO];
     return YES;
     
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar{
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     
     return YES;
     
@@ -525,7 +531,7 @@
     
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search" label:@"Show Search Results" value:nil] build]];
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search String" label:self.searchBar.text value:nil] build]];
+    //[tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Search String" label:self.searchBar.text value:nil] build]];
     [self performSegueWithIdentifier:@"showSearchResult" sender:self];
     
     /* }else {

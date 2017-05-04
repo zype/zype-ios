@@ -73,6 +73,8 @@
     [self trackScreenName:kAnalyticsScreenNameLatest];
     
     self.episodeController.episodeControllerMode = ACSEpisodeControllerModeLatest;
+    //self.episodeController.scrollView.backgroundColor = [UIColor redColor];
+    self.episodeController.scrollView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     
     self.start = [NSDate date];
     
@@ -85,7 +87,7 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadVideos) name:@"ResultsFromPlaylistReturned" object:nil];
     
-    [self customizeSearchBar];
+    //[self customizeSearchBar];
 }
 
 - (void) customizeSearchBar {

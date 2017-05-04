@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) Video *video;
 @property (nonatomic, assign) CGFloat defaultStatusImageWidth;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -42,7 +43,7 @@
     [self setThumbnail:video];
     [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     self.titleLabel.text = video.title;
-    self.titleLabel.textColor = [UIColor whiteColor];
+    //self.titleLabel.textColor = [UIColor whiteColor];
     self.subtitleLabel.text = [UIUtil subtitleOfVideo:video];
     
     /*if (video.downloadVideoLocalPath){
@@ -63,71 +64,51 @@
     // Set download progress
     DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
     if (downloadInfo && downloadInfo.isDownloading) {
-        
         if (self != nil) {
-            
             if (downloadInfo.totalBytesWritten == 0.0) {
-                
                 [self setDownloadStarted];
-                
-            }else {
-                
+            } else {
                 float progress = (double)downloadInfo.totalBytesWritten / (double)downloadInfo.totalBytesExpectedToWrite;
-                
                 [self setDownloadProgress:progress];
-                
             }
-            
         }
-        
-    }else if ([ACDownloadManager fileDownloadedForVideo:video] == YES) {
-        
+    } else if ([ACDownloadManager fileDownloadedForVideo:video] == YES) {
         if (self != nil) {
-            
-            if (video.isPlayed.boolValue == YES){
-                
+            if (video.isPlayed.boolValue == YES) {
                 [self setPlayed];
-                
-            }else if (video.isPlaying.boolValue == YES){
-                
+            } else if (video.isPlaying.boolValue == YES) {
                 [self setPlaying];
-                
-            }else {
-                
+            } else {
                 [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
-                
             }
-            
         }
-        
-    }else {
-        
+    } else {
         [self setNoDownload];
-        
     }
     
     //hide cloud if video can't be downloaded
     if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
         self.accessoryImage.hidden = NO;
-    }else{
+    }else {
         self.accessoryImage.hidden = YES;
     }
     
+    //[self setTest];
 }
 
 - (void)setThumbnail:(Video *)video {
     
     //add activity indicator
-    __block UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    activityIndicator.center = self.thumbnailImage.center;
-    activityIndicator.color = kClientColor;
-    activityIndicator.hidesWhenStopped = YES;
-    [self.thumbnailImage addSubview:activityIndicator];
-    [activityIndicator startAnimating];
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.activityIndicator.center = self.thumbnailImage.center;
+    self.activityIndicator.color = kClientColor;
+    self.activityIndicator.hidesWhenStopped = YES;
+    [self.thumbnailImage addSubview:self.activityIndicator];
+    [self.activityIndicator startAnimating];
     
     [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]
                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                      [activityIndicator removeFromSuperview];
+                                      [self.activityIndicator removeFromSuperview];
                                       //check for error and add default placeholder
                                       if (error) {
                                           [self.thumbnailImage setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
@@ -141,11 +122,15 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    
     self.defaultStatusImageWidth = self.statusImage.frame.size.width;
+    self.actionCoverView.layer.cornerRadius = 4;
     [self hideStatusImage:YES];
- 
     [super awakeFromNib];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.activityIndicator.center = self.thumbnailImage.center;
 }
 
 - (void)setSelected:(BOOL)selected{
@@ -161,24 +146,33 @@
 
 #pragma mark - Downloading
 
-- (void)setNoDownload{
-    
+- (void)setNoDownload {
     [self.progressView setHidden:YES];
-    [self.actionLabel setHidden:YES];
+    [self.actionCoverView setHidden:YES];
     [self.subtitleLabel setHidden:NO];
     [self hideStatusImage:YES];
     [self setNeedsDisplay];
     
 }
 
-- (void)setDownloadStarted{
-    
+- (void)setDownloadStarted {
     [self.progressView setHidden:YES];
-    [self.actionLabel setHidden:NO];
+    [self.actionCoverView setHidden:NO];
     [self.subtitleLabel setHidden:YES];
     [self hideStatusImage:YES];
-    
     self.actionLabel.text = @"Download pending...";
+    [self setNeedsDisplay];
+    
+}
+
+- (void)setTest {
+    [self.progressView setHidden:NO];
+    [self.actionCoverView setHidden:NO];
+    [self.subtitleLabel setHidden:NO];
+    [self hideStatusImage:NO];
+    self.actionLabel.text = @"Download pending...";
+    self.titleLabel.text = @"errtgg dfg dfg rtert retret rter rterter retert";
+    self.subtitleLabel.text = @"Cerb drk.xf.n [jde d gbntht";
     [self setNeedsDisplay];
     
 }
@@ -194,16 +188,13 @@
     }
 
     if (self.progressView.isHidden) {
-        
         [self.progressView setHidden:NO];
-        [self.actionLabel setHidden:YES];
+        [self.actionCoverView setHidden:YES];
         [self.subtitleLabel setHidden:YES];
         [self hideStatusImage:YES];
-        
     }
 
     self.progressView.progress = progress;
-    
     [self setNeedsDisplay];
     
 }
@@ -211,7 +202,7 @@
 - (void)setDownloadSavingFile{
     
     [self.progressView setHidden:YES];
-    [self.actionLabel setHidden:NO];
+    [self.actionCoverView setHidden:NO];
     [self.subtitleLabel setHidden:YES];
     [self hideStatusImage:YES];
     
@@ -223,7 +214,7 @@
 - (void)setDownloadFinishedWithMediaType:(NSString *)mediaType{
     
     [self.progressView setHidden:YES];
-    [self.actionLabel setHidden:YES];
+    [self.actionCoverView setHidden:YES];
     [self.subtitleLabel setHidden:NO];
     
     [self hideStatusImage:NO];
@@ -244,7 +235,7 @@
 - (void)setPlaying{
     
     [self.progressView setHidden:YES];
-    [self.actionLabel setHidden:YES];
+    [self.actionCoverView setHidden:YES];
     [self.subtitleLabel setHidden:NO];
     
     [self hideStatusImage:NO];
@@ -256,7 +247,7 @@
 - (void)setPlayed{
     
     [self.progressView setHidden:YES];
-    [self.actionLabel setHidden:YES];
+    [self.actionCoverView setHidden:YES];
     [self.subtitleLabel setHidden:NO];
     [self hideStatusImage:YES];
     [self setNeedsDisplay];
@@ -269,15 +260,10 @@
 - (void)hideStatusImage:(BOOL)hide{
     
     self.statusImage.hidden = hide;
-    
     if (hide == YES) {
-        
         self.statusImageWidthConstraint.constant = 0;
-        
-    }else{
-        
+    } else {
         self.statusImageWidthConstraint.constant = self.defaultStatusImageWidth;
-        
     }
     
     if (self != nil) {

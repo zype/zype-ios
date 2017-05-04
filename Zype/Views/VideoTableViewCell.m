@@ -154,6 +154,7 @@
         } else {
             [self.iconLock setHidden:YES];
         }
+        
     });
     
     // Set download progress
