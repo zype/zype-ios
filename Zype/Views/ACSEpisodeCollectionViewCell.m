@@ -11,6 +11,7 @@
 #import "ACSEpisodeCollectionViewCell.h"
 #import "ACDownloadManager.h"
 #import "DownloadOperationController.h"
+#import "ACStatusManager.h"
 
 @interface ACSEpisodeCollectionViewCell ()
 
@@ -43,8 +44,17 @@
     [self setThumbnail:video];
     [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     self.titleLabel.text = video.title;
-    //self.titleLabel.textColor = [UIColor whiteColor];
     self.subtitleLabel.text = [UIUtil subtitleOfVideo:video];
+    
+    if ([video.subscription_required intValue] == 1){
+        if ([ACStatusManager isUserSignedIn] == YES){
+            self.iconLock.image = [UIImage imageNamed:@"iconUnlocked"];
+        } else {
+            self.iconLock.image = [UIImage imageNamed:@"iconLocked"];
+        }
+    } else {
+        [self.iconLock setHidden:YES];
+    }
     
     /*if (video.downloadVideoLocalPath){
         

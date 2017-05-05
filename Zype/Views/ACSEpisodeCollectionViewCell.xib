@@ -114,6 +114,13 @@ Line 3</string>
                             <constraint firstAttribute="trailing" secondItem="NTp-XE-moY" secondAttribute="trailing" id="zpM-c8-YED"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconLocked" translatesAutoresizingMaskIntoConstraints="NO" id="Xq8-ut-FYG">
+                        <rect key="frame" x="8" y="8" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="RSk-Gu-KSh"/>
+                            <constraint firstAttribute="width" constant="20" id="tF3-YN-wUS"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -121,11 +128,13 @@ Line 3</string>
                 <constraint firstItem="Jpa-fi-R08" firstAttribute="leading" secondItem="sRP-Gv-bHj" secondAttribute="leading" id="77r-es-lrz"/>
                 <constraint firstAttribute="trailing" secondItem="Mik-6O-HpY" secondAttribute="trailing" constant="20" id="ErQ-Hc-YVE"/>
                 <constraint firstItem="Jpa-fi-R08" firstAttribute="top" secondItem="tEG-Qg-F7N" secondAttribute="bottom" constant="12" id="Iu3-4a-7V4"/>
+                <constraint firstItem="Xq8-ut-FYG" firstAttribute="leading" secondItem="sRP-Gv-bHj" secondAttribute="leading" constant="8" id="OZS-1B-ebj"/>
                 <constraint firstItem="Mik-6O-HpY" firstAttribute="top" secondItem="sRP-Gv-bHj" secondAttribute="top" id="Spk-gF-ap5"/>
                 <constraint firstItem="Jpa-fi-R08" firstAttribute="top" secondItem="BLK-qQ-j6Z" secondAttribute="bottom" constant="8" id="Wga-Ye-QVI"/>
                 <constraint firstItem="Mik-6O-HpY" firstAttribute="leading" secondItem="sRP-Gv-bHj" secondAttribute="leading" id="ZXP-Nt-Dn6"/>
                 <constraint firstItem="Jpa-fi-R08" firstAttribute="top" secondItem="Mik-6O-HpY" secondAttribute="bottom" id="djn-DO-8dU"/>
                 <constraint firstAttribute="trailing" secondItem="tEG-Qg-F7N" secondAttribute="trailing" constant="28" id="jZX-kj-Jak"/>
+                <constraint firstItem="Xq8-ut-FYG" firstAttribute="top" secondItem="sRP-Gv-bHj" secondAttribute="top" constant="8" id="lkU-3M-b12"/>
                 <constraint firstAttribute="trailing" secondItem="Jpa-fi-R08" secondAttribute="trailing" constant="20" id="ln0-8H-zEw"/>
                 <constraint firstAttribute="bottom" secondItem="Jpa-fi-R08" secondAttribute="bottom" id="n5v-qz-HJI"/>
                 <constraint firstItem="BLK-qQ-j6Z" firstAttribute="leading" secondItem="sRP-Gv-bHj" secondAttribute="leading" constant="8" id="v6w-EJ-NH1"/>
@@ -136,6 +145,7 @@ Line 3</string>
                 <outlet property="actionButton" destination="qrj-Ea-pmF" id="wLZ-v3-nPp"/>
                 <outlet property="actionCoverView" destination="BLK-qQ-j6Z" id="ItC-sR-Vsq"/>
                 <outlet property="actionLabel" destination="Vv7-Sy-W9B" id="zt8-ex-QWQ"/>
+                <outlet property="iconLock" destination="Xq8-ut-FYG" id="YVB-wK-jN4"/>
                 <outlet property="progressView" destination="NTp-XE-moY" id="BxX-SI-xRY"/>
                 <outlet property="statusImage" destination="tEG-Qg-F7N" id="4iv-a8-5VK"/>
                 <outlet property="subtitleLabel" destination="zns-yl-29c" id="pW0-an-2c7"/>
@@ -149,6 +159,7 @@ Line 3</string>
         <image name="IconPlayFull" width="13" height="13"/>
         <image name="ImagePlaceholder" width="402" height="227"/>
         <image name="download" width="16" height="16"/>
+        <image name="iconLocked" width="32" height="32"/>
         <image name="more" width="16" height="16"/>
     </resources>
 </document>
