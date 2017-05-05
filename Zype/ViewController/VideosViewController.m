@@ -85,7 +85,7 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadVideos) name:@"ResultsFromPlaylistReturned" object:nil];
     
-    [self customizeSearchBar];
+    //[self customizeSearchBar];
 }
 
 - (void) customizeSearchBar {
@@ -150,11 +150,18 @@
     // Init UI
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     
+    UIBarButtonItem * searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"IconSearch"] style:UIBarButtonItemStylePlain target:self action:@selector(searchTapped)];
+    self.navigationItem.rightBarButtonItem = searchButton;
+    
     [self initDismissButton];
     [self initDismissSearchButton];
     
     [self.buttonFilterNext setEnabled:NO];
     
+}
+
+- (void)searchTapped {
+    [self performSegueWithIdentifier:@"showSearchResult" sender:nil];
 }
 
 - (void)initDismissButton{

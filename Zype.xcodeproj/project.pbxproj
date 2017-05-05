@@ -130,6 +130,13 @@
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
 		A1F98DFB1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F98DFA1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m */; };
+		FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */; };
+		FA1DFD9D1EA3622800F10870 /* SubsciptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1DFD9C1EA3622800F10870 /* SubsciptionViewController.m */; };
+		FA1DFDA11EA3A76B00F10870 /* SubscriptActiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1DFD9F1EA3A76B00F10870 /* SubscriptActiveCell.m */; };
+		FA1DFDA21EA3A76B00F10870 /* SubscriptActiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */; };
+		FA4CD6E41EA9FAAF0042F3B8 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */; };
+		FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */; };
+		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -337,6 +344,18 @@
 		F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "Fonts/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		FA04A3EF1E9D4F95008E7BAC /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		FA1DFD9B1EA3622800F10870 /* SubsciptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubsciptionViewController.h; sourceTree = "<group>"; };
+		FA1DFD9C1EA3622800F10870 /* SubsciptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubsciptionViewController.m; sourceTree = "<group>"; };
+		FA1DFD9E1EA3A76B00F10870 /* SubscriptActiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptActiveCell.h; sourceTree = "<group>"; };
+		FA1DFD9F1EA3A76B00F10870 /* SubscriptActiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptActiveCell.m; sourceTree = "<group>"; };
+		FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscriptActiveCell.xib; sourceTree = "<group>"; };
+		FA4CD6E21EA9FAAF0042F3B8 /* ACPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPurchaseManager.h; sourceTree = "<group>"; };
+		FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPurchaseManager.m; sourceTree = "<group>"; };
+		FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
+		FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
+		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,6 +366,7 @@
 				780AC6DF1BDFD284007F1119 /* ImageIO.framework in Frameworks */,
 				780AC6E01BDFD284007F1119 /* QuickLook.framework in Frameworks */,
 				780AC6E11BDFD284007F1119 /* MobileCoreServices.framework in Frameworks */,
+				FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */,
 				780AC6E21BDFD284007F1119 /* AssetsLibrary.framework in Frameworks */,
 				780AC6E41BDFD284007F1119 /* CoreText.framework in Frameworks */,
 				780AC6E51BDFD284007F1119 /* SystemConfiguration.framework in Frameworks */,
@@ -448,6 +468,8 @@
 				A13AF3471D369CC600DDA006 /* ACSNotificationsManager.m */,
 				A13AF3481D369CC600DDA006 /* ACSPersistenceManager.h */,
 				A13AF3491D369CC600DDA006 /* ACSPersistenceManager.m */,
+				FA4CD6E21EA9FAAF0042F3B8 /* ACPurchaseManager.h */,
+				FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */,
 				A13AF34A1D369CC600DDA006 /* ACStatusManager.h */,
 				A13AF34B1D369CC600DDA006 /* ACStatusManager.m */,
 				A13AF34C1D369CC600DDA006 /* ACSTokenManager.h */,
@@ -488,6 +510,7 @@
 		F176C9A71AA796BE0080E334 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FAE69B771EA7C9D60081A064 /* StoreKit.framework */,
 				B9C5863E1B1CC60A00647936 /* ImageIO.framework */,
 				9677B7781ADC46110043515D /* QuickLook.framework */,
 				9677B7761ADC46090043515D /* MobileCoreServices.framework */,
@@ -634,6 +657,9 @@
 				A13AF2DD1D36995000DDA006 /* VideoTableViewCell.h */,
 				A13AF2DE1D36995000DDA006 /* VideoTableViewCell.m */,
 				A13AF2DF1D36995000DDA006 /* VideoTableViewCell.xib */,
+				FA1DFD9E1EA3A76B00F10870 /* SubscriptActiveCell.h */,
+				FA1DFD9F1EA3A76B00F10870 /* SubscriptActiveCell.m */,
+				FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -669,10 +695,16 @@
 				A13AF3051D369A2C00DDA006 /* SettingsViewController.m */,
 				A13AF3061D369A2C00DDA006 /* SignInViewController.h */,
 				A13AF3071D369A2C00DDA006 /* SignInViewController.m */,
+				FA04A3EF1E9D4F95008E7BAC /* RegisterViewController.h */,
+				FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */,
 				A13AF3081D369A2C00DDA006 /* VideoDetailViewController.h */,
 				A13AF3091D369A2C00DDA006 /* VideoDetailViewController.m */,
 				A13AF3AB1D37D90D00DDA006 /* VideosViewController.h */,
 				A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */,
+				FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */,
+				FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */,
+				FA1DFD9B1EA3622800F10870 /* SubsciptionViewController.h */,
+				FA1DFD9C1EA3622800F10870 /* SubsciptionViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -755,7 +787,11 @@
 					780AC69F1BDFD284007F1119 = {
 						DevelopmentTeam = 66JU87JGLE;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 0;
 							};
@@ -801,6 +837,7 @@
 				A13AF3A01D36D3B700DDA006 /* Oswald-MediumItalic.ttf in Resources */,
 				A13AF3A21D36D3B700DDA006 /* Oswald-RegularItalic.ttf in Resources */,
 				A13AF39C1D36D3B700DDA006 /* Oswald-HeavyItalic.ttf in Resources */,
+				FA1DFDA21EA3A76B00F10870 /* SubscriptActiveCell.xib in Resources */,
 				A13AF39E1D36D3B700DDA006 /* Oswald-LightItalic.ttf in Resources */,
 				A13AF3831D36AC7700DDA006 /* PlaylistTableViewCell.xib in Resources */,
 				780AC6F31BDFD284007F1119 /* OpenSans-Regular.ttf in Resources */,
@@ -902,6 +939,7 @@
 				A13AF2C01D36985A00DDA006 /* Guest.m in Sources */,
 				A13AF2E91D36995000DDA006 /* SearchResultTableViewCell.m in Sources */,
 				A13AF3361D369B9A00DDA006 /* NSDictionary+Extensions.m in Sources */,
+				FA1DFD9D1EA3622800F10870 /* SubsciptionViewController.m in Sources */,
 				A13AF30A1D369A2C00DDA006 /* BaseViewController.m in Sources */,
 				A1F98DFB1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m in Sources */,
 				A13AF37A1D369DB600DDA006 /* ACSPredicates.m in Sources */,
@@ -922,6 +960,7 @@
 				A136221D1D51133200866742 /* NSURLResponse+AK.m in Sources */,
 				A13AF2BD1D36985A00DDA006 /* Action.m in Sources */,
 				A13AF3141D369A2C00DDA006 /* SettingsDetailViewController.m in Sources */,
+				FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */,
 				A13AF3551D369CC600DDA006 /* ACSDataManager.m in Sources */,
 				A13AF30E1D369A2C00DDA006 /* HighlightsViewController.m in Sources */,
 				A13AF3231D369AB300DDA006 /* RESTServiceController.m in Sources */,
@@ -929,6 +968,7 @@
 				A13AF2C41D36985A00DDA006 /* Timeline.m in Sources */,
 				A13AF3101D369A2C00DDA006 /* LatestViewController.m in Sources */,
 				A13AF3581D369CC600DDA006 /* ACSPersistenceManager.m in Sources */,
+				FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */,
 				A13AF3161D369A2C00DDA006 /* SignInViewController.m in Sources */,
 				A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */,
 				A13AF3821D36AC7700DDA006 /* PlaylistTableViewCell.m in Sources */,
@@ -943,11 +983,13 @@
 				A13AF3131D369A2C00DDA006 /* SearchResultViewController.m in Sources */,
 				A13AF30F1D369A2C00DDA006 /* HomeViewController.m in Sources */,
 				A13AF2C31D36985A00DDA006 /* Playlist.m in Sources */,
+				FA1DFDA11EA3A76B00F10870 /* SubscriptActiveCell.m in Sources */,
 				A13AF2E81D36995000DDA006 /* HighlightTableViewCell.m in Sources */,
 				A13AF2EC1D36995000DDA006 /* VideoTableViewCell.m in Sources */,
 				A13AF2C11D36985A00DDA006 /* Notification.m in Sources */,
 				A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */,
 				A13AF2E31D36995000DDA006 /* BottomBorderTextField.swift in Sources */,
+				FA4CD6E41EA9FAAF0042F3B8 /* ACPurchaseManager.m in Sources */,
 				780AC6D21BDFD284007F1119 /* ZypeDBMappingModel.xcmappingmodel in Sources */,
 				A13AF37E1D369DB600DDA006 /* UIUtil.m in Sources */,
 				A13AF3691D369D1F00DDA006 /* NSMutableArray+LimitedStack.m in Sources */,
@@ -1000,7 +1042,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ZYPE MEDIA GROUP LLC (66JU87JGLE)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 66JU87JGLE;
 				ENABLE_BITCODE = NO;
@@ -1016,9 +1058,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Zype",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f7f41fa9-1486-4956-bd30-d422d497ae7f";
+				PROVISIONING_PROFILE_SPECIFIER = AlexDev;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1032,8 +1075,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ZYPE MEDIA GROUP LLC (66JU87JGLE)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 66JU87JGLE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1048,9 +1091,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Zype",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ba07d546-72a8-4dd2-8f98-f54a51fae876";
+				PROVISIONING_PROFILE_SPECIFIER = "Zype Sandbox Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

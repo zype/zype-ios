@@ -14,6 +14,7 @@
 @interface RESTServiceController : NSObject <NSURLSessionDelegate>
 
 - (void)getTokenWithUsername:(NSString *)username WithPassword:(NSString *)password WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
+- (void)registerWithUsername:(NSString *)username WithPassword:(NSString *)password WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)saveConsumerIdWithToken:(NSString *)accessToken WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)getConsumerInformationWithID:(NSString *)consumerId withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
 - (void)refreshAccessTokenWithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;

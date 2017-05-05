@@ -17,6 +17,7 @@
 #import "DownloadOperationController.h"
 #import "Playlist.h"
 #import "ACLimitLivestreamManager.h"
+#import "ACPurchaseManager.h"
 
 @interface BaseViewController ()
 
@@ -35,7 +36,7 @@
         
         self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
         
-    }else{
+    } else {
         
         self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
         
@@ -282,6 +283,7 @@
             if ([ACStatusManager isUserSignedIn] == NO && [[ACLimitLivestreamManager sharedInstance] livestreamLimitReached]){
                 NSLog(@"limit reached");
                 [UIUtil showSignInViewFromViewController:self];
+                //[UIUtil showIntroViewFromViewController:self];
                 return;
             } else {
                 [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
@@ -291,10 +293,22 @@
             
         }
         //check for video with subscription
-        if ([ACStatusManager isUserSignedIn] == NO && [self.selectedVideo.subscription_required intValue] == 1){
-            [UIUtil showSignInViewFromViewController:self];
+        
+        if ([ACStatusManager isUserSignedIn] == false) {
+            [UIUtil showIntroViewFromViewController:self];
             return;
+        } else {
+            if ([self.selectedVideo.subscription_required intValue] == 1 && [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+                [UIUtil showSubscriptionViewFromViewController:self];
+                return;
+            }
         }
+        
+//        if ([ACStatusManager isUserSignedIn] == NO && [self.selectedVideo.subscription_required intValue] == 1){
+//            //[UIUtil showSignInViewFromViewController:self];
+//            [UIUtil showIntroViewFromViewController:self];
+//            return;
+//        }
         //no more checks for now
         [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
         

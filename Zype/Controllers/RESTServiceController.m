@@ -66,6 +66,38 @@
     [task resume];
 }
 
+- (void)registerWithUsername:(NSString *)username WithPassword:(NSString *)password WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler{
+    
+    NSString *encodedPassword = [password URLEncodedString];
+    
+    // Prepare parameters
+    NSDictionary *parameters = @{
+                                 kOAuthProperty_Email : username,
+                                 kOAuthProperty_Password : encodedPassword,
+                                 };
+    NSDictionary *consumer = @{ kOAuthProperty_Consumer : parameters };
+    NSError *error = nil;
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:consumer options:0 error:&error];
+    
+    // Send request
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:KOAuth_RegisterDomain, kAppKey]]];
+    
+    CLS_LOG(@"Sample Save Token URL: %@", request.URL);
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody: requestData];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (completionHandler)
+        {
+            completionHandler(data, response, error);
+            //            CLS_LOG(@"LOGIN DATA RESPONSE:%@", data);
+        }
+    }];
+    [task resume];
+}
+
 - (void)getConsumerInformationWithID:(NSString *)consumerId withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion
 {
     

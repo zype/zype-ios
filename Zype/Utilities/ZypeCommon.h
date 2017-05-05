@@ -22,6 +22,9 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
+#define kMonthlySubscription @"monthly_subscription"
+#define kYearlySubscription @"yearly_subscription"
+
 #define kAppColorLight YES
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
@@ -189,7 +192,7 @@
 #pragma mark - OAuth 2
 //#define KOAuth_GetTokenDomain @"login.uat.zype.com"
 #define KOAuth_GetTokenDomain @"login.zype.com"
-
+#define KOAuth_RegisterDomain @"https://api.zype.com/consumers?app_key=%@"
 #define kOAuth_GetToken @"https://%@/oauth/token"
 #define kOAuth_GetTokenInfo @"https://%@/oauth/token/info?access_token=%@"
 
@@ -197,6 +200,8 @@
 #define kOAuth_GrantTypeRefresh @"refresh_token"
 #define kOAuthProperty_Username @"username"
 #define kOAuthProperty_Password @"password"
+#define kOAuthProperty_Email @"email"
+#define kOAuthProperty_Consumer @"consumer"
 #define kOAuthProperty_ClientId @"client_id"
 #define kOAuthProperty_ClientSecret @"client_secret"
 #define kOAuthProperty_GrantType @"grant_type"
