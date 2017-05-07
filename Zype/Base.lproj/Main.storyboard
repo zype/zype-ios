@@ -583,7 +583,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fP7-37-Jcz" customClass="BorderedTextField">
-                                <rect key="frame" x="8" y="193" width="304" height="60"/>
+                                <rect key="frame" x="8" y="198" width="304" height="60"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="41w-eu-GHu"/>
@@ -593,7 +593,7 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jQc-Ww-jb1">
-                                <rect key="frame" x="7" y="333" width="304" height="48"/>
+                                <rect key="frame" x="7" y="338" width="304" height="43"/>
                                 <color key="backgroundColor" red="0.0039215686274509803" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Oswald-Regular" family="Oswald Regular" pointSize="26"/>
                                 <state key="normal" title="SIGN IN">
@@ -610,7 +610,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iXi-Fd-qn4" customClass="BorderedTextField">
-                                <rect key="frame" x="8" y="253" width="304" height="60"/>
+                                <rect key="frame" x="8" y="258" width="304" height="60"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="lNF-cM-i6F"/>
@@ -814,7 +814,7 @@
                         <viewControllerLayoutGuide type="bottom" id="hRs-YQ-GHg"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ewh-xg-vbD">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="A0e-5B-SaA">
@@ -1652,7 +1652,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checking for shows..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="xL4-uM-1M0" userLabel="No Results Label">
-                                <rect key="frame" x="86" y="217" width="148" height="21"/>
+                                <rect key="frame" x="87" y="219" width="146" height="17.5"/>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1772,7 +1772,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checking for shows..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="gkN-TC-naV" userLabel="No Results Label">
-                                <rect key="frame" x="86" y="22" width="148" height="544"/>
+                                <rect key="frame" x="87" y="22" width="146" height="544"/>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1823,11 +1823,12 @@
                         <outlet property="noResultsLabel" destination="gkN-TC-naV" id="Pcd-af-6kU"/>
                         <outlet property="tableView" destination="yMp-Ge-oMW" id="Ecw-4M-Hsu"/>
                         <segue destination="t5Y-FU-bx5" kind="show" identifier="showSearchResult" id="0F1-OY-8Sl"/>
+                        <segue destination="Qfc-ig-Nwb" kind="show" identifier="showEpisodeDetail" id="ZzX-mC-zba"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Z9-EV-ccm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2964" y="333"/>
+            <point key="canvasLocation" x="2829" y="573"/>
         </scene>
     </scenes>
     <resources>
@@ -1845,7 +1846,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0F1-OY-8Sl"/>
-        <segue reference="geA-c6-7dt"/>
+        <segue reference="ZzX-mC-zba"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
 </document>
