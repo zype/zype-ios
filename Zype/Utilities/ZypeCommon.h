@@ -31,7 +31,7 @@
 
 #define kDownloadsEnabled NO
 #define kLimitLivestremEnabled NO
-#define kNativeSubscriptionEnabled YES
+#define kNativeSubscriptionEnabled NO
 
 #pragma mark - Base settings
 
