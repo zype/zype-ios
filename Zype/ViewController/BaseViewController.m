@@ -295,7 +295,7 @@
         //check for video with subscription
         
         if (kNativeSubscriptionEnabled == NO) {
-            if ([ACStatusManager isUserSignedIn] == false) {
+            if ([ACStatusManager isUserSignedIn] == false && self.selectedVideo.subscription_required.intValue == 1) {
                 [UIUtil showSignInViewFromViewController:self];
                 return;
             }
