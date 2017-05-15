@@ -11,8 +11,8 @@
 #import "BorderedTextField.h"
 
 @interface SignInViewController : GAITrackedViewController <UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet BorderedTextField *textFieldEmail;
-@property (weak, nonatomic) IBOutlet BorderedTextField *textFieldPassword;
+@property (weak, nonatomic) IBOutlet UITextField *textFieldEmail;
+@property (weak, nonatomic) IBOutlet UITextField *textFieldPassword;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSignIn;
 
 @property (nonatomic, retain) NSDate *start;

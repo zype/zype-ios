@@ -16,9 +16,15 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SignInViewController ()
+
 @property (nonatomic) bool isEditing;
 @property (nonatomic) bool isSlideUp;
 @property (nonatomic) int amountKeyboardSlide;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomBackgroundPaddingConstraint;
+
+@property (strong, nonatomic) IBOutlet UIView *credentialContainerView;
+
 
 @end
 
@@ -28,29 +34,30 @@
     [super viewDidLoad];
     self.screenName = @"Sign In";
     // Do any additional setup after loading the view.
+    [self registerForKeyboardNotifications];
     [self configureView];
 }
 
 - (void)viewDidLayoutSubviews {
     //add corners
-    UIBezierPath *maskPath;
-    maskPath = [UIBezierPath bezierPathWithRoundedRect:self.textFieldEmail.bounds
-                                     byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
-                                           cornerRadii:CGSizeMake(13.0, 13.0)];
-    
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = self.textFieldEmail.bounds;
-    maskLayer.path = maskPath.CGPath;
-    self.textFieldEmail.layer.mask = maskLayer;
-    
-    UIBezierPath *maskPathTwo = [UIBezierPath bezierPathWithRoundedRect:self.textFieldPassword.bounds
-                                                      byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
-                                                            cornerRadii:CGSizeMake(13.0, 13.0)];
-    
-    CAShapeLayer *maskLayerTwo = [[CAShapeLayer alloc] init];
-    maskLayerTwo.frame = self.textFieldPassword.bounds;
-    maskLayerTwo.path = maskPathTwo.CGPath;
-    self.textFieldPassword.layer.mask = maskLayerTwo;
+//    UIBezierPath *maskPath;
+//    maskPath = [UIBezierPath bezierPathWithRoundedRect:self.textFieldEmail.bounds
+//                                     byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
+//                                           cornerRadii:CGSizeMake(13.0, 13.0)];
+//    
+//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//    maskLayer.frame = self.textFieldEmail.bounds;
+//    maskLayer.path = maskPath.CGPath;
+//    self.textFieldEmail.layer.mask = maskLayer;
+//    
+//    UIBezierPath *maskPathTwo = [UIBezierPath bezierPathWithRoundedRect:self.textFieldPassword.bounds
+//                                                      byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
+//                                                            cornerRadii:CGSizeMake(13.0, 13.0)];
+//    
+//    CAShapeLayer *maskLayerTwo = [[CAShapeLayer alloc] init];
+//    maskLayerTwo.frame = self.textFieldPassword.bounds;
+//    maskLayerTwo.path = maskPathTwo.CGPath;
+//    self.textFieldPassword.layer.mask = maskLayerTwo;
     
 }
 
@@ -64,16 +71,71 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - keyboard actions
+
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    NSNumber *durationValue = info[UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration = durationValue.doubleValue;
+    
+    NSNumber *curveValue = info[UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    //
+    // Create animation.
+    
+    self.bottomBackgroundPaddingConstraint.constant = kbSize.height;
+    
+    void (^animations)() = ^() {
+        [self.view layoutIfNeeded];
+    };
+    
+    //
+    // Begin animation.
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    self.bottomBackgroundPaddingConstraint.constant = 0;
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+
 #pragma mark - Init UI
 
 - (void)configureView
 {
     //change color for Sign In button
     self.buttonSignIn.backgroundColor = kClientColor;
+    self.buttonSignIn.layer.cornerRadius = 2.0f;
+    self.credentialContainerView.layer.borderWidth = 1.0f;
+    self.credentialContainerView.layer.borderColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1.00].CGColor;
+    self.credentialContainerView.layer.cornerRadius = 2.0f;
     
-    UIColor *color = [UIColor darkGrayColor];
-    self.textFieldEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: color}];
-    self.textFieldPassword.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: color}];
+    self.textFieldEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor}];
+    self.textFieldPassword.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor}];
     self.textFieldEmail.delegate = self;
     self.textFieldPassword.delegate = self;
     self.isEditing = NO;
@@ -165,7 +227,7 @@
     if ([self isFormValid]) {
         
         [self dismissKeyboard:sender];
-        [SVProgressHUD showWithStatus:kString_SigningIn maskType:SVProgressHUDMaskTypeBlack];
+        [SVProgressHUD showWithStatus:kString_SigningIn];
         [self signInWithUsername:self.textFieldEmail.text WithPassword:self.textFieldPassword.text];
         
     }
