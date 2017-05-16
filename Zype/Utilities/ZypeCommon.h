@@ -29,6 +29,13 @@
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
+#define kLightTintColor [UIColor colorWithRed:1.00 green:0.11 blue:0.38 alpha:1.00]
+#define kLightLineColor [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:1.00]
+#define kDarkTintColor [UIColor colorWithRed:0.20 green:0.43 blue:0.98 alpha:1.00]
+#define kDarkLineColor [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:1.00]
+#define kDarkThemeBackgroundColor [UIColor colorWithRed:0.12 green:0.12 blue:0.12 alpha:1.00]
+
+#define kViewCornerRounded 2.0f
 
 #define kDownloadsEnabled NO
 #define kLimitLivestremEnabled NO

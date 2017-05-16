@@ -14,6 +14,8 @@
 #import "ACSDataManager.h"
 #import "GAIDictionaryBuilder.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIView+UIView_CustomizeTheme.h"
+#import "UIViewController+AC.h"
 
 @interface SignInViewController ()
 
@@ -22,9 +24,13 @@
 @property (nonatomic) int amountKeyboardSlide;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomBackgroundPaddingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerCredentialsConstraintY;
 
 @property (strong, nonatomic) IBOutlet UIView *credentialContainerView;
-
+@property (strong, nonatomic) IBOutlet UIView *separateLineView;
+@property (strong, nonatomic) IBOutlet UIButton *closeButton;
+@property (strong, nonatomic) IBOutlet UIButton *signupButton;
+@property (strong, nonatomic) IBOutlet UIImageView *arrowImageView;
 
 @end
 
@@ -94,10 +100,14 @@
     NSNumber *curveValue = info[UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
     
-    //
+    // 568 284 81 216
+    // 568 - 216 = 352 / 2 + 40
     // Create animation.
     
     self.bottomBackgroundPaddingConstraint.constant = kbSize.height;
+    CGFloat height = self.view.frame.size.height / 2;
+    CGFloat y = (height - kbSize.height) / 2 + 50;
+    self.centerCredentialsConstraintY.constant = y;
     
     void (^animations)() = ^() {
         [self.view layoutIfNeeded];
@@ -116,7 +126,8 @@
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    self.bottomBackgroundPaddingConstraint.constant = 0;
+    self.bottomBackgroundPaddingConstraint.constant = 0.0f;
+    self.centerCredentialsConstraintY.constant = 0.0f;
     [UIView animateWithDuration:0.2 animations:^{
         [self.view layoutIfNeeded];
     }];
@@ -128,19 +139,32 @@
 - (void)configureView
 {
     //change color for Sign In button
-    self.buttonSignIn.backgroundColor = kClientColor;
-    self.buttonSignIn.layer.cornerRadius = 2.0f;
-    self.credentialContainerView.layer.borderWidth = 1.0f;
-    self.credentialContainerView.layer.borderColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1.00].CGColor;
-    self.credentialContainerView.layer.cornerRadius = 2.0f;
+    [self.buttonSignIn tintCustomizeTheme];
+    [self customizeAppearance];
+    [self.buttonSignIn round:kViewCornerRounded];
+    [self.credentialContainerView round:kViewCornerRounded];
+    [self.credentialContainerView borderCustomizeTheme];
+    [self.separateLineView backgroudCustomizeTheme];
+    [self.textFieldEmail setAttributePlaceholder:@"Email"];
+    [self.textFieldPassword setAttributePlaceholder:@"Password"];
     
-    self.textFieldEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor}];
-    self.textFieldPassword.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor}];
+    NSString *deleteButtonString = (kAppColorLight) ? @"delete-black" : @"delete-white";
+    [self.closeButton setImage:[UIImage imageNamed:deleteButtonString] forState:UIControlStateNormal];
     self.textFieldEmail.delegate = self;
     self.textFieldPassword.delegate = self;
     self.isEditing = NO;
     self.isSlideUp = NO;
     
+    UIColor * currentColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
+    NSDictionary * attributes = @{NSForegroundColorAttributeName: currentColor,
+                                  NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"Don't have an account? " attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor}];
+    NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Sign up" attributes:attributes];
+    [attrstring appendAttributedString:signupText];
+    [self.signupButton setAttributedTitle:attrstring forState:UIControlStateNormal];
+    
+    NSString *arrowImageString = (kAppColorLight) ? @"arrow-white" : @"arrow-black";
+    [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
     // Dismiss keyboard
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     tapRecognizer.cancelsTouchesInView = YES;

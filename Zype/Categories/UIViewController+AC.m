@@ -50,7 +50,7 @@
         self.view.backgroundColor = [UIColor whiteColor];
     } else {
         [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
-        self.view.backgroundColor = [UIColor blackColor];
+        self.view.backgroundColor = kDarkThemeBackgroundColor;
     }
     
     // self.navigationController.navigationBar.backgroundColor = [UIColor blackColor];
