@@ -13,6 +13,7 @@
 - (void)tintCustomizeTheme;
 - (void)backgroudCustomizeTheme;
 - (void)borderCustomizeTheme;
+- (void)borderColorCustomizeTheme;
 
 - (void)round:(CGFloat)value;
 

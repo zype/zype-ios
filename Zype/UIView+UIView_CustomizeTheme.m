@@ -23,6 +23,11 @@
     self.layer.borderColor = (kAppColorLight) ? kLightLineColor.CGColor : kDarkLineColor.CGColor;
 }
 
+- (void)borderColorCustomizeTheme {
+    self.layer.borderWidth = 1.0f;
+    self.layer.borderColor = (kAppColorLight) ? kLightTintColor.CGColor : kDarkTintColor.CGColor;
+}
+
 - (void)round:(CGFloat)value {
     self.layer.cornerRadius = value;
 }

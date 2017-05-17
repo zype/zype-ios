@@ -163,7 +163,7 @@
     [attrstring appendAttributedString:signupText];
     [self.signupButton setAttributedTitle:attrstring forState:UIControlStateNormal];
     
-    NSString *arrowImageString = (kAppColorLight) ? @"arrow-white" : @"arrow-black";
+    NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
     [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
     // Dismiss keyboard
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
