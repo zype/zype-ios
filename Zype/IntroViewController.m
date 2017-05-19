@@ -42,8 +42,6 @@
     [self.loginButton round:kViewCornerRounded];
     UIColor *textColor = (kAppColorLight) ? [UIColor blackColor] : [UIColor whiteColor];
     [self.loginButton setTitleColor:textColor forState:UIControlStateNormal];
-    NSString *deleteButtonString = (kAppColorLight) ? @"delete-black" : @"delete-white";
-    [self.closeButton setImage:[UIImage imageNamed:deleteButtonString] forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

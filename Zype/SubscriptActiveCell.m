@@ -19,6 +19,8 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self.continueButton tintCustomizeTheme];
     [self.continueButton round:kViewCornerRounded];
+    UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
+    [self.titleLabel setTextColor:titleColor];
     // Initialization code
 }
 

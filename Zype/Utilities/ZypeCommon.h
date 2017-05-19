@@ -34,6 +34,7 @@
 #define kDarkTintColor [UIColor colorWithRed:0.20 green:0.43 blue:0.98 alpha:1.00]
 #define kDarkLineColor [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:1.00]
 #define kDarkThemeBackgroundColor [UIColor colorWithRed:0.12 green:0.12 blue:0.12 alpha:1.00]
+#define kUniversalGray [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.00]
 #define kCurrentAppColor (kAppColorLight) ? kLightTintColor : kDarkTintColor
 
 #define kViewCornerRounded 2.0f

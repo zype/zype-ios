@@ -22,6 +22,9 @@
 @property (strong, nonatomic) NSArray *products;
 @property (strong, nonatomic) NSArray *titles;
 @property (assign, nonatomic) NSInteger selectedIndex;
+@property (strong, nonatomic) IBOutlet UILabel *navigationTitle;
+@property (strong, nonatomic) IBOutlet UIView *separateNavigationView;
+
 
 @end
 
@@ -52,6 +55,10 @@
     self.tableView.contentInset = UIEdgeInsetsMake(-36, 0, 0, 0);
     self.selectedIndex = 0;
     self.titles = @[@"Monthly Subscription", @"Yearly Subscription"];
+    UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
+    self.navigationTitle.textColor = titleColor;
+    UIColor * separateColor = (kAppColorLight) ? [UIColor whiteColor] : kDarkThemeBackgroundColor;
+    self.separateNavigationView.backgroundColor = separateColor;
     
     [self requestProducts];
 }

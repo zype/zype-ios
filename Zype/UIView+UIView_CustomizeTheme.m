@@ -20,7 +20,8 @@
 
 - (void)borderCustomizeTheme {
     self.layer.borderWidth = 1.0f;
-    self.layer.borderColor = (kAppColorLight) ? kLightLineColor.CGColor : kDarkLineColor.CGColor;
+    self.layer.borderColor = kUniversalGray.CGColor;
+    //(kAppColorLight) ? kLightLineColor.CGColor : kDarkLineColor.CGColor;
 }
 
 - (void)borderColorCustomizeTheme {
