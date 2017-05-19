@@ -13,6 +13,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
 #import "ACSAlertViewManager.h"
+#import "UIViewController+AC.h"
 
 @interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate>
 
@@ -42,6 +43,8 @@
 }
 
 - (void)configureController {
+    [self customizeAppearance];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"SubscriptActiveCell" bundle:nil] forCellReuseIdentifier:@"SubscriptActiveCell"];
@@ -97,7 +100,7 @@
     [cell setDelegate: self];
     [cell configureCell:payment];
     cell.titleLabel.text = title;
-    [cell setSelectedCell:(self.selectedIndex == indexPath.row)];
+    //[cell setSelectedCell:(self.selectedIndex == indexPath.row)];
     return cell;
 }
 

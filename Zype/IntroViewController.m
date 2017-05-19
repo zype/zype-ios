@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self confugureView];
+    [self configureView];
     
 }
 
@@ -35,7 +35,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)confugureView {
+- (void)configureView {
     [self.registerButton tintCustomizeTheme];
     [self.registerButton round:kViewCornerRounded];
     [self.loginButton borderColorCustomizeTheme];
