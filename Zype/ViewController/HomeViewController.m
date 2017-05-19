@@ -67,7 +67,6 @@
     [AppDelegate appDelegate].restrictRotation = YES;
     
     self.episodeController.episodeControllerMode = ACSEpisodeControllerModeLatest;
-    //self.episodeController.scrollView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     
     self.start = [NSDate date];
     

@@ -59,6 +59,7 @@
     
     [_collectionView registerClass:[PlaylistCollectionViewCell class] forCellWithReuseIdentifier:reusePlaylistIdentifier];
     [_collectionView registerNib:[UINib nibWithNibName:@"PlaylistCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reusePlaylistIdentifier];
+    //[_collectionView setContentInset:UIEdgeInsetsMake(40, 0, 0, 0)];
     
     self.scrollView = _collectionView;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -158,6 +159,10 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(0, kPaddingBeetweenCells * 2, 0, 0);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(collectionView.frame.size.width, kPaddingBeetweenCells * 2);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {

@@ -14,16 +14,26 @@
 #import "UIUtil.h"
 #import "NSString+AC.h"
 #import "ACPurchaseManager.h"
+#import "UIView+UIView_CustomizeTheme.h"
+#import "CustomizeThemeTextField.h"
 
 @interface RegisterViewController ()
 
 @property (strong, nonatomic) IBOutlet UIView *containerView;
-@property (strong, nonatomic) IBOutlet UITextField *emailField;
+@property (strong, nonatomic) IBOutlet CustomizeThemeTextField *emailField;
 @property (strong, nonatomic) IBOutlet UITextField *confirmEmailField;
-@property (strong, nonatomic) IBOutlet UITextField *passwordField;
+@property (strong, nonatomic) IBOutlet CustomizeThemeTextField *passwordField;
 @property (strong, nonatomic) IBOutlet UIButton *createButton;
+@property (strong, nonatomic) IBOutlet UIView *credentialContainerView;
+@property (strong, nonatomic) IBOutlet UIView *separateLineView;
+@property (strong, nonatomic) IBOutlet UIButton *termsOfUseButton;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UIButton *signinButton;
+@property (strong, nonatomic) IBOutlet UIImageView *arrowImageView;
+@property (strong, nonatomic) IBOutlet UIButton *closeButton;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *fieldViewBottomConstraintY;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerCredentialsConstraintY;
 
 
 @end
@@ -43,9 +53,43 @@
 }
 
 - (void)setupConfiguration {
+    [self.createButton tintCustomizeTheme];
+    [self customizeAppearance];
+    [self.createButton round:kViewCornerRounded];
+    [self.credentialContainerView round:kViewCornerRounded];
+    [self.credentialContainerView borderCustomizeTheme];
+    [self.separateLineView backgroudCustomizeTheme];
+    [self.emailField setAttributePlaceholder:@"Email"];
+    [self.passwordField setAttributePlaceholder:@"Password"];
+    NSString *deleteButtonString = (kAppColorLight) ? @"delete-black" : @"delete-white";
+    [self.closeButton setImage:[UIImage imageNamed:deleteButtonString] forState:UIControlStateNormal];
+    UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
+    self.titleLabel.textColor = titleColor;
+    
+    UIColor * termsTextColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
+    NSDictionary * attributes = @{NSForegroundColorAttributeName: termsTextColor,
+                                  NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Create my login, you agree to our " attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor,
+                                                                                                                                                NSFontAttributeName: [UIFont systemFontOfSize:12]}];
+    NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Terms of Service and Privacy" attributes:attributes];
+    [attrstring appendAttributedString:signupText];
+    self.termsOfUseButton.titleLabel.numberOfLines = 0;
+    self.termsOfUseButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.termsOfUseButton setAttributedTitle:attrstring forState:UIControlStateNormal];
+    
+    UIColor * signInColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
+    NSDictionary * signInAttributes = @{NSForegroundColorAttributeName: signInColor,
+                                  NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
+    NSMutableAttributedString * attrstringFirstPart = [[NSMutableAttributedString alloc] initWithString:@"Already have an account? " attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor}];
+    NSAttributedString * signinText = [[NSAttributedString alloc] initWithString:@"Sign up" attributes:signInAttributes];
+    [attrstringFirstPart appendAttributedString:signinText];
+    [self.signinButton setAttributedTitle:attrstringFirstPart forState:UIControlStateNormal];
+    
+    NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
+    [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
+    
     UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self.view addGestureRecognizer:tapRecognizer];
-    self.createButton.layer.cornerRadius = 5;
 }
 
 - (void)viewTapped:(UITapGestureRecognizer *)recognizer {
@@ -79,6 +123,10 @@
     // Create animation.
     
     self.fieldViewBottomConstraintY.constant = kbSize.height;
+    CGFloat height = self.view.frame.size.height / 2;
+    CGFloat y = (height - kbSize.height) / 2 + 20;
+    self.centerCredentialsConstraintY.constant = y;
+    
     
     void (^animations)() = ^() {
         [self.view layoutIfNeeded];
@@ -98,6 +146,7 @@
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
     self.fieldViewBottomConstraintY.constant = 80;
+    self.centerCredentialsConstraintY.constant = 0;
     [UIView animateWithDuration:0.2 animations:^{
         [self.view layoutIfNeeded];
     }];

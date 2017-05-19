@@ -294,13 +294,20 @@
         }
         //check for video with subscription
         
-        if ([ACStatusManager isUserSignedIn] == false) {
-            [UIUtil showIntroViewFromViewController:self];
-            return;
-        } else {
-            if ([self.selectedVideo.subscription_required intValue] == 1 && [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
-                [UIUtil showSubscriptionViewFromViewController:self];
+        if (kNativeSubscriptionEnabled == NO) {
+            if ([ACStatusManager isUserSignedIn] == false && self.selectedVideo.subscription_required.intValue == 1) {
+                [UIUtil showSignInViewFromViewController:self];
                 return;
+            }
+        } else {
+            if ([ACStatusManager isUserSignedIn] == false) {
+                [UIUtil showIntroViewFromViewController:self];
+                return;
+            } else {
+                if ([self.selectedVideo.subscription_required intValue] == 1 && [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+                    [UIUtil showSubscriptionViewFromViewController:self];
+                    return;
+                }
             }
         }
         

@@ -136,6 +136,8 @@
 		FA1DFDA21EA3A76B00F10870 /* SubscriptActiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */; };
 		FA4CD6E41EA9FAAF0042F3B8 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */; };
 		FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */; };
+		FABFC4B21ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */; };
+		FABFC4B51ECB44DE0008F3D0 /* CustomizeThemeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FABFC4B41ECB44DE0008F3D0 /* CustomizeThemeTextField.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -355,6 +357,10 @@
 		FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPurchaseManager.m; sourceTree = "<group>"; };
 		FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
 		FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
+		FABFC4B01ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UIView_CustomizeTheme.h"; sourceTree = "<group>"; };
+		FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UIView_CustomizeTheme.m"; sourceTree = "<group>"; };
+		FABFC4B31ECB44DE0008F3D0 /* CustomizeThemeTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomizeThemeTextField.h; sourceTree = "<group>"; };
+		FABFC4B41ECB44DE0008F3D0 /* CustomizeThemeTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomizeThemeTextField.m; sourceTree = "<group>"; };
 		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -503,6 +509,8 @@
 				A13AF3681D369D1F00DDA006 /* UIViewController+AC.m */,
 				A136221B1D51133200866742 /* NSURLResponse+AK.h */,
 				A136221C1D51133200866742 /* NSURLResponse+AK.m */,
+				FABFC4B01ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.h */,
+				FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -632,6 +640,8 @@
 				A13AF2C91D36995000DDA006 /* ACSEpisodeCollectionViewCell.xib */,
 				A13AF2CB1D36995000DDA006 /* BorderedTextField.h */,
 				A13AF2CC1D36995000DDA006 /* BorderedTextField.m */,
+				FABFC4B31ECB44DE0008F3D0 /* CustomizeThemeTextField.h */,
+				FABFC4B41ECB44DE0008F3D0 /* CustomizeThemeTextField.m */,
 				A13AF2CD1D36995000DDA006 /* BottomBorderTextField.swift */,
 				A13AF2CE1D36995000DDA006 /* DownloadTableViewCell.h */,
 				A13AF2CF1D36995000DDA006 /* DownloadTableViewCell.m */,
@@ -959,6 +969,7 @@
 				A13AF2EB1D36995000DDA006 /* TimelineTableViewCell.m in Sources */,
 				A136221D1D51133200866742 /* NSURLResponse+AK.m in Sources */,
 				A13AF2BD1D36985A00DDA006 /* Action.m in Sources */,
+				FABFC4B21ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m in Sources */,
 				A13AF3141D369A2C00DDA006 /* SettingsDetailViewController.m in Sources */,
 				FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */,
 				A13AF3551D369CC600DDA006 /* ACSDataManager.m in Sources */,
@@ -1010,6 +1021,7 @@
 				A13AF3571D369CC600DDA006 /* ACSNotificationsManager.m in Sources */,
 				A13AF2E41D36995000DDA006 /* DownloadTableViewCell.m in Sources */,
 				A13AF3351D369B9A00DDA006 /* KeychainItemWrapper.m in Sources */,
+				FABFC4B51ECB44DE0008F3D0 /* CustomizeThemeTextField.m in Sources */,
 				A13AF35A1D369CC600DDA006 /* ACSTokenManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
