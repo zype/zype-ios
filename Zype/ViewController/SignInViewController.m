@@ -17,6 +17,7 @@
 #import "UIView+UIView_CustomizeTheme.h"
 #import "UIViewController+AC.h"
 #import "RegisterViewController.h"
+#import "IntroViewController.h"
 
 @interface SignInViewController ()
 
@@ -313,11 +314,12 @@
         if (success == YES) {
             
             if (self != nil) {
-                if (self.presentingViewController.presentingViewController != nil) {
-                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                }
+                [self dismissController];
+//                if (self.presentingViewController.presentingViewController != nil) {
+//                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//                } else {
+//                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//                }
                 //[self dismissViewControllerAnimated:YES completion:^{ }];
             }
             
@@ -329,6 +331,16 @@
         
     }];
     
+}
+
+- (void)dismissController {
+    if ([self.presentingViewController isKindOfClass:[IntroViewController class]]) {
+        [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else if ([self.presentingViewController isKindOfClass:[RegisterViewController class]]) {
+        [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (IBAction)needHelpTapped:(id)sender {

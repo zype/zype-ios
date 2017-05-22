@@ -17,6 +17,8 @@
 #import "UIView+UIView_CustomizeTheme.h"
 #import "CustomizeThemeTextField.h"
 #import "SignInViewController.h"
+#import "TabBarViewController.h"
+#import "MoreViewController.h"
 
 @interface RegisterViewController ()
 
@@ -202,6 +204,21 @@
     return errorString;
 }
 
+#pragma mark - Other methods
+
+- (BOOL)isFromMoreControllerPresented {
+    if ([[UIApplication sharedApplication].keyWindow.rootViewController isKindOfClass:[TabBarViewController class]]) {
+        TabBarViewController *tabController = (TabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        UINavigationController *navController = (UINavigationController *)tabController.selectedViewController;
+        if ([navController.topViewController isKindOfClass:[MoreViewController class]]) {
+            return YES;
+        }
+        
+    }
+    
+    return NO;
+}
+
 #pragma mark - Register
 
 - (void)registerWithUsername:(NSString *)username WithPassword:(NSString *)password {
@@ -212,11 +229,17 @@
                 if (success) {
                     [SVProgressHUD dismiss];
                     if (self != nil) {
-                        if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+                        
+                        if ([self isFromMoreControllerPresented]) {
                             [self dismissControllers];
                         } else {
-                            [UIUtil showSubscriptionViewFromViewController:self];
+                            if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+                                [self dismissControllers];
+                            } else {
+                                [UIUtil showSubscriptionViewFromViewController:self];
+                            }
                         }
+
                     }
                 } else {
                     [SVProgressHUD showErrorWithStatus:error.localizedDescription];

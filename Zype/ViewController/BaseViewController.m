@@ -300,7 +300,7 @@
                 return;
             }
         } else {
-            if ([ACStatusManager isUserSignedIn] == false) {
+            if ([ACStatusManager isUserSignedIn] == false && self.selectedVideo.subscription_required.intValue == 1) {
                 [UIUtil showIntroViewFromViewController:self];
                 return;
             } else {

@@ -14,6 +14,8 @@
 #import "ACPurchaseManager.h"
 #import "ACSAlertViewManager.h"
 #import "UIViewController+AC.h"
+#import "IntroViewController.h"
+#import "SignInViewController.h"
 
 @interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate>
 
@@ -137,8 +139,10 @@
 
 
 - (void)dismisControllers {
-    if (self.presentingViewController.presentingViewController.presentingViewController) {
+    if ([self.presentingViewController.presentingViewController isKindOfClass:[IntroViewController class]]) {
         [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else if ([self.presentingViewController.presentingViewController isKindOfClass:[SignInViewController class]]) {
+        [self.presentingViewController.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
