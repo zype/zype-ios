@@ -16,6 +16,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+UIView_CustomizeTheme.h"
 #import "UIViewController+AC.h"
+#import "RegisterViewController.h"
 
 @interface SignInViewController ()
 
@@ -27,6 +28,8 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerCredentialsConstraintY;
 
 @property (strong, nonatomic) IBOutlet UIView *credentialContainerView;
+@property (strong, nonatomic) IBOutlet UIView *panelView;
+
 @property (strong, nonatomic) IBOutlet UIView *separateLineView;
 @property (strong, nonatomic) IBOutlet UIButton *closeButton;
 @property (strong, nonatomic) IBOutlet UIButton *signupButton;
@@ -105,8 +108,9 @@
     // Create animation.
     
     self.bottomBackgroundPaddingConstraint.constant = kbSize.height;
-    CGFloat height = self.view.frame.size.height / 2;
-    CGFloat y = (height - kbSize.height) / 2 + 50;
+    CGFloat heightArea = self.view.frame.size.height - kbSize.height;
+    CGFloat bottomPadding = 20.0f;
+    CGFloat y = (heightArea / 2) - (self.panelView.frame.size.height / 2) - bottomPadding;
     self.centerCredentialsConstraintY.constant = y;
     
     void (^animations)() = ^() {
@@ -240,6 +244,16 @@
     if (amount < kKeyboardHeight) result = kKeyboardHeight - amount;
     
     return result;
+}
+
+#pragma mark - Sign Up
+
+- (IBAction)signupTapped:(id)sender {
+    if ([self.presentingViewController isKindOfClass:[RegisterViewController class]]) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [UIUtil showSignUpViewFromViewController:self];
+    }
 }
 
 

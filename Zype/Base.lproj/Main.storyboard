@@ -271,7 +271,7 @@
         <!--Register View Controller-->
         <scene sceneID="IAx-gX-uLj">
             <objects>
-                <viewController id="0pm-J7-ws8" customClass="RegisterViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegisterViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0pm-J7-ws8" customClass="RegisterViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zhM-mS-g07"/>
                         <viewControllerLayoutGuide type="bottom" id="0X3-9B-W0N"/>
@@ -413,6 +413,9 @@
                                         <state key="normal" title="Terms of use">
                                             <color key="titleColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="showTermsOfUse:" destination="0pm-J7-ws8" eventType="touchUpInside" id="OhS-6l-9JO"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -440,6 +443,9 @@
                                 <state key="normal" title="Already have an account? Sign in">
                                     <color key="titleColor" red="0.49803921569999998" green="0.49803921569999998" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="showSigninController:" destination="0pm-J7-ws8" eventType="touchUpInside" id="efi-Nv-xXQ"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZZN-tw-rle">
                                 <rect key="frame" x="256" y="536" width="5" height="5"/>
@@ -570,7 +576,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JVc-8f-jL3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4618" y="-2607"/>
+            <point key="canvasLocation" x="4738" y="-2607"/>
         </scene>
         <!--Sign In View Controller-->
         <scene sceneID="S6i-Bt-L0i">
@@ -726,6 +732,9 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <connections>
+                                    <action selector="signupTapped:" destination="wy9-At-V0j" eventType="touchUpInside" id="pL7-KI-gZY"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="s9N-Wg-5dU">
                                 <rect key="frame" x="255" y="537" width="5" height="5"/>
@@ -770,6 +779,7 @@
                         <outlet property="centerCredentialsConstraintY" destination="hJu-hN-5dr" id="yxa-fQ-QZL"/>
                         <outlet property="closeButton" destination="1pg-H3-O7w" id="QXM-Wu-cie"/>
                         <outlet property="credentialContainerView" destination="gAt-nt-bYM" id="wyh-nK-Z9N"/>
+                        <outlet property="panelView" destination="3vj-I8-FXV" id="kvf-SN-Zbc"/>
                         <outlet property="separateLineView" destination="u8f-nL-a4R" id="fW4-h2-bLV"/>
                         <outlet property="signupButton" destination="8ZO-ZL-7hO" id="VwW-HN-E5h"/>
                         <outlet property="textFieldEmail" destination="fP7-37-Jcz" id="xLC-el-7aJ"/>
@@ -778,7 +788,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Te6-zq-Cc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3879" y="-2607"/>
+            <point key="canvasLocation" x="4069" y="-2607"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="89b-Vz-cn2">
