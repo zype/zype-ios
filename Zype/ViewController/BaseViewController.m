@@ -16,7 +16,6 @@
 #import "DownloadStatusCell.h"
 #import "DownloadOperationController.h"
 #import "Playlist.h"
-#import "ACLimitLivestreamManager.h"
 #import "ACPurchaseManager.h"
 
 @interface BaseViewController ()
@@ -277,23 +276,13 @@
 
 - (void)videoItemSelected{
     if (self.selectedVideo != nil) {
-        //check for Live and bypass all other checks
-        if ([self.selectedVideo.on_air intValue] == 1){
-            
-            if ([ACStatusManager isUserSignedIn] == NO && [[ACLimitLivestreamManager sharedInstance] livestreamLimitReached]){
-                NSLog(@"limit reached");
-                [UIUtil showSignInViewFromViewController:self];
-                //[UIUtil showIntroViewFromViewController:self];
-                return;
-            } else {
-                [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
-                return;
-            }
-            
-            
-        }
-        //check for video with subscription
         
+        //check for Live
+        if ([self.selectedVideo.on_air intValue] == 1){
+            //logic for livestream can be inserted here
+        }
+        
+        //check for video with subscription
         if (kNativeSubscriptionEnabled == NO) {
             if ([ACStatusManager isUserSignedIn] == false && self.selectedVideo.subscription_required.intValue == 1) {
                 [UIUtil showSignInViewFromViewController:self];

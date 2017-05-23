@@ -21,7 +21,6 @@
 #import "PlaybackSource.h"
 #import "NSURL+Encoding.h"
 #import "ACStatusManager.h"
-#import "ACLimitLivestreamManager.h"
 #import "Playlist.h"
 
 @implementation RESTServiceController
@@ -1111,64 +1110,6 @@
                     
                     //Svetlit Additional settings
                      [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kSettingKey_DownloadsFeature];
-                }
-                
-            }
-            
-        }
-        
-    }];
-    
-    [dataTask resume];
-    
-}
-
-- (void)syncLiveStreamZObject{
-    
-    // Get zObject Livestream settings
-    NSString *urlAsString = [NSString stringWithFormat:kGetAppLiveStreamSettings, kApiDomain, kAppKey];
-    NSURL *url = [NSURL withString:urlAsString];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
-        if (error) {
-            
-            CLS_LOG(@"Failed: %@", error);
-            
-        } else {
-            
-            CLS_LOG(@"Success: %@", urlAsString);
-            NSError *localError = nil;
-            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
-            if (localError != nil) {
-                CLS_LOG(@"Failed: %@", localError);
-            }
-            else {
-                
-                NSArray *results = [parsedObject valueForKey:kAppKey_Response];
-                if (results.count > 0) {
-                    NSDictionary *limitDic = results[0];
-                
-                    NSNumber *limit = [limitDic valueForKey:@"limit"];
-                    NSString *message = [limitDic dictValueForKey:@"message"];
-                    
-                    if (limit) {
-                        [ACLimitLivestreamManager sharedInstance].limit = limit;
-    
-                        //getting value from persisting NSUserDefaults
-                        if ([[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_LimitLivestreamTracker]) {
-                            NSInteger storedTracker = (NSInteger)[[NSUserDefaults standardUserDefaults] integerForKey:kSettingKey_LimitLivestreamTracker];
-                            [ACLimitLivestreamManager sharedInstance].played = [NSNumber numberWithInteger:storedTracker];
-                        } else {
-                            [ACLimitLivestreamManager sharedInstance].played = @0;
-                        }
-                        [ACLimitLivestreamManager sharedInstance].isSet = YES;
-
-                      
-                    }
-                    if (message)
-                        [ACLimitLivestreamManager sharedInstance].message = [limitDic dictValueForKey:@"message"];
-                    
                 }
                 
             }

@@ -151,7 +151,6 @@
 #define kSettingKey_ConsumerId @"consumerId"
 #define kSettingKey_VideoIdNowPlaying @"videoIdNowPlaying"
 #define kSettingKey_AutoDownloadContent @"autoDownloadContent"
-#define kSettingKey_LimitLivestreamTracker @"limitLivestreamTracker"
 #define kSettingKey_LiveShowNotification @"liveShowNotification"
 #define kSettingKey_DownloadWifiOnly @"downloadWifiOnly"
 #define kSettingKey_AutoRemoveWatchedContent @"autoRemoveWatchedContent"

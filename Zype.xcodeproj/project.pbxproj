@@ -129,7 +129,6 @@
 		A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */; };
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
-		A1F98DFB1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F98DFA1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m */; };
 		FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */; };
 		FA1DFD9D1EA3622800F10870 /* SubsciptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1DFD9C1EA3622800F10870 /* SubsciptionViewController.m */; };
 		FA1DFDA11EA3A76B00F10870 /* SubscriptActiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1DFD9F1EA3A76B00F10870 /* SubscriptActiveCell.m */; };
@@ -322,8 +321,6 @@
 		A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistVideo.m; path = Models/PlaylistVideo.m; sourceTree = "<group>"; };
 		A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = VideoSummaryLight.html; sourceTree = "<group>"; };
 		A1D84BA0F72FFDAA8DEC35F6 /* Pods-Zype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zype.release.xcconfig"; path = "Pods/Target Support Files/Pods-Zype/Pods-Zype.release.xcconfig"; sourceTree = "<group>"; };
-		A1F98DF91D8B2F3D0099FC39 /* ACLimitLivestreamManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACLimitLivestreamManager.h; path = Managers/ACLimitLivestreamManager.h; sourceTree = "<group>"; };
-		A1F98DFA1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACLimitLivestreamManager.m; path = Managers/ACLimitLivestreamManager.m; sourceTree = "<group>"; };
 		B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EpisodeControllerDelegate.h; path = Protocols/EpisodeControllerDelegate.h; sourceTree = "<group>"; };
 		B96FF88A1B17B535007CA447 /* ZypeDBMappingModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ZypeDBMappingModel.xcmappingmodel; sourceTree = "<group>"; };
 		B9C5863E1B1CC60A00647936 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -490,8 +487,6 @@
 				A13AF3511D369CC600DDA006 /* ViewManager.m */,
 				A1149D831D89AB200021646B /* ACAdManager.h */,
 				A1149D841D89AB200021646B /* ACAdManager.m */,
-				A1F98DF91D8B2F3D0099FC39 /* ACLimitLivestreamManager.h */,
-				A1F98DFA1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -959,7 +954,6 @@
 				A13AF3361D369B9A00DDA006 /* NSDictionary+Extensions.m in Sources */,
 				FA1DFD9D1EA3622800F10870 /* SubsciptionViewController.m in Sources */,
 				A13AF30A1D369A2C00DDA006 /* BaseViewController.m in Sources */,
-				A1F98DFB1D8B2F3D0099FC39 /* ACLimitLivestreamManager.m in Sources */,
 				A13AF37A1D369DB600DDA006 /* ACSPredicates.m in Sources */,
 				A13AF3201D369AB300DDA006 /* BaseCollectionController.m in Sources */,
 				A13AF3221D369AB300DDA006 /* EpisodeController.m in Sources */,
