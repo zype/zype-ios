@@ -48,29 +48,6 @@
     [self configureView];
 }
 
-- (void)viewDidLayoutSubviews {
-    //add corners
-//    UIBezierPath *maskPath;
-//    maskPath = [UIBezierPath bezierPathWithRoundedRect:self.textFieldEmail.bounds
-//                                     byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
-//                                           cornerRadii:CGSizeMake(13.0, 13.0)];
-//    
-//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-//    maskLayer.frame = self.textFieldEmail.bounds;
-//    maskLayer.path = maskPath.CGPath;
-//    self.textFieldEmail.layer.mask = maskLayer;
-//    
-//    UIBezierPath *maskPathTwo = [UIBezierPath bezierPathWithRoundedRect:self.textFieldPassword.bounds
-//                                                      byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
-//                                                            cornerRadii:CGSizeMake(13.0, 13.0)];
-//    
-//    CAShapeLayer *maskLayerTwo = [[CAShapeLayer alloc] init];
-//    maskLayerTwo.frame = self.textFieldPassword.bounds;
-//    maskLayerTwo.path = maskPathTwo.CGPath;
-//    self.textFieldPassword.layer.mask = maskLayerTwo;
-    
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     self.amountKeyboardSlide = [self keyboardPosition];
@@ -152,6 +129,8 @@
     self.separateLineView.backgroundColor = kUniversalGray;
     [self.textFieldEmail setAttributePlaceholder:@"Email"];
     [self.textFieldPassword setAttributePlaceholder:@"Password"];
+    [self.signupButton setHidden:!kNativeSubscriptionEnabled];
+    [self.arrowImageView setHidden:!kNativeSubscriptionEnabled];
     
     self.textFieldEmail.delegate = self;
     self.textFieldPassword.delegate = self;
