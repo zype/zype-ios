@@ -18,6 +18,7 @@
 #import "VideosViewController.h"
 #import "IntroViewController.h"
 #import "SubsciptionViewController.h"
+#import "RegisterViewController.h"
 
 @implementation UIUtil
 
@@ -142,6 +143,12 @@
     [viewController presentViewController:signInViewController animated:YES completion:nil];
 }
 
++ (void)showSignUpViewFromViewController:(UIViewController *)viewController
+{
+    RegisterViewController *regViewController = (RegisterViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"RegisterViewController"];
+    [viewController presentViewController:regViewController animated:YES completion:nil];
+}
+
 + (void)showIntroViewFromViewController:(UIViewController *)viewController
 {
     IntroViewController *introViewController = (IntroViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"IntroViewController"];
@@ -152,6 +159,22 @@
 {
     SubsciptionViewController *subscriptionViewController = (SubsciptionViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"SubscriptionViewController"];
     [viewController presentViewController:subscriptionViewController animated:YES completion:nil];
+}
+
++ (void)showTermOfServicesFromViewController:(UIViewController *)viewController
+{
+    NSString *htmlString = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_Terms];
+    
+    UIViewController *vController = [UIViewController new];
+    vController.view.frame = viewController.view.bounds;
+    
+    UIWebView *webview = [UIWebView new];
+    webview.frame = vController.view.bounds;
+    
+    [vController.view addSubview:webview];
+    
+    [webview loadHTMLString:htmlString baseURL:nil];
+    [viewController presentViewController:vController animated:YES completion:nil];
 }
 
 + (NSString *)subtitleOfVideo:(Video *)video

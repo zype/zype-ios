@@ -21,8 +21,10 @@
 + (UIButton *)buttonNowPlayingInViewController:(UIViewController *)viewController;
 + (void)showNowPlayingFromViewController:(UIViewController *)viewController;
 + (void)showSignInViewFromViewController:(UIViewController *)viewController;
++ (void)showSignUpViewFromViewController:(UIViewController *)viewController;
 + (void)showIntroViewFromViewController:(UIViewController *)viewController;
 + (void)showSubscriptionViewFromViewController:(UIViewController *)viewController;
++ (void)showTermOfServicesFromViewController:(UIViewController *)viewController;
 + (void)loadVideosFromPlaylist:(NSString *)playlistId fromViewController:(UIViewController *)viewController;
 + (void)loadPlaylist:(Playlist *)playlist fromViewController:(UIViewController *)viewController;
 + (NSString *)subtitleOfVideo:(Video *)video;
