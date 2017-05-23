@@ -136,6 +136,8 @@
 		FA1DFDA21EA3A76B00F10870 /* SubscriptActiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */; };
 		FA4CD6E41EA9FAAF0042F3B8 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */; };
 		FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */; };
+		FAA68AB71ECF703500F593B4 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAA68AB61ECF703500F593B4 /* Roboto-Medium.ttf */; };
+		FAA68AB91ECF704000F593B4 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAA68AB81ECF704000F593B4 /* Roboto-Regular.ttf */; };
 		FABFC4B21ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */; };
 		FABFC4B51ECB44DE0008F3D0 /* CustomizeThemeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FABFC4B41ECB44DE0008F3D0 /* CustomizeThemeTextField.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
@@ -357,6 +359,8 @@
 		FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPurchaseManager.m; sourceTree = "<group>"; };
 		FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
 		FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
+		FAA68AB61ECF703500F593B4 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		FAA68AB81ECF704000F593B4 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		FABFC4B01ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UIView_CustomizeTheme.h"; sourceTree = "<group>"; };
 		FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UIView_CustomizeTheme.m"; sourceTree = "<group>"; };
 		FABFC4B31ECB44DE0008F3D0 /* CustomizeThemeTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomizeThemeTextField.h; sourceTree = "<group>"; };
@@ -733,6 +737,8 @@
 				F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */,
 				F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */,
 				F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */,
+				FAA68AB61ECF703500F593B4 /* Roboto-Medium.ttf */,
+				FAA68AB81ECF704000F593B4 /* Roboto-Regular.ttf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
@@ -832,6 +838,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAA68AB71ECF703500F593B4 /* Roboto-Medium.ttf in Resources */,
 				A13AF3971D36D3B700DDA006 /* Oswald-Demi-BoldItalic.ttf in Resources */,
 				A13AF2E11D36995000DDA006 /* ACSEpisodeCollectionViewCell.xib in Resources */,
 				A13AF3991D36D3B700DDA006 /* Oswald-Extra-LightItalic.ttf in Resources */,
@@ -848,6 +855,7 @@
 				A13AF3A21D36D3B700DDA006 /* Oswald-RegularItalic.ttf in Resources */,
 				A13AF39C1D36D3B700DDA006 /* Oswald-HeavyItalic.ttf in Resources */,
 				FA1DFDA21EA3A76B00F10870 /* SubscriptActiveCell.xib in Resources */,
+				FAA68AB91ECF704000F593B4 /* Roboto-Regular.ttf in Resources */,
 				A13AF39E1D36D3B700DDA006 /* Oswald-LightItalic.ttf in Resources */,
 				A13AF3831D36AC7700DDA006 /* PlaylistTableViewCell.xib in Resources */,
 				780AC6F31BDFD284007F1119 /* OpenSans-Regular.ttf in Resources */,

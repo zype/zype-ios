@@ -58,7 +58,8 @@
 
 - (void)setAttributePlaceholder:(NSString *)string {
     UIColor *color = (kAppColorLight) ? kLightLineColor : kDarkLineColor;
-    NSAttributedString *placeholder = [[NSAttributedString alloc] initWithString:string attributes:@{NSForegroundColorAttributeName: color}];
+    NSAttributedString *placeholder = [[NSAttributedString alloc] initWithString:string attributes:@{NSForegroundColorAttributeName: color,
+                                                                                                     NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:16.0f]}];
     self.attributedPlaceholder = placeholder;
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "SubscriptActiveCell.h"
+#import "UIView+UIView_CustomizeTheme.h"
 
 @implementation SubscriptActiveCell
 
@@ -16,16 +17,10 @@
     [super awakeFromNib];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.backgroundView.layer.cornerRadius = 5;
-    self.backgroundView.layer.borderColor = [UIColor colorWithRed:0.54 green:0.86 blue:0.96 alpha:1.0].CGColor;
-    self.backgroundView.layer.borderWidth = 1;
-    
-    self.continueButton.layer.cornerRadius = 5;
-    
-    self.radioView.layer.cornerRadius = self.radioView.frame.size.height / 2;
-    self.radioButtonPoint.layer.cornerRadius = self.radioButtonPoint.frame.size.height / 2;
-    self.radioView.layer.borderColor = [UIColor colorWithRed:0.54 green:0.86 blue:0.96 alpha:1.0].CGColor;
-    self.radioView.layer.borderWidth = 1;
+    [self.continueButton tintCustomizeTheme];
+    [self.continueButton round:kViewCornerRounded];
+    UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
+    [self.titleLabel setTextColor:titleColor];
     // Initialization code
 }
 
@@ -35,14 +30,14 @@
     // Configure the view for the selected state
 }
 
-- (void)setSelectedCell:(BOOL)isSelected {
-    self.backgroundView.hidden = !isSelected;
-    self.radioButtonPoint.hidden = !isSelected;
-}
+//- (void)setSelectedCell:(BOOL)isSelected {
+//    self.backgroundView.hidden = !isSelected;
+//    self.radioButtonPoint.hidden = !isSelected;
+//}
 
 - (void)configureCell:(SKPayment *)payment {
     self.payment = payment;
-    self.descriptionLabel.text = payment.productIdentifier;
+    self.descriptionLabel.text = @"Description text explaining what opting into this subsciption plan actually. entails. If we have a description here at all, client should be able to edit this.";
     [self.continueButton setTitle:[NSString stringWithFormat:@"Continue with %@", self.titleLabel.text] forState:UIControlStateNormal];
 }
 

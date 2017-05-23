@@ -16,6 +16,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+UIView_CustomizeTheme.h"
 #import "UIViewController+AC.h"
+#import "RegisterViewController.h"
+#import "IntroViewController.h"
 
 @interface SignInViewController ()
 
@@ -27,6 +29,8 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerCredentialsConstraintY;
 
 @property (strong, nonatomic) IBOutlet UIView *credentialContainerView;
+@property (strong, nonatomic) IBOutlet UIView *panelView;
+
 @property (strong, nonatomic) IBOutlet UIView *separateLineView;
 @property (strong, nonatomic) IBOutlet UIButton *closeButton;
 @property (strong, nonatomic) IBOutlet UIButton *signupButton;
@@ -42,29 +46,6 @@
     // Do any additional setup after loading the view.
     [self registerForKeyboardNotifications];
     [self configureView];
-}
-
-- (void)viewDidLayoutSubviews {
-    //add corners
-//    UIBezierPath *maskPath;
-//    maskPath = [UIBezierPath bezierPathWithRoundedRect:self.textFieldEmail.bounds
-//                                     byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
-//                                           cornerRadii:CGSizeMake(13.0, 13.0)];
-//    
-//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-//    maskLayer.frame = self.textFieldEmail.bounds;
-//    maskLayer.path = maskPath.CGPath;
-//    self.textFieldEmail.layer.mask = maskLayer;
-//    
-//    UIBezierPath *maskPathTwo = [UIBezierPath bezierPathWithRoundedRect:self.textFieldPassword.bounds
-//                                                      byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
-//                                                            cornerRadii:CGSizeMake(13.0, 13.0)];
-//    
-//    CAShapeLayer *maskLayerTwo = [[CAShapeLayer alloc] init];
-//    maskLayerTwo.frame = self.textFieldPassword.bounds;
-//    maskLayerTwo.path = maskPathTwo.CGPath;
-//    self.textFieldPassword.layer.mask = maskLayerTwo;
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -105,8 +86,9 @@
     // Create animation.
     
     self.bottomBackgroundPaddingConstraint.constant = kbSize.height;
-    CGFloat height = self.view.frame.size.height / 2;
-    CGFloat y = (height - kbSize.height) / 2 + 50;
+    CGFloat heightArea = self.view.frame.size.height - kbSize.height;
+    CGFloat bottomPadding = 20.0f;
+    CGFloat y = (heightArea / 2) - (self.panelView.frame.size.height / 2) - bottomPadding;
     self.centerCredentialsConstraintY.constant = y;
     
     void (^animations)() = ^() {
@@ -144,12 +126,12 @@
     [self.buttonSignIn round:kViewCornerRounded];
     [self.credentialContainerView round:kViewCornerRounded];
     [self.credentialContainerView borderCustomizeTheme];
-    [self.separateLineView backgroudCustomizeTheme];
+    self.separateLineView.backgroundColor = kUniversalGray;
     [self.textFieldEmail setAttributePlaceholder:@"Email"];
     [self.textFieldPassword setAttributePlaceholder:@"Password"];
+    [self.signupButton setHidden:!kNativeSubscriptionEnabled];
+    [self.arrowImageView setHidden:!kNativeSubscriptionEnabled];
     
-    NSString *deleteButtonString = (kAppColorLight) ? @"delete-black" : @"delete-white";
-    [self.closeButton setImage:[UIImage imageNamed:deleteButtonString] forState:UIControlStateNormal];
     self.textFieldEmail.delegate = self;
     self.textFieldPassword.delegate = self;
     self.isEditing = NO;
@@ -157,8 +139,9 @@
     
     UIColor * currentColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
     NSDictionary * attributes = @{NSForegroundColorAttributeName: currentColor,
-                                  NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
-    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"Don't have an account? " attributes:@{NSForegroundColorAttributeName: kTextPlaceholderColor}];
+                                  NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"Don't have an account? " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
+                                                                                                                                       NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
     NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Sign up" attributes:attributes];
     [attrstring appendAttributedString:signupText];
     [self.signupButton setAttributedTitle:attrstring forState:UIControlStateNormal];
@@ -243,6 +226,16 @@
     return result;
 }
 
+#pragma mark - Sign Up
+
+- (IBAction)signupTapped:(id)sender {
+    if ([self.presentingViewController isKindOfClass:[RegisterViewController class]]) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [UIUtil showSignUpViewFromViewController:self];
+    }
+}
+
 
 #pragma mark - Sign In
 
@@ -300,11 +293,12 @@
         if (success == YES) {
             
             if (self != nil) {
-                if (self.presentingViewController.presentingViewController != nil) {
-                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                }
+                [self dismissController];
+//                if (self.presentingViewController.presentingViewController != nil) {
+//                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//                } else {
+//                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//                }
                 //[self dismissViewControllerAnimated:YES completion:^{ }];
             }
             
@@ -316,6 +310,16 @@
         
     }];
     
+}
+
+- (void)dismissController {
+    if ([self.presentingViewController isKindOfClass:[IntroViewController class]]) {
+        [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else if ([self.presentingViewController isKindOfClass:[RegisterViewController class]]) {
+        [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (IBAction)needHelpTapped:(id)sender {
