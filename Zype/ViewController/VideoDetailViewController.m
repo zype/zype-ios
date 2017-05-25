@@ -366,7 +366,7 @@ static NSString *GuestCellIdentifier = @"GuestCell";
                 CLS_LOG(@"Failed: %@", localError);
                 
             }else {
-                PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                self.videoPlaybackSource = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                 CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
                 
@@ -386,8 +386,8 @@ static NSString *GuestCellIdentifier = @"GuestCell";
                     //check if view is visible to avoid playing on background
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
-                        if (source != nil && source.urlString != nil) {
-                            [self playVideoFromSource:source];
+                        if (self.videoPlaybackSource != nil && self.videoPlaybackSource.urlString != nil) {
+                            [self playVideoFromSource:self.videoPlaybackSource];
                         }else{
                             [self playStreamingAudio];
                         }
@@ -1238,7 +1238,7 @@ static NSString *GuestCellIdentifier = @"GuestCell";
                     if (downloadInfo.isDownloading) {
                         
                         cell.textLabel.text = @"Downloading...";
-                        cell.textLabel.textColor = [UIColor whiteColor];
+                        //cell.textLabel.textColor = [UIColor whiteColor];
                         [self.progressView setHidden:NO];
                         self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                                                               target:self
@@ -1249,7 +1249,7 @@ static NSString *GuestCellIdentifier = @"GuestCell";
                     }else {
                         
                         cell.textLabel.text = @"Download";
-                        cell.textLabel.textColor = [UIColor whiteColor];
+                        //cell.textLabel.textColor = [UIColor whiteColor];
                         
                     }
                     

@@ -39,7 +39,7 @@
 
 #define kViewCornerRounded 2.0f
 
-#define kDownloadsEnabled NO
+#define kDownloadsEnabled YES
 #define kLimitLivestremEnabled NO
 #define kNativeSubscriptionEnabled NO
 
@@ -236,7 +236,7 @@
 
 #define kGetVideosWithFilter @"https://%@/videos/?app_key=%@%@&page=%@"
 #define kGetVideosFromPlaylist @"https://%@/playlists/%@/videos?app_key=%@&page=%@"
-#define kGetPlayer @"https://%@/embed/%@?access_token=%@"
+#define kGetPlayer @"https://%@/embed/%@?access_token=%@&download=true"
 #define kGetPlayerForGuest @"https://%@/embed/%@?app_key=%@"
 #define kGetPlayerForHighlight @"https://%@/embed/%@?access_token=%@"
 #define kGetDownloadVideoUrl @"https://%@/embed/%@?download=true&access_token=%@"

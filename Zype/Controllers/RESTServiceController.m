@@ -565,7 +565,7 @@
         preferredSource = playbackSource;
         
         //go ahead and return if we find an HLS source
-        if ([preferredSource.fileType isEqualToString:@"m3u8"]) {
+        if ([preferredSource.fileType isEqualToString:@"m3u8"] || [preferredSource.fileType isEqualToString:@"mp4"]) {
             
             return preferredSource;
             
