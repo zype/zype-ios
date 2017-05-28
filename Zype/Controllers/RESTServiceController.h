@@ -34,6 +34,8 @@
 - (void)syncPlaylistsWithParentId:(NSString *)parentId;
 
 - (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
+- (PlaybackSource *)audioStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
+- (NSArray *)streamPlaybackSourcesFromRootDictionary:(NSDictionary *)dictionary;
 
 - (NSString *)videoPlayerUrlFromJSON:(NSDictionary *)parsedObject;
 - (NSString *)videoPlayerNameFromJSON:(NSDictionary *)parsedObject;

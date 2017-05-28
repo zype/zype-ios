@@ -91,6 +91,6 @@ NS_ENUM(NSInteger, ACDownloadsActionSheetButton){
 - (void)showLiveStreamActionSheet;
 - (void)showPlayAsActionSheet;
 - (void)showShareActionSheetWithVideo:(Video *)video;
-- (void)showDownloadActionSheetWithVideo:(Video *)video;
+- (void)showDownloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources;
 
 @end

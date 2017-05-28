@@ -7,6 +7,7 @@
 //
 
 #import "OptionTableViewCell.h"
+#import "DownloadOperationController.h"
 
 @interface OptionTableViewCell ()
 
@@ -66,6 +67,15 @@
     self.optionDataItem = dataSource;
     self.titleLabel.text = dataSource.title;
     self.accessoryView = dataSource.accessoryView;
+}
+
+- (void)setProgress:(DownloadInfo *)info {
+    [self.progressView setHidden:!info.isDownloading];
+    if (info.isDownloading) {
+        self.titleLabel.text = @"Downloading...";
+    } else {
+        self.titleLabel.text = @"Download";
+    }
 
 }
 

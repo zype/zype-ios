@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TableSectionDataSource.h"
+#import "DownloadInfo.h"
 
 @protocol OptionTableViewCellDelegate;
 @interface OptionTableViewCell : UITableViewCell
@@ -17,6 +18,7 @@
 @property (nonatomic, weak) id <OptionTableViewCellDelegate> delegate;
 
 - (void)configureCell:(TableSectionDataSource *)dataSource;
+- (void)setProgress:(DownloadInfo *)info;
 
 @end
 

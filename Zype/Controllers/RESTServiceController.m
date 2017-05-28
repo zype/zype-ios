@@ -550,13 +550,37 @@
 
 #pragma mark - Playback Source
 
-- (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary{
+- (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary {
     
     NSArray *results = [self filesArrayFromParsedDictionary:dictionary];
     PlaybackSource *playbackSource = [self videoStreamPlaybackSourceFromFilesArray:results];
     
     return playbackSource;
     
+}
+
+- (PlaybackSource *)audioStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary {
+    
+    NSArray *results = [self filesArrayFromParsedDictionary:dictionary];
+    PlaybackSource *playbackSource = [self audioStreamPlaybackSourceFromFilesArray:results];
+    
+    return playbackSource;
+    
+}
+
+- (NSArray *)streamPlaybackSourcesFromRootDictionary:(NSDictionary *)dictionary {
+    NSArray *results = [self filesArrayFromParsedDictionary:dictionary];
+    NSArray *sources = [self playbackSourcesFromFilesArray:results];
+    NSMutableArray *needSources = [[NSMutableArray alloc] init];
+    
+    for (PlaybackSource *playbackSource in sources) {
+        //go ahead and return if we find an HLS source
+        if ([playbackSource.fileType isEqualToString:@"mp4"] || [playbackSource.fileType isEqualToString:@"m4a"]) {
+            [needSources addObject:playbackSource];
+        }
+    }
+    
+    return needSources;
 }
 
 - (PlaybackSource *)videoStreamPlaybackSourceFromFilesArray:(NSArray *)files{
@@ -580,6 +604,20 @@
     
     return preferredSource;
     
+}
+
+- (PlaybackSource *)audioStreamPlaybackSourceFromFilesArray:(NSArray *)files {
+    NSArray *sources = [self playbackSourcesFromFilesArray:files];
+    PlaybackSource *preferredSource;
+    
+    for (PlaybackSource *playbackSource in sources) {
+        preferredSource = playbackSource;
+        if ([preferredSource.fileType isEqualToString:@"m4a"]) {
+            return preferredSource;
+        }
+    }
+    
+    return preferredSource;
 }
 
 - (NSArray *)playbackSourcesFromFilesArray:(NSArray *)files{

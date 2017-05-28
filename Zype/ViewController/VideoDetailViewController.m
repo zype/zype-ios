@@ -51,7 +51,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @interface VideoDetailViewController ()<ACActionSheetManagerDelegate, TLIndexPathControllerDelegate, OptionTableViewCellDelegate>
 
 @property (strong, nonatomic) TLIndexPathController *indexPathController;
-@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
+//@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
+//@property (strong, nonatomic) PlaybackSource *audioPlaybackSource;
+@property (strong, nonatomic) NSArray *playbackSources;
+
 @property (strong, nonatomic) UIAlertView *alertViewStreaming;
 @property (strong, nonatomic) UIAlertView *alertViewDownload;
 @property (strong, nonatomic) UILabel *labelPlayAs;
@@ -98,9 +101,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self trackScreenName:kAnalyticsScreenNameVideoDetail];
     
     [self setupAdsLoader];
-    
     [self setupView];
-    
     [self configureView];
     
     self.actionSheetManager = [ACActionSheetManager new];
@@ -132,24 +133,20 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         playAs.accessoryView = self.labelPlayAs;
         [self.optionsDataSource addObject:playAs];
         
-        if (self.videoPlaybackSource) {
-            TableSectionDataSource *downloadItem = [[TableSectionDataSource alloc] init];
-            DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
-            downloadItem.type = Download;
-            if (downloadInfo.isDownloading) {
-                downloadItem.title = @"Downloading...";
-                [self.progressView setHidden:NO];
-//                self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f
-//                                                                      target:self
-//                                                                    selector:@selector(showDownloadProgress:)
-//                                                                    userInfo:nil
-//                                                                     repeats:YES];
-                
-            } else {
-                downloadItem.title = @"Download";
+        if (self.playbackSources != nil) {
+            if (self.playbackSources.count > 0) {
+                TableSectionDataSource *downloadItem = [[TableSectionDataSource alloc] init];
+                DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
+                downloadItem.type = Download;
+                if (downloadInfo.isDownloading) {
+                    downloadItem.title = @"Downloading...";
+                    [self.progressView setHidden:NO];
+                } else {
+                    downloadItem.title = @"Download";
+                }
+                downloadItem.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconDownloadsW"]];
+                [self.optionsDataSource addObject:downloadItem];
             }
-            downloadItem.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconDownloadsW"]];
-            [self.optionsDataSource addObject:downloadItem];
         }
     }
     
@@ -369,6 +366,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)refreshPlayer{
     
     [self showActivityIndicator];
+    [self checkDownloadVideo];
+
     
     if (self.isAudio) {
         
@@ -397,7 +396,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self setupPlayer:url];
         } else {
             [self playStreamingVideo];
-            [self checkDownloadVideo];
         }
         
     }
@@ -417,7 +415,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             if (localError != nil) {
                 CLS_LOG(@"Failed: %@", localError);
             } else {
-                self.videoPlaybackSource = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                self.playbackSources = [[RESTServiceController sharedInstance] streamPlaybackSourcesFromRootDictionary:parsedObject];
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                 CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
             }
@@ -853,9 +851,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     // Set download started
     if (self.isDownloadStarted) {
         
-        UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-        cell.textLabel.text = @"Downloading...";
-        [self.progressView setHidden:NO];
+//        UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//        cell.textLabel.text = @"Downloading...";
+//        [self.progressView setHidden:NO];
+        [self.tableViewOptions reloadData];
         
     }
     
@@ -874,11 +873,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [self.timerDownload invalidate];
     self.timerDownload = nil;
-    
-    UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    cell.textLabel.text = @"Download";
-    cell.textLabel.textColor = [UIColor whiteColor];
-    [self.progressView setHidden:YES];
+    [self.tableViewOptions reloadData];
+//    UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//    cell.textLabel.text = @"Download";
+//    cell.textLabel.textColor = [UIColor whiteColor];
+//    [self.progressView setHidden:YES];
     
 }
 
@@ -1254,6 +1253,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         OptionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kOptionTableViewCell];
         TableSectionDataSource *optionItem = self.optionsDataSource[indexPath.row];
         [cell configureCell:optionItem];
+        if (optionItem.type == Download) {
+            self.progressView = cell.progressView;
+            DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
+            [cell setProgress:downloadInfo];
+        }
         [cell setDelegate:self];
         
         return cell;
@@ -1394,6 +1398,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView == self.tableViewTimeline) {
         
         // Seek video
@@ -1402,85 +1407,18 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.player play];
         
         // Update timeline cell
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         self.selectedTimeline = (int)indexPath.row;
         [self.tableViewTimeline reloadData];
         TimelineTableViewCell *cell = (TimelineTableViewCell *)[self.tableViewTimeline cellForRowAtIndexPath:indexPath];
         cell.labelTime.textColor = kYellowColor;
         cell.labelDescription.textColor = kYellowColor;
         cell.imagePlayIndicator.hidden = NO;
-        
-    } else if (tableView == self.tableViewOptions) {
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//        if (kDownloadsEnabled) {
-//            switch (indexPath.row) {
-//                    
-//                case 0: {
-//                    // Show play actions view
-//                    [self.actionSheetManager showPlayAsActionSheet];
-//                }
-//                    break;
-//                    
-//                case 1: {
-//                    
-//                    // Show download actions view
-//                    [self.actionSheetManager showDownloadActionSheetWithVideo:self.video];
-//                }
-//                    break;
-//                    
-//                case 3: {
-//                    // Favorite or unfavorite
-//                    [self changeFavorite:[self.tableViewOptions cellForRowAtIndexPath:indexPath]];
-//                    
-//                }
-//                    break;
-//                    
-//                case 4: {
-//                    // Show share actions view
-//                    [self.actionSheetManager showShareActionSheetWithVideo:self.video];
-//                    
-//                }
-//                    break;
-//                    
-//                default:
-//                    break;
-//                    
-//            }
-//            
-//        } else {
-//            switch (indexPath.row) {
-//                case 0: {
-//                    
-//                    // Favorite or unfavorite
-//                    [self changeFavorite:[self.tableViewOptions cellForRowAtIndexPath:indexPath]];
-//                    
-//                }
-//                    break;
-//                    
-//                case 1: {
-//                    
-//                    // Show share actions view
-//                    [self.actionSheetManager showShareActionSheetWithVideo:self.video];
-//                    
-//                }
-//                    break;
-//                    
-//                default:
-//                    break;
-//                    
-//            }
-//            
-//        }
-        
     }
     
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     [cell setBackgroundColor:[UIColor clearColor]];
-    
 }
 
 
@@ -1506,7 +1444,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)onDidDownloadTapped:(OptionTableViewCell *)cell {
-    [self.actionSheetManager showDownloadActionSheetWithVideo:self.video];
+    [self.actionSheetManager showDownloadActionSheetWithVideo:self.video withPlaybackSources:self.playbackSources];
 }
 
 - (void)onDidFavoriteTapped:(OptionTableViewCell *)cell {
@@ -1539,7 +1477,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
-- (void)acActionSheetManagerDelegateDownloadTapped{
+- (void)acActionSheetManagerDelegateDownloadTapped {
     
     self.isDownloadStarted = NO;
     self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(showDownloadProgress:) userInfo:nil repeats:YES];

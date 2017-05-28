@@ -13,6 +13,7 @@
 #import "ACShareManager.h"
 #import "DownloadOperationController.h"
 #import "Reachability.h"
+#import "PlaybackSource.h"
 
 @interface ACActionSheetManager ()<MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -96,10 +97,10 @@
     
 }
 
-- (void)showDownloadActionSheetWithVideo:(Video *)video{
+- (void)showDownloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources {
     
     self.actionVideo = video;
-    UIActionSheet *actionSheet = [ACActionSheetManager downloadActionSheetWithVideo:video];
+    UIActionSheet *actionSheet = [ACActionSheetManager downloadActionSheetWithVideo:video withPlaybackSources:sources];
     actionSheet.delegate = self;
     [self delegateShowActionSheet:actionSheet];
     
@@ -250,7 +251,7 @@
 #pragma mark - Downloads
 
 
-- (void)downloadVideoTapped{
+- (void)downloadVideoTapped {
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_DownloadWifiOnly] &&
         [[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] != ReachableViaWiFi){
@@ -266,7 +267,7 @@
     
 }
 
-- (void)downloadAudioTapped{
+- (void)downloadAudioTapped {
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_DownloadWifiOnly] &&
         [[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] != ReachableViaWiFi){
@@ -413,7 +414,7 @@
     
 }
 
-+ (UIActionSheet *)downloadActionSheetWithVideo:(Video *)video{
++ (UIActionSheet *)downloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources {
     
     DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
     
@@ -444,10 +445,22 @@
     if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
         
         if (downloadInfo.isDownloading == NO) {
-            if (video.downloadAudioLocalPath == nil) {
+            
+            PlaybackSource *videoSource;
+            PlaybackSource *audioSource;
+            for (PlaybackSource *source in sources) {
+                if ([source.fileType isEqualToString:@"mp4"]) {
+                    videoSource = source;
+                }
+                if ([source.fileType isEqualToString:@"m4a"]) {
+                    audioSource = source;
+                }
+            }
+            
+            if (video.downloadAudioLocalPath == nil && audioSource != nil) {
                 [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadAudio]];
             }
-            if (video.downloadVideoLocalPath == nil) {
+            if (video.downloadVideoLocalPath == nil && videoSource != nil) {
                 [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadVideo]];
                 
             }
