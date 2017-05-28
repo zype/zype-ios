@@ -476,7 +476,7 @@
 
 #pragma mark - Player App
 
-- (void)getVideoPlayerWithVideo:(Video *)video WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
+- (void)getVideoPlayerWithVideo:(Video *)video downloadInfo:(BOOL)isDownloaded withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
 {
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error){
@@ -485,7 +485,7 @@
         
         if ([UIUtil isYes:video.isHighlight]){
             urlAsString = [NSString stringWithFormat:kGetPlayerForHighlight, kApiPlayerDomain, video.vId, kAppKey];
-        }else{
+        } else {
             if ([ACStatusManager isUserSignedIn] == YES) {
                 urlAsString = [NSString stringWithFormat:kGetPlayer, kApiPlayerDomain, video.vId, token];
             } else {
@@ -493,6 +493,11 @@
             }
             
         }
+        
+        if (isDownloaded) {
+            urlAsString = [NSString stringWithFormat:@"%@&download=true", urlAsString];
+        }
+
         NSLog(@"urlAsString: %@", urlAsString);
         NSURL *url = [NSURL withString:urlAsString];
         
