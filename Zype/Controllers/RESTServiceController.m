@@ -442,7 +442,13 @@
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error) {
         
-        NSString *urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrl, kApiPlayerDomain, vId, token];
+        NSString *urlAsString;
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrl, kApiPlayerDomain, vId, token];
+        } else {
+            urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrlForGuest, kApiPlayerDomain, vId, kAppKey];
+        }
+        
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -461,7 +467,12 @@
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error) {
         
-        NSString *urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, vId, token];
+        NSString *urlAsString;
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, vId, token];
+        } else {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, vId, kAppKey];
+        }
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];

@@ -240,7 +240,9 @@
 #define kGetPlayerForGuest @"https://%@/embed/%@?app_key=%@"
 #define kGetPlayerForHighlight @"https://%@/embed/%@?access_token=%@"
 #define kGetDownloadVideoUrl @"https://%@/embed/%@?download=true&access_token=%@"
+#define kGetDownloadVideoUrlForGuest @"https://%@/embed/%@?download=true&app_key=%@"
 #define kGetDownloadAudioUrl @"https://%@/embed/%@.json?access_token=%@&download=true"
+#define kGetDownloadAudioUrlForGuest @"https://%@/embed/%@.json?app_key=%@&download=true"
 #define kGetPlayerAudioUrl @"https://%@/embed/%@.json?access_token=%@&audio=true"
 //#define kGetDownloadAudioUrl @"https://%@/embed/%@?audio=true&access_token=%@"
 //

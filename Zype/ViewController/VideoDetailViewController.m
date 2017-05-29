@@ -859,8 +859,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
     // Set download progress
-    if (totalBytesWritten != 0 && totalBytesExpectedToWrite != 0)
+    if (totalBytesWritten != 0 && totalBytesExpectedToWrite != 0) {
         self.progressView.progress = totalBytesWritten / totalBytesExpectedToWrite;
+    } else {
+        self.progressView.progress = 0;
+    }
     
     // Set download finished
     if (self.isDownloadStarted && !downloadInfo.isDownloading) {
