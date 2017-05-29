@@ -950,19 +950,20 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)changeFavorite:(OptionTableViewCell *)cell{
     
+    TableSectionDataSource *favoriteSource = cell.optionDataItem;
+    
     if (![UIUtil isYes:self.video.isFavorite]) {
         // Favorite
         [[RESTServiceController sharedInstance] favoriteVideo:self.video];
-        cell.titleLabel.text = @"Unfavorite";
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-        
+        favoriteSource.title = @"Unfavorite";
+        favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
     } else {
         // Unfavorite
         [[RESTServiceController sharedInstance] unfavoriteVideo:self.video];
-        cell.titleLabel.text = @"Favorite";
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
-        
+        favoriteSource.title = @"Favorite";
+        favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
     }
+    [self.tableViewOptions reloadData];
 }
 
 

@@ -12,7 +12,6 @@
 @interface OptionTableViewCell ()
 
 @property (nonatomic, strong) UIView *selectedBackgroundView;
-@property (nonatomic, strong) TableSectionDataSource *optionDataItem;
 
 @end
 

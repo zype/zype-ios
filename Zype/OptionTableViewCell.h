@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressView;
+@property (nonatomic, strong) TableSectionDataSource *optionDataItem;
 @property (nonatomic, weak) id <OptionTableViewCellDelegate> delegate;
 
 - (void)configureCell:(TableSectionDataSource *)dataSource;
