@@ -40,16 +40,16 @@
     if ([source.fileType stringContains:@"m3u8"]){
         
         [AppDelegate appDelegate].restrictRotation = NO;
-        
         self.isWebVideo = NO;
-        
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
         //  [self removeWebView];
         
     } else if ([source.fileType stringContains:@"mp4"]) {
+        
         [AppDelegate appDelegate].restrictRotation = NO;
         self.isWebVideo = NO;
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
+        
     } else if ([source.fileType stringContains:@"hls"]) {
         [AppDelegate appDelegate].restrictRotation = NO;
         
@@ -114,7 +114,7 @@
 
 #pragma mark - Removing Players
 
-- (void)removePlayer{
+- (void)removePlayer {
     
     if (self.player != nil) {
         

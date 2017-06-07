@@ -126,7 +126,7 @@
         
         if (video.downloadVideoLocalPath){
             [self.imageCloud setImage:[UIImage imageNamed:@"IconVideoW"]];
-        }else if (video.downloadAudioLocalPath){
+        } else if (video.downloadAudioLocalPath){
             [self.imageCloud setImage:[UIImage imageNamed:@"IconAudioW"]];
         }else{
             [self.imageCloud setImage:[UIImage imageNamed:@"IconCloud"]];

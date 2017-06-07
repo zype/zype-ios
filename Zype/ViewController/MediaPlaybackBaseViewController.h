@@ -19,7 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (nonatomic) AVPlayer *avPlayer;
+@property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic) MPMoviePlayerController *player;
 @property (nonatomic) WKWebView *wkWebViewPlayer;
 @property (nonatomic) UIWebView *webViewPlayer;
