@@ -14,6 +14,8 @@
 
 @property (nonatomic, strong) NSSet *subscriptions;
 
+- (void)configure;
+
 - (BOOL)isActiveSubscription;
 - (void)requestSubscriptions:(void(^)(NSArray *))success failure:(void(^)(NSString *))failure;
 - (void)buySubscription:(NSString *)productID success:(void(^)())success failure:(void(^)(NSString *))failure;
