@@ -14,16 +14,28 @@
 #import "UIUtil.h"
 #import "NSString+AC.h"
 #import "ACPurchaseManager.h"
+#import "UIView+UIView_CustomizeTheme.h"
+#import "CustomizeThemeTextField.h"
+#import "SignInViewController.h"
+#import "TabBarViewController.h"
+#import "MoreViewController.h"
 
 @interface RegisterViewController ()
 
 @property (strong, nonatomic) IBOutlet UIView *containerView;
-@property (strong, nonatomic) IBOutlet UITextField *emailField;
-@property (strong, nonatomic) IBOutlet UITextField *confirmEmailField;
-@property (strong, nonatomic) IBOutlet UITextField *passwordField;
+@property (strong, nonatomic) IBOutlet CustomizeThemeTextField *emailField;
+@property (strong, nonatomic) IBOutlet CustomizeThemeTextField *passwordField;
 @property (strong, nonatomic) IBOutlet UIButton *createButton;
+@property (strong, nonatomic) IBOutlet UIView *credentialContainerView;
+@property (strong, nonatomic) IBOutlet UIView *separateLineView;
+@property (strong, nonatomic) IBOutlet UIButton *termsOfUseButton;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UIButton *signinButton;
+@property (strong, nonatomic) IBOutlet UIImageView *arrowImageView;
+@property (strong, nonatomic) IBOutlet UIButton *closeButton;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *fieldViewBottomConstraintY;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerCredentialsConstraintY;
 
 
 @end
@@ -43,14 +55,44 @@
 }
 
 - (void)setupConfiguration {
+    [self.createButton tintCustomizeTheme];
+    [self customizeAppearance];
+    [self.createButton round:kViewCornerRounded];
+    [self.credentialContainerView round:kViewCornerRounded];
+    [self.credentialContainerView borderCustomizeTheme];
+    [self.emailField setAttributePlaceholder:@"Email"];
+    [self.passwordField setAttributePlaceholder:@"Password"];
+    UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
+    self.titleLabel.textColor = titleColor;
+    
+    UIColor * termsTextColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
+    NSDictionary * attributes = @{NSForegroundColorAttributeName: termsTextColor,
+                                  NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Create my login, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
+                                                                                                                                                NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
+    NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Terms of Service and Privacy" attributes:attributes];
+    [attrstring appendAttributedString:signupText];
+    self.termsOfUseButton.titleLabel.numberOfLines = 0;
+    self.termsOfUseButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.termsOfUseButton setAttributedTitle:attrstring forState:UIControlStateNormal];
+    
+    UIColor * signInColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
+    NSDictionary * signInAttributes = @{NSForegroundColorAttributeName: signInColor,
+                                  NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
+    NSMutableAttributedString * attrstringFirstPart = [[NSMutableAttributedString alloc] initWithString:@"Already have an account? " attributes:@{NSForegroundColorAttributeName: kUniversalGray}];
+    NSAttributedString * signinText = [[NSAttributedString alloc] initWithString:@"Sign in" attributes:signInAttributes];
+    [attrstringFirstPart appendAttributedString:signinText];
+    [self.signinButton setAttributedTitle:attrstringFirstPart forState:UIControlStateNormal];
+    
+    NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
+    [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
+    
     UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self.view addGestureRecognizer:tapRecognizer];
-    self.createButton.layer.cornerRadius = 5;
 }
 
 - (void)viewTapped:(UITapGestureRecognizer *)recognizer {
     [self.emailField resignFirstResponder];
-    [self.confirmEmailField resignFirstResponder];
     [self.passwordField resignFirstResponder];
 }
 
@@ -80,6 +122,12 @@
     
     self.fieldViewBottomConstraintY.constant = kbSize.height;
     
+    CGFloat heightArea = self.view.frame.size.height - kbSize.height;
+    CGFloat bottomPadding = 80.0f;
+    CGFloat y = (heightArea / 2) - (self.credentialContainerView.frame.size.height / 2) - bottomPadding;
+    self.centerCredentialsConstraintY.constant = y;
+    
+    
     void (^animations)() = ^() {
         [self.view layoutIfNeeded];
     };
@@ -98,6 +146,7 @@
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
     self.fieldViewBottomConstraintY.constant = 80;
+    self.centerCredentialsConstraintY.constant = 0;
     [UIView animateWithDuration:0.2 animations:^{
         [self.view layoutIfNeeded];
     }];
@@ -117,20 +166,34 @@
     }
 }
 
+- (IBAction)showSigninController:(id)sender {
+    if ([self.presentingViewController isKindOfClass:[SignInViewController class]]) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [UIUtil showSignInViewFromViewController:self];
+    }
+}
+
+
 - (IBAction)cancelController:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
 
-- (void)dismisControllers {
+- (void)dismissControllers {
     if (self.presentingViewController.presentingViewController) {
         [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
+- (IBAction)showTermsOfUse:(id)sender {
+    [UIUtil showTermOfServicesFromViewController:self];
+}
+
+
 - (NSString *)validateCredentials {
     NSString *errorString;
     
-    if ([self.emailField.text  isEqual: @""] || [self.confirmEmailField.text  isEqual: @""] || [self.passwordField.text  isEqual: @""]) {
+    if ([self.emailField.text  isEqual: @""] || [self.passwordField.text  isEqual: @""]) {
         return @"Не все поля заполнены";
     }
     
@@ -138,11 +201,22 @@
         return @"Email не корректен";
     }
     
-    if (![self.emailField.text isEqualToString:self.confirmEmailField.text]) {
-        return @"Email отличаются";
+    return errorString;
+}
+
+#pragma mark - Other methods
+
+- (BOOL)isFromMoreControllerPresented {
+    if ([[UIApplication sharedApplication].keyWindow.rootViewController isKindOfClass:[TabBarViewController class]]) {
+        TabBarViewController *tabController = (TabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        UINavigationController *navController = (UINavigationController *)tabController.selectedViewController;
+        if ([navController.topViewController isKindOfClass:[MoreViewController class]]) {
+            return YES;
+        }
+        
     }
     
-    return errorString;
+    return NO;
 }
 
 #pragma mark - Register
@@ -155,11 +229,17 @@
                 if (success) {
                     [SVProgressHUD dismiss];
                     if (self != nil) {
-                        if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
-                            [self dismisControllers];
+                        
+                        if ([self isFromMoreControllerPresented]) {
+                            [self dismissControllers];
                         } else {
-                            [UIUtil showSubscriptionViewFromViewController:self];
+                            if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+                                [self dismissControllers];
+                            } else {
+                                [UIUtil showSubscriptionViewFromViewController:self];
+                            }
                         }
+
                     }
                 } else {
                     [SVProgressHUD showErrorWithStatus:error.localizedDescription];

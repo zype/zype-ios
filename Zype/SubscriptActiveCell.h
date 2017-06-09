@@ -15,8 +15,6 @@
 
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
 @property (strong, nonatomic) IBOutlet UIButton *continueButton;
-@property (strong, nonatomic) IBOutlet UIView *radioView;
-@property (strong, nonatomic) IBOutlet UIView *radioButtonPoint;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 
@@ -24,7 +22,6 @@
 @property (strong, nonatomic) SKPayment *payment;
 
 - (void)configureCell:(SKPayment*)payment;
-- (void)setSelectedCell:(BOOL)isSelected;
 
 @end
 

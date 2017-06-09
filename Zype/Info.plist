@@ -63,6 +63,8 @@
 		<string>OpenSans-BoldItalic.ttf</string>
 		<string>OpenSans-ExtraBold.ttf</string>
 		<string>OpenSans-ExtraBoldItalic.ttf</string>
+		<string>Roboto-Medium.ttf</string>
+		<string>Roboto-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

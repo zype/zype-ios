@@ -22,7 +22,6 @@
 #import "ACAdManager.h"
 #import "MediaPlayerManager.h"
 #import "DownloadOperationController.h"
-#import "ACLimitLivestreamManager.h"
 
 #import "Guest.h"
 #import "Timeline.h"
@@ -68,7 +67,6 @@ static NSString *GuestCellIdentifier = @"GuestCell";
 
 @property (nonatomic) NSArray *adsArray;
 
-@property (nonatomic, assign) int totalPlayed;
 @end
 
 
@@ -109,11 +107,6 @@ static NSString *GuestCellIdentifier = @"GuestCell";
     self.indexPathController = [self indexPathController];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-    
-    NSLog(@"limit = %@", [ACLimitLivestreamManager sharedInstance].limit);
-    if ([self livestreamLimitShouldApply]){
-        [self setupLivestreamLimit];
-    }
     
     //need t
     [self setupNotifications];
@@ -158,8 +151,6 @@ static NSString *GuestCellIdentifier = @"GuestCell";
         //restrict rotation
         [AppDelegate appDelegate].restrictRotation = YES;
         
-        if ([self livestreamLimitShouldApply])
-            [self stopLivestreamLimit];
     }
 }
 
@@ -216,15 +207,6 @@ static NSString *GuestCellIdentifier = @"GuestCell";
         
     }
     
-}
-
-- (void)setupLivestreamLimit {
-    [[ACLimitLivestreamManager sharedInstance] livestreamStarts];
-    self.totalPlayed = 0;
-}
-
-- (void)stopLivestreamLimit {
-    [[ACLimitLivestreamManager sharedInstance] livestreamStops];
 }
 
 - (void)setThumbnailImage{
@@ -515,7 +497,7 @@ static NSString *GuestCellIdentifier = @"GuestCell";
     
     [self loadSavedPlaybackTime];
     
-    //timer to update timeline and to track limit livestream
+    //timer to update timeline
     self.timerPlayback = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updatePlaybackTime:) userInfo:nil repeats:YES];
     
     [self setPlayingStatus];
@@ -699,16 +681,6 @@ static NSString *GuestCellIdentifier = @"GuestCell";
 
 - (void)updatePlaybackTime:(NSTimer*)theTimer {
     
-    if ([self livestreamLimitShouldApply]){
-        self.totalPlayed = self.totalPlayed + 1;
-        int userPlayed = self.totalPlayed + [[ACLimitLivestreamManager sharedInstance].played intValue];
-        int limit = [[ACLimitLivestreamManager sharedInstance].limit intValue];
-        if (userPlayed > limit){
-            [self showLimitLivestreamAlertWithTitle:@"Limit Reached" WithMessage:[ACLimitLivestreamManager sharedInstance].message];
-            [self.avPlayer pause];
-            [self.timerPlayback invalidate];
-        }
-    }
     int currentTimeline = [self currentTimelineIndex];
     
     // Update timeline cell
@@ -722,14 +694,6 @@ static NSString *GuestCellIdentifier = @"GuestCell";
     }
     
     //    CLS_LOG(@"currentTimeline: %d", currentTimeline);
-}
-
-- (BOOL)livestreamLimitShouldApply {
-    if ([ACStatusManager isUserSignedIn] == NO && [self.video.on_air intValue] == 1 && [ACLimitLivestreamManager sharedInstance].isSet ){
-        return YES;
-    }
-    
-    return NO;
 }
 
 #pragma mark - MoviePlayer Notifications
@@ -1056,24 +1020,6 @@ static NSString *GuestCellIdentifier = @"GuestCell";
 
 
 #pragma mark - AlertViews
-
-- (void)showLimitLivestreamAlertWithTitle:(NSString *)title WithMessage:(NSString *)message{
-    
-    if (!self.alertViewDownload){
-        
-        self.alertViewDownload = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
-    }else {
-        
-        [self.alertViewDownload setTitle:title];
-        [self.alertViewDownload setMessage:message];
-        
-    }
-    
-    [self.alertViewDownload show];
-    self.alertViewDownload.tag = 998;
-    
-}
 
 - (void)showDownloadAlertWithTitle:(NSString *)title WithMessage:(NSString *)message{
     

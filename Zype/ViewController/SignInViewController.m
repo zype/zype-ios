@@ -14,11 +14,27 @@
 #import "ACSDataManager.h"
 #import "GAIDictionaryBuilder.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIView+UIView_CustomizeTheme.h"
+#import "UIViewController+AC.h"
+#import "RegisterViewController.h"
+#import "IntroViewController.h"
 
 @interface SignInViewController ()
+
 @property (nonatomic) bool isEditing;
 @property (nonatomic) bool isSlideUp;
 @property (nonatomic) int amountKeyboardSlide;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomBackgroundPaddingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerCredentialsConstraintY;
+
+@property (strong, nonatomic) IBOutlet UIView *credentialContainerView;
+@property (strong, nonatomic) IBOutlet UIView *panelView;
+
+@property (strong, nonatomic) IBOutlet UIView *separateLineView;
+@property (strong, nonatomic) IBOutlet UIButton *closeButton;
+@property (strong, nonatomic) IBOutlet UIButton *signupButton;
+@property (strong, nonatomic) IBOutlet UIImageView *arrowImageView;
 
 @end
 
@@ -28,30 +44,8 @@
     [super viewDidLoad];
     self.screenName = @"Sign In";
     // Do any additional setup after loading the view.
+    [self registerForKeyboardNotifications];
     [self configureView];
-}
-
-- (void)viewDidLayoutSubviews {
-    //add corners
-    UIBezierPath *maskPath;
-    maskPath = [UIBezierPath bezierPathWithRoundedRect:self.textFieldEmail.bounds
-                                     byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
-                                           cornerRadii:CGSizeMake(13.0, 13.0)];
-    
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = self.textFieldEmail.bounds;
-    maskLayer.path = maskPath.CGPath;
-    self.textFieldEmail.layer.mask = maskLayer;
-    
-    UIBezierPath *maskPathTwo = [UIBezierPath bezierPathWithRoundedRect:self.textFieldPassword.bounds
-                                                      byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
-                                                            cornerRadii:CGSizeMake(13.0, 13.0)];
-    
-    CAShapeLayer *maskLayerTwo = [[CAShapeLayer alloc] init];
-    maskLayerTwo.frame = self.textFieldPassword.bounds;
-    maskLayerTwo.path = maskPathTwo.CGPath;
-    self.textFieldPassword.layer.mask = maskLayerTwo;
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -64,21 +58,96 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - keyboard actions
+
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    NSNumber *durationValue = info[UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration = durationValue.doubleValue;
+    
+    NSNumber *curveValue = info[UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    // 568 284 81 216
+    // 568 - 216 = 352 / 2 + 40
+    // Create animation.
+    
+    self.bottomBackgroundPaddingConstraint.constant = kbSize.height;
+    CGFloat heightArea = self.view.frame.size.height - kbSize.height;
+    CGFloat bottomPadding = 20.0f;
+    CGFloat y = (heightArea / 2) - (self.panelView.frame.size.height / 2) - bottomPadding;
+    self.centerCredentialsConstraintY.constant = y;
+    
+    void (^animations)() = ^() {
+        [self.view layoutIfNeeded];
+    };
+    
+    //
+    // Begin animation.
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    self.bottomBackgroundPaddingConstraint.constant = 0.0f;
+    self.centerCredentialsConstraintY.constant = 0.0f;
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+
 #pragma mark - Init UI
 
 - (void)configureView
 {
     //change color for Sign In button
-    self.buttonSignIn.backgroundColor = kClientColor;
+    [self.buttonSignIn tintCustomizeTheme];
+    [self customizeAppearance];
+    [self.buttonSignIn round:kViewCornerRounded];
+    [self.credentialContainerView round:kViewCornerRounded];
+    [self.credentialContainerView borderCustomizeTheme];
+    self.separateLineView.backgroundColor = kUniversalGray;
+    [self.textFieldEmail setAttributePlaceholder:@"Email"];
+    [self.textFieldPassword setAttributePlaceholder:@"Password"];
+    [self.signupButton setHidden:!kNativeSubscriptionEnabled];
+    [self.arrowImageView setHidden:!kNativeSubscriptionEnabled];
     
-    UIColor *color = [UIColor darkGrayColor];
-    self.textFieldEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: color}];
-    self.textFieldPassword.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: color}];
     self.textFieldEmail.delegate = self;
     self.textFieldPassword.delegate = self;
     self.isEditing = NO;
     self.isSlideUp = NO;
     
+    UIColor * currentColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
+    NSDictionary * attributes = @{NSForegroundColorAttributeName: currentColor,
+                                  NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"Don't have an account? " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
+                                                                                                                                       NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
+    NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Sign up" attributes:attributes];
+    [attrstring appendAttributedString:signupText];
+    [self.signupButton setAttributedTitle:attrstring forState:UIControlStateNormal];
+    
+    NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
+    [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
     // Dismiss keyboard
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     tapRecognizer.cancelsTouchesInView = YES;
@@ -157,6 +226,16 @@
     return result;
 }
 
+#pragma mark - Sign Up
+
+- (IBAction)signupTapped:(id)sender {
+    if ([self.presentingViewController isKindOfClass:[RegisterViewController class]]) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [UIUtil showSignUpViewFromViewController:self];
+    }
+}
+
 
 #pragma mark - Sign In
 
@@ -165,7 +244,7 @@
     if ([self isFormValid]) {
         
         [self dismissKeyboard:sender];
-        [SVProgressHUD showWithStatus:kString_SigningIn maskType:SVProgressHUDMaskTypeBlack];
+        [SVProgressHUD showWithStatus:kString_SigningIn];
         [self signInWithUsername:self.textFieldEmail.text WithPassword:self.textFieldPassword.text];
         
     }
@@ -214,11 +293,12 @@
         if (success == YES) {
             
             if (self != nil) {
-                if (self.presentingViewController.presentingViewController != nil) {
-                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                }
+                [self dismissController];
+//                if (self.presentingViewController.presentingViewController != nil) {
+//                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//                } else {
+//                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//                }
                 //[self dismissViewControllerAnimated:YES completion:^{ }];
             }
             
@@ -230,6 +310,16 @@
         
     }];
     
+}
+
+- (void)dismissController {
+    if ([self.presentingViewController isKindOfClass:[IntroViewController class]]) {
+        [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else if ([self.presentingViewController isKindOfClass:[RegisterViewController class]]) {
+        [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (IBAction)needHelpTapped:(id)sender {

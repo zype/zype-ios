@@ -142,13 +142,11 @@
     
     // Sync App settings
     [[RESTServiceController sharedInstance] syncAppSetting];
-    if (kLimitLivestremEnabled)
-        [[RESTServiceController sharedInstance] syncLiveStreamZObject];
     [[RESTServiceController sharedInstance] syncAppContent];
     
     [[ACPurchaseManager sharedInstance] requestSubscriptions];
     BOOL isSubscribed = [[ACPurchaseManager sharedInstance] isActiveSubscription];
-    NSLog(@"subscription %d", isSubscribed);
+    CLS_LOG(@"subscription %d", isSubscribed);
     
     // Set tab bar delegate
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;

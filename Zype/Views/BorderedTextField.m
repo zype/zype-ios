@@ -54,10 +54,11 @@
 
 - (void)setupDefaultAppearance{
     
-    self.layer.borderWidth = 0.5f;
+    //self.layer.borderWidth = 0.5f;
    // self.layer.cornerRadius = 4.0f;
     //self.backgroundColor = [UIColor clearColor];
-    [self setBorderColor];
+    //[self setBorderColor];
+    
     
 }
 

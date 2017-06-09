@@ -13,6 +13,9 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
 #import "ACSAlertViewManager.h"
+#import "UIViewController+AC.h"
+#import "IntroViewController.h"
+#import "SignInViewController.h"
 
 @interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate>
 
@@ -21,6 +24,9 @@
 @property (strong, nonatomic) NSArray *products;
 @property (strong, nonatomic) NSArray *titles;
 @property (assign, nonatomic) NSInteger selectedIndex;
+@property (strong, nonatomic) IBOutlet UILabel *navigationTitle;
+@property (strong, nonatomic) IBOutlet UIView *separateNavigationView;
+
 
 @end
 
@@ -42,6 +48,8 @@
 }
 
 - (void)configureController {
+    [self customizeAppearance];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"SubscriptActiveCell" bundle:nil] forCellReuseIdentifier:@"SubscriptActiveCell"];
@@ -49,6 +57,10 @@
     self.tableView.contentInset = UIEdgeInsetsMake(-36, 0, 0, 0);
     self.selectedIndex = 0;
     self.titles = @[@"Monthly Subscription", @"Yearly Subscription"];
+    UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
+    self.navigationTitle.textColor = titleColor;
+    UIColor * separateColor = (kAppColorLight) ? [UIColor whiteColor] : kDarkThemeBackgroundColor;
+    self.separateNavigationView.backgroundColor = separateColor;
     
     [self requestProducts];
 }
@@ -97,7 +109,7 @@
     [cell setDelegate: self];
     [cell configureCell:payment];
     cell.titleLabel.text = title;
-    [cell setSelectedCell:(self.selectedIndex == indexPath.row)];
+    //[cell setSelectedCell:(self.selectedIndex == indexPath.row)];
     return cell;
 }
 
@@ -127,8 +139,10 @@
 
 
 - (void)dismisControllers {
-    if (self.presentingViewController.presentingViewController.presentingViewController) {
+    if ([self.presentingViewController.presentingViewController isKindOfClass:[IntroViewController class]]) {
         [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else if ([self.presentingViewController.presentingViewController isKindOfClass:[SignInViewController class]]) {
+        [self.presentingViewController.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }

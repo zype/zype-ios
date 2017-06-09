@@ -11,12 +11,13 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
 #import "ACStatusManager.h"
+#import "UIView+UIView_CustomizeTheme.h"
 
 @interface IntroViewController ()
 
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
 @property (strong, nonatomic) IBOutlet UIButton *registerButton;
-
+@property (strong, nonatomic) IBOutlet UIButton *closeButton;
 
 @end
 
@@ -25,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self confugureView];
+    [self configureView];
     
 }
 
@@ -34,11 +35,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)confugureView {
-    self.loginButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.loginButton.layer.borderWidth = 0.5f;
-    self.loginButton.layer.cornerRadius = 5;
-    self.registerButton.layer.cornerRadius = 5;
+- (void)configureView {
+    [self.registerButton tintCustomizeTheme];
+    [self.registerButton round:kViewCornerRounded];
+    [self.loginButton borderColorCustomizeTheme];
+    [self.loginButton round:kViewCornerRounded];
+    UIColor *textColor = (kAppColorLight) ? [UIColor blackColor] : [UIColor whiteColor];
+    [self.loginButton setTitleColor:textColor forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
