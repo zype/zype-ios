@@ -179,6 +179,25 @@
     
 }
 
++ (void)resetPlaylistChilds:(NSString *)playlistID{
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityPlaylist];
+    request.predicate = [NSPredicate predicateWithFormat:@"parent_id = %@", playlistID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        CLS_LOG(@"deleting %li playlists", [fetchedObjects count]);
+        for (Playlist *playlist in fetchedObjects) {
+             [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:playlist];
+        }
+    }
+
+}
+
+
 + (void)populatePlaylistsFromDictionary:(NSDictionary *)dictionary{
     
     NSArray *results = [dictionary valueForKey:kAppKey_Response];
@@ -199,6 +218,9 @@
     NSString *pId = [dictionary valueForKey:kAppKey_Id];
     
     Playlist *playlist = [ACSPersistenceManager playlistWithID:pId];
+    
+    //clean up. remove all of the playlist child relationship
+    
     
     if (playlist != nil) {
         
