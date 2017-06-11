@@ -126,7 +126,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         playAs.title = @"Play as";
         playAs.type = Play;
         self.labelPlayAs = [[UILabel alloc] init];
-        self.labelPlayAs.text = @"Video";
+        NSString *mediaType = (self.isAudio == true) ? @"Audio" : @"Video";
+        self.labelPlayAs.text = mediaType;
         self.labelPlayAs.textColor = [UIColor lightGrayColor];
         self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
         [self.labelPlayAs sizeToFit];
@@ -210,12 +211,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [AppDelegate appDelegate].restrictRotation = YES;
         
     }
+    
+    if (self.avPlayer != nil && self.avPlayer.rate > 0.0f) {
+        [self.avPlayer pause];
+    }
 }
 
 
 #pragma mark - Setup
 
-- (void)setupView{
+- (void)setupView {
     
     [self.tableViewGuestList registerNib:[UINib nibWithNibName:@"GuestTableViewCell" bundle:nil] forCellReuseIdentifier:GuestCellIdentifier];
     
@@ -272,7 +277,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     NSURL *thumbnailURL = [NSURL URLWithString:self.video.thumbnailUrl];
     //[self.imageThumbnail pin_setImageFromURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
-    [self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+    [self.imageThumbnail sd_setImageWithURL:thumbnailURL completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        self.imageThumbnail.image = image;
+    }];
+    //[self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
 }
 
 - (void)hideSectionsForHighlightVideo{
@@ -362,7 +370,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self showActivityIndicator];
     [self checkDownloadVideo];
 
-    
     if (self.isAudio) {
         
         NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
@@ -384,7 +391,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         NSURL *url;
         
-
         if (videoFileExists == YES) {
             url = [NSURL fileURLWithPath:localVideoPath];
             [self setupPlayer:url];
@@ -421,6 +427,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)playStreamingVideo {
     
     [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo: NO withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        [self hideActivityIndicator];
         
         if (error) {
             CLS_LOG(@"Failed: %@", error);
@@ -467,11 +475,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [[RESTServiceController sharedInstance] getAudioPlayerWithVideo:self.video WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
+        [self hideActivityIndicator];
+        
         if (error) {
             
             CLS_LOG(@"Failed: %@", error);
             
-        }else {
+        } else {
             
             CLS_LOG(@"Success");
             NSError *localError = nil;
@@ -481,9 +491,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 
                 CLS_LOG(@"Failed: %@", localError);
                 
-            }else {
+            } else {
                 
-                PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                PlaybackSource *source = [[RESTServiceController sharedInstance] audioStreamPlaybackSourceFromRootDictionary:parsedObject];
                 
                 if (source != nil && source.urlString != nil) {
                     
@@ -513,16 +523,27 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)setupPlayer:(NSURL *)url {
-    [self removePlayer];
+    //[self removePlayer];
+    //[self.avPlayer pause];
+    //player.replaceCurrentItem(with: AVPlayerItem(url: streamingURL))
+    if (self.avPlayer == nil) {
+        self.avPlayer = [[AVPlayer alloc] initWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
+    } else {
+        [self.avPlayer replaceCurrentItemWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
+    }
     
-    self.avPlayer = [AVPlayer playerWithURL:url];
+    //self.avPlayer = [AVPlayer playerWithURL:url];
     //Create PlayerViewController for player controls
-    self.avPlayerController = [[AVPlayerViewController alloc] init];
-    [self.avPlayerController.view setFrame:self.imageThumbnail.bounds];
-    [self.avPlayerController setPlayer:self.avPlayer];
-    [self addChildViewController:self.avPlayerController];
-    [self.view addSubview:self.avPlayerController.view];
-    [self.avPlayerController didMoveToParentViewController:self];
+    if (self.avPlayerController == nil) {
+        self.avPlayerController = [[AVPlayerViewController alloc] init];
+        [self.avPlayerController.view setFrame:self.imageThumbnail.bounds];
+        [self.avPlayerController setPlayer:self.avPlayer];
+        [self addChildViewController:self.avPlayerController];
+        [self.view addSubview:self.avPlayerController.view];
+        [self.avPlayerController didMoveToParentViewController:self];
+        self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+
     
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
     NSError *_error = nil;
@@ -533,7 +554,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     //  self.player = [[MediaPlayerManager sharedInstance] moviePlayerControllerWithURL:url video:self.video image:self.imageThumbnail.image];
     
-    self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
     //  [self.view addSubview: self.player.view];
     
     if (self.isAudio) {
@@ -559,13 +579,43 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.activityIndicator stopAnimating];
     
     CGRect frame = self.imageThumbnail.frame;
-    [self.player.view setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
-    self.player.view.backgroundColor = [UIColor clearColor];
+    [self.avPlayerController.view setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
+    self.avPlayerController.view.backgroundColor = [UIColor clearColor];
     
     [AppDelegate appDelegate].restrictRotation = YES;
     
+    [self hideActivityIndicator];
     [self.labelPlayAs setText:@"Audio"];
     [self.labelPlayAs sizeToFit];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1
+                                                           constant:0]];
     
 //    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
 //                                                          attribute:NSLayoutAttributeBottom
@@ -590,9 +640,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.imageThumbnail setHidden:NO];
     NSURL *thumbnailURL = [NSURL URLWithString:self.video.thumbnailUrl];
     // [self.imageThumbnail pin_setImageFromURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
-    [self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+    [self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        self.imageThumbnail.image = image;
+    }];
+    //[self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     [self.view bringSubviewToFront:self.imageThumbnail];
-    [self.view bringSubviewToFront:self.player.view];
+    [self.view bringSubviewToFront:self.avPlayerController.view];
     
 }
 
@@ -630,33 +683,33 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                          multiplier:1
                                                            constant:0]];
     
-    [self.activityIndicator stopAnimating];
+    [self hideActivityIndicator];
     [AppDelegate appDelegate].restrictRotation = NO;
     [self.labelPlayAs setText:@"Video"];
     [self.labelPlayAs sizeToFit];
     
 }
 
-- (void)setupSharedPlayerView{
+- (void)setupSharedPlayerView {
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
-                                                          attribute:NSLayoutAttributeTrailing
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeTrailing
-                                                         multiplier:1
-                                                           constant:0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
-                                                          attribute:NSLayoutAttributeLeading
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeLeading
-                                                         multiplier:1
-                                                           constant:0]];
-    
-    [self.view bringSubviewToFront:self.player.view];
-    self.player.view.userInteractionEnabled = YES;
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
+//                                                          attribute:NSLayoutAttributeTrailing
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.imageThumbnail
+//                                                          attribute:NSLayoutAttributeTrailing
+//                                                         multiplier:1
+//                                                           constant:0]];
+//    
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
+//                                                          attribute:NSLayoutAttributeLeading
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.imageThumbnail
+//                                                          attribute:NSLayoutAttributeLeading
+//                                                         multiplier:1
+//                                                           constant:0]];
+//    
+//    [self.view bringSubviewToFront:self.player.view];
+//    self.player.view.userInteractionEnabled = YES;
     
 }
 
@@ -721,7 +774,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 -(int) currentTimelineIndex {
     int currentTimeline = 0;
     for (Timeline *timeline in self.arrayTimeline) {
-        if (self.player.currentPlaybackTime * 1000 >= timeline.start.doubleValue) {
+        double time = (double)self.avPlayer.currentTime.value * 1000.0f;
+        if (time >= timeline.start.doubleValue) {
             currentTimeline = (int)[self.arrayTimeline indexOfObject:timeline];
         }
     }
