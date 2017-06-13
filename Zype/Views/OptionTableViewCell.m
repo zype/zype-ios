@@ -24,6 +24,7 @@
     
     self.selectedBackgroundView = [[UIView alloc] init];
     [self.selectedBackgroundView setBackgroundColor:[UIColor lightGrayColor]];
+    self.titleLabel.textColor = (kAppColorLight) ? [UIColor darkGrayColor] : [UIColor whiteColor];
     [self setSelectedBackgroundView:self.selectedBackgroundView];
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTapped:)];

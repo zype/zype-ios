@@ -23,6 +23,7 @@
 #import "MediaPlayerManager.h"
 #import "DownloadOperationController.h"
 #import "OptionTableViewCell.h"
+#import "CustomizeImageView.h"
 
 #import "Guest.h"
 #import "Timeline.h"
@@ -37,6 +38,7 @@
 #import "UIViewController+AC.h"
 #import "NSURLResponse+AK.h"
 #import "ACStatusManager.h"
+#import "UIUtil.h"
 
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =
@@ -128,7 +130,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.labelPlayAs = [[UILabel alloc] init];
         NSString *mediaType = (self.isAudio == true) ? @"Audio" : @"Video";
         self.labelPlayAs.text = mediaType;
-        self.labelPlayAs.textColor = [UIColor lightGrayColor];
+        self.labelPlayAs.textColor = (kAppColorLight) ? [UIColor darkGrayColor] : [UIColor whiteColor];
         self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
         [self.labelPlayAs sizeToFit];
         playAs.accessoryView = self.labelPlayAs;
@@ -145,7 +147,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 } else {
                     downloadItem.title = @"Download";
                 }
-                downloadItem.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconDownloadsW"]];
+                downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
                 [self.optionsDataSource addObject:downloadItem];
             }
         }
@@ -155,17 +157,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     favoriteItem.type = Favourite;
     if ([UIUtil isYes:self.video.isFavorite]) {
         favoriteItem.title = @"Unfavorite";
-        favoriteItem.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
     } else {
         favoriteItem.title = @"Favorite";
-        favoriteItem.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
     }
     [self.optionsDataSource addObject:favoriteItem];
     
     TableSectionDataSource *shareItem = [[TableSectionDataSource alloc] init];
     shareItem.title = @"Share";
     shareItem.type = Share;
-    shareItem.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
+    shareItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconShareB"] andDarkImage:[UIImage imageNamed:@"IconShareW"]];
     [self.optionsDataSource addObject:shareItem];
     
     [self.tableViewOptions reloadData];
@@ -1486,7 +1488,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)onDidDownloadTapped:(OptionTableViewCell *)cell {
-    [self.actionSheetManager showDownloadActionSheetWithVideo:self.video withPlaybackSources:self.playbackSources];
+    if (kDownloadsForAllUsersEnabled) {
+        [self.actionSheetManager showDownloadActionSheetWithVideo:self.video withPlaybackSources:self.playbackSources];
+    } else {
+        if ([ACStatusManager isUserSignedIn]) {
+           [self.actionSheetManager showDownloadActionSheetWithVideo:self.video withPlaybackSources:self.playbackSources];
+        } else {
+            [UIUtil showSignInViewFromViewController:self];
+        }
+    }
 }
 
 - (void)onDidFavoriteTapped:(OptionTableViewCell *)cell {
@@ -1520,10 +1530,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)acActionSheetManagerDelegateDownloadTapped {
-    
     self.isDownloadStarted = NO;
     self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(showDownloadProgress:) userInfo:nil repeats:YES];
-    
 }
 
 - (void)acActionSheetManagerDelegateReloadVideo:(Video *)video{

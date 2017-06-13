@@ -25,7 +25,7 @@
 #define kMonthlySubscription @"monthly_subscription"
 #define kYearlySubscription @"yearly_subscription"
 
-#define kAppColorLight YES
+#define kAppColorLight NO
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
@@ -42,6 +42,7 @@
 #define kDownloadsEnabled YES
 #define kLimitLivestremEnabled NO
 #define kNativeSubscriptionEnabled NO
+#define kDownloadsForAllUsersEnabled NO
 
 #pragma mark - Base settings
 
