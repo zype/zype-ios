@@ -17,6 +17,9 @@
 #import "DownloadOperationController.h"
 #import "Playlist.h"
 #import "ACPurchaseManager.h"
+#import "RESTServiceController.h"
+#import "PlaybackSource.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface BaseViewController ()
 
@@ -183,6 +186,25 @@
     
 }
 
+#pragma mark - Private Methods
+
+- (void)checkDownloadVideo:(Video *)video withCompletion:(void(^)(NSArray *sources))complete {
+    [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:video downloadInfo:YES withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        //
+        if (error) {
+            complete(nil);
+        } else {
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                complete(nil);
+            } else {
+                NSArray *sources = [[RESTServiceController sharedInstance] streamPlaybackSourcesFromRootDictionary:parsedObject];
+                complete(sources);
+            }
+        }
+    }];
+}
 
 #pragma mark - Subclass Overrides
 
@@ -192,10 +214,12 @@
     
 }
 
-- (void)showEpisodeOptionsActionSheetWithVideo:(Video *)video{
-    
-    [self.actionSheetManager showActionSheetWithVideo:video];
-    
+- (void)showEpisodeOptionsActionSheetWithVideo:(Video *)video {
+    [SVProgressHUD show];
+    [self checkDownloadVideo:video withCompletion:^(NSArray *sources) {
+        [SVProgressHUD dismiss];
+        [self.actionSheetManager showActionSheetWithVideo:video sources:sources];
+    }];
 }
 
 

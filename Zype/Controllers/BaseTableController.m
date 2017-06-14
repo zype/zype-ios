@@ -86,7 +86,6 @@
     CGPoint touchPoint = [sender convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:touchPoint];
     [self.delegate episodeControllerDelegateButtonActionTappedAtIndexPath:indexPath];
-    
 }
 
 

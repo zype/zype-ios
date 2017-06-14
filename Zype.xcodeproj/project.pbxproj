@@ -141,6 +141,8 @@
 		FA4BA3361EF0764B004985F6 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3351EF0764B004985F6 /* RegisterViewController.m */; };
 		FA4BA3391EF0766C004985F6 /* SubsciptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3381EF0766C004985F6 /* SubsciptionViewController.m */; };
 		FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */; };
+		FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */; };
+		FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -884,6 +886,8 @@
 				780AC6FD1BDFD284007F1119 /* Images.xcassets in Resources */,
 				A13AF3A41D36D3B700DDA006 /* SIL Open Font License.txt in Resources */,
 				780AC6FE1BDFD284007F1119 /* OpenSans-Light.ttf in Resources */,
+				FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */,
+				FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */,
 				A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */,
 				780AC6FF1BDFD284007F1119 /* OpenSans-BoldItalic.ttf in Resources */,
 				FA4BA32D1EF075B9004985F6 /* SubscriptActiveCell.xib in Resources */,

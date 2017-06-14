@@ -24,6 +24,7 @@
 #import "DownloadOperationController.h"
 #import "OptionTableViewCell.h"
 #import "CustomizeImageView.h"
+#import "ACPurchaseManager.h"
 
 #import "Guest.h"
 #import "Timeline.h"
@@ -1488,15 +1489,26 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)onDidDownloadTapped:(OptionTableViewCell *)cell {
-    if (kDownloadsForAllUsersEnabled) {
-        [self.actionSheetManager showDownloadActionSheetWithVideo:self.video withPlaybackSources:self.playbackSources];
-    } else {
-        if ([ACStatusManager isUserSignedIn]) {
-           [self.actionSheetManager showDownloadActionSheetWithVideo:self.video withPlaybackSources:self.playbackSources];
+    if (kDownloadsForAllUsersEnabled == NO) {
+        if (kNativeSubscriptionEnabled == NO) {
+            if ([ACStatusManager isUserSignedIn] == false) {
+                [UIUtil showSignInViewFromViewController:self];
+                return;
+            }
         } else {
-            [UIUtil showSignInViewFromViewController:self];
+            if ([ACStatusManager isUserSignedIn] == false && self.selectedVideo.subscription_required.intValue == 1) {
+                [UIUtil showIntroViewFromViewController:self];
+                return;
+            } else {
+                if ([self.video.subscription_required intValue] == 1 && [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+                    [UIUtil showSubscriptionViewFromViewController:self];
+                    return;
+                }
+            }
         }
     }
+    
+    [self.actionSheetManager showDownloadActionSheetWithVideo:self.video withPlaybackSources:self.playbackSources];
 }
 
 - (void)onDidFavoriteTapped:(OptionTableViewCell *)cell {
