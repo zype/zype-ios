@@ -9,8 +9,12 @@
 #import "ACPurchaseManager.h"
 #import <RMStore/RMStore.h>
 #import <RMStore/RMAppReceipt.h>
+#import <RMStoreAppReceiptVerificator.h>
+//#import <RMStoreKeychainPersistence.h>
 
-@interface ACPurchaseManager()
+@interface ACPurchaseManager() {
+    RMStoreAppReceiptVerificator * _verificator;
+}
 
 @end
 
@@ -31,6 +35,11 @@
                               kYearlySubscription, nil];
     }
     return self;
+}
+
+- (void)configure {
+    _verificator = [[RMStoreAppReceiptVerificator alloc] init];
+    [RMStore defaultStore].receiptVerificator = _verificator;
 }
 
 - (BOOL)isActiveSubscription {
@@ -66,12 +75,23 @@
 
 - (void)buySubscription:(NSString *)productID success:(void(^)())success failure:(void(^)(NSString *))failure {
     [[RMStore defaultStore] addPayment:productID success:^(SKPaymentTransaction *transaction) {
-        if (success) {
-            success();
+        
+        if ([RMStore defaultStore].receiptVerificator != nil) {
+            [[RMStore defaultStore].receiptVerificator verifyTransaction:transaction success:^{
+                if (success) {
+                    success();
+                }
+            } failure:^(NSError *error) {
+                if (failure) {
+                    failure(error.localizedDescription);
+                }
+            }];
+        } else {
+            if (success) {
+                success();
+            }
         }
-        [[RMStore defaultStore].receiptVerificator verifyTransaction:transaction success:^{
-        } failure:^(NSError *error) {
-        }];
+
     } failure:^(SKPaymentTransaction *transaction, NSError *error) {
         if (failure) {
             failure(error.localizedDescription);

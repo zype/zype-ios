@@ -119,6 +119,7 @@
 
 - (void)configureApp
 {
+    
 #if TARGET_IPHONE_SIMULATOR
     // where are you?
     CLS_LOG(@"Documents Directory: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
@@ -144,6 +145,7 @@
     [[RESTServiceController sharedInstance] syncAppSetting];
     [[RESTServiceController sharedInstance] syncAppContent];
     
+    [[ACPurchaseManager sharedInstance] configure];
     [[ACPurchaseManager sharedInstance] requestSubscriptions];
     BOOL isSubscribed = [[ACPurchaseManager sharedInstance] isActiveSubscription];
     CLS_LOG(@"subscription %d", isSubscribed);
