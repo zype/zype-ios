@@ -485,7 +485,9 @@
     }
     
     //add share button
-    [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonShare]];
+    if (kShareVideoEnabled) {
+            [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonShare]];
+    }
     
     actionSheet.tag = ACLatestActionSheetTypeShowOptions;
     

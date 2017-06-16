@@ -165,11 +165,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     [self.optionsDataSource addObject:favoriteItem];
     
-    TableSectionDataSource *shareItem = [[TableSectionDataSource alloc] init];
-    shareItem.title = @"Share";
-    shareItem.type = Share;
-    shareItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconShareB"] andDarkImage:[UIImage imageNamed:@"IconShareW"]];
-    [self.optionsDataSource addObject:shareItem];
+    if (kShareVideoEnabled) {
+        TableSectionDataSource *shareItem = [[TableSectionDataSource alloc] init];
+        shareItem.title = @"Share";
+        shareItem.type = Share;
+        shareItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconShareB"] andDarkImage:[UIImage imageNamed:@"IconShareW"]];
+        [self.optionsDataSource addObject:shareItem];
+    }
     
     [self.tableViewOptions reloadData];
 }
