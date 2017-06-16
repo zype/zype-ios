@@ -445,7 +445,13 @@
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error) {
         
-        NSString *urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrl, kApiPlayerDomain, vId, token];
+        NSString *urlAsString;
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrl, kApiPlayerDomain, vId, token];
+        } else {
+            urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrlForGuest, kApiPlayerDomain, vId, kAppKey];
+        }
+        
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -464,7 +470,12 @@
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error) {
         
-        NSString *urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, vId, token];
+        NSString *urlAsString;
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, vId, token];
+        } else {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, vId, kAppKey];
+        }
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -479,7 +490,7 @@
 
 #pragma mark - Player App
 
-- (void)getVideoPlayerWithVideo:(Video *)video WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
+- (void)getVideoPlayerWithVideo:(Video *)video downloadInfo:(BOOL)isDownloaded withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
 {
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error){
@@ -488,7 +499,7 @@
         
         if ([UIUtil isYes:video.isHighlight]){
             urlAsString = [NSString stringWithFormat:kGetPlayerForHighlight, kApiPlayerDomain, video.vId, kAppKey];
-        }else{
+        } else {
             if ([ACStatusManager isUserSignedIn] == YES) {
                 urlAsString = [NSString stringWithFormat:kGetPlayer, kApiPlayerDomain, video.vId, token];
             } else {
@@ -496,6 +507,11 @@
             }
             
         }
+        
+        if (isDownloaded) {
+            urlAsString = [NSString stringWithFormat:@"%@&download=true", urlAsString];
+        }
+
         NSLog(@"urlAsString: %@", urlAsString);
         NSURL *url = [NSURL withString:urlAsString];
         
@@ -513,7 +529,12 @@
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error){
         
-        NSString *urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, video.vId, token];
+        NSString *urlAsString;
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, video.vId, token];
+        } else {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
+        }
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -530,7 +551,12 @@
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error){
         
-        NSString *urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, vId, token];
+        NSString *urlAsString;
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, vId, token];
+        } else {
+            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, vId, kAppKey];
+        }
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -548,13 +574,37 @@
 
 #pragma mark - Playback Source
 
-- (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary{
+- (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary {
     
     NSArray *results = [self filesArrayFromParsedDictionary:dictionary];
     PlaybackSource *playbackSource = [self videoStreamPlaybackSourceFromFilesArray:results];
     
     return playbackSource;
     
+}
+
+- (PlaybackSource *)audioStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary {
+    
+    NSArray *results = [self filesArrayFromParsedDictionary:dictionary];
+    PlaybackSource *playbackSource = [self audioStreamPlaybackSourceFromFilesArray:results];
+    
+    return playbackSource;
+    
+}
+
+- (NSArray *)streamPlaybackSourcesFromRootDictionary:(NSDictionary *)dictionary {
+    NSArray *results = [self filesArrayFromParsedDictionary:dictionary];
+    NSArray *sources = [self playbackSourcesFromFilesArray:results];
+    NSMutableArray *needSources = [[NSMutableArray alloc] init];
+    
+    for (PlaybackSource *playbackSource in sources) {
+        //go ahead and return if we find an HLS source
+        if ([playbackSource.fileType isEqualToString:@"mp4"] || [playbackSource.fileType isEqualToString:@"m4a"]) {
+            [needSources addObject:playbackSource];
+        }
+    }
+    
+    return needSources;
 }
 
 - (PlaybackSource *)videoStreamPlaybackSourceFromFilesArray:(NSArray *)files{
@@ -568,7 +618,7 @@
         preferredSource = playbackSource;
         
         //go ahead and return if we find an HLS source
-        if ([preferredSource.fileType isEqualToString:@"m3u8"]) {
+        if ([preferredSource.fileType isEqualToString:@"m3u8"] || [preferredSource.fileType isEqualToString:@"mp4"]) {
             
             return preferredSource;
             
@@ -578,6 +628,20 @@
     
     return preferredSource;
     
+}
+
+- (PlaybackSource *)audioStreamPlaybackSourceFromFilesArray:(NSArray *)files {
+    NSArray *sources = [self playbackSourcesFromFilesArray:files];
+    PlaybackSource *preferredSource;
+    
+    for (PlaybackSource *playbackSource in sources) {
+        preferredSource = playbackSource;
+        if ([preferredSource.fileType isEqualToString:@"m4a"]) {
+            return preferredSource;
+        }
+    }
+    
+    return preferredSource;
 }
 
 - (NSArray *)playbackSourcesFromFilesArray:(NSArray *)files{

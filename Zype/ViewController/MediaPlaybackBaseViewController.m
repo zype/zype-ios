@@ -40,11 +40,15 @@
     if ([source.fileType stringContains:@"m3u8"]){
         
         [AppDelegate appDelegate].restrictRotation = NO;
-        
         self.isWebVideo = NO;
-        
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
         //  [self removeWebView];
+        
+    } else if ([source.fileType stringContains:@"mp4"]) {
+        
+        [AppDelegate appDelegate].restrictRotation = NO;
+        self.isWebVideo = NO;
+        [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
         
     } else if ([source.fileType stringContains:@"hls"]) {
         [AppDelegate appDelegate].restrictRotation = NO;
@@ -54,7 +58,7 @@
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
         
         
-    }else if ([source.fileType stringContains:kApiKey_PlayerWeb]) {
+    } else if ([source.fileType stringContains:kApiKey_PlayerWeb]) {
         
         [AppDelegate appDelegate].restrictRotation = YES;
         
@@ -71,7 +75,7 @@
         
         NSURL *fileURL = [NSURL fileURLWithPath:source.urlString];
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:fileURL waitUntilDone:NO];
-        [self removeWebView];
+        //[self removeWebView];
         
     }else if ([source.fileType stringContains:@"m4a"]){
         
@@ -80,7 +84,7 @@
         self.isWebVideo = NO;
         
         [self performSelectorOnMainThread:@selector(setupPlayer:) withObject:url waitUntilDone:NO];
-        [self removeWebView];
+        //[self removeWebView];
         
     }
     
@@ -110,7 +114,7 @@
 
 #pragma mark - Removing Players
 
-- (void)removePlayer{
+- (void)removePlayer {
     
     if (self.player != nil) {
         

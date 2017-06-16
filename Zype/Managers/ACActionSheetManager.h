@@ -87,10 +87,10 @@ NS_ENUM(NSInteger, ACDownloadsActionSheetButton){
 @property (nonatomic, strong) Video *actionVideo;
 @property (nonatomic, weak) id<ACActionSheetManagerDelegate> delegate;
 
-- (void)showActionSheetWithVideo:(Video *)video;
+- (void)showActionSheetWithVideo:(Video *)video sources:(NSArray *)sources;
 - (void)showLiveStreamActionSheet;
 - (void)showPlayAsActionSheet;
 - (void)showShareActionSheetWithVideo:(Video *)video;
-- (void)showDownloadActionSheetWithVideo:(Video *)video;
+- (void)showDownloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources;
 
 @end

@@ -13,6 +13,8 @@
 #import "ACShareManager.h"
 #import "DownloadOperationController.h"
 #import "Reachability.h"
+#import "PlaybackSource.h"
+#import "ViewManager.h"
 
 @interface ACActionSheetManager ()<MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -62,10 +64,10 @@
 
 #pragma mark - UIActionSheet Setup
 
-- (void)showActionSheetWithVideo:(Video *)video{
+- (void)showActionSheetWithVideo:(Video *)video sources:(NSArray *)sources{
     
     self.actionVideo = video;
-    UIActionSheet *actionSheet = [ACActionSheetManager episodeOptionsActionSheetWithVideo:video];
+    UIActionSheet *actionSheet = [ACActionSheetManager episodeOptionsActionSheetWithVideo:video sources:sources];
     actionSheet.delegate = self;
     [self delegateShowActionSheet:actionSheet];
     
@@ -96,15 +98,38 @@
     
 }
 
-- (void)showDownloadActionSheetWithVideo:(Video *)video{
+- (void)showDownloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources {
     
     self.actionVideo = video;
-    UIActionSheet *actionSheet = [ACActionSheetManager downloadActionSheetWithVideo:video];
+    UIActionSheet *actionSheet = [ACActionSheetManager downloadActionSheetWithVideo:video withPlaybackSources:sources];
     actionSheet.delegate = self;
     [self delegateShowActionSheet:actionSheet];
     
 }
 
+#pragma mark - Private Methods
+
+
+- (void)checkingOnActiveFlags:(void(^)())complete failure:(void(^)())failure {
+    
+    if (kDownloadsForAllUsersEnabled == NO) {
+        if (kNativeSubscriptionEnabled == YES) {
+            if (self.actionVideo.subscription_required.integerValue == 1) {
+                [self.delegate acActionSheetManagerDelegatePresentViewController:[ViewManager subscriptionViewController]];
+                if (failure) failure();
+                return;
+            }
+        }
+        
+        if ([ACStatusManager isUserSignedIn] == NO) {
+            [self.delegate acActionSheetManagerDelegatePresentViewController:[ViewManager signInViewController]];
+            if (failure) failure();
+            return;
+        }
+    }
+    
+    complete();
+}
 
 #pragma mark - UIActionSheet Button Actions
 
@@ -132,14 +157,35 @@
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadVideo]]) {
         CLS_LOG(@"download video tapped");
         
-        [self downloadVideoTapped];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Download Video Tapped" value:nil] build]];
+//        if (kDownloadsForAllUsersEnabled == NO) {
+//            if (kNativeSubscriptionEnabled == YES) {
+//                if (self.actionVideo.subscription_required.integerValue == 1) {
+//                    [self.delegate acActionSheetManagerDelegatePresentViewController:[ViewManager subscriptionViewController]];
+//                    return;
+//                }
+//            }
+//            
+//            if ([ACStatusManager isUserSignedIn] == NO) {
+//                [self.delegate acActionSheetManagerDelegatePresentViewController:[ViewManager signInViewController]];
+//                return;
+//            }
+//        }
+        
+        [self checkingOnActiveFlags:^{
+            [self downloadVideoTapped];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Download Video Tapped" value:nil] build]];
+        } failure:nil];
+        
+
         
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadAudio]]) {
         CLS_LOG(@"download audio tapped");
         
-        [self downloadAudioTapped];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Download Audio Tapped" value:nil] build]];
+        [self checkingOnActiveFlags:^{
+            [self downloadAudioTapped];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Download Audio Tapped" value:nil] build]];
+        } failure:nil];
+        
         
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonStopDownload]]) {
         CLS_LOG(@"stop download tapped");
@@ -250,7 +296,7 @@
 #pragma mark - Downloads
 
 
-- (void)downloadVideoTapped{
+- (void)downloadVideoTapped {
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_DownloadWifiOnly] &&
         [[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] != ReachableViaWiFi){
@@ -266,7 +312,7 @@
     
 }
 
-- (void)downloadAudioTapped{
+- (void)downloadAudioTapped {
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_DownloadWifiOnly] &&
         [[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] != ReachableViaWiFi){
@@ -348,9 +394,43 @@
 
 #pragma mark - Class Methods
 
-+ (UIActionSheet *)episodeOptionsActionSheetWithVideo:(Video *)video{
+//- (void)checkDownloadVideo {
+//    [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo:YES withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//        //
+//        if (error) {
+//            CLS_LOG(@"Failed: %@", error);
+//        } else {
+//            CLS_LOG(@"Success");
+//            NSError *localError = nil;
+//            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+//            
+//            if (localError != nil) {
+//                CLS_LOG(@"Failed: %@", localError);
+//            } else {
+//                self.playbackSources = [[RESTServiceController sharedInstance] streamPlaybackSourcesFromRootDictionary:parsedObject];
+//                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+//                CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
+//            }
+//        }
+//    }];
+//}
+
++ (UIActionSheet *)episodeOptionsActionSheetWithVideo:(Video *)video sources:(NSArray *)sources {
     
     DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
+    BOOL isDownloadAudio = NO;
+    BOOL isDownloadVideo = NO;
+    if (sources != nil) {
+        if (sources.count > 0) {
+            for (PlaybackSource *sourse in sources) {
+                if ([sourse.fileType isEqualToString:@"mp4"]) {
+                    isDownloadVideo = YES;
+                } else if ([sourse.fileType isEqualToString:@"m4a"]) {
+                    isDownloadAudio = YES;
+                }
+            }
+        }
+    }
     
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"action button title");
     
@@ -381,16 +461,16 @@
         if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
             
             if (downloadInfo.isDownloading == NO) {
-                if (video.downloadAudioLocalPath == nil) {
+                if (video.downloadAudioLocalPath == nil && isDownloadAudio == YES) {
                     [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadAudio]];
                 }
-                if (video.downloadVideoLocalPath == nil) {
+                if (video.downloadVideoLocalPath == nil && isDownloadVideo == YES) {
                     [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadVideo]];
                     
                 }
             }
             
-        }else if (video.duration.integerValue == 0 && video.isHighlight.boolValue == NO){
+        } else if (video.duration.integerValue == 0 && video.isHighlight.boolValue == NO){
             
             actionSheet.title = @"This episode will be available for download roughly one hour after the broadcast ends.";
             
@@ -413,7 +493,7 @@
     
 }
 
-+ (UIActionSheet *)downloadActionSheetWithVideo:(Video *)video{
++ (UIActionSheet *)downloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources {
     
     DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
     
@@ -444,10 +524,22 @@
     if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
         
         if (downloadInfo.isDownloading == NO) {
-            if (video.downloadAudioLocalPath == nil) {
+            
+            PlaybackSource *videoSource;
+            PlaybackSource *audioSource;
+            for (PlaybackSource *source in sources) {
+                if ([source.fileType isEqualToString:@"mp4"]) {
+                    videoSource = source;
+                }
+                if ([source.fileType isEqualToString:@"m4a"]) {
+                    audioSource = source;
+                }
+            }
+            
+            if (video.downloadAudioLocalPath == nil && audioSource != nil) {
                 [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadAudio]];
             }
-            if (video.downloadVideoLocalPath == nil) {
+            if (video.downloadVideoLocalPath == nil && videoSource != nil) {
                 [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDownloadVideo]];
                 
             }

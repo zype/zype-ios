@@ -144,9 +144,11 @@
     [[RESTServiceController sharedInstance] syncAppSetting];
     [[RESTServiceController sharedInstance] syncAppContent];
     
-    [[ACPurchaseManager sharedInstance] requestSubscriptions];
-    BOOL isSubscribed = [[ACPurchaseManager sharedInstance] isActiveSubscription];
-    CLS_LOG(@"subscription %d", isSubscribed);
+    if (kNativeSubscriptionEnabled) {
+        [[ACPurchaseManager sharedInstance] requestSubscriptions];
+        BOOL isSubscribed = [[ACPurchaseManager sharedInstance] isActiveSubscription];
+        CLS_LOG(@"subscription %d", isSubscribed);
+    }
     
     // Set tab bar delegate
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;

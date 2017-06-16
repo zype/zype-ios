@@ -60,13 +60,13 @@
     
 }
 
-- (void)startDownload:(Video *)video WithMediaType:(NSString *)mediaType{
+- (void)startDownload:(Video *)video WithMediaType:(NSString *)mediaType {
     
-    if (!mediaType){
+    if (!mediaType) {
         
-        if ([[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_DownloadPreferences] isEqualToString:kSettingKey_DownloadAudio]){
+        if ([[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_DownloadPreferences] isEqualToString:kSettingKey_DownloadAudio]) {
             mediaType = kMediaType_Audio;
-        }else if ([[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_DownloadPreferences] isEqualToString:kSettingKey_DownloadVideo]){
+        } else if ([[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_DownloadPreferences] isEqualToString:kSettingKey_DownloadVideo]) {
             mediaType = kMediaType_Video;
         }
         
@@ -77,20 +77,17 @@
         [ACSDataManager downloadVideoUrlForVideoId:video.vId urlBlock:^(NSURL *url, NSError *error) {
            
             if ([url.absoluteString isEqualToString:@""] == NO) {
-                
                 video.downloadVideoUrl = url.absoluteString;
                 [[ACSPersistenceManager sharedInstance] saveContext];
-                
                 [self download:video WithMediaType:mediaType AtUrl:url.absoluteString];
                 
-            }else{
+            } else {
                 [ACSAlertViewManager showAlertWithTitle:kString_TitleDownloadFail WithMessage:kString_MessageNoDownloadFile];
             }
-            
         }];
 
         
-    }else if ([mediaType isEqualToString:kMediaType_Audio]){
+    } else if ([mediaType isEqualToString:kMediaType_Audio]){
         
         [ACSDataManager downloadAudioUrlForVideoId:video.vId urlBlock:^(NSURL *url, NSError *error) {
             
