@@ -40,7 +40,6 @@
 #define kViewCornerRounded 2.0f
 
 #define kDownloadsEnabled YES
-#define kLimitLivestremEnabled NO
 #define kNativeSubscriptionEnabled NO
 #define kDownloadsForAllUsersEnabled NO
 #define kShareVideoEnabled NO
