@@ -12,7 +12,10 @@ typedef NS_ENUM(NSUInteger, TableSectionDataSourceType) {
     Play = 1,
     Download = 2,
     Favourite = 3,
-    Share = 4
+    Share = 4,
+    TermsOfService = 5,
+    RestorePurchase = 6,
+    Version = 7
 };
 
 @interface TableSectionDataSource : NSObject
@@ -20,5 +23,6 @@ typedef NS_ENUM(NSUInteger, TableSectionDataSourceType) {
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIView *accessoryView;
 @property (nonatomic, assign) TableSectionDataSourceType type;
+@property (nonatomic, assign) UITableViewCellAccessoryType accessoryType;
 
 @end
