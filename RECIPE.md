@@ -22,29 +22,29 @@ The Apple Developer Program can be enrolled in via [Apple's website](https://dev
 
 1. In order to generate an iOS bundle using this SDK, you must first pull the latest source code from Zype's github repository. This can be found at "https://github.com/zype/zype-ios". 
 
-<a href="https://drive.google.com/file/d/0BzMPADAfOuPQbFh2YWxmUTRlSkE/view?usp=sharing"><img src="https://drive.google.com/file/d/0BzMPADAfOuPQbFh2YWxmUTRlSkE/view?usp=sharing" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQbFh2YWxmUTRlSkE"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQbFh2YWxmUTRlSkE" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 Select the green __"Clone or download"__ button on the right. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQRFdyalE4LWp2b00=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQRFdyalE4LWp2b00=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQRFdyalE4LWp2b00"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQRFdyalE4LWp2b00" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 From here, there are two options to copy the files:
 
 a. Click the __"Download ZIP"__ button on the bottom right. Then pick a folder to save the zipped files to. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTTNITmV1a3UyY28=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTTNITmV1a3UyY28=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNlhWb3kzeU9tb2s=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNlhWb3kzeU9tb2s=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 Once the ZIP file is downloaded, open the file to reveal the contents. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQY3JEZjRaMzF1RTA=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQY3JEZjRaMzF1RTA=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 __OR__
 
 b.  Click the __"Git web URL"__ to highlight it and copy the URL. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNG1WZ3pHaWhhZWc=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNG1WZ3pHaWhhZWc=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
     
 Open terminal and __"cd"__ into the folder you want to save the files to.
 
@@ -58,33 +58,33 @@ Open terminal and __"cd"__ into the folder you want to save the files to.
     ```
     Clone the files into this folder by using the command __"git clone ***"__ and replace the "***" with the copied url. Press enter.
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQUnJoV05yaENPMEU=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQUnJoV05yaENPMEU=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 2. Now you have the source code. Open the application folder and find the file named __"Podfile"__. Open this file and make sure the target is the name of the application.
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQaERZcHl5T19lc1E=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQaERZcHl5T19lc1E=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 3. __"cd"__ into this application folder in terminal then enter the command __"pod install"__. This generates a workspace that can be opened in Xcode. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQZllTQ05ITXFranM=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQZllTQ05ITXFranM=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 4. Open the application workspace in Xcode ([Your_app_name].xcworkspace - NOT [Your_app_name].xcodeproj). 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQM2E5TWU2MVF4b3c=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQM2E5TWU2MVF4b3c=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 Once the code is indexed, you can run a simulation of the app. Click the play button in the top left of the screen and choose what device to run or simulate the program on. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQZVhTMVB6WXZGSk0=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQZVhTMVB6WXZGSk0=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 #### Optional app changes
 
 1. Theme color, native subscription, and enabling downloads are toggled/altered the same way. In Xcode, the left side has a folder directory. Navigate to the file __"ZypeCommon.h"__ from Zype>Zype>Utilities. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQU0xPbW15M1dlUEU=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQU0xPbW15M1dlUEU=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 2. Toward the top of the file, there are variables indicating the status of theme color, native subscription, and enabling downloads. Change the last word of the line to __"YES"__ or __"NO"__ to alter app appearance or presence of subscription or download functionality. 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTFBtZnZhNDhmb1U=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTFBtZnZhNDhmb1U=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id="><img src="https://drive.google.com/uc?export=view&id=" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 Light theme:
 
