@@ -22,7 +22,7 @@ The Apple Developer Program can be enrolled in via [Apple's website](https://dev
 
 1. In order to generate an iOS bundle using this SDK, you must first pull the latest source code from Zype's github repository. This can be found at "https://github.com/zype/zype-ios". 
 
-<a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQbFh2YWxmUTRlSkE=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQbFh2YWxmUTRlSkE=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/file/d/0BzMPADAfOuPQbFh2YWxmUTRlSkE/view?usp=sharing"><img src="https://drive.google.com/file/d/0BzMPADAfOuPQbFh2YWxmUTRlSkE/view?usp=sharing" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 Select the green __"Clone or download"__ button on the right. 
 
