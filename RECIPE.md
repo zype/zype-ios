@@ -35,8 +35,8 @@ a. Click the __"Download ZIP"__ button on the bottom right. Then pick a folder t
 <a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTTNITmV1a3UyY28=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTTNITmV1a3UyY28=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 <a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNlhWb3kzeU9tb2s=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNlhWb3kzeU9tb2s=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
-        
-    Once the ZIP file is downloaded, open the file to reveal the contents. 
+
+Once the ZIP file is downloaded, open the file to reveal the contents. 
 
 <a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQY3JEZjRaMzF1RTA=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQY3JEZjRaMzF1RTA=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
@@ -46,7 +46,7 @@ b.  Click the __"Git web URL"__ to highlight it and copy the URL.
 
 <a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNG1WZ3pHaWhhZWc=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQNG1WZ3pHaWhhZWc=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
     
-    Open terminal and __"cd"__ into the folder you want to save the files to.
+Open terminal and __"cd"__ into the folder you want to save the files to.
 
 ##### Helpful command line tips for Terminal
 
@@ -80,30 +80,34 @@ Once the code is indexed, you can run a simulation of the app. Click the play bu
 
 1. Theme color, native subscription, and enabling downloads are toggled/altered the same way. In Xcode, the left side has a folder directory. Navigate to the file __"ZypeCommon.h"__ from Zype>Zype>Utilities. 
 
-//insert image of file directory
 <a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQU0xPbW15M1dlUEU=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQU0xPbW15M1dlUEU=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 2. Toward the top of the file, there are variables indicating the status of theme color, native subscription, and enabling downloads. Change the last word of the line to __"YES"__ or __"NO"__ to alter app appearance or presence of subscription or download functionality. 
 
-//insert example of app changes
 <a href="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTFBtZnZhNDhmb1U=w1280-h651-iv1"><img src="https://lh3.google.com/u/0/d/0BzMPADAfOuPQTFBtZnZhNDhmb1U=w1280-h651-iv1" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 Light theme:
+
 #define kAppColorLight YES
 
 Dark theme:
+
 #define kAppColorLight NO
 
 Enable downloading:
+
 #define kDownloadsEnabled YES
 
 Disable downloading:
+
 #define kDownloadsEnabled NO
 
 Enable native subscription:
+
 #define kNativeSubscriptionEnabled YES
 
 Disable native subscription:
+
 #define kNativeSubscriptionEnabled NO
 
 #### Submitting to the Apple App Store
