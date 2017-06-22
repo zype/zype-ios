@@ -220,6 +220,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (self.avPlayer != nil && self.avPlayer.rate > 0.0f) {
         [self.avPlayer pause];
     }
+    
+    if (self.adsManager != nil) {
+        [self.adsManager pause];
+    }
 }
 
 
@@ -537,6 +541,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.avPlayer replaceCurrentItemWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
     }
     
+    self.contentPlayhead = [[IMAAVPlayerContentPlayhead alloc] initWithAVPlayer:self.avPlayer];
     //self.avPlayer = [AVPlayer playerWithURL:url];
     //Create PlayerViewController for player controls
     if (self.avPlayerController == nil) {
@@ -1058,22 +1063,48 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)requestAds {
-    NSString *currentTag;
-    if (self.adsArray.count > 0) {
-        NSLog(@"%@", self.adsArray.firstObject);
-        currentTag = [self.adsArray.firstObject valueForKey:@"tag"];
-    } else {
-        currentTag = kTestAppAdTagUrl;
-    }
-    // Create an ad display container for ad rendering.
-    IMAAdDisplayContainer *adDisplayContainer =
+    
+    __block IMAAdDisplayContainer *adDisplayContainer =
     [[IMAAdDisplayContainer alloc] initWithAdContainer:self.avPlayerController.view companionSlots:nil];
-    // Create an ad request with our ad tag, display container, and optional user context.
-    IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:currentTag
-                                                  adDisplayContainer:adDisplayContainer
-                                                     contentPlayhead:self.contentPlayhead
-                                                         userContext:nil];
-    [self.adsLoader requestAdsWithRequest:request];
+    __block NSMutableDictionary *adsDictionary = [[NSMutableDictionary alloc] init];
+
+    
+    BOOL isPrerollUsed = NO;
+    NSMutableArray *adOffsets = [[NSMutableArray alloc] init];
+    NSArray *requests = [[ACAdManager sharedInstance] adRequstsFromArray:self.adsArray];
+    
+    for (AdRequest *adRequest in requests) {
+        if (adRequest.offset == 0) {
+            isPrerollUsed = YES;
+            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:adRequest.tag
+                                                          adDisplayContainer:adDisplayContainer
+                                                             contentPlayhead:self.contentPlayhead
+                                                                 userContext:nil];
+            [self.adsLoader requestAdsWithRequest:request];
+        } else {
+            [adOffsets addObject:adRequest.offsetValue];
+            [adsDictionary setObject:adRequest.tag forKey:[NSString stringWithFormat:@"%d", (int)adRequest.offset]];
+        }
+    }
+    
+    if (adOffsets.count > 0) {
+        __weak typeof(self) weakSelf = self;
+        [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
+            //
+            int sec = CMTimeGetSeconds([weakSelf.avPlayer currentTime]);
+            NSString *tag = [adsDictionary objectForKey:[NSString stringWithFormat:@"%d", sec]];
+            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:tag
+                                                          adDisplayContainer:adDisplayContainer
+                                                             contentPlayhead:weakSelf.contentPlayhead
+                                                                 userContext:nil];
+            [weakSelf.adsLoader requestAdsWithRequest:request];
+        }];
+    }
+
+    if (!isPrerollUsed) {
+        [self.avPlayer play];
+    }
+
 }
 
 - (void)contentDidFinishPlaying:(NSNotification *)notification {

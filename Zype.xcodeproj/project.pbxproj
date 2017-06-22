@@ -143,6 +143,7 @@
 		FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */; };
 		FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */; };
 		FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */; };
+		FAC7B3DF1EFC496200C787E4 /* AdRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC7B3DE1EFC496200C787E4 /* AdRequest.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -373,6 +374,8 @@
 		FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableSectionDataSource.m; path = Models/TableSectionDataSource.m; sourceTree = "<group>"; };
 		FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Medium.ttf"; path = "Fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		FAC7B3DD1EFC496200C787E4 /* AdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdRequest.h; path = Models/AdRequest.h; sourceTree = "<group>"; };
+		FAC7B3DE1EFC496200C787E4 /* AdRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdRequest.m; path = Models/AdRequest.m; sourceTree = "<group>"; };
 		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -640,6 +643,8 @@
 				A13AF2BC1D36985A00DDA006 /* Video.m */,
 				A15D10CB1DE4CF3C00BAB958 /* PlaylistVideo.h */,
 				A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */,
+				FAC7B3DD1EFC496200C787E4 /* AdRequest.h */,
+				FAC7B3DE1EFC496200C787E4 /* AdRequest.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -964,6 +969,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAC7B3DF1EFC496200C787E4 /* AdRequest.m in Sources */,
 				780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */,
 				A13AF2BF1D36985A00DDA006 /* Favorite.m in Sources */,
 				FA4BA3331EF07629004985F6 /* IntroViewController.m in Sources */,
