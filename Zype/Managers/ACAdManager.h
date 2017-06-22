@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AdRequest.h"
+#import "AdObject.h"
 
 @interface ACAdManager : NSObject
 

@@ -77,6 +77,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic, strong) AVPlayerViewController *avPlayerController;
 
 @property (nonatomic) NSArray *adsArray;
+@property (nonatomic, strong) id playerObserver;
 
 @end
 
@@ -87,6 +88,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (self.playerObserver) {
+        [self.contentPlayhead.player removeTimeObserver:self.playerObserver];
+    }
     NSLog(@"Destroying");
     //remove the instance that was created in case of going to a full screen mode and back
     if (self.avPlayerController != nil) {
@@ -1073,23 +1078,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSMutableArray *adOffsets = [[NSMutableArray alloc] init];
     NSArray *requests = [[ACAdManager sharedInstance] adRequstsFromArray:self.adsArray];
     
-    for (AdRequest *adRequest in requests) {
-        if (adRequest.offset == 0) {
+    for (AdObject *adObject in requests) {
+        if (adObject.offset == 0) {
             isPrerollUsed = YES;
-            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:adRequest.tag
+            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:adObject.tag
                                                           adDisplayContainer:adDisplayContainer
                                                              contentPlayhead:self.contentPlayhead
                                                                  userContext:nil];
             [self.adsLoader requestAdsWithRequest:request];
         } else {
-            [adOffsets addObject:adRequest.offsetValue];
-            [adsDictionary setObject:adRequest.tag forKey:[NSString stringWithFormat:@"%d", (int)adRequest.offset]];
+            [adOffsets addObject:adObject.offsetValue];
+            [adsDictionary setObject:adObject.tag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
         }
     }
     
     if (adOffsets.count > 0) {
         __weak typeof(self) weakSelf = self;
-        [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
+        self.playerObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
             //
             int sec = CMTimeGetSeconds([weakSelf.avPlayer currentTime]);
             NSString *tag = [adsDictionary objectForKey:[NSString stringWithFormat:@"%d", sec]];

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CoreMedia.h>
 
-@interface AdRequest : NSObject
+@interface AdObject : NSObject
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 - (NSTimeInterval)offset;

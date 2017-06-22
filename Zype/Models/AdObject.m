@@ -6,10 +6,10 @@
 //  Copyright © 2017 Zype. All rights reserved.
 //
 
-#import "AdRequest.h"
+#import "AdObject.h"
 #import <AVFoundation/AVFoundation.h>
 
-@implementation AdRequest
+@implementation AdObject
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
