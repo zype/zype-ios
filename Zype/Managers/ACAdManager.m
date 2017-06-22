@@ -23,6 +23,16 @@
     
 }
 
+- (NSArray *)adRequstsFromArray:(NSArray *)array {
+    NSMutableArray *adRequests = [NSMutableArray array];
+    for (NSDictionary *item in array) {
+        AdObject *adObj = [[AdObject alloc] initWithDictionary:item];
+        [adRequests addObject:adObj];
+    }
+    
+    return adRequests;
+}
+
 #pragma mark - Singleton
 
 + (ACAdManager *)sharedInstance {
