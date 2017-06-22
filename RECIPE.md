@@ -86,29 +86,17 @@ Once the code is indexed, you can run a simulation of the app. Click the play bu
 
 <a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQTFBtZnZhNDhmb1U"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQTFBtZnZhNDhmb1U" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
-Light theme:
+Light theme: `#define kAppColorLight YES`
 
-#define kAppColorLight YES
+Dark theme: `#define kAppColorLight NO`
 
-Dark theme:
+Enable downloading: `#define kDownloadsEnabled YES`
 
-#define kAppColorLight NO
+Disable downloading: `#define kDownloadsEnabled NO`
 
-Enable downloading:
+Enable native subscription: `#define kNativeSubscriptionEnabled YES`
 
-#define kDownloadsEnabled YES
-
-Disable downloading:
-
-#define kDownloadsEnabled NO
-
-Enable native subscription:
-
-#define kNativeSubscriptionEnabled YES
-
-Disable native subscription:
-
-#define kNativeSubscriptionEnabled NO
+Disable native subscription: `#define kNativeSubscriptionEnabled NO`
 
 #### Submitting to the Apple App Store
 
