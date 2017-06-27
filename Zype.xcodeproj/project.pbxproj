@@ -376,6 +376,7 @@
 		FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		FAC7B3DD1EFC496200C787E4 /* AdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdObject.h; path = Models/AdObject.h; sourceTree = "<group>"; };
 		FAC7B3DE1EFC496200C787E4 /* AdObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdObject.m; path = Models/AdObject.m; sourceTree = "<group>"; };
+		FADC22ED1F00353D00DFFD4F /* Zype TV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Zype TV.entitlements"; sourceTree = "<group>"; };
 		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -584,6 +585,7 @@
 		F1BB52821A76D7D100E901F1 /* Zype */ = {
 			isa = PBXGroup;
 			children = (
+				FADC22ED1F00353D00DFFD4F /* Zype TV.entitlements */,
 				F1BB52AC1A76D99D00E901F1 /* Models */,
 				F1BB52AD1A76D9A300E901F1 /* Views */,
 				F1BB52AE1A76D9B800E901F1 /* View Controllers */,
@@ -829,6 +831,9 @@
 							com.apple.Push = {
 								enabled = 0;
 							};
+							com.apple.WAC = {
+								enabled = 0;
+							};
 						};
 					};
 				};
@@ -931,7 +936,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		780AC7031BDFD284007F1119 /* ShellScript */ = {

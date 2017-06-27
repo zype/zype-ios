@@ -21,6 +21,7 @@
 #import "HighlightsViewController.h"
 #import "GAI.h"
 #import "ACPurchaseManager.h"
+#import <GoogleCast/GoogleCast.h>
 
 #import "UIColor+AC.h"
 
@@ -48,6 +49,10 @@
 //    if (![kOneSignalNotificationsKey isEqualToString:@""]){
 //        self.oneSignal = [[OneSignal alloc] initWithLaunchOptions:launchOptions appId:kOneSignalNotificationsKey handleNotification:nil];
 //    }
+    
+    GCKCastOptions *options = [[GCKCastOptions alloc] initWithReceiverApplicationID:kGCKMediaDefaultReceiverApplicationID];
+    [GCKCastContext setSharedInstanceWithOptions:options];
+    
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
@@ -103,6 +108,23 @@
     [[ACSPersistenceManager sharedInstance] saveContext];
 }
 
+#pragma mark - GCast
+
+- (void)setCastControlBarsEnabled:(BOOL)notificationsEnabled {
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC =
+    (GCKUICastContainerViewController *)self.window.rootViewController;
+    castContainerVC.miniMediaControlsItemEnabled = notificationsEnabled;
+}
+
+- (BOOL)castControlBarsEnabled {
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC =
+    (GCKUICastContainerViewController *)self.window.rootViewController;
+    return castContainerVC.miniMediaControlsItemEnabled;
+}
+
+
 #pragma mark - Init App
 
 
@@ -153,6 +175,13 @@
     // Set tab bar delegate
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     tabBarController.delegate = self;
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC = [[GCKCastContext sharedInstance]
+                       createCastContainerControllerForViewController:tabBarController];
+    castContainerVC.miniMediaControlsItemEnabled = YES;
+    [GCKCastContext sharedInstance].useDefaultExpandedMediaControls = YES;
+    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.window.rootViewController = castContainerVC;
     self.tabIndex = 0;
 }
 

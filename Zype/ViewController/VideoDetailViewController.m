@@ -32,6 +32,7 @@
 #import "Timing.h"
 #import "PlaybackSource.h"
 #import "TableSectionDataSource.h"
+#import <GoogleCast/GoogleCast.h>
 
 #import "TLIndexPathController.h"
 #import "TLIndexPathItem.h"
@@ -40,6 +41,12 @@
 #import "NSURLResponse+AK.h"
 #import "ACStatusManager.h"
 #import "UIUtil.h"
+
+typedef NS_ENUM(NSInteger, PlaybackMode) {
+    PlaybackModeNone = 0,
+    PlaybackModeLocal,
+    PlaybackModeRemote
+};
 
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =
@@ -51,12 +58,17 @@ NSString *const kTestAppAdTagUrl =
 static NSString *GuestCellIdentifier = @"GuestCell";
 static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
-@interface VideoDetailViewController ()<ACActionSheetManagerDelegate, TLIndexPathControllerDelegate, OptionTableViewCellDelegate>
+@interface VideoDetailViewController ()<ACActionSheetManagerDelegate,
+                                        TLIndexPathControllerDelegate,
+                                        OptionTableViewCellDelegate,
+                                        GCKSessionManagerListener,
+                                        GCKRemoteMediaClientListener>
 
 @property (strong, nonatomic) TLIndexPathController *indexPathController;
 //@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
 //@property (strong, nonatomic) PlaybackSource *audioPlaybackSource;
 @property (strong, nonatomic) NSArray *playbackSources;
+@property (strong, nonatomic) PlaybackSource *remotePlaybackSource;
 
 @property (strong, nonatomic) UIAlertView *alertViewStreaming;
 @property (strong, nonatomic) UIAlertView *alertViewDownload;
@@ -75,6 +87,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic, strong) NSMutableArray *optionsDataSource;
 
 @property (nonatomic, strong) AVPlayerViewController *avPlayerController;
+
+@property (nonatomic, strong) GCKSessionManager *sessionManager;
+@property (nonatomic, assign) PlaybackMode playbackMode;
+@property (nonatomic, strong) GCKCastSession *castSession;
+@property (nonatomic, strong) GCKUIMediaController *castMediaController;
+@property (nonatomic, strong) GCKMediaInformation *mediaInfo;
+@property (nonatomic, assign) BOOL localPlaybackImplicitlyPaused;
 
 @property (nonatomic) NSArray *adsArray;
 @property (nonatomic, strong) id playerObserver;
@@ -114,6 +133,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     self.actionSheetManager = [ACActionSheetManager new];
     self.actionSheetManager.delegate = self;
+    
+    self.sessionManager = [GCKCastContext sharedInstance].sessionManager;
+    [self.sessionManager addListener:self];
+    self.castMediaController = [[GCKUIMediaController alloc] init];
+    self.playbackMode = PlaybackModeNone;
     
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;
@@ -156,6 +180,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
                 [self.optionsDataSource addObject:downloadItem];
             }
+            
+            self.remotePlaybackSource = [self urlPlaybackSources:self.playbackSources];
+            [self configureCast];
         }
     }
     
@@ -181,6 +208,18 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.tableViewOptions reloadData];
 }
 
+- (PlaybackSource *)urlPlaybackSources:(NSArray *)sources {
+    PlaybackSource *first = (PlaybackSource *)sources.firstObject;
+    
+    for (PlaybackSource *source in sources) {
+        if ([source.fileType isEqualToString:@"mp4"]) {
+            return source;
+        }
+    }
+    
+    return first;
+}
+
 - (void)moviePlayerDidReachedEnd:(NSNotification*) notification{
     if([notification.userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue] == MPMovieFinishReasonPlaybackEnded && notification.object == self.player) {
         self.isReachedEnd = YES;
@@ -190,10 +229,39 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    //appDelegate.castControlBarsEnabled = YES;
     if (!self.isPlaying){
         [self initPlayer];
     }
+
+}
+
+- (void)configureCast {
     
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    appDelegate.castControlBarsEnabled = YES;
+
+    if ((_playbackMode == PlaybackModeLocal) && _localPlaybackImplicitlyPaused) {
+//        if (!self.isPlaying){
+//            [self initPlayer];
+//        }
+        _localPlaybackImplicitlyPaused = NO;
+    }
+    
+    // Do we need to switch modes? If we're in remote playback mode but no longer
+    // have a session, then switch to local playback mode. If we're in local mode
+    // but now have a session, then switch to remote playback mode.
+    BOOL hasConnectedSession = (_sessionManager.hasConnectedSession);
+    if (hasConnectedSession && (_playbackMode != PlaybackModeRemote)) {
+        [self populateMediaInfo:NO playPosition:0];
+        [self switchToRemotePlayback];
+    } else if ((_sessionManager.currentSession == nil) &&
+               (_playbackMode != PlaybackModeLocal)) {
+        [self switchToLocalPlayback];
+    }
+    
+    [_sessionManager addListener:self];
+    [[GCKCastContext sharedInstance] presentCastInstructionsViewControllerOnce];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -250,6 +318,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.isDownloadStarted = NO;
     [self.imageThumbnail setHidden:YES];
     [self configureColors];
+    
+    GCKUICastButton *castButton = [[GCKUICastButton alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    self.navigationItem.rightBarButtonItem =
+    [[UIBarButtonItem alloc] initWithCustomView:castButton];
     
 }
 
@@ -456,6 +528,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 CLS_LOG(@"Failed: %@", localError);
             } else {
                 PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                self.remotePlaybackSource = source;
+
+                
+                
+                
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                 CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
 
@@ -473,16 +550,50 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                     //check if view is visible to avoid playing on background
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
-                        if (source != nil && source.urlString != nil) {
-                            [self playVideoFromSource:source];
-                        }else{
-                            [self playStreamingAudio];
+                        
+                        if (self.sessionManager.currentSession) {
+                            [self playSelectedItemRemotely];
+                        } else {
+                            if (source != nil && source.urlString != nil) {
+                                [self playVideoFromSource:source];
+                            } else {
+                                [self playStreamingAudio];
+                            }
                         }
                     }
                 }
             }
         }
     }];
+}
+
+- (void)setCastSession:(PlaybackSource *)source {
+    GCKCastSession *session = [GCKCastContext sharedInstance].sessionManager.currentCastSession;
+    
+    if (session) {
+        NSLog(@"self.video.thumbnailUrl : %@", self.video.thumbnailUrl);
+        
+        GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] initWithMetadataType:GCKMediaMetadataTypeMovie];
+        [metadata setString:self.video.title forKey:kGCKMetadataKeyTitle];
+        [metadata setString:self.video.short_description forKey:kGCKMetadataKeySubtitle];
+        
+        [metadata addImage:[[GCKImage alloc] initWithURL:[NSURL URLWithString:@"https://dn6n6v96hl9ri.cloudfront.net/wp-content/uploads/2016/05/16153142/compound-media-logo.png"]
+                                                   width:600
+                                                  height:600]];
+        
+        GCKMediaInformation *mediaInfo = [[GCKMediaInformation alloc]
+                                          initWithContentID:source.urlString
+                                          streamType:GCKMediaStreamTypeBuffered
+                                          contentType:source.fileType
+                                          metadata:metadata
+                                          streamDuration:1.0
+                                          mediaTracks:nil
+                                          textTrackStyle:nil
+                                          customData:nil];
+        
+        [session.remoteMediaClient loadMedia:mediaInfo
+                                    autoplay:YES];
+    }
 }
 
 - (void)playStreamingAudio{
@@ -728,9 +839,189 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+#pragma mark - GCKSessionManagerListener
+
+//- (void)playSelectedItemRemotely {
+//    GCKCastSession *castSession =
+//    [GCKCastContext sharedInstance].sessionManager.currentCastSession;
+//    if (self.sessionManager) {
+//        [castSession.remoteMediaClient loadMedia:[self buildMediaInformation]
+//                                        autoplay:YES];
+//    } else {
+//        NSLog(@"no castSession!");
+//    }
+//}
+
+- (GCKMediaInformation *)buildMediaInformation {
+    GCKMediaMetadata *metadata =
+    [[GCKMediaMetadata alloc] initWithMetadataType:GCKMediaMetadataTypeMovie];
+    [metadata setString:self.video.title forKey:kGCKMetadataKeyTitle];
+    [metadata setString:self.video.short_description forKey:kGCKMetadataKeySubtitle];
+    
+    [metadata addImage:[[GCKImage alloc] initWithURL:[NSURL URLWithString:self.video.thumbnailUrl]
+                                               width:600
+                                              height:600]];
+    
+    self.mediaInfo = [[GCKMediaInformation alloc]
+                                      initWithContentID:self.remotePlaybackSource.urlString
+                                      streamType:GCKMediaStreamTypeBuffered
+                                      contentType:self.remotePlaybackSource.fileType
+                                      metadata:metadata
+                                      streamDuration:1.0
+                                      mediaTracks:nil
+                                      textTrackStyle:nil
+                                      customData:nil];
+    
+    return self.mediaInfo;
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didStartSession:(GCKSession *)session {
+    NSLog(@"MediaViewController: sessionManager didStartSession %@", session);
+    [self switchToRemotePlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didResumeSession:(GCKSession *)session {
+    NSLog(@"MediaViewController: sessionManager didResumeSession %@", session);
+    [self switchToRemotePlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didEndSession:(GCKSession *)session withError:(NSError *)error {
+    NSLog(@"session ended with error: %@", error);
+    NSString *message = [NSString stringWithFormat:@"The Casting session has ended.\n%@", [error description]];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    [self switchToLocalPlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didFailToStartSessionWithError:(NSError *)error {
+    [self switchToLocalPlayback];
+}
+
+- (void)switchToLocalPlayback {
+    NSLog(@"switchToLocalPlayback");
+    
+    if (_playbackMode == PlaybackModeLocal) {
+        return;
+    }
+    
+    NSTimeInterval playPosition = 0;
+    BOOL paused = NO;
+    BOOL ended = NO;
+    if (_playbackMode == PlaybackModeRemote) {
+        playPosition = _castMediaController.lastKnownStreamPosition;
+        paused = (_castMediaController.lastKnownPlayerState ==
+                  GCKMediaPlayerStatePaused);
+        ended = (_castMediaController.lastKnownPlayerState == GCKMediaPlayerStateIdle);
+        NSLog(@"last player state: %ld, ended: %d",
+              (long)_castMediaController.lastKnownPlayerState, ended);
+    }
+    
+    [self populateMediaInfo:(!paused && !ended) playPosition:playPosition];
+    
+    [_castSession.remoteMediaClient removeListener:self];
+    _castSession = nil;
+    _playbackMode = PlaybackModeLocal;
+}
+
+- (void)populateMediaInfo:(BOOL)ended playPosition:(CGFloat)position {
+    if (!self.isPlaying){
+        [self initPlayer];
+    }
+}
+
+- (void)switchToRemotePlayback {
+    //NSLog(@"switchToRemotePlayback; mediaInfo is %@", self.mediaInfo);
+    
+    if (_playbackMode == PlaybackModeRemote) {
+        return;
+    }
+    
+    if ([_sessionManager.currentSession isKindOfClass:[GCKCastSession class]]) {
+        _castSession = (GCKCastSession *)_sessionManager.currentSession;
+    }
+    
+    _castSession = _sessionManager.currentCastSession;
+    _mediaInfo = [self buildMediaInformation];
+    // If we were playing locally, load the local media on the remote player
+    if ((self.playbackMode == PlaybackModeLocal) && self.mediaInfo) {
+        
+        self.navigationItem.backBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@""
+                                         style:UIBarButtonItemStylePlain
+                                        target:nil
+                                        action:nil];
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        if (appDelegate.castControlBarsEnabled) {
+            appDelegate.castControlBarsEnabled = NO;
+        }
+        [[GCKCastContext sharedInstance] presentDefaultExpandedMediaControls];
+        
+        NSLog(@"loading media: %@", self.mediaInfo);
+        NSTimeInterval playPosition = CMTimeGetSeconds(self.avPlayer.currentTime);
+//        BOOL paused = (self.avPlayer.rate == 0);
+//        GCKMediaQueueItemBuilder *builder = [[GCKMediaQueueItemBuilder alloc] init];
+//        builder.mediaInformation = [self buildMediaInformation];
+//        builder.autoplay = !paused;
+//        builder.preloadTime = [[NSUserDefaults standardUserDefaults] integerForKey:@"2"];
+//        GCKMediaQueueItem *item = [builder build];
+//        
+//        [_castSession.remoteMediaClient queueLoadItems:@[ item ]
+//                                            startIndex:0
+//                                          playPosition:playPosition
+//                                            repeatMode:GCKMediaRepeatModeOff
+//                                            customData:nil];
+        [_castSession.remoteMediaClient loadMedia:  _mediaInfo
+                                                    autoplay:YES
+                                                    playPosition:playPosition];
+    }
+    [self.avPlayer pause];
+    //[_localPlayerView showSplashScreen];
+    _playbackMode = PlaybackModeRemote;
+}
+
+- (BOOL)continueAfterPlayButtonClicked {
+    NSLog(@"continueAfterPlayButtonClicked");
+    BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
+    if (self.mediaInfo && hasConnectedCastSession) {
+        [self playSelectedItemRemotely];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)playSelectedItemRemotely {
+    GCKCastSession *castSession = [GCKCastContext sharedInstance].sessionManager.currentCastSession;
+    if (castSession) {
+        [castSession.remoteMediaClient loadMedia:[self buildMediaInformation]
+                                        autoplay:YES];
+//        self.navigationItem.backBarButtonItem =
+//        [[UIBarButtonItem alloc] initWithTitle:@""
+//                                         style:UIBarButtonItemStylePlain
+//                                        target:nil
+//                                        action:nil];
+//        AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+//        if (appDelegate.castControlBarsEnabled) {
+//            appDelegate.castControlBarsEnabled = NO;
+//        }
+//        [[GCKCastContext sharedInstance] presentDefaultExpandedMediaControls];
+    } else {
+        NSLog(@"no castSession!");
+    }
+}
+
+#pragma mark - GCKRemoteMediaClientListener
+
+- (void)remoteMediaClient:(GCKRemoteMediaClient *)player
+     didUpdateMediaStatus:(GCKMediaStatus *)mediaStatus {
+    self.mediaInfo = mediaStatus.mediaInformation;
+}
+
 #pragma mark - Status
 
-- (void)setPlayingStatus{
+- (void)setPlayingStatus {
     
     if (self.video.isPlayed.boolValue == NO && self.video.isPlaying.boolValue == NO) {
         
