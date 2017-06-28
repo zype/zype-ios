@@ -35,4 +35,20 @@
 
 }
 
++ (UIViewController *)subscriptionViewController {
+    
+    UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
+    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SubscriptionViewController"];
+    return viewController;
+    
+}
+
++ (UIViewController *)signInViewController {
+    
+    UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
+    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"signInViewController"];
+    return viewController;
+    
+}
+
 @end

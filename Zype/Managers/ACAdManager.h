@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AdObject.h"
 
 @interface ACAdManager : NSObject
 
 @property (nonatomic) NSArray* adSchedule;
 
 - (NSArray *)adsArrayFromParsedDictionary:(NSDictionary *)dictionary;
+- (NSArray *)adRequstsFromArray:(NSArray *)array;
 
 //Singleton
 + (ACAdManager *)sharedInstance;

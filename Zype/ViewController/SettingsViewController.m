@@ -18,10 +18,13 @@
 #import "Timing.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
+#import "TableSectionDataSource.h"
+
 
 @interface SettingsViewController ()
 @property (strong, nonatomic) UISwitch *switchAutoDownload;
 @property (strong, nonatomic) UISwitch *switchNotification;
+@property (strong, nonatomic) NSMutableArray *settingsDataSource;
 
 @end
 
@@ -31,6 +34,7 @@
     [super viewDidLoad];
     self.screenName = @"Settings";
     [self configureView];
+    [self configureSettings];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -50,6 +54,35 @@
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) [self.buttonSignOut setHidden:NO];
     else [self.buttonSignOut setHidden:YES];
     [self customizeAppearance];
+}
+
+- (void)configureSettings {
+    self.settingsDataSource = [[NSMutableArray alloc] init];
+    TableSectionDataSource *termsOfServise = [[TableSectionDataSource alloc] init];
+    termsOfServise.title = @"Terms of Service & Privacy";
+    termsOfServise.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    termsOfServise.type = TermsOfService;
+    [self.settingsDataSource addObject:termsOfServise];
+    
+    if (kNativeSubscriptionEnabled) {
+        TableSectionDataSource *restorePurchase = [[TableSectionDataSource alloc] init];
+        restorePurchase.title = @"Restore Purchase";
+        restorePurchase.type = RestorePurchase;
+        [self.settingsDataSource addObject:restorePurchase];
+    }
+    
+    TableSectionDataSource *version = [[TableSectionDataSource alloc] init];
+    version.title = @"Version";
+    UILabel *labelVersion = [[UILabel alloc] init];
+    NSString *versionText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    labelVersion.text = versionText;
+    if (!kAppColorLight) labelVersion.textColor = [UIColor whiteColor];
+    [labelVersion sizeToFit];
+    version.accessoryView = labelVersion;
+    version.type = Version;
+    [self.settingsDataSource addObject:version];
+    
+    [self.tableView reloadData];
 }
 
 - (void)customizeAppearance {
@@ -218,7 +251,7 @@
         /*if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f) return 2;
          else return 3;*/
     }
-    else if (section == 1) return 3;
+    else if (section == 1) return self.settingsDataSource.count;
     else return 0;
 }
 
@@ -262,37 +295,41 @@
         }
     }
     else if (indexPath.section == 1) {
-        switch (indexPath.row) {
-            case 0: {
-                cell.textLabel.text = @"Terms of Service & Privacy";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
-                break;
-            case 1:
-            {
-                cell.textLabel.text = @"Restore Purchases";
-            }
-                break;
-            case 2:
-            {
-                cell.textLabel.text = @"Version";
-                UILabel *labelVersion = [[UILabel alloc] init];
-                NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-                labelVersion.text = version;
-                if (kAppColorLight){
-                    
-                } else {
-                    labelVersion.textColor = [UIColor whiteColor];
-                }
-                
-                [labelVersion sizeToFit];
-                cell.accessoryView = labelVersion;
-                break;
-                //cell.textLabel.text = @"Powered By Zype";
-            }
-                break;
-                
-        }
+        TableSectionDataSource *item = self.settingsDataSource[indexPath.row];
+        cell.textLabel.text = item.title;
+        cell.accessoryView = item.accessoryView;
+        cell.accessoryType = item.accessoryType;
+//        switch (indexPath.row) {
+//            case 0: {
+//                cell.textLabel.text = @"Terms of Service & Privacy";
+//                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            }
+//                break;
+//            case 1:
+//            {
+//                cell.textLabel.text = @"Restore Purchases";
+//            }
+//                break;
+//            case 2:
+//            {
+//                cell.textLabel.text = @"Version";
+//                UILabel *labelVersion = [[UILabel alloc] init];
+//                NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+//                labelVersion.text = version;
+//                if (kAppColorLight){
+//                    
+//                } else {
+//                    labelVersion.textColor = [UIColor whiteColor];
+//                }
+//                
+//                [labelVersion sizeToFit];
+//                cell.accessoryView = labelVersion;
+//                break;
+//                //cell.textLabel.text = @"Powered By Zype";
+//            }
+//                break;
+//                
+//        }
     }
     
     return cell;
@@ -348,28 +385,36 @@
         self.switchNotification.on = !self.switchNotification.on;
         [[NSUserDefaults standardUserDefaults] setBool:self.switchNotification.on forKey:kSettingKey_LiveShowNotification];
     }
-    else if (indexPath.section == 1 && indexPath.row == 0)
+    else if (indexPath.section == 1)
     {
-        NSString *htmlString = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_Terms];
+        TableSectionDataSource *item = self.settingsDataSource[indexPath.row];
+        switch (item.type) {
+            case TermsOfService: {
+                NSString *htmlString = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_Terms];
+                
+                UIViewController *viewController = [UIViewController new];
+                viewController.view.frame = self.view.bounds;
+                
+                UIWebView *webview = [UIWebView new];
+                webview.frame = viewController.view.bounds;
+                
+                [viewController.view addSubview:webview];
+                
+                [webview loadHTMLString:htmlString baseURL:nil];
+                [self.navigationController pushViewController:viewController animated:YES];
+                
+                break;
+            }
+
+            case RestorePurchase:
+                [self restorePurchases];
+                break;
+            default:
+                break;
+        }
         
-        UIViewController *viewController = [UIViewController new];
-        viewController.view.frame = self.view.bounds;
-        
-        UIWebView *webview = [UIWebView new];
-        webview.frame = viewController.view.bounds;
-        
-        [viewController.view addSubview:webview];
-        
-        [webview loadHTMLString:htmlString baseURL:nil];
-        [self.navigationController pushViewController:viewController animated:YES];
-        
-    }
-    else if (indexPath.section == 1 && indexPath.row == 1)
-    {
-        [self restorePurchases];
-        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:kZypeURL]];
-    }
-    else {
+
+    } else {
         [self performSegueWithIdentifier:@"showSettingsDetail" sender:self];
     }
     

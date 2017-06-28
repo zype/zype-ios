@@ -12,4 +12,7 @@
 + (UIViewController *)videoDetailViewController;
 + (UIViewController *)videosViewController;
 + (UIViewController *)homeViewController;
++ (UIViewController *)subscriptionViewController;
++ (UIViewController *)signInViewController;
+
 @end

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="OptionTableViewCell" id="KGk-i7-Jjw" customClass="OptionTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Y0-n4-dCc">
+                        <rect key="frame" x="16" y="14" width="67" height="17"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                        <color key="textColor" red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ms-1h-msr">
+                        <rect key="frame" x="135" y="21" width="160" height="2"/>
+                    </progressView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="6Ms-1h-msr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="135" id="24M-Ss-kXo"/>
+                    <constraint firstItem="1Y0-n4-dCc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="7qT-9l-2Ue"/>
+                    <constraint firstItem="1Y0-n4-dCc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Yyw-YE-wgd"/>
+                    <constraint firstAttribute="trailing" secondItem="6Ms-1h-msr" secondAttribute="trailing" constant="25" id="eyM-30-2bp"/>
+                    <constraint firstItem="6Ms-1h-msr" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nzc-Mc-SuH"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="progressView" destination="6Ms-1h-msr" id="xvY-z5-WC9"/>
+                <outlet property="titleLabel" destination="1Y0-n4-dCc" id="XGm-5z-JRd"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

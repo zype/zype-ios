@@ -129,16 +129,21 @@
 		A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */; };
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
-		FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */; };
-		FA1DFD9D1EA3622800F10870 /* SubsciptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1DFD9C1EA3622800F10870 /* SubsciptionViewController.m */; };
-		FA1DFDA11EA3A76B00F10870 /* SubscriptActiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1DFD9F1EA3A76B00F10870 /* SubscriptActiveCell.m */; };
-		FA1DFDA21EA3A76B00F10870 /* SubscriptActiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */; };
-		FA4CD6E41EA9FAAF0042F3B8 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */; };
-		FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */; };
-		FAA68AB71ECF703500F593B4 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAA68AB61ECF703500F593B4 /* Roboto-Medium.ttf */; };
-		FAA68AB91ECF704000F593B4 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAA68AB81ECF704000F593B4 /* Roboto-Regular.ttf */; };
-		FABFC4B21ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */; };
-		FABFC4B51ECB44DE0008F3D0 /* CustomizeThemeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FABFC4B41ECB44DE0008F3D0 /* CustomizeThemeTextField.m */; };
+		FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */; };
+		FA4BA3221EF0754C004985F6 /* CustomizeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31F1EF0754C004985F6 /* CustomizeImageView.m */; };
+		FA4BA3231EF0754C004985F6 /* CustomizeThemeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3211EF0754C004985F6 /* CustomizeThemeTextField.m */; };
+		FA4BA3271EF07586004985F6 /* OptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3251EF07586004985F6 /* OptionTableViewCell.m */; };
+		FA4BA3281EF07586004985F6 /* OptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA3261EF07586004985F6 /* OptionTableViewCell.xib */; };
+		FA4BA32C1EF075B9004985F6 /* SubscriptActiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA32A1EF075B9004985F6 /* SubscriptActiveCell.m */; };
+		FA4BA32D1EF075B9004985F6 /* SubscriptActiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA32B1EF075B9004985F6 /* SubscriptActiveCell.xib */; };
+		FA4BA3301EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA32F1EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m */; };
+		FA4BA3331EF07629004985F6 /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3321EF07629004985F6 /* IntroViewController.m */; };
+		FA4BA3361EF0764B004985F6 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3351EF0764B004985F6 /* RegisterViewController.m */; };
+		FA4BA3391EF0766C004985F6 /* SubsciptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3381EF0766C004985F6 /* SubsciptionViewController.m */; };
+		FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */; };
+		FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */; };
+		FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */; };
+		FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC7B3DE1EFC496200C787E4 /* AdObject.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -345,23 +350,32 @@
 		F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "Fonts/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
-		FA04A3EF1E9D4F95008E7BAC /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
-		FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
-		FA1DFD9B1EA3622800F10870 /* SubsciptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubsciptionViewController.h; sourceTree = "<group>"; };
-		FA1DFD9C1EA3622800F10870 /* SubsciptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubsciptionViewController.m; sourceTree = "<group>"; };
-		FA1DFD9E1EA3A76B00F10870 /* SubscriptActiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptActiveCell.h; sourceTree = "<group>"; };
-		FA1DFD9F1EA3A76B00F10870 /* SubscriptActiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptActiveCell.m; sourceTree = "<group>"; };
-		FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscriptActiveCell.xib; sourceTree = "<group>"; };
-		FA4CD6E21EA9FAAF0042F3B8 /* ACPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPurchaseManager.h; sourceTree = "<group>"; };
-		FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPurchaseManager.m; sourceTree = "<group>"; };
-		FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
-		FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
-		FAA68AB61ECF703500F593B4 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
-		FAA68AB81ECF704000F593B4 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
-		FABFC4B01ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UIView_CustomizeTheme.h"; sourceTree = "<group>"; };
-		FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UIView_CustomizeTheme.m"; sourceTree = "<group>"; };
-		FABFC4B31ECB44DE0008F3D0 /* CustomizeThemeTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomizeThemeTextField.h; sourceTree = "<group>"; };
-		FABFC4B41ECB44DE0008F3D0 /* CustomizeThemeTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomizeThemeTextField.m; sourceTree = "<group>"; };
+		FA4BA31B1EF07472004985F6 /* ACPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACPurchaseManager.h; path = Managers/ACPurchaseManager.h; sourceTree = "<group>"; };
+		FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACPurchaseManager.m; path = Managers/ACPurchaseManager.m; sourceTree = "<group>"; };
+		FA4BA31E1EF0754C004985F6 /* CustomizeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomizeImageView.h; path = Views/CustomizeImageView.h; sourceTree = "<group>"; };
+		FA4BA31F1EF0754C004985F6 /* CustomizeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomizeImageView.m; path = Views/CustomizeImageView.m; sourceTree = "<group>"; };
+		FA4BA3201EF0754C004985F6 /* CustomizeThemeTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomizeThemeTextField.h; path = Views/CustomizeThemeTextField.h; sourceTree = "<group>"; };
+		FA4BA3211EF0754C004985F6 /* CustomizeThemeTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomizeThemeTextField.m; path = Views/CustomizeThemeTextField.m; sourceTree = "<group>"; };
+		FA4BA3241EF07586004985F6 /* OptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OptionTableViewCell.h; path = Views/OptionTableViewCell.h; sourceTree = "<group>"; };
+		FA4BA3251EF07586004985F6 /* OptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OptionTableViewCell.m; path = Views/OptionTableViewCell.m; sourceTree = "<group>"; };
+		FA4BA3261EF07586004985F6 /* OptionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OptionTableViewCell.xib; path = Views/OptionTableViewCell.xib; sourceTree = "<group>"; };
+		FA4BA3291EF075B9004985F6 /* SubscriptActiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SubscriptActiveCell.h; path = Views/SubscriptActiveCell.h; sourceTree = "<group>"; };
+		FA4BA32A1EF075B9004985F6 /* SubscriptActiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SubscriptActiveCell.m; path = Views/SubscriptActiveCell.m; sourceTree = "<group>"; };
+		FA4BA32B1EF075B9004985F6 /* SubscriptActiveCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SubscriptActiveCell.xib; path = Views/SubscriptActiveCell.xib; sourceTree = "<group>"; };
+		FA4BA32E1EF075F3004985F6 /* UIView+UIView_CustomizeTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+UIView_CustomizeTheme.h"; path = "Categories/UIView+UIView_CustomizeTheme.h"; sourceTree = "<group>"; };
+		FA4BA32F1EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+UIView_CustomizeTheme.m"; path = "Categories/UIView+UIView_CustomizeTheme.m"; sourceTree = "<group>"; };
+		FA4BA3311EF07629004985F6 /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IntroViewController.h; path = ViewController/IntroViewController.h; sourceTree = "<group>"; };
+		FA4BA3321EF07629004985F6 /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IntroViewController.m; path = ViewController/IntroViewController.m; sourceTree = "<group>"; };
+		FA4BA3341EF0764B004985F6 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterViewController.h; path = ViewController/RegisterViewController.h; sourceTree = "<group>"; };
+		FA4BA3351EF0764B004985F6 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterViewController.m; path = ViewController/RegisterViewController.m; sourceTree = "<group>"; };
+		FA4BA3371EF0766C004985F6 /* SubsciptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SubsciptionViewController.h; path = ViewController/SubsciptionViewController.h; sourceTree = "<group>"; };
+		FA4BA3381EF0766C004985F6 /* SubsciptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SubsciptionViewController.m; path = ViewController/SubsciptionViewController.m; sourceTree = "<group>"; };
+		FA4BA33A1EF07695004985F6 /* TableSectionDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableSectionDataSource.h; path = Models/TableSectionDataSource.h; sourceTree = "<group>"; };
+		FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableSectionDataSource.m; path = Models/TableSectionDataSource.m; sourceTree = "<group>"; };
+		FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Medium.ttf"; path = "Fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		FAC7B3DD1EFC496200C787E4 /* AdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdObject.h; path = Models/AdObject.h; sourceTree = "<group>"; };
+		FAC7B3DE1EFC496200C787E4 /* AdObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdObject.m; path = Models/AdObject.m; sourceTree = "<group>"; };
 		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -469,14 +483,14 @@
 				A13AF3411D369CC600DDA006 /* ACSAlertViewManager.m */,
 				A13AF3421D369CC600DDA006 /* ACSDataManager.h */,
 				A13AF3431D369CC600DDA006 /* ACSDataManager.m */,
+				FA4BA31B1EF07472004985F6 /* ACPurchaseManager.h */,
+				FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */,
 				A13AF3441D369CC600DDA006 /* ACShareManager.h */,
 				A13AF3451D369CC600DDA006 /* ACShareManager.m */,
 				A13AF3461D369CC600DDA006 /* ACSNotificationsManager.h */,
 				A13AF3471D369CC600DDA006 /* ACSNotificationsManager.m */,
 				A13AF3481D369CC600DDA006 /* ACSPersistenceManager.h */,
 				A13AF3491D369CC600DDA006 /* ACSPersistenceManager.m */,
-				FA4CD6E21EA9FAAF0042F3B8 /* ACPurchaseManager.h */,
-				FA4CD6E31EA9FAAF0042F3B8 /* ACPurchaseManager.m */,
 				A13AF34A1D369CC600DDA006 /* ACStatusManager.h */,
 				A13AF34B1D369CC600DDA006 /* ACStatusManager.m */,
 				A13AF34C1D369CC600DDA006 /* ACSTokenManager.h */,
@@ -508,8 +522,8 @@
 				A13AF3681D369D1F00DDA006 /* UIViewController+AC.m */,
 				A136221B1D51133200866742 /* NSURLResponse+AK.h */,
 				A136221C1D51133200866742 /* NSURLResponse+AK.m */,
-				FABFC4B01ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.h */,
-				FABFC4B11ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m */,
+				FA4BA32E1EF075F3004985F6 /* UIView+UIView_CustomizeTheme.h */,
+				FA4BA32F1EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -619,6 +633,8 @@
 				A13AF2B41D36985A00DDA006 /* PlaybackSource.m */,
 				A13AF2B51D36985A00DDA006 /* Playlist.h */,
 				A13AF2B61D36985A00DDA006 /* Playlist.m */,
+				FA4BA33A1EF07695004985F6 /* TableSectionDataSource.h */,
+				FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */,
 				A13AF2B71D36985A00DDA006 /* Timeline.h */,
 				A13AF2B81D36985A00DDA006 /* Timeline.m */,
 				A13AF2B91D36985A00DDA006 /* Timing.h */,
@@ -627,6 +643,8 @@
 				A13AF2BC1D36985A00DDA006 /* Video.m */,
 				A15D10CB1DE4CF3C00BAB958 /* PlaylistVideo.h */,
 				A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */,
+				FAC7B3DD1EFC496200C787E4 /* AdObject.h */,
+				FAC7B3DE1EFC496200C787E4 /* AdObject.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -639,9 +657,11 @@
 				A13AF2C91D36995000DDA006 /* ACSEpisodeCollectionViewCell.xib */,
 				A13AF2CB1D36995000DDA006 /* BorderedTextField.h */,
 				A13AF2CC1D36995000DDA006 /* BorderedTextField.m */,
-				FABFC4B31ECB44DE0008F3D0 /* CustomizeThemeTextField.h */,
-				FABFC4B41ECB44DE0008F3D0 /* CustomizeThemeTextField.m */,
 				A13AF2CD1D36995000DDA006 /* BottomBorderTextField.swift */,
+				FA4BA31E1EF0754C004985F6 /* CustomizeImageView.h */,
+				FA4BA31F1EF0754C004985F6 /* CustomizeImageView.m */,
+				FA4BA3201EF0754C004985F6 /* CustomizeThemeTextField.h */,
+				FA4BA3211EF0754C004985F6 /* CustomizeThemeTextField.m */,
 				A13AF2CE1D36995000DDA006 /* DownloadTableViewCell.h */,
 				A13AF2CF1D36995000DDA006 /* DownloadTableViewCell.m */,
 				A13AF2D01D36995000DDA006 /* FavoriteTableViewCell.h */,
@@ -651,6 +671,9 @@
 				A13AF2D41D36995000DDA006 /* GuestTableViewCell.xib */,
 				A13AF2D51D36995000DDA006 /* HighlightTableViewCell.h */,
 				A13AF2D61D36995000DDA006 /* HighlightTableViewCell.m */,
+				FA4BA3241EF07586004985F6 /* OptionTableViewCell.h */,
+				FA4BA3251EF07586004985F6 /* OptionTableViewCell.m */,
+				FA4BA3261EF07586004985F6 /* OptionTableViewCell.xib */,
 				A13AF37F1D36AC7700DDA006 /* PlaylistTableViewCell.h */,
 				A13AF3801D36AC7700DDA006 /* PlaylistTableViewCell.m */,
 				A13AF3811D36AC7700DDA006 /* PlaylistTableViewCell.xib */,
@@ -661,14 +684,14 @@
 				A13AF2D81D36995000DDA006 /* SearchResultTableViewCell.m */,
 				A13AF2D91D36995000DDA006 /* SlidingHeaderView.h */,
 				A13AF2DA1D36995000DDA006 /* SlidingHeaderView.m */,
+				FA4BA3291EF075B9004985F6 /* SubscriptActiveCell.h */,
+				FA4BA32A1EF075B9004985F6 /* SubscriptActiveCell.m */,
+				FA4BA32B1EF075B9004985F6 /* SubscriptActiveCell.xib */,
 				A13AF2DB1D36995000DDA006 /* TimelineTableViewCell.h */,
 				A13AF2DC1D36995000DDA006 /* TimelineTableViewCell.m */,
 				A13AF2DD1D36995000DDA006 /* VideoTableViewCell.h */,
 				A13AF2DE1D36995000DDA006 /* VideoTableViewCell.m */,
 				A13AF2DF1D36995000DDA006 /* VideoTableViewCell.xib */,
-				FA1DFD9E1EA3A76B00F10870 /* SubscriptActiveCell.h */,
-				FA1DFD9F1EA3A76B00F10870 /* SubscriptActiveCell.m */,
-				FA1DFDA01EA3A76B00F10870 /* SubscriptActiveCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -690,12 +713,16 @@
 				A13AF2F71D369A2C00DDA006 /* HighlightsViewController.m */,
 				A13AF2F81D369A2C00DDA006 /* HomeViewController.h */,
 				A13AF2F91D369A2C00DDA006 /* HomeViewController.m */,
+				FA4BA3311EF07629004985F6 /* IntroViewController.h */,
+				FA4BA3321EF07629004985F6 /* IntroViewController.m */,
 				A13AF2FA1D369A2C00DDA006 /* LatestViewController.h */,
 				A13AF2FB1D369A2C00DDA006 /* LatestViewController.m */,
 				A13AF2FC1D369A2C00DDA006 /* MediaPlaybackBaseViewController.h */,
 				A13AF2FD1D369A2C00DDA006 /* MediaPlaybackBaseViewController.m */,
 				A13AF2FE1D369A2C00DDA006 /* MoreViewController.h */,
 				A13AF2FF1D369A2C00DDA006 /* MoreViewController.m */,
+				FA4BA3341EF0764B004985F6 /* RegisterViewController.h */,
+				FA4BA3351EF0764B004985F6 /* RegisterViewController.m */,
 				A13AF3001D369A2C00DDA006 /* SearchResultViewController.h */,
 				A13AF3011D369A2C00DDA006 /* SearchResultViewController.m */,
 				A13AF3021D369A2C00DDA006 /* SettingsDetailViewController.h */,
@@ -704,16 +731,12 @@
 				A13AF3051D369A2C00DDA006 /* SettingsViewController.m */,
 				A13AF3061D369A2C00DDA006 /* SignInViewController.h */,
 				A13AF3071D369A2C00DDA006 /* SignInViewController.m */,
-				FA04A3EF1E9D4F95008E7BAC /* RegisterViewController.h */,
-				FA04A3F01E9D4F95008E7BAC /* RegisterViewController.m */,
+				FA4BA3371EF0766C004985F6 /* SubsciptionViewController.h */,
+				FA4BA3381EF0766C004985F6 /* SubsciptionViewController.m */,
 				A13AF3081D369A2C00DDA006 /* VideoDetailViewController.h */,
 				A13AF3091D369A2C00DDA006 /* VideoDetailViewController.m */,
 				A13AF3AB1D37D90D00DDA006 /* VideosViewController.h */,
 				A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */,
-				FA8CC64D1E9CFD0B006CB9AC /* IntroViewController.h */,
-				FA8CC64E1E9CFD0B006CB9AC /* IntroViewController.m */,
-				FA1DFD9B1EA3622800F10870 /* SubsciptionViewController.h */,
-				FA1DFD9C1EA3622800F10870 /* SubsciptionViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -732,8 +755,8 @@
 				F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */,
 				F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */,
 				F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */,
-				FAA68AB61ECF703500F593B4 /* Roboto-Medium.ttf */,
-				FAA68AB81ECF704000F593B4 /* Roboto-Regular.ttf */,
+				FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */,
+				FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
@@ -833,7 +856,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAA68AB71ECF703500F593B4 /* Roboto-Medium.ttf in Resources */,
 				A13AF3971D36D3B700DDA006 /* Oswald-Demi-BoldItalic.ttf in Resources */,
 				A13AF2E11D36995000DDA006 /* ACSEpisodeCollectionViewCell.xib in Resources */,
 				A13AF3991D36D3B700DDA006 /* Oswald-Extra-LightItalic.ttf in Resources */,
@@ -849,8 +871,7 @@
 				A13AF3A01D36D3B700DDA006 /* Oswald-MediumItalic.ttf in Resources */,
 				A13AF3A21D36D3B700DDA006 /* Oswald-RegularItalic.ttf in Resources */,
 				A13AF39C1D36D3B700DDA006 /* Oswald-HeavyItalic.ttf in Resources */,
-				FA1DFDA21EA3A76B00F10870 /* SubscriptActiveCell.xib in Resources */,
-				FAA68AB91ECF704000F593B4 /* Roboto-Regular.ttf in Resources */,
+				FA4BA3281EF07586004985F6 /* OptionTableViewCell.xib in Resources */,
 				A13AF39E1D36D3B700DDA006 /* Oswald-LightItalic.ttf in Resources */,
 				A13AF3831D36AC7700DDA006 /* PlaylistTableViewCell.xib in Resources */,
 				780AC6F31BDFD284007F1119 /* OpenSans-Regular.ttf in Resources */,
@@ -870,8 +891,11 @@
 				780AC6FD1BDFD284007F1119 /* Images.xcassets in Resources */,
 				A13AF3A41D36D3B700DDA006 /* SIL Open Font License.txt in Resources */,
 				780AC6FE1BDFD284007F1119 /* OpenSans-Light.ttf in Resources */,
+				FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */,
+				FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */,
 				A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */,
 				780AC6FF1BDFD284007F1119 /* OpenSans-BoldItalic.ttf in Resources */,
+				FA4BA32D1EF075B9004985F6 /* SubscriptActiveCell.xib in Resources */,
 				780AC7021BDFD284007F1119 /* OpenSans-ExtraBold.ttf in Resources */,
 				A13AF37D1D369DB600DDA006 /* YouTubePlayer.html in Resources */,
 			);
@@ -945,14 +969,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */,
 				780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */,
 				A13AF2BF1D36985A00DDA006 /* Favorite.m in Sources */,
+				FA4BA3331EF07629004985F6 /* IntroViewController.m in Sources */,
 				A13AF3151D369A2C00DDA006 /* SettingsViewController.m in Sources */,
 				A139DBE21DFF520800DC731B /* ZypeDB.xcdatamodeld in Sources */,
 				A13AF2C01D36985A00DDA006 /* Guest.m in Sources */,
 				A13AF2E91D36995000DDA006 /* SearchResultTableViewCell.m in Sources */,
 				A13AF3361D369B9A00DDA006 /* NSDictionary+Extensions.m in Sources */,
-				FA1DFD9D1EA3622800F10870 /* SubsciptionViewController.m in Sources */,
 				A13AF30A1D369A2C00DDA006 /* BaseViewController.m in Sources */,
 				A13AF37A1D369DB600DDA006 /* ACSPredicates.m in Sources */,
 				A13AF3201D369AB300DDA006 /* BaseCollectionController.m in Sources */,
@@ -963,6 +988,7 @@
 				A1149D851D89AB200021646B /* ACAdManager.m in Sources */,
 				A11CBA4E1E78B5FD0006FC40 /* TabBarViewController.m in Sources */,
 				A13AF3591D369CC600DDA006 /* ACStatusManager.m in Sources */,
+				FA4BA3271EF07586004985F6 /* OptionTableViewCell.m in Sources */,
 				A13AF36B1D369D1F00DDA006 /* NSURL+Encoding.m in Sources */,
 				A13AF2E21D36995000DDA006 /* BorderedTextField.m in Sources */,
 				A13AF3371D369B9A00DDA006 /* NSString+Extensions.m in Sources */,
@@ -970,10 +996,9 @@
 				780AC6B41BDFD284007F1119 /* main.m in Sources */,
 				A13AF2EB1D36995000DDA006 /* TimelineTableViewCell.m in Sources */,
 				A136221D1D51133200866742 /* NSURLResponse+AK.m in Sources */,
+				FA4BA3391EF0766C004985F6 /* SubsciptionViewController.m in Sources */,
 				A13AF2BD1D36985A00DDA006 /* Action.m in Sources */,
-				FABFC4B21ECB3C680008F3D0 /* UIView+UIView_CustomizeTheme.m in Sources */,
 				A13AF3141D369A2C00DDA006 /* SettingsDetailViewController.m in Sources */,
-				FA04A3F11E9D4F95008E7BAC /* RegisterViewController.m in Sources */,
 				A13AF3551D369CC600DDA006 /* ACSDataManager.m in Sources */,
 				A13AF30E1D369A2C00DDA006 /* HighlightsViewController.m in Sources */,
 				A13AF3231D369AB300DDA006 /* RESTServiceController.m in Sources */,
@@ -981,7 +1006,6 @@
 				A13AF2C41D36985A00DDA006 /* Timeline.m in Sources */,
 				A13AF3101D369A2C00DDA006 /* LatestViewController.m in Sources */,
 				A13AF3581D369CC600DDA006 /* ACSPersistenceManager.m in Sources */,
-				FA8CC64F1E9CFD0B006CB9AC /* IntroViewController.m in Sources */,
 				A13AF3161D369A2C00DDA006 /* SignInViewController.m in Sources */,
 				A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */,
 				A13AF3821D36AC7700DDA006 /* PlaylistTableViewCell.m in Sources */,
@@ -996,34 +1020,38 @@
 				A13AF3131D369A2C00DDA006 /* SearchResultViewController.m in Sources */,
 				A13AF30F1D369A2C00DDA006 /* HomeViewController.m in Sources */,
 				A13AF2C31D36985A00DDA006 /* Playlist.m in Sources */,
-				FA1DFDA11EA3A76B00F10870 /* SubscriptActiveCell.m in Sources */,
 				A13AF2E81D36995000DDA006 /* HighlightTableViewCell.m in Sources */,
 				A13AF2EC1D36995000DDA006 /* VideoTableViewCell.m in Sources */,
 				A13AF2C11D36985A00DDA006 /* Notification.m in Sources */,
 				A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */,
 				A13AF2E31D36995000DDA006 /* BottomBorderTextField.swift in Sources */,
-				FA4CD6E41EA9FAAF0042F3B8 /* ACPurchaseManager.m in Sources */,
 				780AC6D21BDFD284007F1119 /* ZypeDBMappingModel.xcmappingmodel in Sources */,
+				FA4BA3221EF0754C004985F6 /* CustomizeImageView.m in Sources */,
 				A13AF37E1D369DB600DDA006 /* UIUtil.m in Sources */,
+				FA4BA3301EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m in Sources */,
 				A13AF3691D369D1F00DDA006 /* NSMutableArray+LimitedStack.m in Sources */,
 				A13AF35C1D369CC600DDA006 /* ViewManager.m in Sources */,
 				A13AF36D1D369D1F00DDA006 /* UIStoryboard+NamedStoryboards.m in Sources */,
 				A13AF2E61D36995000DDA006 /* GuestTableViewCell.m in Sources */,
 				A13AF3111D369A2C00DDA006 /* MediaPlaybackBaseViewController.m in Sources */,
 				A13AF36C1D369D1F00DDA006 /* UIColor+AC.m in Sources */,
+				FA4BA3231EF0754C004985F6 /* CustomizeThemeTextField.m in Sources */,
 				A13AF30C1D369A2C00DDA006 /* DownloadsViewController.m in Sources */,
 				A13AF2C51D36985A00DDA006 /* Timing.m in Sources */,
 				A13AF3211D369AB300DDA006 /* BaseTableController.m in Sources */,
+				FA4BA3361EF0764B004985F6 /* RegisterViewController.m in Sources */,
 				A13AF2E01D36995000DDA006 /* ACSEpisodeCollectionViewCell.m in Sources */,
 				A13AF3381D369B9A00DDA006 /* Reachability.m in Sources */,
+				FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */,
 				A13AF2BE1D36985A00DDA006 /* DownloadInfo.m in Sources */,
 				A13AF2C61D36985A00DDA006 /* Video.m in Sources */,
+				FA4BA32C1EF075B9004985F6 /* SubscriptActiveCell.m in Sources */,
 				A13AF2E51D36995000DDA006 /* FavoriteTableViewCell.m in Sources */,
 				A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */,
 				A13AF3571D369CC600DDA006 /* ACSNotificationsManager.m in Sources */,
+				FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */,
 				A13AF2E41D36995000DDA006 /* DownloadTableViewCell.m in Sources */,
 				A13AF3351D369B9A00DDA006 /* KeychainItemWrapper.m in Sources */,
-				FABFC4B51ECB44DE0008F3D0 /* CustomizeThemeTextField.m in Sources */,
 				A13AF35A1D369CC600DDA006 /* ACSTokenManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

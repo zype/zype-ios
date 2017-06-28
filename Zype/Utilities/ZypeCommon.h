@@ -25,7 +25,7 @@
 #define kMonthlySubscription @"monthly_subscription"
 #define kYearlySubscription @"yearly_subscription"
 
-#define kAppColorLight YES
+#define kAppColorLight NO
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
@@ -39,9 +39,10 @@
 
 #define kViewCornerRounded 2.0f
 
-#define kDownloadsEnabled NO
-#define kLimitLivestremEnabled NO
+#define kDownloadsEnabled YES
 #define kNativeSubscriptionEnabled NO
+#define kDownloadsForAllUsersEnabled NO
+#define kShareVideoEnabled NO
 
 #pragma mark - Base settings
 
@@ -240,7 +241,9 @@
 #define kGetPlayerForGuest @"https://%@/embed/%@?app_key=%@"
 #define kGetPlayerForHighlight @"https://%@/embed/%@?access_token=%@"
 #define kGetDownloadVideoUrl @"https://%@/embed/%@?download=true&access_token=%@"
+#define kGetDownloadVideoUrlForGuest @"https://%@/embed/%@?download=true&app_key=%@"
 #define kGetDownloadAudioUrl @"https://%@/embed/%@.json?access_token=%@&download=true"
+#define kGetDownloadAudioUrlForGuest @"https://%@/embed/%@.json?app_key=%@&download=true"
 #define kGetPlayerAudioUrl @"https://%@/embed/%@.json?access_token=%@&audio=true"
 //#define kGetDownloadAudioUrl @"https://%@/embed/%@?audio=true&access_token=%@"
 //
