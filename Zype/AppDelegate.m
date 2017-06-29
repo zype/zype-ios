@@ -174,12 +174,15 @@
     
     // Set tab bar delegate
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    UINavigationController *navVC = tabBarController.selectedViewController;
     tabBarController.delegate = self;
     GCKUICastContainerViewController *castContainerVC;
     castContainerVC = [[GCKCastContext sharedInstance]
                        createCastContainerControllerForViewController:tabBarController];
     castContainerVC.miniMediaControlsItemEnabled = YES;
     [GCKCastContext sharedInstance].useDefaultExpandedMediaControls = YES;
+    //castContainerVC.miniMediaControlsViewController.view
+    
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     self.window.rootViewController = castContainerVC;
     self.tabIndex = 0;
@@ -346,6 +349,11 @@
         [UITabBar appearance].backgroundColor = [UIColor whiteColor];
     }
     else {
+        [UILabel appearanceWhenContainedInInstancesOfClasses:@[[GCKUIMiniMediaControlsViewController class]]].textColor = [UIColor whiteColor];
+        [UIView appearanceWhenContainedInInstancesOfClasses:@[[GCKUIMiniMediaControlsViewController class]]].backgroundColor = [UIColor blackColor];
+        [UIButton appearanceWhenContainedInInstancesOfClasses:@[[GCKUIMiniMediaControlsViewController class]]].tintColor = [UIColor whiteColor];
+
+       // UILabel.appearance(whenContainedInInstancesOf:[GCKUIExpandedMediaControlsViewController.self]).backgroundColor = URColors.URStrawberryRed
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         
         //reset the deselected tab bar item color due to bug when setting UIView tint color

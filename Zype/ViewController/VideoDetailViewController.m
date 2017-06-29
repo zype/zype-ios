@@ -63,7 +63,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                         OptionTableViewCellDelegate,
                                         GCKSessionManagerListener,
                                         GCKRemoteMediaClientListener,
-                                        AVPlayerViewControllerDelegate>
+                                        GCKUIMediaControllerDelegate> {
+                                            
+    GCKUIMediaController *castMediaController;
+
+}
 
 @property (strong, nonatomic) TLIndexPathController *indexPathController;
 //@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
@@ -92,7 +96,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic, strong) GCKSessionManager *sessionManager;
 @property (nonatomic, assign) PlaybackMode playbackMode;
 @property (nonatomic, strong) GCKCastSession *castSession;
-@property (nonatomic, strong) GCKUIMediaController *castMediaController;
 @property (nonatomic, strong) GCKMediaInformation *mediaInfo;
 @property (nonatomic, assign) BOOL localPlaybackImplicitlyPaused;
 
@@ -137,7 +140,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     self.sessionManager = [GCKCastContext sharedInstance].sessionManager;
     [self.sessionManager addListener:self];
-    self.castMediaController = [[GCKUIMediaController alloc] init];
+    castMediaController = [[GCKUIMediaController alloc] init];
+    castMediaController.delegate = self;
     self.playbackMode = PlaybackModeNone;
     
     // Restrict rotation
@@ -149,6 +153,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     //need t
     [self setupNotifications];
+}
+
+//- (void)mediaController:(GCKUIMediaController *)mediaController didUpdateMediaStatus:(GCKMediaStatus *)mediaStatus
+
+- (void)mediaController:(GCKUIMediaController *)mediaController didUpdatePlayerState:(GCKMediaPlayerState)playerState lastStreamPosition:(NSTimeInterval)streamPosition {
+    
 }
 
 - (PlaybackSource *)urlPlaybackSources:(NSArray *)sources {
@@ -237,6 +247,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self configureColors];
     
     GCKUICastButton *castButton = [[GCKUICastButton alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    castButton.tintColor = [UINavigationBar appearance].tintColor;
     self.navigationItem.rightBarButtonItem =
     [[UIBarButtonItem alloc] initWithCustomView:castButton];
     
@@ -920,16 +931,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     BOOL paused = NO;
     BOOL ended = NO;
     if (_playbackMode == PlaybackModeRemote) {
-        playPosition = _castMediaController.lastKnownStreamPosition;
-        paused = (_castMediaController.lastKnownPlayerState ==
+        playPosition = castMediaController.lastKnownStreamPosition;
+        paused = (castMediaController.lastKnownPlayerState ==
                   GCKMediaPlayerStatePaused);
-        ended = (_castMediaController.lastKnownPlayerState == GCKMediaPlayerStateIdle);
-        NSLog(@"last player state: %ld, ended: %d",
-              (long)_castMediaController.lastKnownPlayerState, ended);
+        ended = (castMediaController.lastKnownPlayerState == GCKMediaPlayerStateIdle);
+        NSLog(@"last player state: %ld, ended: %d", (long)castMediaController.lastKnownPlayerState, ended);
     }
     
     [self populateMediaInfo:(!paused && !ended) playPosition:playPosition];
-    [self.avPlayerController.view setHidden:NO];
+    [self.avPlayerController.view setUserInteractionEnabled:YES];
 
     [_castSession.remoteMediaClient removeListener:self];
     _castSession = nil;
@@ -976,7 +986,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                     playPosition:playPosition];
     }
     [self.avPlayer pause];
-    [self.avPlayerController.view setHidden:YES];
+    [self.avPlayerController.view setUserInteractionEnabled:NO];
     //[_localPlayerView showSplashScreen];
     _playbackMode = PlaybackModeRemote;
 }
