@@ -32,6 +32,9 @@
 #import "Timing.h"
 #import "PlaybackSource.h"
 #import "TableSectionDataSource.h"
+#import <GoogleCast/GoogleCast.h>
+#import "CastMessageChannel.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 #import "TLIndexPathController.h"
 #import "TLIndexPathItem.h"
@@ -40,6 +43,12 @@
 #import "NSURLResponse+AK.h"
 #import "ACStatusManager.h"
 #import "UIUtil.h"
+
+typedef NS_ENUM(NSInteger, PlaybackMode) {
+    PlaybackModeNone = 0,
+    PlaybackModeLocal,
+    PlaybackModeRemote
+};
 
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =
@@ -51,12 +60,15 @@ NSString *const kTestAppAdTagUrl =
 static NSString *GuestCellIdentifier = @"GuestCell";
 static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
-@interface VideoDetailViewController ()<ACActionSheetManagerDelegate, TLIndexPathControllerDelegate, OptionTableViewCellDelegate>
+@interface VideoDetailViewController ()<ACActionSheetManagerDelegate,
+                                        TLIndexPathControllerDelegate,
+                                        OptionTableViewCellDelegate,
+                                        GCKSessionManagerListener,
+                                        GCKRemoteMediaClientListener>
 
 @property (strong, nonatomic) TLIndexPathController *indexPathController;
-//@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
-//@property (strong, nonatomic) PlaybackSource *audioPlaybackSource;
 @property (strong, nonatomic) NSArray *playbackSources;
+@property (strong, nonatomic) PlaybackSource *remotePlaybackSource;
 
 @property (strong, nonatomic) UIAlertView *alertViewStreaming;
 @property (strong, nonatomic) UIAlertView *alertViewDownload;
@@ -76,7 +88,20 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (nonatomic, strong) AVPlayerViewController *avPlayerController;
 
+@property (nonatomic, assign) PlaybackMode playbackMode;
+@property (nonatomic, strong) GCKCastSession *castSession;
+@property (nonatomic, strong) GCKSessionManager *sessionManager;
+@property (nonatomic, strong) GCKUIMediaController *castMediaController;
+@property (nonatomic, strong) GCKUIDeviceVolumeController *volumeController;
+@property (nonatomic, assign) BOOL localPlaybackImplicitlyPaused;
+@property (nonatomic, strong) CastMessageChannel *messageChannel;
+@property (nonatomic, strong) GCKMediaControlChannel *mediaControlChannel;
+
+/// If cast player is currently playing an ad.
+@property(nonatomic, assign) BOOL castAdPlaying;
+
 @property (nonatomic) NSArray *adsArray;
+@property (nonatomic) NSMutableArray *adOffsets;
 @property (nonatomic, strong) id playerObserver;
 
 @end
@@ -85,6 +110,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @implementation VideoDetailViewController
 
 #pragma mark - Lifecycle
+
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -106,6 +132,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _sessionManager = [GCKCastContext sharedInstance].sessionManager;
+    _castMediaController = [[GCKUIMediaController alloc] init];
+    _volumeController = [[GCKUIDeviceVolumeController alloc] init];
+    
     [self trackScreenName:kAnalyticsScreenNameVideoDetail];
     
     [self setupAdsLoader];
@@ -114,71 +144,31 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     self.actionSheetManager = [ACActionSheetManager new];
     self.actionSheetManager.delegate = self;
-    
-    // Restrict rotation
+    self.playbackMode = PlaybackModeNone;
+
     [AppDelegate appDelegate].restrictRotation = YES;
-    
     self.indexPathController = [self indexPathController];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-    
-    //need t
     [self setupNotifications];
+    
 }
 
-- (void)configureDataSource {
+//- (void)mediaController:(GCKUIMediaController *)mediaController didUpdateMediaStatus:(GCKMediaStatus *)mediaStatus
+
+- (void)mediaController:(GCKUIMediaController *)mediaController didUpdatePlayerState:(GCKMediaPlayerState)playerState lastStreamPosition:(NSTimeInterval)streamPosition {
     
-    self.optionsDataSource = [[NSMutableArray alloc] init];
-    if (kDownloadsEnabled) {
-        TableSectionDataSource *playAs = [[TableSectionDataSource alloc] init];
-        playAs.title = @"Play as";
-        playAs.type = Play;
-        self.labelPlayAs = [[UILabel alloc] init];
-        NSString *mediaType = (self.isAudio == true) ? @"Audio" : @"Video";
-        self.labelPlayAs.text = mediaType;
-        self.labelPlayAs.textColor = (kAppColorLight) ? [UIColor darkGrayColor] : [UIColor whiteColor];
-        self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
-        [self.labelPlayAs sizeToFit];
-        playAs.accessoryView = self.labelPlayAs;
-        [self.optionsDataSource addObject:playAs];
-        
-        if (self.playbackSources != nil) {
-            if (self.playbackSources.count > 0) {
-                TableSectionDataSource *downloadItem = [[TableSectionDataSource alloc] init];
-                DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
-                downloadItem.type = Download;
-                if (downloadInfo.isDownloading) {
-                    downloadItem.title = @"Downloading...";
-                    [self.progressView setHidden:NO];
-                } else {
-                    downloadItem.title = @"Download";
-                }
-                downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
-                [self.optionsDataSource addObject:downloadItem];
-            }
+}
+
+- (PlaybackSource *)urlPlaybackSources:(NSArray *)sources {
+    PlaybackSource *first = (PlaybackSource *)sources.firstObject;
+    
+    for (PlaybackSource *source in sources) {
+        if ([source.fileType isEqualToString:@"mp4"]) {
+            return source;
         }
     }
     
-    TableSectionDataSource *favoriteItem = [[TableSectionDataSource alloc] init];
-    favoriteItem.type = Favourite;
-    if ([UIUtil isYes:self.video.isFavorite]) {
-        favoriteItem.title = @"Unfavorite";
-        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-    } else {
-        favoriteItem.title = @"Favorite";
-        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
-    }
-    [self.optionsDataSource addObject:favoriteItem];
-    
-    if (kShareVideoEnabled) {
-        TableSectionDataSource *shareItem = [[TableSectionDataSource alloc] init];
-        shareItem.title = @"Share";
-        shareItem.type = Share;
-        shareItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconShareB"] andDarkImage:[UIImage imageNamed:@"IconShareW"]];
-        [self.optionsDataSource addObject:shareItem];
-    }
-    
-    [self.tableViewOptions reloadData];
+    return first;
 }
 
 - (void)moviePlayerDidReachedEnd:(NSNotification*) notification{
@@ -187,13 +177,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
-    if (!self.isPlaying){
+    [self.sessionManager addListener:self];
+    
+    if (!self.isPlaying && self.avPlayer == nil){
         [self initPlayer];
     }
-    
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -221,6 +213,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [AppDelegate appDelegate].restrictRotation = YES;
         
     }
+    
+    [_sessionManager removeListener:self];
     
     if (self.avPlayer != nil && self.avPlayer.rate > 0.0f) {
         [self.avPlayer pause];
@@ -250,6 +244,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.isDownloadStarted = NO;
     [self.imageThumbnail setHidden:YES];
     [self configureColors];
+    
+    GCKUICastButton *castButton = [[GCKUICastButton alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    castButton.tintColor = [UINavigationBar appearance].tintColor;
+    self.navigationItem.rightBarButtonItem =
+    [[UIBarButtonItem alloc] initWithCustomView:castButton];
     
 }
 
@@ -285,6 +284,105 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
     }
     
+}
+
+- (void)configureDataSource {
+    
+    self.optionsDataSource = [[NSMutableArray alloc] init];
+    if (kDownloadsEnabled) {
+        TableSectionDataSource *playAs = [[TableSectionDataSource alloc] init];
+        playAs.title = @"Play as";
+        playAs.type = Play;
+        self.labelPlayAs = [[UILabel alloc] init];
+        NSString *mediaType = (self.isAudio == true) ? @"Audio" : @"Video";
+        self.labelPlayAs.text = mediaType;
+        self.labelPlayAs.textColor = (kAppColorLight) ? [UIColor darkGrayColor] : [UIColor whiteColor];
+        self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
+        [self.labelPlayAs sizeToFit];
+        playAs.accessoryView = self.labelPlayAs;
+        [self.optionsDataSource addObject:playAs];
+        
+        if (self.playbackSources != nil) {
+            if (self.playbackSources.count > 0) {
+                TableSectionDataSource *downloadItem = [[TableSectionDataSource alloc] init];
+                DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
+                downloadItem.type = Download;
+                if (downloadInfo.isDownloading) {
+                    downloadItem.title = @"Downloading...";
+                    [self.progressView setHidden:NO];
+                } else {
+                    downloadItem.title = @"Download";
+                }
+                downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
+                [self.optionsDataSource addObject:downloadItem];
+            }
+            
+            self.remotePlaybackSource = [self urlPlaybackSources:self.playbackSources];
+            //[self configureCast];
+        }
+    }
+    
+    TableSectionDataSource *favoriteItem = [[TableSectionDataSource alloc] init];
+    favoriteItem.type = Favourite;
+    if ([UIUtil isYes:self.video.isFavorite]) {
+        favoriteItem.title = @"Unfavorite";
+        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+    } else {
+        favoriteItem.title = @"Favorite";
+        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
+    }
+    [self.optionsDataSource addObject:favoriteItem];
+    
+    if (kShareVideoEnabled) {
+        TableSectionDataSource *shareItem = [[TableSectionDataSource alloc] init];
+        shareItem.title = @"Share";
+        shareItem.type = Share;
+        shareItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconShareB"] andDarkImage:[UIImage imageNamed:@"IconShareW"]];
+        [self.optionsDataSource addObject:shareItem];
+    }
+    
+    [self.tableViewOptions reloadData];
+}
+
+- (void)checkDownloadVideo {
+    [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo:YES withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        //
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            CLS_LOG(@"Success");
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+            } else {
+                self.playbackSources = [[RESTServiceController sharedInstance] streamPlaybackSourcesFromRootDictionary:parsedObject];
+                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
+            }
+        }
+        [self configureDataSource];
+    }];
+}
+
+- (void)loadMediaData:(void(^)(PlaybackSource *source))completion {
+    [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo:YES withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        //
+        if (error) {
+            completion(nil);
+        } else {
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            
+            if (localError != nil) {
+                completion(nil);
+            } else {
+                PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                completion(source);
+            }
+        }
+    }];
 }
 
 - (void)setThumbnailImage{
@@ -416,27 +514,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
-- (void)checkDownloadVideo {
-    [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo:YES withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        //
-        if (error) {
-            CLS_LOG(@"Failed: %@", error);
-        } else {
-            CLS_LOG(@"Success");
-            NSError *localError = nil;
-            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
-            
-            if (localError != nil) {
-                CLS_LOG(@"Failed: %@", localError);
-            } else {
-                self.playbackSources = [[RESTServiceController sharedInstance] streamPlaybackSourcesFromRootDictionary:parsedObject];
-                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-                CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
-            }
-        }
-        [self configureDataSource];
-    }];
-}
+
 
 - (void)playStreamingVideo {
     
@@ -456,6 +534,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 CLS_LOG(@"Failed: %@", localError);
             } else {
                 PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                //self.remotePlaybackSource = source;
+
+
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                 CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
 
@@ -473,9 +554,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                     //check if view is visible to avoid playing on background
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
+                        
                         if (source != nil && source.urlString != nil) {
                             [self playVideoFromSource:source];
-                        }else{
+                        } else {
                             [self playStreamingAudio];
                         }
                     }
@@ -485,7 +567,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }];
 }
 
-- (void)playStreamingAudio{
+
+- (void)playStreamingAudio {
     
     [[RESTServiceController sharedInstance] getAudioPlayerWithVideo:self.video WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
@@ -508,13 +591,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             } else {
                 
                 PlaybackSource *source = [[RESTServiceController sharedInstance] audioStreamPlaybackSourceFromRootDictionary:parsedObject];
+                //self.remotePlaybackSource = source;
                 
                 if (source != nil && source.urlString != nil) {
                     
                     self.isAudio = YES;
                     [self playVideoFromSource:source];
                     
-                }else{
+                } else {
                     CLS_LOG(@"response: %@", response);
                     self.isAudio = NO;
                     [self showBasicAlertWithTitle:kString_TitleStreamFail WithMessage:kString_MessageNoAudioStream];
@@ -537,9 +621,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)setupPlayer:(NSURL *)url {
-    //[self removePlayer];
-    //[self.avPlayer pause];
-    //player.replaceCurrentItem(with: AVPlayerItem(url: streamingURL))
+    
     if (self.avPlayer == nil) {
         self.avPlayer = [[AVPlayer alloc] initWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
     } else {
@@ -547,11 +629,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
     self.contentPlayhead = [[IMAAVPlayerContentPlayhead alloc] initWithAVPlayer:self.avPlayer];
-    //self.avPlayer = [AVPlayer playerWithURL:url];
     //Create PlayerViewController for player controls
     if (self.avPlayerController == nil) {
         self.avPlayerController = [[AVPlayerViewController alloc] init];
         [self.avPlayerController.view setFrame:self.imageThumbnail.bounds];
+        [self.avPlayerController setDelegate:self];
         [self.avPlayerController setPlayer:self.avPlayer];
         [self addChildViewController:self.avPlayerController];
         [self.view addSubview:self.avPlayerController.view];
@@ -559,17 +641,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
     }
 
-    
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
     NSError *_error = nil;
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &_error];
-    
-    // [self.view bringSubviewToFront:self.avPlayer];
-    //[self.view.layer addSublayer: playerLayer];
-    
-    //  self.player = [[MediaPlayerManager sharedInstance] moviePlayerControllerWithURL:url video:self.video image:self.imageThumbnail.image];
-    
-    //  [self.view addSubview: self.player.view];
     
     if (self.isAudio) {
         [self setupAudioPlayerView];
@@ -577,14 +651,25 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self setupVideoPlayerView];
     }
     
-    //  [self setupSharedPlayerView];
-    
-    [self loadSavedPlaybackTime];
-    
-    //timer to update timeline
-    self.timerPlayback = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updatePlaybackTime:) userInfo:nil repeats:YES];
-    
-    [self setPlayingStatus];
+    //[_sessionManager addListener:self];
+    BOOL hasConnectedSession = (_sessionManager.hasConnectedSession);
+    if (hasConnectedSession && (_playbackMode != PlaybackModeRemote)) {
+        
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        appDelegate.castControlBarsEnabled = YES;
+
+        [self switchToRemotePlayback];
+        return;
+        
+    } else {
+        
+        CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], 1);
+        [self loadSavedPlaybackTime: time];
+        self.timerPlayback = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updatePlaybackTime:) userInfo:nil repeats:YES];
+        self.playbackMode = PlaybackModeLocal;
+        [self setPlayingStatus];
+    }
+
 }
 
 - (void)setupAudioPlayerView {
@@ -728,9 +813,147 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+#pragma mark - GCKSessionManagerListener
+
+
+- (GCKMediaInformation *)buildMediaInformation:(PlaybackSource *)source {
+    
+    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] initWithMetadataType:GCKMediaMetadataTypeMovie];
+    
+    [metadata setString:self.video.title forKey:kGCKMetadataKeyTitle];
+    [metadata setString:self.video.short_description forKey:kGCKMetadataKeySubtitle];
+
+    
+    GCKMediaInformation *info = [[GCKMediaInformation alloc]
+                                      initWithContentID:source.urlString
+                                      streamType:GCKMediaStreamTypeBuffered
+                                      contentType:[NSString stringWithFormat:@"videos/%@", source.fileType]
+                                      metadata:metadata
+                                      streamDuration:self.video.duration.integerValue
+                                      mediaTracks:nil
+                                      textTrackStyle:nil
+                                      customData:nil];
+    
+    return info;
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager
+         didEndSession:(GCKSession *)session
+             withError:(NSError *)error {
+    NSLog(@"session ended with error: %@", error);
+    if (error != nil) {
+        NSString *message = [NSString stringWithFormat:@"The Casting session has ended.\n%@", error.description];
+        [SVProgressHUD showErrorWithStatus:message];
+    }
+
+
+    [self switchToLocalPlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didFailToStartSessionWithError:(NSError *)error {
+    NSString *message = [NSString stringWithFormat:@"Failed to start a session.\n%@", error.description];
+    NSLog(@"%@", message);
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didFailToResumeSession:(GCKSession *)session
+             withError:(NSError *)error {
+    [self switchToLocalPlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didStartSession:(GCKSession *)session {
+    NSLog(@"MediaViewController: sessionManager didStartSession %@", session);
+    [self switchToRemotePlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager didResumeSession:(GCKSession *)session {
+    NSLog(@"MediaViewController: sessionManager didResumeSession %@", session);
+    [self switchToRemotePlayback];
+}
+
+- (void)switchToLocalPlayback {
+    NSLog(@"switchToLocalPlayback");
+    
+    if (_playbackMode == PlaybackModeLocal) {
+        return;
+    }
+    
+    NSTimeInterval playPosition = 0;
+    BOOL paused = NO;
+    BOOL ended = NO;
+    if (_playbackMode == PlaybackModeRemote) {
+        playPosition = _castMediaController.lastKnownStreamPosition;
+        paused = (_castMediaController.lastKnownPlayerState == GCKMediaPlayerStatePaused);
+        ended = (_castMediaController.lastKnownPlayerState == GCKMediaPlayerStateIdle);
+        NSLog(@"last player state: %ld, ended: %d", (long)_castMediaController.lastKnownPlayerState, ended);
+    }
+    
+    [self populateMediaInfo:(!paused && !ended) playPosition:playPosition];
+    [self.avPlayerController.view setUserInteractionEnabled:YES];
+
+    [_castSession.remoteMediaClient removeListener:self];
+    _castSession = nil;
+    _playbackMode = PlaybackModeLocal;
+}
+
+- (void)populateMediaInfo:(BOOL)ended playPosition:(CGFloat)position {
+    CMTime time = CMTimeMakeWithSeconds(position, 1);
+    [self loadSavedPlaybackTime:time];
+}
+
+- (void)switchToRemotePlayback {
+    
+    if (_playbackMode == PlaybackModeRemote) {
+        return;
+    }
+    
+    if ([_sessionManager.currentSession isKindOfClass:[GCKCastSession class]]) {
+        _castSession = (GCKCastSession *)_sessionManager.currentSession;
+    }
+    
+    
+    if (self.remotePlaybackSource == nil) {
+        [self loadMediaData:^(PlaybackSource *source) {
+            if (source) {
+                GCKMediaInformation *mediaInfo = [self buildMediaInformation:source];
+                [self loadRemotePlayback:mediaInfo];
+            }
+        }];
+    } else {
+        GCKMediaInformation *mediaInfo = [self buildMediaInformation:self.remotePlaybackSource];
+        if (mediaInfo) {
+            [self loadRemotePlayback:mediaInfo];
+        }
+    }
+}
+
+- (void)loadRemotePlayback:(GCKMediaInformation *)info {
+    self.navigationItem.backBarButtonItem =
+    [[UIBarButtonItem alloc] initWithTitle:@""
+                                     style:UIBarButtonItemStylePlain
+                                    target:nil
+                                    action:nil];
+    
+    //NSLog(@"loading media: %@", self.mediaInfo);
+    NSTimeInterval playPosition = CMTimeGetSeconds(self.avPlayer.currentTime);
+    [_castSession.remoteMediaClient loadMedia:info
+                                     autoplay:YES
+                                 playPosition:playPosition];
+    [_castSession.remoteMediaClient addListener:self];
+    [self.avPlayer pause];
+    [self.avPlayerController.view setUserInteractionEnabled:NO];
+    _playbackMode = PlaybackModeRemote;
+}
+
+#pragma mark - GCKRemoteMediaClientListener
+
+//- (void)remoteMediaClient:(GCKRemoteMediaClient *)player
+//     didUpdateMediaStatus:(GCKMediaStatus *)mediaStatus {
+//    //self.mediaInfo = mediaStatus.mediaInformation;
+//}
+
 #pragma mark - Status
 
-- (void)setPlayingStatus{
+- (void)setPlayingStatus {
     
     if (self.video.isPlayed.boolValue == NO && self.video.isPlaying.boolValue == NO) {
         
@@ -753,7 +976,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 #pragma mark - Place Saving
 
-- (void)saveCurrentPlaybackTime{
+- (void)saveCurrentPlaybackTime {
     
     if (self.video == nil) {
         return;
@@ -769,9 +992,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
-- (void)loadSavedPlaybackTime{
+- (void)loadSavedPlaybackTime:(CMTime)time{
     
-    CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], 1);
     [self.avPlayer seekToTime:time];//HLS video cut to 10 seconds per segment. Your chapter start postion should fit the value which is multipes of 10. As the segment starts with I frame, on this way, you can get quick seek time and accurate time.
     
     //pre-roll only for now only for non logged in users
@@ -1075,7 +1297,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
     
     BOOL isPrerollUsed = NO;
-    NSMutableArray *adOffsets = [[NSMutableArray alloc] init];
+    self.adOffsets = [[NSMutableArray alloc] init];
     NSArray *requests = [[ACAdManager sharedInstance] adRequstsFromArray:self.adsArray];
     
     for (AdObject *adObject in requests) {
@@ -1087,14 +1309,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                                  userContext:nil];
             [self.adsLoader requestAdsWithRequest:request];
         } else {
-            [adOffsets addObject:adObject.offsetValue];
+            [self.adOffsets addObject:adObject.offsetValue];
             [adsDictionary setObject:adObject.tag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
         }
     }
     
-    if (adOffsets.count > 0) {
+    if (self.adOffsets.count > 0) {
         __weak typeof(self) weakSelf = self;
-        self.playerObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
+        self.playerObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:self.adOffsets queue:NULL usingBlock:^{
             //
             int sec = CMTimeGetSeconds([weakSelf.avPlayer currentTime]);
             NSString *tag = [adsDictionary objectForKey:[NSString stringWithFormat:@"%d", sec]];

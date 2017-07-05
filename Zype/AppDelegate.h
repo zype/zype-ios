@@ -20,6 +20,9 @@
 @property (copy, nonatomic) void (^backgroundSessionCompletionHandler)();
 @property () BOOL restrictRotation;
 
+@property(nonatomic, assign, readwrite) BOOL castControlBarsEnabled;
+
+
 + (AppDelegate *)appDelegate;
 
 @end

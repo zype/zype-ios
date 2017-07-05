@@ -21,10 +21,11 @@
 #import "HighlightsViewController.h"
 #import "GAI.h"
 #import "ACPurchaseManager.h"
+#import <GoogleCast/GoogleCast.h>
 
 #import "UIColor+AC.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<GCKLoggerDelegate>
 
 @property (nonatomic) unsigned long tabIndex;
 
@@ -48,12 +49,40 @@
 //    if (![kOneSignalNotificationsKey isEqualToString:@""]){
 //        self.oneSignal = [[OneSignal alloc] initWithLaunchOptions:launchOptions appId:kOneSignalNotificationsKey handleNotification:nil];
 //    }
+    
+    GCKCastOptions *options = [[GCKCastOptions alloc] initWithReceiverApplicationID:kGCKMediaDefaultReceiverApplicationID];
+    [GCKCastContext setSharedInstanceWithOptions:options];
+    
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
     
     return YES;
 }
+
+- (void)setupCastLogging {
+    GCKLoggerFilter *logFilter = [[GCKLoggerFilter alloc] init];
+    [logFilter setLoggingLevel:GCKLoggerLevelError forClasses:@[
+                                               @"GCKDeviceScanner",
+                                               @"GCKDeviceProvider",
+                                               @"GCKDiscoveryManager",
+                                               @"GCKCastChannel",
+                                               @"GCKMediaControlChannel",
+                                               @"GCKUICastButton",
+                                               @"GCKUIMediaController",
+                                               @"NSMutableDictionary"
+                                               ]];
+    [GCKLogger sharedInstance].filter = logFilter;
+    [GCKLogger sharedInstance].delegate = self;
+}
+
+- (void)logMessage:(NSString *)message fromFunction:(NSString *)function {
+    //if (_enableSDKLogging) {
+        // Send SDK's log messages directly to the console.
+        NSLog(@"%@  %@", function, message);
+    //}
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -102,6 +131,23 @@
     // Saves changes in the application's managed object context before the application terminates.
     [[ACSPersistenceManager sharedInstance] saveContext];
 }
+
+#pragma mark - GCast
+
+- (void)setCastControlBarsEnabled:(BOOL)notificationsEnabled {
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC =
+    (GCKUICastContainerViewController *)self.window.rootViewController;
+    castContainerVC.miniMediaControlsItemEnabled = notificationsEnabled;
+}
+
+- (BOOL)castControlBarsEnabled {
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC =
+    (GCKUICastContainerViewController *)self.window.rootViewController;
+    return castContainerVC.miniMediaControlsItemEnabled;
+}
+
 
 #pragma mark - Init App
 
@@ -152,7 +198,17 @@
     
     // Set tab bar delegate
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    UINavigationController *navVC = tabBarController.selectedViewController;
     tabBarController.delegate = self;
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC = [[GCKCastContext sharedInstance]
+                       createCastContainerControllerForViewController:tabBarController];
+    castContainerVC.miniMediaControlsItemEnabled = YES;
+    [GCKCastContext sharedInstance].useDefaultExpandedMediaControls = YES;
+    //castContainerVC.miniMediaControlsViewController.view
+    
+    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.window.rootViewController = castContainerVC;
     self.tabIndex = 0;
 }
 
@@ -317,6 +373,11 @@
         [UITabBar appearance].backgroundColor = [UIColor whiteColor];
     }
     else {
+        [UILabel appearanceWhenContainedInInstancesOfClasses:@[[GCKUIMiniMediaControlsViewController class]]].textColor = [UIColor whiteColor];
+        [UIView appearanceWhenContainedInInstancesOfClasses:@[[GCKUIMiniMediaControlsViewController class]]].backgroundColor = [UIColor blackColor];
+        [UIButton appearanceWhenContainedInInstancesOfClasses:@[[GCKUIMiniMediaControlsViewController class]]].tintColor = [UIColor whiteColor];
+
+       // UILabel.appearance(whenContainedInInstancesOf:[GCKUIExpandedMediaControlsViewController.self]).backgroundColor = URColors.URStrawberryRed
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         
         //reset the deselected tab bar item color due to bug when setting UIView tint color

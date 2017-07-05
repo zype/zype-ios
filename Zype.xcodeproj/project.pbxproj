@@ -129,6 +129,7 @@
 		A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */; };
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
+		FA1111251F06D9E000D5B6B2 /* CastMessageChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1111241F06D9E000D5B6B2 /* CastMessageChannel.m */; };
 		FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */; };
 		FA4BA3221EF0754C004985F6 /* CustomizeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31F1EF0754C004985F6 /* CustomizeImageView.m */; };
 		FA4BA3231EF0754C004985F6 /* CustomizeThemeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3211EF0754C004985F6 /* CustomizeThemeTextField.m */; };
@@ -350,6 +351,8 @@
 		F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "Fonts/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		FA1111231F06D9E000D5B6B2 /* CastMessageChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastMessageChannel.h; sourceTree = "<group>"; };
+		FA1111241F06D9E000D5B6B2 /* CastMessageChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastMessageChannel.m; sourceTree = "<group>"; };
 		FA4BA31B1EF07472004985F6 /* ACPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACPurchaseManager.h; path = Managers/ACPurchaseManager.h; sourceTree = "<group>"; };
 		FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACPurchaseManager.m; path = Managers/ACPurchaseManager.m; sourceTree = "<group>"; };
 		FA4BA31E1EF0754C004985F6 /* CustomizeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomizeImageView.h; path = Views/CustomizeImageView.h; sourceTree = "<group>"; };
@@ -376,6 +379,7 @@
 		FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		FAC7B3DD1EFC496200C787E4 /* AdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdObject.h; path = Models/AdObject.h; sourceTree = "<group>"; };
 		FAC7B3DE1EFC496200C787E4 /* AdObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdObject.m; path = Models/AdObject.m; sourceTree = "<group>"; };
+		FADC22ED1F00353D00DFFD4F /* Zype TV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Zype TV.entitlements"; sourceTree = "<group>"; };
 		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -584,6 +588,7 @@
 		F1BB52821A76D7D100E901F1 /* Zype */ = {
 			isa = PBXGroup;
 			children = (
+				FADC22ED1F00353D00DFFD4F /* Zype TV.entitlements */,
 				F1BB52AC1A76D99D00E901F1 /* Models */,
 				F1BB52AD1A76D9A300E901F1 /* Views */,
 				F1BB52AE1A76D9B800E901F1 /* View Controllers */,
@@ -621,6 +626,8 @@
 			children = (
 				A13AF2A91D36985A00DDA006 /* Action.h */,
 				A13AF2AA1D36985A00DDA006 /* Action.m */,
+				FA1111231F06D9E000D5B6B2 /* CastMessageChannel.h */,
+				FA1111241F06D9E000D5B6B2 /* CastMessageChannel.m */,
 				A13AF2AB1D36985A00DDA006 /* DownloadInfo.h */,
 				A13AF2AC1D36985A00DDA006 /* DownloadInfo.m */,
 				A13AF2AD1D36985A00DDA006 /* Favorite.h */,
@@ -829,6 +836,9 @@
 							com.apple.Push = {
 								enabled = 0;
 							};
+							com.apple.WAC = {
+								enabled = 0;
+							};
 						};
 					};
 				};
@@ -931,7 +941,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		780AC7031BDFD284007F1119 /* ShellScript */ = {
@@ -1038,6 +1048,7 @@
 				FA4BA3231EF0754C004985F6 /* CustomizeThemeTextField.m in Sources */,
 				A13AF30C1D369A2C00DDA006 /* DownloadsViewController.m in Sources */,
 				A13AF2C51D36985A00DDA006 /* Timing.m in Sources */,
+				FA1111251F06D9E000D5B6B2 /* CastMessageChannel.m in Sources */,
 				A13AF3211D369AB300DDA006 /* BaseTableController.m in Sources */,
 				FA4BA3361EF0764B004985F6 /* RegisterViewController.m in Sources */,
 				A13AF2E01D36995000DDA006 /* ACSEpisodeCollectionViewCell.m in Sources */,
