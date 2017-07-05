@@ -25,7 +25,7 @@
 
 #import "UIColor+AC.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<GCKLoggerDelegate>
 
 @property (nonatomic) unsigned long tabIndex;
 
@@ -59,6 +59,30 @@
     
     return YES;
 }
+
+- (void)setupCastLogging {
+    GCKLoggerFilter *logFilter = [[GCKLoggerFilter alloc] init];
+    [logFilter setLoggingLevel:GCKLoggerLevelError forClasses:@[
+                                               @"GCKDeviceScanner",
+                                               @"GCKDeviceProvider",
+                                               @"GCKDiscoveryManager",
+                                               @"GCKCastChannel",
+                                               @"GCKMediaControlChannel",
+                                               @"GCKUICastButton",
+                                               @"GCKUIMediaController",
+                                               @"NSMutableDictionary"
+                                               ]];
+    [GCKLogger sharedInstance].filter = logFilter;
+    [GCKLogger sharedInstance].delegate = self;
+}
+
+- (void)logMessage:(NSString *)message fromFunction:(NSString *)function {
+    //if (_enableSDKLogging) {
+        // Send SDK's log messages directly to the console.
+        NSLog(@"%@  %@", function, message);
+    //}
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
