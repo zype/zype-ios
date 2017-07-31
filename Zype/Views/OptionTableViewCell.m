@@ -46,7 +46,9 @@
         case Share:
             [self.delegate onDidShareTapped:self];
             break;
-
+        case WatchAdFree:
+            [self.delegate onDidWatchAdFreeTapped:self];
+            break;
         default:
             break;
     }
