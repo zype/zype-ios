@@ -178,6 +178,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.optionsDataSource addObject:shareItem];
     }
     
+    if (kSubscribeToWatchAdFree) {
+        if (kNativeSubscriptionEnabled == false) {
+            TableSectionDataSource *swafItem = [[TableSectionDataSource alloc] init];
+            swafItem.title = @"Watch Ad Free";
+            swafItem.type = WatchAdFree;
+            swafItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"iconSubscribeB"] andDarkImage:[UIImage imageNamed:@"iconSubscribeW"]];
+            [self.optionsDataSource addObject:swafItem];
+        }
+    }
+    
     [self.tableViewOptions reloadData];
 }
 
@@ -1555,6 +1565,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)onDidShareTapped:(OptionTableViewCell *)cell {
     [self.actionSheetManager showShareActionSheetWithVideo:self.video];
+}
+
+- (void)onDidWatchAdFreeTapped:(OptionTableViewCell *)cell {    
+    if (kNativeSubscriptionEnabled == NO) {
+        if (kSubscribeToWatchAdFree) {
+            if ([ACStatusManager isUserSignedIn] == false) {
+                [UIUtil showSignInViewFromViewController:self];
+                return;
+            }
+        }
+    }
 }
 
 #pragma mark - ACActionSheetManagerDelegate

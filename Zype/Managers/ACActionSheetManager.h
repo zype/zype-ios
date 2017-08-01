@@ -28,7 +28,8 @@ NS_ENUM(NSInteger, ACLatestActionSheetEpisodeOptionsButton){
     ACLatestActionSheetEpisodeOptionsButtonDownloadAudio,
     ACLatestActionSheetEpisodeOptionsButtonStopDownload,
     ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedVideo,
-    ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedAudio
+    ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedAudio,
+    ACLatestActionSheetEpisodeOptionsButtonSubscribeToWatchAdFree
     
 };
 

@@ -29,5 +29,6 @@
 - (void)onDidDownloadTapped:(OptionTableViewCell *)cell;
 - (void)onDidFavoriteTapped:(OptionTableViewCell *)cell;
 - (void)onDidShareTapped:(OptionTableViewCell *)cell;
+- (void)onDidWatchAdFreeTapped:(OptionTableViewCell *)cell;
 
 @end
