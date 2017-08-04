@@ -1567,7 +1567,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.actionSheetManager showShareActionSheetWithVideo:self.video];
 }
 
-- (void)onDidWatchAdFreeTapped:(OptionTableViewCell *)cell {    
+- (void)onDidWatchAdFreeTapped:(OptionTableViewCell *)cell {
     if (kNativeSubscriptionEnabled == NO) {
         if (kSubscribeToWatchAdFree) {
             if ([ACStatusManager isUserSignedIn] == false) {
