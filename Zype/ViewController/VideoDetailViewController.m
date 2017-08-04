@@ -10,6 +10,9 @@
 #import <Crashlytics/Crashlytics.h>
 //#import <PINRemoteImage/UIImageView+PINRemoteImage.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <AdSupport/ASIdentifierManager.h>
+#import <sys/utsname.h>
+
 
 #import "VideoDetailViewController.h"
 #import "GuestTableViewCell.h"
@@ -1089,16 +1092,19 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSArray *requests = [[ACAdManager sharedInstance] adRequstsFromArray:self.adsArray];
     
     for (AdObject *adObject in requests) {
+        
+        NSString *newTag = [self replaceAdMacros:adObject.tag];
+        
         if (adObject.offset == 0) {
             isPrerollUsed = YES;
-            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:adObject.tag
+            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
                                                           adDisplayContainer:adDisplayContainer
                                                              contentPlayhead:self.contentPlayhead
                                                                  userContext:nil];
             [self.adsLoader requestAdsWithRequest:request];
         } else {
             [adOffsets addObject:adObject.offsetValue];
-            [adsDictionary setObject:adObject.tag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
+            [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
         }
     }
     
@@ -1120,6 +1126,93 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.avPlayer play];
     }
 
+}
+
+- (NSMutableString*)replaceAdMacros:(NSString *)string {
+    
+    NSMutableString *tag = [NSMutableString stringWithString: string];
+    
+    NSUUID *realUuid = [[UIDevice currentDevice] identifierForVendor];
+    unsigned char uuidBytes[16];
+    [realUuid getUUIDBytes:uuidBytes];
+    NSString *uuid = [NSString stringWithFormat: @"%@", realUuid];
+    
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    NSString *bundleName = [NSString stringWithFormat:@"%@", [info objectForKey:@"CFBundleDisplayName"]];
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    
+    NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    NSString *appId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+    
+    [tag replaceOccurrencesOfString:@"[uuid]"
+                         withString: uuid
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_name]"
+                         withString: bundleName
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_bundle]"
+                         withString: bundleIdentifier
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_domain]"
+                         withString: bundleIdentifier
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_type]"
+                         withString: @"7"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_make]"
+                         withString: @"Apple"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_model]"
+                         withString: machineName()
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_ifa]"
+                         withString: idfa
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[vpi]"
+                         withString: @"mp4"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_id]"
+                         withString: appId
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_ua]"
+                         withString: @"zype_ios"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@" "
+                         withString: @"-"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    return tag;
+}
+
+NSString* machineName() {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    
+    return [NSString stringWithCString:systemInfo.machine
+                              encoding:NSUTF8StringEncoding];
 }
 
 - (void)contentDidFinishPlaying:(NSNotification *)notification {
