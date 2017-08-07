@@ -44,7 +44,6 @@
 #import "ACStatusManager.h"
 #import "UIUtil.h"
 
-
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =
 @"https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&"
