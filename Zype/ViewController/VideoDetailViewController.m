@@ -44,6 +44,7 @@
 #import "ACStatusManager.h"
 #import "UIUtil.h"
 
+
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =
 @"https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&"
@@ -1196,6 +1197,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [tag replaceOccurrencesOfString:@"[device_ua]"
                          withString: @"zype_ios"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[ip_address]"
+                         withString: @"168.0.0.1"
                             options:NSLiteralSearch
                               range:NSMakeRange(0, tag.length)];
     
