@@ -1199,6 +1199,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                             options:NSLiteralSearch
                               range:NSMakeRange(0, tag.length)];
     
+    [tag replaceOccurrencesOfString:@"[ip_address]"
+                         withString: @"168.0.0.1"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
     [tag replaceOccurrencesOfString:@" "
                          withString: @"-"
                             options:NSLiteralSearch
