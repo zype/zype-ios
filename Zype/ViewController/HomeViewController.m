@@ -25,6 +25,8 @@
 #import "Reachability.h"
 #import "Playlist.h"
 #import "ACSPersistenceManager.h"//remove this after test
+#import "ACPurchaseManager.h"//remove this after test
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface HomeViewController ()<UIActionSheetDelegate, WKNavigationDelegate, ACActionSheetManagerDelegate>
 
@@ -81,8 +83,24 @@
     //[self customizeSearchBar];
     
     //[self performSegueWithIdentifier:@"toIntro" sender:nil];
+    
 }
 
+- (void)test {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD show];
+    });
+    [[ACPurchaseManager sharedInstance] verifyWithBifrost:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD dismiss];
+        });
+    } failure:^(NSString* message) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showErrorWithStatus:message];
+        });
+    }];
+
+}
 - (void) customizeSearchBar {
     //[self.searchBar setBarStyle:UIBarStyleDefault];
     if (kAppColorLight){
@@ -121,6 +139,7 @@
     
     [self.view bringSubviewToFront:self.buttonDismissSearch];
     [self.activityIndicator stopAnimating];
+    [self test];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
