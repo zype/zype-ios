@@ -48,7 +48,13 @@
                                           [activityIndicator removeFromSuperview];
                                           //check for error and add default placeholder
                                           if (error) {
-                                              [self.imageThumbnail setImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
+                                              NSString *imagePlaceholder;
+                                              if (kAppColorLight)
+                                                  imagePlaceholder = @"ImagePlaylistPlaceholder";
+                                              else
+                                                  imagePlaceholder = @"ImagePlaylistPlaceholderDark";
+                                              
+                                              [self.imageThumbnail setImage:[UIImage imageNamed:imagePlaceholder]];
                                               CLS_LOG(@"Placeholder thumbnail couldn't be loaded: %@", error);
                                           }
                                       }];

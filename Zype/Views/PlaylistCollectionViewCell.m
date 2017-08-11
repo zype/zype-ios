@@ -22,7 +22,14 @@
 @implementation PlaylistCollectionViewCell
 
 - (void)setPlaylist:(Playlist *)playlist{
-    [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
+    
+    NSString *imagePlaceholder;
+    if (kAppColorLight)
+        imagePlaceholder = @"ImagePlaylistPlaceholder";
+    else
+        imagePlaceholder = @"ImagePlaylistPlaceholderDark";
+    
+    [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:imagePlaceholder]];
     
     self.titleLabel.text = playlist.title;
 

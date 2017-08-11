@@ -41,7 +41,7 @@
 
 #define kSubscribeToWatchAdFree NO
 #define kDownloadsEnabled YES
-#define kNativeSubscriptionEnabled NO
+#define kNativeSubscriptionEnabled YES
 #define kDownloadsForAllUsersEnabled NO
 #define kShareVideoEnabled NO
 
