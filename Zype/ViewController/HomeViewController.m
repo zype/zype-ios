@@ -92,6 +92,18 @@
     });
     [[ACPurchaseManager sharedInstance] verifyWithBifrost:^{
         dispatch_async(dispatch_get_main_queue(), ^{
+            
+            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Username];
+            NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Password];
+           
+            [ACSDataManager loginWithUsername:username password:password block:^(BOOL success, NSError *error) {
+                if (success) {
+                    
+                } else {
+                    
+                }
+            }];
+            
             [SVProgressHUD dismiss];
         });
     } failure:^(NSString* message) {
@@ -139,7 +151,7 @@
     
     [self.view bringSubviewToFront:self.buttonDismissSearch];
     [self.activityIndicator stopAnimating];
-    [self test];
+    //[self test];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

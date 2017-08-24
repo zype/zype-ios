@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+@import StoreKit;
 
-@interface ACPurchaseManager : NSObject
+@interface ACPurchaseManager : NSObject <SKPaymentTransactionObserver>
 
 + (id)sharedInstance;
 

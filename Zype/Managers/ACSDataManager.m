@@ -174,6 +174,9 @@
     
     __block NSString *blockUsername = username;
     
+    [[NSUserDefaults standardUserDefaults] setObject:username forKey:kSettingKey_Username];
+    [[NSUserDefaults standardUserDefaults] setObject:password forKey:kSettingKey_Password];
+    
     [[RESTServiceController sharedInstance] getTokenWithUsername:blockUsername WithPassword:password WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
         if (data != nil) {

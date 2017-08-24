@@ -177,6 +177,8 @@
 #define kSettingKey_IsOnAir @"isOnAir"
 #define kSettingKey_LiveStreamId @"liveStreamId"
 #define kSettingKey_DownloadsFeature @"downloadFeature"
+#define kSettingKey_Username @"username"
+#define kSettingKey_Password @"password"
 
 #pragma mark - Strings
 #define kString_SigningIn @"Signing In..."
@@ -278,6 +280,7 @@
 #define kAppKey_AccessToken        @"access_token"
 #define kAppKey_RefreshToken       @"refresh_token"
 #define kAppKey_ConsumerId         @"resource_owner_id"
+#define kAppKey_SubscriptionCount  @"subscription_count"
 #define kAppKey_Id                 @"_id"
 #define kAppKey_VideoId            @"video_id"
 #define kAppKey_Pagination         @"pagination"

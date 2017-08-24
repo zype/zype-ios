@@ -23,6 +23,7 @@
 #import "ACPurchaseManager.h"
 
 #import "UIColor+AC.h"
+@import StoreKit;
 
 @interface AppDelegate ()
 
@@ -51,6 +52,7 @@
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
+    [self initInAppPurchaseObserver];
     
     return YES;
 }
@@ -101,6 +103,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [[ACSPersistenceManager sharedInstance] saveContext];
+    [self deInitInAppPurchaseObserver];
 }
 
 #pragma mark - Init App
@@ -326,6 +329,25 @@
         
         [UITabBar appearance].backgroundColor = [UIColor blackColor];
     }
+}
+
+/* According to best practices: https://developer.apple.com/library/content/technotes/tn2387/_index.html
+ * we should launch an observer as soon as the app starts
+ */
+- (void) initInAppPurchaseObserver {
+    if (kNativeSubscriptionEnabled == NO)
+        return;
+    
+    ACPurchaseManager *purchaseManager = [ACPurchaseManager sharedInstance];
+    [SKPaymentQueue.defaultQueue addTransactionObserver:purchaseManager];
+}
+
+- (void) deInitInAppPurchaseObserver {
+    if (kNativeSubscriptionEnabled == NO)
+        return;
+    
+    ACPurchaseManager *purchaseManager = [ACPurchaseManager sharedInstance];
+    [SKPaymentQueue.defaultQueue removeTransactionObserver:purchaseManager];
 }
 
 @end
