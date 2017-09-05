@@ -95,8 +95,7 @@
     NSError *error;
     NSDictionary *requestContents = @{
                                       @"consumer_id" : [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId],
-                                      @"site_id" : @"123",
-                                      @"subscription_plan_id" : @"5931ae930eda4a149d007c75",
+                                      @"third_party_id" : @"iosmonthly",
                                       @"device_type" : @"ios",
                                       @"receipt": [receipt base64EncodedStringWithOptions:0],
                                       @"shared_key" : @"ead5fc19c42045cfa783e24d6e5a2325",
@@ -115,27 +114,28 @@
         [storeRequest setHTTPMethod:@"POST"];
         [storeRequest setHTTPBody:requestData];
         
-        
-        
-        //Response data object
-        NSData *returnData = [[NSData alloc]init];
-        
         //Send the Request
-        returnData = [NSURLConnection sendSynchronousRequest: storeRequest returningResponse: nil error: nil];
-        
-        //Get the Result of Request
-        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&error];
-        if(jsonResponse){
-            int isValid = [[jsonResponse valueForKey:@"is_valid"] intValue];
-            if (isValid == 1)
-                success();
+        [NSURLConnection sendAsynchronousRequest:storeRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             
-            int isExpired = [[jsonResponse valueForKey:@"is_expired"] intValue];
-            if (isExpired == 1)
-                failure(@"Your subscription has expired");
-        } else {
-            failure(error.localizedDescription);
-        }
+            if (data) {
+                //Get the Result of Request
+                NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+                if(jsonResponse){
+                    int isValid = [[jsonResponse valueForKey:@"is_valid"] intValue];
+                    if (isValid == 1)
+                        success();
+                    
+                    int isExpired = [[jsonResponse valueForKey:@"expired"] intValue];
+                    if (isExpired == 1)
+                        failure(@"Your subscription has expired");
+                } else {
+                    failure(error.localizedDescription);
+                }
+
+            } else {
+               failure(@"Can't subscribe at the moment. Try to subscribe on the website"); 
+            }
+        }];
         
     } else {
         failure(@"Can't subscribe at the moment. Try to subscribe on the website");
@@ -161,6 +161,9 @@
                 break;
             case SKPaymentTransactionStatePurchased:
             {
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"PurchaseCompletedSuccessflly" object:nil];
+                
                 [self verifyWithBifrost:^(){
                     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Username];
                     NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Password];
@@ -173,7 +176,10 @@
                         }
                     }];
                     
-                    [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                   // dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                   // });
+                    
                 } failure:^(NSString *message){
                     NSLog(@"Transaction can't be completed. %@", message);
                     //put this in the queue and execute later

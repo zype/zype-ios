@@ -86,33 +86,7 @@
     
 }
 
-- (void)test {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [SVProgressHUD show];
-    });
-    [[ACPurchaseManager sharedInstance] verifyWithBifrost:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Username];
-            NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Password];
-           
-            [ACSDataManager loginWithUsername:username password:password block:^(BOOL success, NSError *error) {
-                if (success) {
-                    
-                } else {
-                    
-                }
-            }];
-            
-            [SVProgressHUD dismiss];
-        });
-    } failure:^(NSString* message) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD showErrorWithStatus:message];
-        });
-    }];
 
-}
 - (void) customizeSearchBar {
     //[self.searchBar setBarStyle:UIBarStyleDefault];
     if (kAppColorLight){
@@ -151,7 +125,6 @@
     
     [self.view bringSubviewToFront:self.buttonDismissSearch];
     [self.activityIndicator stopAnimating];
-    //[self test];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

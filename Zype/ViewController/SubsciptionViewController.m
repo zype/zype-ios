@@ -38,7 +38,7 @@
     [super viewDidLoad];
     
     [self configureController];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(purchaseCompleted) name:@"PurchaseCompletedSuccessflly" object:nil];
     // Do any additional setup after loading the view.
 }
 
@@ -90,6 +90,12 @@
         [SVProgressHUD dismiss];
         [ACSAlertViewManager showAlertWithTitle:nil WithMessage:errorString];
     }];
+}
+
+#pragma mark - Notification Observer
+- (void)purchaseCompleted {
+    [SVProgressHUD dismiss];
+    [self dismisControllers];
 }
 
 #pragma mark - SubscriptActiveCellDelegate
