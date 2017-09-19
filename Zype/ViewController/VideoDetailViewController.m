@@ -1252,7 +1252,10 @@ NSString* machineName() {
     // When the SDK notified us that ads have been loaded, play them.
     if (event.type == kIMAAdEvent_LOADED) {
         [adsManager start];
+    } else if (event.type == kIMAAdEvent_ALL_ADS_COMPLETED) {
+        self.adsManager = nil;
     }
+
 }
 
 - (void)adsManager:(IMAAdsManager *)adsManager didReceiveAdError:(IMAAdError *)error {
