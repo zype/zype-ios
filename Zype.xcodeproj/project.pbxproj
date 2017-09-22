@@ -143,6 +143,7 @@
 		FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */; };
 		FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */; };
 		FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */; };
+		FAA90E051F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA90E041F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m */; };
 		FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC7B3DE1EFC496200C787E4 /* AdObject.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
@@ -374,6 +375,8 @@
 		FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableSectionDataSource.m; path = Models/TableSectionDataSource.m; sourceTree = "<group>"; };
 		FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Medium.ttf"; path = "Fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		FAA90E031F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVPlayerViewController+AVPlayerViewController_Transition.h"; sourceTree = "<group>"; };
+		FAA90E041F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVPlayerViewController+AVPlayerViewController_Transition.m"; sourceTree = "<group>"; };
 		FAC7B3DD1EFC496200C787E4 /* AdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdObject.h; path = Models/AdObject.h; sourceTree = "<group>"; };
 		FAC7B3DE1EFC496200C787E4 /* AdObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdObject.m; path = Models/AdObject.m; sourceTree = "<group>"; };
 		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -524,6 +527,8 @@
 				A136221C1D51133200866742 /* NSURLResponse+AK.m */,
 				FA4BA32E1EF075F3004985F6 /* UIView+UIView_CustomizeTheme.h */,
 				FA4BA32F1EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m */,
+				FAA90E031F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.h */,
+				FAA90E041F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1047,6 +1052,7 @@
 				A13AF2C61D36985A00DDA006 /* Video.m in Sources */,
 				FA4BA32C1EF075B9004985F6 /* SubscriptActiveCell.m in Sources */,
 				A13AF2E51D36995000DDA006 /* FavoriteTableViewCell.m in Sources */,
+				FAA90E051F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m in Sources */,
 				A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */,
 				A13AF3571D369CC600DDA006 /* ACSNotificationsManager.m in Sources */,
 				FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */,

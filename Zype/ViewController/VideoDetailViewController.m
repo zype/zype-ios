@@ -28,6 +28,7 @@
 #import "OptionTableViewCell.h"
 #import "CustomizeImageView.h"
 #import "ACPurchaseManager.h"
+#import "AVPlayerViewController+AVPlayerViewController_Transition.h"
 
 #import "Guest.h"
 #import "Timeline.h"
@@ -82,6 +83,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic) NSArray *adsArray;
 @property (nonatomic, strong) id playerObserver;
 
+@property (nonatomic, assign) BOOL isReturnFullScreenIfNeeded;
+
 @end
 
 
@@ -120,6 +123,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;
+    self.isReturnFullScreenIfNeeded = NO;
     
     self.indexPathController = [self indexPathController];
     
@@ -763,6 +767,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (BOOL)isFullScreen {
+    return (self.avPlayerController.videoBounds.size.width == self.view.frame.size.width);
+}
 
 #pragma mark - Place Saving
 
@@ -1032,7 +1039,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.tableViewOptions reloadData];
 }
 
-
 #pragma mark - Rotation Setup
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
@@ -1085,6 +1091,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     __block IMAAdDisplayContainer *adDisplayContainer =
     [[IMAAdDisplayContainer alloc] initWithAdContainer:self.avPlayerController.view companionSlots:nil];
     __block NSMutableDictionary *adsDictionary = [[NSMutableDictionary alloc] init];
+    __block NSMutableArray *adsTags = [[NSMutableArray alloc] init];
 
     
     BOOL isPrerollUsed = NO;
@@ -1094,7 +1101,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     for (AdObject *adObject in requests) {
         
         NSString *newTag = [self replaceAdMacros:adObject.tag];
-        
         if (adObject.offset == 0) {
             isPrerollUsed = YES;
             IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
@@ -1103,22 +1109,28 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                                  userContext:nil];
             [self.adsLoader requestAdsWithRequest:request];
         } else {
+            
             [adOffsets addObject:adObject.offsetValue];
             [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
+            [adsTags addObject:newTag];
         }
     }
     
+    
     if (adOffsets.count > 0) {
         __weak typeof(self) weakSelf = self;
+        
         self.playerObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
-            //
-            int sec = CMTimeGetSeconds([weakSelf.avPlayer currentTime]);
-            NSString *tag = [adsDictionary objectForKey:[NSString stringWithFormat:@"%d", sec]];
-            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:tag
-                                                          adDisplayContainer:adDisplayContainer
-                                                             contentPlayhead:weakSelf.contentPlayhead
-                                                                 userContext:nil];
-            [weakSelf.adsLoader requestAdsWithRequest:request];
+
+            if (adsTags.count > 0) {
+                NSString *tag = adsTags.firstObject;
+                [adsTags removeObjectAtIndex:0];
+                IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:tag
+                                                              adDisplayContainer:adDisplayContainer
+                                                                 contentPlayhead:weakSelf.contentPlayhead
+                                                                     userContext:nil];
+                [weakSelf.adsLoader requestAdsWithRequest:request];
+            }
         }];
     }
 
@@ -1250,8 +1262,21 @@ NSString* machineName() {
 
 - (void)adsManager:(IMAAdsManager *)adsManager didReceiveAdEvent:(IMAAdEvent *)event {
     // When the SDK notified us that ads have been loaded, play them.
+    NSLog(@"%ld", (long)event.type);
     if (event.type == kIMAAdEvent_LOADED) {
         [adsManager start];
+    } else if (event.type == kIMAAdEvent_STARTED){
+        if ([self isFullScreen] == YES) {
+            [self.avPlayerController exitFullscreen];
+            self.isReturnFullScreenIfNeeded = YES;
+        }
+    } else if (event.type == kIMAAdEvent_ALL_ADS_COMPLETED) {
+        self.adsManager = nil;
+    } else if (event.type == kIMAAdEvent_COMPLETE) {
+        if (self.isReturnFullScreenIfNeeded == YES) {
+            [self.avPlayerController goFullscreen];
+            self.isReturnFullScreenIfNeeded = NO;
+        }
     }
 }
 
