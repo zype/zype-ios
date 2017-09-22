@@ -10,6 +10,9 @@
 #import <Crashlytics/Crashlytics.h>
 //#import <PINRemoteImage/UIImageView+PINRemoteImage.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <AdSupport/ASIdentifierManager.h>
+#import <sys/utsname.h>
+
 
 #import "VideoDetailViewController.h"
 #import "GuestTableViewCell.h"
@@ -25,6 +28,7 @@
 #import "OptionTableViewCell.h"
 #import "CustomizeImageView.h"
 #import "ACPurchaseManager.h"
+#import "AVPlayerViewController+AVPlayerViewController_Transition.h"
 
 #import "Guest.h"
 #import "Timeline.h"
@@ -79,6 +83,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic) NSArray *adsArray;
 @property (nonatomic, strong) id playerObserver;
 
+@property (nonatomic, assign) BOOL isReturnFullScreenIfNeeded;
+
 @end
 
 
@@ -117,6 +123,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;
+    self.isReturnFullScreenIfNeeded = NO;
     
     self.indexPathController = [self indexPathController];
     
@@ -176,6 +183,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         shareItem.type = Share;
         shareItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconShareB"] andDarkImage:[UIImage imageNamed:@"IconShareW"]];
         [self.optionsDataSource addObject:shareItem];
+    }
+    
+    if (kSubscribeToWatchAdFree) {
+        if (kNativeSubscriptionEnabled == false) {
+            TableSectionDataSource *swafItem = [[TableSectionDataSource alloc] init];
+            swafItem.title = @"Watch Ad Free";
+            swafItem.type = WatchAdFree;
+            swafItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"iconSubscribeB"] andDarkImage:[UIImage imageNamed:@"iconSubscribeW"]];
+            [self.optionsDataSource addObject:swafItem];
+        }
     }
     
     [self.tableViewOptions reloadData];
@@ -750,6 +767,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (BOOL)isFullScreen {
+    return (self.avPlayerController.videoBounds.size.width == self.view.frame.size.width);
+}
 
 #pragma mark - Place Saving
 
@@ -1019,7 +1039,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.tableViewOptions reloadData];
 }
 
-
 #pragma mark - Rotation Setup
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
@@ -1072,6 +1091,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     __block IMAAdDisplayContainer *adDisplayContainer =
     [[IMAAdDisplayContainer alloc] initWithAdContainer:self.avPlayerController.view companionSlots:nil];
     __block NSMutableDictionary *adsDictionary = [[NSMutableDictionary alloc] init];
+    __block NSMutableArray *adsTags = [[NSMutableArray alloc] init];
 
     
     BOOL isPrerollUsed = NO;
@@ -1079,30 +1099,38 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSArray *requests = [[ACAdManager sharedInstance] adRequstsFromArray:self.adsArray];
     
     for (AdObject *adObject in requests) {
+        
+        NSString *newTag = [self replaceAdMacros:adObject.tag];
         if (adObject.offset == 0) {
             isPrerollUsed = YES;
-            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:adObject.tag
+            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
                                                           adDisplayContainer:adDisplayContainer
                                                              contentPlayhead:self.contentPlayhead
                                                                  userContext:nil];
             [self.adsLoader requestAdsWithRequest:request];
         } else {
+            
             [adOffsets addObject:adObject.offsetValue];
-            [adsDictionary setObject:adObject.tag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
+            [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
+            [adsTags addObject:newTag];
         }
     }
     
+    
     if (adOffsets.count > 0) {
         __weak typeof(self) weakSelf = self;
+        
         self.playerObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
-            //
-            int sec = CMTimeGetSeconds([weakSelf.avPlayer currentTime]);
-            NSString *tag = [adsDictionary objectForKey:[NSString stringWithFormat:@"%d", sec]];
-            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:tag
-                                                          adDisplayContainer:adDisplayContainer
-                                                             contentPlayhead:weakSelf.contentPlayhead
-                                                                 userContext:nil];
-            [weakSelf.adsLoader requestAdsWithRequest:request];
+
+            if (adsTags.count > 0) {
+                NSString *tag = adsTags.firstObject;
+                [adsTags removeObjectAtIndex:0];
+                IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:tag
+                                                              adDisplayContainer:adDisplayContainer
+                                                                 contentPlayhead:weakSelf.contentPlayhead
+                                                                     userContext:nil];
+                [weakSelf.adsLoader requestAdsWithRequest:request];
+            }
         }];
     }
 
@@ -1110,6 +1138,98 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.avPlayer play];
     }
 
+}
+
+- (NSMutableString*)replaceAdMacros:(NSString *)string {
+    
+    NSMutableString *tag = [NSMutableString stringWithString: string];
+    
+    NSUUID *realUuid = [[UIDevice currentDevice] identifierForVendor];
+    unsigned char uuidBytes[16];
+    [realUuid getUUIDBytes:uuidBytes];
+    NSString *uuid = [NSString stringWithFormat: @"%@", realUuid];
+    
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    NSString *bundleName = [NSString stringWithFormat:@"%@", [info objectForKey:@"CFBundleDisplayName"]];
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    
+    NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    NSString *appId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+    
+    [tag replaceOccurrencesOfString:@"[uuid]"
+                         withString: uuid
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_name]"
+                         withString: bundleName
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_bundle]"
+                         withString: bundleIdentifier
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_domain]"
+                         withString: bundleIdentifier
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_type]"
+                         withString: @"7"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_make]"
+                         withString: @"Apple"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_model]"
+                         withString: machineName()
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_ifa]"
+                         withString: idfa
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[vpi]"
+                         withString: @"mp4"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_id]"
+                         withString: appId
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_ua]"
+                         withString: @"zype_ios"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[ip_address]"
+                         withString: @"168.0.0.1"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@" "
+                         withString: @"-"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    return tag;
+}
+
+NSString* machineName() {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    
+    return [NSString stringWithCString:systemInfo.machine
+                              encoding:NSUTF8StringEncoding];
 }
 
 - (void)contentDidFinishPlaying:(NSNotification *)notification {
@@ -1142,8 +1262,21 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)adsManager:(IMAAdsManager *)adsManager didReceiveAdEvent:(IMAAdEvent *)event {
     // When the SDK notified us that ads have been loaded, play them.
+    NSLog(@"%ld", (long)event.type);
     if (event.type == kIMAAdEvent_LOADED) {
         [adsManager start];
+    } else if (event.type == kIMAAdEvent_STARTED){
+        if ([self isFullScreen] == YES) {
+            [self.avPlayerController exitFullscreen];
+            self.isReturnFullScreenIfNeeded = YES;
+        }
+    } else if (event.type == kIMAAdEvent_ALL_ADS_COMPLETED) {
+        self.adsManager = nil;
+    } else if (event.type == kIMAAdEvent_COMPLETE) {
+        if (self.isReturnFullScreenIfNeeded == YES) {
+            [self.avPlayerController goFullscreen];
+            self.isReturnFullScreenIfNeeded = NO;
+        }
     }
 }
 
@@ -1555,6 +1688,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)onDidShareTapped:(OptionTableViewCell *)cell {
     [self.actionSheetManager showShareActionSheetWithVideo:self.video];
+}
+
+- (void)onDidWatchAdFreeTapped:(OptionTableViewCell *)cell {
+    if (kNativeSubscriptionEnabled == NO) {
+        if (kSubscribeToWatchAdFree) {
+            if ([ACStatusManager isUserSignedIn] == false) {
+                [UIUtil showSignInViewFromViewController:self];
+                return;
+            }
+        }
+    }
 }
 
 #pragma mark - ACActionSheetManagerDelegate

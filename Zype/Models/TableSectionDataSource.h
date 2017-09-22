@@ -15,7 +15,8 @@ typedef NS_ENUM(NSUInteger, TableSectionDataSourceType) {
     Share = 4,
     TermsOfService = 5,
     RestorePurchase = 6,
-    Version = 7
+    Version = 7,
+    WatchAdFree = 8
 };
 
 @interface TableSectionDataSource : NSObject

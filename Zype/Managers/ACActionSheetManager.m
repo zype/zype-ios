@@ -128,6 +128,16 @@
         }
     }
     
+    if (kSubscribeToWatchAdFree) {
+        if (kNativeSubscriptionEnabled == NO) {
+            if ([ACStatusManager isUserSignedIn] == NO) {
+                [self.delegate acActionSheetManagerDelegatePresentViewController:[ViewManager signInViewController]];
+                if (failure) failure();
+                return;
+            }
+        }
+    }
+    
     complete();
 }
 
@@ -148,6 +158,11 @@
         [[RESTServiceController sharedInstance] favoriteVideo:self.actionVideo];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Favorite" label:@"Video Favorited" value:nil] build]];
         
+    }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonSubscribeToWatchAdFree]]) {
+        CLS_LOG(@"swaf tapped");
+
+        [self checkingOnActiveFlags:^{ } failure:nil];
+    
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonUnFavorite]]) {
         CLS_LOG(@"unfavorite tapped");
         
@@ -489,6 +504,14 @@
             [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonShare]];
     }
     
+    if (kNativeSubscriptionEnabled == NO) {
+        if (kSubscribeToWatchAdFree) {
+            if ([ACStatusManager isUserSignedIn] == false) {
+                [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType: ACLatestActionSheetEpisodeOptionsButtonSubscribeToWatchAdFree]];
+            }
+        }
+    }
+    
     actionSheet.tag = ACLatestActionSheetTypeShowOptions;
     
     return actionSheet;
@@ -653,6 +676,10 @@
             
         case ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedAudio:
             return NSLocalizedString(@"Delete Downloaded Audio", @"action button title");
+            break;
+            
+        case ACLatestActionSheetEpisodeOptionsButtonSubscribeToWatchAdFree:
+            return NSLocalizedString(@"Watch Ad Free", @"action button title");
             break;
             
         default:
