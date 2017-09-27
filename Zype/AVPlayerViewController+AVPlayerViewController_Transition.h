@@ -12,5 +12,7 @@
 
 - (void)goFullscreen;
 - (void)exitFullscreen;
+- (void)exitFullscreen:(void(^)(void))complete;
+
 
 @end
