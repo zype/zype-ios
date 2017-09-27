@@ -13,7 +13,6 @@
 #import <AdSupport/ASIdentifierManager.h>
 #import <sys/utsname.h>
 
-
 #import "VideoDetailViewController.h"
 #import "GuestTableViewCell.h"
 #import "TimelineTableViewCell.h"
@@ -82,6 +81,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (nonatomic) NSArray *adsArray;
 @property (nonatomic, strong) id playerObserver;
+@property (nonatomic, strong) UIView *adsContainerView;
 
 @property (nonatomic, assign) BOOL isReturnFullScreenIfNeeded;
 
@@ -129,8 +129,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     
+    self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
+    [self.view addSubview:self.adsContainerView];
     //need t
     [self setupNotifications];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    //self.adsContainerView.frame = CGRectMake(0, 300, self.imageThumbnail.frame.size.width, self.imageThumbnail.frame.size.height);
 }
 
 - (void)configureDataSource {
@@ -212,6 +219,20 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
 }
+
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    if ([self isBeingDismissed]) {
+//        [self.avPlayerController.player replaceCurrentItemWithPlayerItem:nil];
+//    }
+//}
+//- (void)viewDidDisappear:(BOOL)animated{
+//    [super viewDidDisappear:animated];
+//
+//    if ([self isBeingDismissed]) {
+//        [self.avPlayerController.player replaceCurrentItemWithPlayerItem:nil];
+//    }
+//}
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -612,6 +633,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     CGRect frame = self.imageThumbnail.frame;
     [self.avPlayerController.view setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
+    [self.adsContainerView setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
+
     self.avPlayerController.view.backgroundColor = [UIColor clearColor];
     
     [AppDelegate appDelegate].restrictRotation = YES;
@@ -620,106 +643,92 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.labelPlayAs setText:@"Audio"];
     [self.labelPlayAs sizeToFit];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1
-                                                           constant:0]];
-    
-//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-//                                                          attribute:NSLayoutAttributeBottom
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:self.imageThumbnail
-//                                                          attribute:NSLayoutAttributeBottom
-//                                                         multiplier:1
-//                                                           constant:0]];
-//
-//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-//                                                          attribute:NSLayoutAttributeHeight
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:nil
-//                                                          attribute:NSLayoutAttributeNotAnAttribute
-//                                                         multiplier:1
-//                                                           constant:kPlayerControlHeight]];
+    [self setupConstraints];
     
 }
 
-- (void)setupAudioPlayerBackground{
+- (void)setupAudioPlayerBackground {
     
     [self.imageThumbnail setHidden:NO];
     NSURL *thumbnailURL = [NSURL URLWithString:self.video.thumbnailUrl];
-    // [self.imageThumbnail pin_setImageFromURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     [self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         self.imageThumbnail.image = image;
     }];
-    //[self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     [self.view bringSubviewToFront:self.imageThumbnail];
     [self.view bringSubviewToFront:self.avPlayerController.view];
-    
+    [self.view bringSubviewToFront:self.adsContainerView];
 }
 
 - (void)setupVideoPlayerView{
     
-    // [self.imageThumbnail setHidden:NO];
     [self.avPlayerController.view setFrame:self.imageThumbnail.frame];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1
-                                                           constant:0]];
-    
+    [self.adsContainerView setFrame:self.imageThumbnail.frame];
+    [self setupConstraints];
     [self hideActivityIndicator];
     [AppDelegate appDelegate].restrictRotation = NO;
     [self.labelPlayAs setText:@"Video"];
     [self.labelPlayAs sizeToFit];
     
+}
+
+- (void)setupConstraints {
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1
+                                                           constant:0]];
 }
 
 - (void)setupSharedPlayerView {
@@ -768,7 +777,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (BOOL)isFullScreen {
-    return (self.avPlayerController.videoBounds.size.width == self.view.frame.size.width);
+    int screenWidth = (int)(round(self.view.frame.size.width));
+    int avPlayerWidth = (int)(round(self.avPlayerController.videoBounds.size.width));
+    return (screenWidth == avPlayerWidth);
 }
 
 #pragma mark - Place Saving
@@ -1089,7 +1100,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)requestAds {
     
     __block IMAAdDisplayContainer *adDisplayContainer =
-    [[IMAAdDisplayContainer alloc] initWithAdContainer:self.avPlayerController.view companionSlots:nil];
+    [[IMAAdDisplayContainer alloc] initWithAdContainer:self.adsContainerView companionSlots:nil];
+    
     __block NSMutableDictionary *adsDictionary = [[NSMutableDictionary alloc] init];
     __block NSMutableArray *adsTags = [[NSMutableArray alloc] init];
 
@@ -1255,6 +1267,8 @@ NSString* machineName() {
 - (void)adsLoader:(IMAAdsLoader *)loader failedWithErrorData:(IMAAdLoadingErrorData *)adErrorData {
     // Something went wrong loading ads. Log the error and play the content.
     NSLog(@"Error loading ads: %@", adErrorData.adError.message);
+    [self.adsContainerView setHidden:YES];
+    [self.avPlayerController.view setHidden:NO];
     [self.avPlayer play];
 }
 
@@ -1264,12 +1278,18 @@ NSString* machineName() {
     // When the SDK notified us that ads have been loaded, play them.
     NSLog(@"%ld", (long)event.type);
     if (event.type == kIMAAdEvent_LOADED) {
-        [adsManager start];
-    } else if (event.type == kIMAAdEvent_STARTED){
         if ([self isFullScreen] == YES) {
-            [self.avPlayerController exitFullscreen];
-            self.isReturnFullScreenIfNeeded = YES;
+            [self.avPlayerController exitFullscreen:^{
+                self.isReturnFullScreenIfNeeded = YES;
+                [self.avPlayerController updateFocusIfNeeded];
+                [adsManager start];
+            }];
+        } else {
+            [adsManager start];
         }
+    } else if (event.type == kIMAAdEvent_STARTED){
+        NSLog(@"subviews %ld", (long)self.avPlayerController.view.subviews);
+
     } else if (event.type == kIMAAdEvent_ALL_ADS_COMPLETED) {
         self.adsManager = nil;
     } else if (event.type == kIMAAdEvent_COMPLETE) {
@@ -1284,16 +1304,22 @@ NSString* machineName() {
     // Something went wrong with the ads manager after ads were loaded. Log the error and play the
     // content.
     NSLog(@"AdsManager error: %@", error.message);
+    [self.adsContainerView setHidden:YES];
+    [self.avPlayerController.view setHidden:NO];
     [self.avPlayer play];
 }
 
 - (void)adsManagerDidRequestContentPause:(IMAAdsManager *)adsManager {
     // The SDK is going to play ads, so pause the content.
+    [self.adsContainerView setHidden:NO];
+    [self.avPlayerController.view setHidden:YES];
     [self.avPlayer pause];
 }
 
 - (void)adsManagerDidRequestContentResume:(IMAAdsManager *)adsManager {
     // The SDK is done playing ads (at least for now), so resume the content.
+    [self.adsContainerView setHidden:YES];
+    [self.avPlayerController.view setHidden:NO];
     [self.avPlayer play];
 }
 
