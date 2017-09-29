@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageCloud;
 @property (weak, nonatomic) IBOutlet UIImageView *imagePlay;
 @property (weak, nonatomic) IBOutlet UIImageView *iconLock;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 
 - (void)configureCell:(Video*)video viewController:(NSObject*)vc;
 @end

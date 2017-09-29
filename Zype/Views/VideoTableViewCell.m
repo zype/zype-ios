@@ -16,6 +16,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -111,7 +112,7 @@
         
         //[self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
         
-        if (kAppColorLight){
+        if (kAppColorLight) {
             
         } else {
             self.contentView.backgroundColor = [UIColor blackColor];
@@ -187,25 +188,17 @@
             
             if (self != nil) {
                 
-                if ([UIUtil isYes:video.isPlayed]){
-                    
+                if ([UIUtil isYes:video.isPlayed]) {
                     [self setPlayed];
-                    
-                }else if ([UIUtil isYes:video.isPlaying]){
-                    
+                } else if ([UIUtil isYes:video.isPlaying]) {
                     [self setPlaying];
-                    
-                }else {
-                    
+                } else {
                     [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
-                    
                 }
-                
             }
-            
         });
         
-    }else {
+    } else {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setNoDownload];
@@ -230,17 +223,15 @@
 - (void)setThumbnail:(Video *)video {
     
     //add activity indicator
-    __block UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    // activityIndicator.center = self.imageThumbnail.center;
-    activityIndicator.center = CGPointMake(self.imageThumbnail.center.x - 20.0, self.center.y - 10.0);
-    activityIndicator.color = kClientColor;
-    activityIndicator.hidesWhenStopped = YES;
-    [self.imageThumbnail addSubview:activityIndicator];
-    [activityIndicator startAnimating];
+    self.activityIndicator.color = kClientColor;
+    [self.activityIndicator setHidesWhenStopped:YES];
+    [self.activityIndicator setHidden:NO];
+    [self.activityIndicator startAnimating];
     
     [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]
                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                      [activityIndicator removeFromSuperview];
+                                      [self.activityIndicator stopAnimating];
+                                      [self.activityIndicator setHidden:YES];
                                       //check for error and add default placeholder
                                       if (error) {
                                           [self.imageThumbnail setImage:[UIImage imageNamed:@"ImagePlaceholder"]];

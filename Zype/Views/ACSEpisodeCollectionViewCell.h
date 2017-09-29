@@ -19,8 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *actionLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-@property (strong, nonatomic) IBOutlet UIView *actionCoverView;
-@property (strong, nonatomic) IBOutlet UIImageView *iconLock;
+@property (weak, nonatomic) IBOutlet UIView *actionCoverView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconLock;
 
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusImageWidthConstraint;
