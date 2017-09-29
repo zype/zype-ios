@@ -17,7 +17,7 @@
 
 @property (nonatomic, strong) Video *video;
 @property (nonatomic, assign) CGFloat defaultStatusImageWidth;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView  *activityIndicator;
 
 @end
 
@@ -42,7 +42,7 @@
     self.actionButton.enabled = YES;
     
     [self setThumbnail:video];
-    [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+    //[self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     self.titleLabel.text = video.title;
     self.subtitleLabel.text = [UIUtil subtitleOfVideo:video];
     
@@ -109,16 +109,15 @@
 - (void)setThumbnail:(Video *)video {
     
     //add activity indicator
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.activityIndicator.center = self.thumbnailImage.center;
     self.activityIndicator.color = kClientColor;
-    self.activityIndicator.hidesWhenStopped = YES;
-    [self.thumbnailImage addSubview:self.activityIndicator];
+    [self.activityIndicator setHidesWhenStopped:YES];
+    [self.activityIndicator setHidden:NO];
     [self.activityIndicator startAnimating];
     
     [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]
                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                      [self.activityIndicator removeFromSuperview];
+                                      [self.activityIndicator stopAnimating];
+                                      [self.activityIndicator setHidden:YES];
                                       //check for error and add default placeholder
                                       if (error) {
                                           [self.thumbnailImage setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
@@ -140,7 +139,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.activityIndicator.center = self.thumbnailImage.center;
+    //self.activityIndicator.center = self.thumbnailImage.center;
 }
 
 - (void)setSelected:(BOOL)selected{
