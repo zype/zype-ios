@@ -1027,6 +1027,10 @@
     newFavorite.video_id = video.vId;
     [[ACSPersistenceManager sharedInstance] saveContext];
     
+//    if (kFavoritesViaAPI) {
+//        
+//    }
+    
     [ACSTokenManager accessToken:^(NSString *token, NSError *error){
         
         // Favorite using REST App
