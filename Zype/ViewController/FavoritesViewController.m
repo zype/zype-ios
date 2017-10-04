@@ -32,7 +32,10 @@
     [super viewDidAppear:animated];
     
     // Load favorites
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]){
+//    if ([[[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]]){
+//        [[RESTServiceController sharedInstance] syncFavoritesAfterRefreshed:NO InPage:nil WithFavoritesInDB:nil WithExistingFavorites:nil];
+//    }
+    if (kFavoritesViaAPI){
         [[RESTServiceController sharedInstance] syncFavoritesAfterRefreshed:NO InPage:nil WithFavoritesInDB:nil WithExistingFavorites:nil];
     }
 
