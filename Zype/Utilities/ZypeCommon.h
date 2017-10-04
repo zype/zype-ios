@@ -39,6 +39,7 @@
 
 #define kViewCornerRounded 2.0f
 
+#define kFavoritesViaAPI NO
 #define kSubscribeToWatchAdFree NO
 #define kDownloadsEnabled YES
 #define kNativeSubscriptionEnabled NO

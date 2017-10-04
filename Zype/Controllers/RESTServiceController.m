@@ -877,7 +877,7 @@
                         
                         if (success == YES) {
                             [self syncFavoritesAfterRefreshed:YES InPage:page WithFavoritesInDB:favoritesInDB WithExistingFavorites:existingFavorites];
-                        }else if (error != nil){
+                        } else if (error != nil) {
                             CLS_LOG(@"Access Token Refresh Failed: %@", error);
                         }
                         
@@ -1025,35 +1025,38 @@
     __block Favorite *newFavorite = [ACSPersistenceManager newFavorite];
     newFavorite.fId = @"";
     newFavorite.video_id = video.vId;
-    [[ACSPersistenceManager sharedInstance] saveContext];
     
-    [ACSTokenManager accessToken:^(NSString *token, NSError *error){
-        
-        // Favorite using REST App
-        NSString *urlAsString = [NSString stringWithFormat:kPostFavorite, kApiDomain, [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId], token, video.vId];
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
-        [urlRequest setHTTPMethod:@"POST"];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest
-                                                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                        long statusCode = [((NSHTTPURLResponse *)response) statusCode];
-                                                        if (statusCode == 401) {
-                                                            
-                                                            CLS_LOG(@"Favorite Video Unauthorized 401: %@", error);
-                                                            
-                                                        }
-                                                        else if (error == nil && statusCode != 404)
-                                                        {
-                                                            
-                                                            [ACSPersistenceManager updateFavorite:newFavorite WithData:data];
-                                                            
-                                                        }
-                                                    }];
-        [dataTask resume];
-        
-    }];
+    if (kFavoritesViaAPI == NO) {
+        [[ACSPersistenceManager sharedInstance] saveContext];
+    } else {
+        [ACSTokenManager accessToken:^(NSString *token, NSError *error){
+            
+            // Favorite using REST App
+            NSString *urlAsString = [NSString stringWithFormat:kPostFavorite, kApiDomain, [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId], token, video.vId];
+            NSURL *url = [NSURL withString:urlAsString];
+            
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+            [urlRequest setHTTPMethod:@"POST"];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest
+                                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                            long statusCode = [((NSHTTPURLResponse *)response) statusCode];
+                                                            if (statusCode == 401) {
+                                                                
+                                                                CLS_LOG(@"Favorite Video Unauthorized 401: %@", error);
+                                                                
+                                                            }
+                                                            else if (error == nil && statusCode != 404)
+                                                            {
+                                                                
+                                                                [ACSPersistenceManager updateFavorite:newFavorite WithData:data];
+                                                                
+                                                            }
+                                                        }];
+            [dataTask resume];
+            
+        }];
+    }
     
 }
 

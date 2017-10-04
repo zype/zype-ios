@@ -291,7 +291,9 @@
     
     // Remove tokens
     [ACSTokenManager resetTokens];
-    [ACSPersistenceManager resetFavorites];
+    if (kFavoritesViaAPI) {
+        [ACSPersistenceManager resetFavorites];
+    }
     [ACSPersistenceManager resetUserSettings];
     [ACDownloadManager resetDownloads];
 //    [[AppDelegate appDelegate].oneSignal setSubscription:false];

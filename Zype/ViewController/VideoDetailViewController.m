@@ -172,16 +172,18 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         }
     }
     
-    TableSectionDataSource *favoriteItem = [[TableSectionDataSource alloc] init];
-    favoriteItem.type = Favourite;
-    if ([UIUtil isYes:self.video.isFavorite]) {
-        favoriteItem.title = @"Unfavorite";
-        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-    } else {
-        favoriteItem.title = @"Favorite";
-        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
+    if ((kFavoritesViaAPI == NO) || ([ACStatusManager isUserSignedIn] == YES)) {
+        TableSectionDataSource *favoriteItem = [[TableSectionDataSource alloc] init];
+        favoriteItem.type = Favourite;
+        if ([UIUtil isYes:self.video.isFavorite]) {
+            favoriteItem.title = @"Unfavorite";
+            favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        } else {
+            favoriteItem.title = @"Favorite";
+            favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        }
+        [self.optionsDataSource addObject:favoriteItem];
     }
-    [self.optionsDataSource addObject:favoriteItem];
     
     if (kShareVideoEnabled) {
         TableSectionDataSource *shareItem = [[TableSectionDataSource alloc] init];
