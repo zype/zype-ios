@@ -168,9 +168,11 @@
     
     NSArray *items = self.indexPathController.items;
     for (Video *video in items) {
-        if ([video.downloadTaskId isEqualToNumber:downloadTaskID] == YES) {
-            return video;
-        }
+        if ([video isKindOfClass:[Video class]]) {
+            if ([video.downloadTaskId isEqualToNumber:downloadTaskID] == YES) {
+                return video;
+            }
+        } 
     }
     
     return nil;

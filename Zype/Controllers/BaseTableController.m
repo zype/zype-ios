@@ -14,6 +14,7 @@
 #import "ACDownloadManager.h"
 #import "DownloadOperationController.h"
 #import "Playlist.h"
+#import "PlaylistCollectionCell.h"
 
 @implementation BaseTableController
 
@@ -30,27 +31,22 @@
         
         //Don't try to dequeue the cell if the indexPath is out of boounds
         if (numberOfSections >= indexPath.section+1 && numberOfRows >= indexPath.row +1) {
-            
+
             VideoTableViewCell *cell = (VideoTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             return cell;
-            
         }
         
-
     }
     
     return nil;
-    
 }
 
 
 #pragma mark - Overrides
 
 
-- (void)reloadData{
-    
+- (void)reloadData {
     [self.tableView reloadData];
-    
 }
 
 
@@ -70,6 +66,7 @@
     [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:reuseIdentifier];
     
     [_tableView registerClass:[PlaylistTableViewCell class] forCellReuseIdentifier:reusePlaylistIdentifier];
+    [_tableView registerNib:[UINib nibWithNibName:reusePlaylistCollectionCellIdentifier bundle:nil] forCellReuseIdentifier:reusePlaylistCollectionCellIdentifier];
     [_tableView registerNib:[UINib nibWithNibName:@"PlaylistTableViewCell" bundle:nil] forCellReuseIdentifier:reusePlaylistIdentifier];
     
     self.scrollView = _tableView;
@@ -107,7 +104,6 @@
     
 }
 
-
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -122,7 +118,7 @@
         PlaylistTableViewCell *cell = (PlaylistTableViewCell *)[tableView dequeueReusableCellWithIdentifier:reusePlaylistIdentifier];
         [cell configureCell:[self.indexPathController.dataModel itemAtIndexPath:indexPath]];
         return cell;
-        
+
     } else {
         return [UITableViewCell new];//app will crash if it reaches this point
     }
@@ -270,6 +266,18 @@
                 
     }
     
+}
+
+#pragma mark - PlaylistCollectionCell
+
+//- (void)onDidSelectItem:(PlaylistCollectionCell *)cell indexPath:(NSIndexPath *)indexPath {
+//    NSLog(@"%@", indexPath);
+//    NSIndexPath *index = [NSIndexPath indexPathForRow:indexPath.section inSection:indexPath.row];
+//    [self.delegate episodeControllerDidSelectItemAtIndexPath:index];
+//}
+
+- (void)onDidSelectItem:(PlaylistCollectionCell *)cell item:(NSObject *)item {
+    [self.delegate episodeControllerDidSelectItem:item];
 }
 
 

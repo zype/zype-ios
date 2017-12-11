@@ -121,6 +121,11 @@
             [self.labelSubtitle setTextColor:[UIColor lightGrayColor]];
         }
         
+        if (kAppAppleTVLayout) {
+            self.contentView.backgroundColor = [UIColor clearColor];
+            self.imageThumbnail.layer.cornerRadius = 7;
+        }
+        
         [self setThumbnail:video];
         
         self.textTitle.text = video.title;
@@ -182,7 +187,7 @@
             
         }
         
-    }else if ([UIUtil isYes:video.isDownload]) {
+    } else if ([UIUtil isYes:video.isDownload]) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             

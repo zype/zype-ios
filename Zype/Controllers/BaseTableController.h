@@ -7,8 +7,9 @@
 //
 
 #import "EpisodeController.h"
+#import "PlaylistCollectionCell.h"
 
-@interface BaseTableController : EpisodeController<UITableViewDataSource, UITableViewDelegate>
+@interface BaseTableController : EpisodeController<UITableViewDataSource, UITableViewDelegate, PlaylistCollectionCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 

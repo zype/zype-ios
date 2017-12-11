@@ -13,6 +13,7 @@
 - (void)episodeControllerDelegateShowEmptyMessage:(BOOL)show;
 - (void)episodeControllerDelegateButtonActionTappedAtIndexPath:(NSIndexPath *)indexPath;
 - (void)episodeControllerDidSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)episodeControllerDidSelectItem:(NSObject *)item;
 - (void)episodeControllerDelegateDoneLoading;
 
 @optional

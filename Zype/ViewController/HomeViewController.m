@@ -95,16 +95,31 @@
 
 - (void)getPlaylistData {
     // Load playlists
+    NSString *currentPlaylistID;
+    
     if (self.playlistItem != nil) {
         [self trackScreenName:[NSString stringWithFormat:kAnalyticsScreenNamePlaylist, self.playlistItem.title]];
         self.title = self.playlistItem.title;
-        [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:self.playlistItem.pId];
-        
+        currentPlaylistID = self.playlistItem.pId;
     } else {
         //playlist item is nil, load root
-        [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:kRootPlaylistId];
+        currentPlaylistID = kRootPlaylistId;
         [self trackScreenName:kAnalyticsScreenNameHome];
     }
+    
+    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:currentPlaylistID withCompletionHandler:^{
+        if (kAppAppleTVLayout) {
+            NSArray *playlists = [ACSPersistenceManager getPlaylistsWithParentID:currentPlaylistID];
+            for (Playlist * playlist in playlists) {
+                if (playlist.playlist_item_count.integerValue > 0) {
+                    [[RESTServiceController sharedInstance] syncVideosFromPlaylist:playlist.pId InPage:nil WithVideosInDB:nil WithExistingVideos:nil];
+                } else {
+                    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlist.pId withCompletionHandler:nil];
+                }
+            }
+            NSLog(@"%@", playlists);
+        }
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -126,9 +141,11 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     if (self.playlistItem != nil){
+        //[self.episodeController loadPlaylists];
         [self.episodeController loadPlaylist:self.playlistItem.pId];
     } else {
         //load root
+        //[self.episodeController loadPlaylists];
         [self.episodeController loadPlaylist:kRootPlaylistId];
     }
     
@@ -141,6 +158,17 @@
     
 }
 
+#pragma mark - Layout Configuration
+
+- (void)fillSections {
+    
+}
+
+//- (void)reloadData {
+//    
+//    
+//    
+//}
 
 #pragma mark - Setup
 
