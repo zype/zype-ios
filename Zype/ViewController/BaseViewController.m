@@ -20,6 +20,7 @@
 #import "RESTServiceController.h"
 #import "PlaybackSource.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "BaseTVLayoutController.h"
 
 @interface BaseViewController ()
 
@@ -34,14 +35,15 @@
     [super viewDidLoad];
     
     // Init controller depending on view type
-    if ([self isRegularSizeClass] == YES) {
-        
-        self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
-        
+    
+    if (kAppAppleTVLayout) {
+        self.episodeController = [[BaseTVLayoutController alloc] initWithTableView:self.tableView];
     } else {
-        
-        self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
-        
+        if ([self isRegularSizeClass] == YES) {
+            self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
+        } else {
+            self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
+        }
     }
     
     self.episodeController.delegate = self;
@@ -231,7 +233,7 @@
     
     if (show == NO) {
         
-        if ([self isRegularSizeClass] == YES) {
+        if ([self isRegularSizeClass] == YES && (!kAppAppleTVLayout)) {
             [self.collectionView setHidden:YES];
         }else{
             [self.tableView setHidden:YES];
@@ -241,7 +243,7 @@
         
     }else {
         
-        if ([self isRegularSizeClass] == YES) {
+        if ([self isRegularSizeClass] == YES && (!kAppAppleTVLayout)) {
             [self.collectionView setHidden:NO];
         }else{
             [self.tableView setHidden:NO];
@@ -251,6 +253,24 @@
         
     }
     
+}
+
+- (void)episodeControllerDidSelectItem:(NSObject *)item {
+    
+    if ([item isKindOfClass:[Video class]]){
+        self.selectedVideo = (Video *)item;
+        [self videoItemSelected];
+        
+    } else if ([item isKindOfClass:[Playlist class]]){
+        Playlist *playlist = (Playlist *)item;
+        if ([playlist.playlist_item_count isEqual:@0]){
+            NSLog(@"load another screen of playlists");
+            [UIUtil loadPlaylist:playlist fromViewController:self];
+        } else {
+            NSLog(@"load videos");
+            [UIUtil loadVideosFromPlaylist:playlist.pId fromViewController:self];
+        }
+    }
 }
 
 - (void)episodeControllerDidSelectItemAtIndexPath:(NSIndexPath *)indexPath{

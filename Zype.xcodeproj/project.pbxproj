@@ -129,6 +129,10 @@
 		A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */; };
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
+		FA1940351FCC75AF005CE292 /* PlaylistCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */; };
+		FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */; };
+		FA19403A1FCC78A3005CE292 /* MediaItemCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1940381FCC78A3005CE292 /* MediaItemCollectionCell.m */; };
+		FA19403B1FCC78A3005CE292 /* MediaItemCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1940391FCC78A3005CE292 /* MediaItemCollectionCell.xib */; };
 		FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */; };
 		FA4BA3221EF0754C004985F6 /* CustomizeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31F1EF0754C004985F6 /* CustomizeImageView.m */; };
 		FA4BA3231EF0754C004985F6 /* CustomizeThemeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3211EF0754C004985F6 /* CustomizeThemeTextField.m */; };
@@ -143,6 +147,7 @@
 		FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */; };
 		FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */; };
 		FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */; };
+		FA5029041FDE8FB0003A1AB1 /* BaseTVLayoutController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5029031FDE8FB0003A1AB1 /* BaseTVLayoutController.m */; };
 		FAA90E051F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA90E041F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m */; };
 		FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC7B3DE1EFC496200C787E4 /* AdObject.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
@@ -351,6 +356,12 @@
 		F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "Fonts/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		FA1940321FCC75AF005CE292 /* PlaylistCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PlaylistCollectionCell.h; path = Views/PlaylistCollectionCell.h; sourceTree = "<group>"; };
+		FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PlaylistCollectionCell.m; path = Views/PlaylistCollectionCell.m; sourceTree = "<group>"; };
+		FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaylistCollectionCell.xib; path = Views/PlaylistCollectionCell.xib; sourceTree = "<group>"; };
+		FA1940371FCC78A3005CE292 /* MediaItemCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MediaItemCollectionCell.h; path = Views/MediaItemCollectionCell.h; sourceTree = "<group>"; };
+		FA1940381FCC78A3005CE292 /* MediaItemCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MediaItemCollectionCell.m; path = Views/MediaItemCollectionCell.m; sourceTree = "<group>"; };
+		FA1940391FCC78A3005CE292 /* MediaItemCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MediaItemCollectionCell.xib; path = Views/MediaItemCollectionCell.xib; sourceTree = "<group>"; };
 		FA4BA31B1EF07472004985F6 /* ACPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACPurchaseManager.h; path = Managers/ACPurchaseManager.h; sourceTree = "<group>"; };
 		FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACPurchaseManager.m; path = Managers/ACPurchaseManager.m; sourceTree = "<group>"; };
 		FA4BA31E1EF0754C004985F6 /* CustomizeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomizeImageView.h; path = Views/CustomizeImageView.h; sourceTree = "<group>"; };
@@ -375,6 +386,8 @@
 		FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableSectionDataSource.m; path = Models/TableSectionDataSource.m; sourceTree = "<group>"; };
 		FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Medium.ttf"; path = "Fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		FA5029021FDE8FB0003A1AB1 /* BaseTVLayoutController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseTVLayoutController.h; path = Controllers/BaseTVLayoutController.h; sourceTree = "<group>"; };
+		FA5029031FDE8FB0003A1AB1 /* BaseTVLayoutController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BaseTVLayoutController.m; path = Controllers/BaseTVLayoutController.m; sourceTree = "<group>"; };
 		FAA90E031F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVPlayerViewController+AVPlayerViewController_Transition.h"; sourceTree = "<group>"; };
 		FAA90E041F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVPlayerViewController+AVPlayerViewController_Transition.m"; sourceTree = "<group>"; };
 		FAC7B3DD1EFC496200C787E4 /* AdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdObject.h; path = Models/AdObject.h; sourceTree = "<group>"; };
@@ -462,6 +475,8 @@
 				A13AF31D1D369AB300DDA006 /* EpisodeController.m */,
 				A13AF31E1D369AB300DDA006 /* RESTServiceController.h */,
 				A13AF31F1D369AB300DDA006 /* RESTServiceController.m */,
+				FA5029021FDE8FB0003A1AB1 /* BaseTVLayoutController.h */,
+				FA5029031FDE8FB0003A1AB1 /* BaseTVLayoutController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -697,6 +712,12 @@
 				A13AF2DD1D36995000DDA006 /* VideoTableViewCell.h */,
 				A13AF2DE1D36995000DDA006 /* VideoTableViewCell.m */,
 				A13AF2DF1D36995000DDA006 /* VideoTableViewCell.xib */,
+				FA1940321FCC75AF005CE292 /* PlaylistCollectionCell.h */,
+				FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */,
+				FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */,
+				FA1940371FCC78A3005CE292 /* MediaItemCollectionCell.h */,
+				FA1940381FCC78A3005CE292 /* MediaItemCollectionCell.m */,
+				FA1940391FCC78A3005CE292 /* MediaItemCollectionCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -888,7 +909,9 @@
 				A13AF37C1D369DB600DDA006 /* VideoSummary.html in Resources */,
 				A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */,
 				780AC6F91BDFD284007F1119 /* OpenSans-LightItalic.ttf in Resources */,
+				FA19403B1FCC78A3005CE292 /* MediaItemCollectionCell.xib in Resources */,
 				780AC6FA1BDFD284007F1119 /* OpenSans-Bold.ttf in Resources */,
+				FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */,
 				A13AF3951D36D3B700DDA006 /* Oswald-Bold.ttf in Resources */,
 				A13AF39D1D36D3B700DDA006 /* Oswald-Light.ttf in Resources */,
 				A13AF2ED1D36995000DDA006 /* VideoTableViewCell.xib in Resources */,
@@ -976,6 +999,7 @@
 			files = (
 				FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */,
 				780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */,
+				FA5029041FDE8FB0003A1AB1 /* BaseTVLayoutController.m in Sources */,
 				A13AF2BF1D36985A00DDA006 /* Favorite.m in Sources */,
 				FA4BA3331EF07629004985F6 /* IntroViewController.m in Sources */,
 				A13AF3151D369A2C00DDA006 /* SettingsViewController.m in Sources */,
@@ -1005,6 +1029,7 @@
 				A13AF2BD1D36985A00DDA006 /* Action.m in Sources */,
 				A13AF3141D369A2C00DDA006 /* SettingsDetailViewController.m in Sources */,
 				A13AF3551D369CC600DDA006 /* ACSDataManager.m in Sources */,
+				FA1940351FCC75AF005CE292 /* PlaylistCollectionCell.m in Sources */,
 				A13AF30E1D369A2C00DDA006 /* HighlightsViewController.m in Sources */,
 				A13AF3231D369AB300DDA006 /* RESTServiceController.m in Sources */,
 				A13AF35B1D369CC600DDA006 /* MediaPlayerManager.m in Sources */,
@@ -1033,6 +1058,7 @@
 				780AC6D21BDFD284007F1119 /* ZypeDBMappingModel.xcmappingmodel in Sources */,
 				FA4BA3221EF0754C004985F6 /* CustomizeImageView.m in Sources */,
 				A13AF37E1D369DB600DDA006 /* UIUtil.m in Sources */,
+				FA19403A1FCC78A3005CE292 /* MediaItemCollectionCell.m in Sources */,
 				FA4BA3301EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m in Sources */,
 				A13AF3691D369D1F00DDA006 /* NSMutableArray+LimitedStack.m in Sources */,
 				A13AF35C1D369CC600DDA006 /* ViewManager.m in Sources */,

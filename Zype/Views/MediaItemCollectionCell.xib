@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Oswald-MediumItalic.ttf">
+            <string>Oswald-MediumItalic</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="MediaItemCollectionCell">
+            <rect key="frame" x="0.0" y="0.0" width="150" height="80"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="150" height="80"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Pn-Aa-tao">
+                        <rect key="frame" x="0.0" y="0.0" width="150" height="80"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i7y-vL-iIw">
+                                <rect key="frame" x="0.0" y="0.0" width="150" height="80"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Igq-G4-CEU">
+                                <rect key="frame" x="0.0" y="0.0" width="150" height="80"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-unlock" translatesAutoresizingMaskIntoConstraints="NO" id="b8R-fN-sgj">
+                                <rect key="frame" x="6" y="6" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="3Ho-aW-vaA"/>
+                                    <constraint firstAttribute="width" constant="14" id="bgM-ej-fW4"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Заголовок 1" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rPn-Js-52I">
+                                <rect key="frame" x="16" y="32" width="118" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Oswald-MediumItalic" family="Oswald" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Qfr-0p-4tg">
+                                <rect key="frame" x="0.0" y="78" width="150" height="2"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="fxw-SW-P3A"/>
+                                </constraints>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="i7y-vL-iIw" secondAttribute="bottom" id="1J8-ma-wkA"/>
+                            <constraint firstItem="rPn-Js-52I" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" constant="16" id="1zr-oX-ysE"/>
+                            <constraint firstItem="rPn-Js-52I" firstAttribute="centerY" secondItem="6Pn-Aa-tao" secondAttribute="centerY" id="2bQ-S8-SeG"/>
+                            <constraint firstAttribute="trailing" secondItem="i7y-vL-iIw" secondAttribute="trailing" id="GFB-c5-KEr"/>
+                            <constraint firstItem="Qfr-0p-4tg" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" id="Gn9-Zy-bfV"/>
+                            <constraint firstItem="Igq-G4-CEU" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" id="N5n-Fd-pFo"/>
+                            <constraint firstAttribute="bottom" secondItem="Igq-G4-CEU" secondAttribute="bottom" id="TJA-BS-4Iy"/>
+                            <constraint firstAttribute="trailing" secondItem="rPn-Js-52I" secondAttribute="trailing" constant="16" id="X4x-C6-TIc"/>
+                            <constraint firstAttribute="trailing" secondItem="Igq-G4-CEU" secondAttribute="trailing" id="Y2K-AA-C7Y"/>
+                            <constraint firstItem="i7y-vL-iIw" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" id="bUG-IP-OSK"/>
+                            <constraint firstItem="b8R-fN-sgj" firstAttribute="top" secondItem="6Pn-Aa-tao" secondAttribute="top" constant="6" id="c8l-B5-IUK"/>
+                            <constraint firstAttribute="trailing" secondItem="Qfr-0p-4tg" secondAttribute="trailing" id="dep-LE-TY7"/>
+                            <constraint firstAttribute="bottom" secondItem="Qfr-0p-4tg" secondAttribute="bottom" id="fGu-bU-EHT"/>
+                            <constraint firstItem="b8R-fN-sgj" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" constant="6" id="jZQ-eX-RVt"/>
+                            <constraint firstItem="Igq-G4-CEU" firstAttribute="top" secondItem="6Pn-Aa-tao" secondAttribute="top" id="tyE-FK-laj"/>
+                            <constraint firstItem="i7y-vL-iIw" firstAttribute="top" secondItem="6Pn-Aa-tao" secondAttribute="top" id="zTh-hL-3WR"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="6Pn-Aa-tao" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="6sM-Yh-IFn"/>
+                <constraint firstItem="6Pn-Aa-tao" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="IPE-uG-kQy"/>
+                <constraint firstAttribute="bottom" secondItem="6Pn-Aa-tao" secondAttribute="bottom" id="OkK-rc-CYd"/>
+                <constraint firstAttribute="trailing" secondItem="6Pn-Aa-tao" secondAttribute="trailing" id="bZG-2u-yDL"/>
+            </constraints>
+            <size key="customSize" width="190" height="90"/>
+            <connections>
+                <outlet property="containerView" destination="6Pn-Aa-tao" id="aL3-v1-tct"/>
+                <outlet property="coverImageView" destination="i7y-vL-iIw" id="IsR-85-rWk"/>
+                <outlet property="iconLockedView" destination="b8R-fN-sgj" id="MYg-kY-jXW"/>
+                <outlet property="progressView" destination="Qfr-0p-4tg" id="XrF-Ht-VDc"/>
+                <outlet property="titleLabel" destination="rPn-Js-52I" id="h2W-8j-MQX"/>
+            </connections>
+            <point key="canvasLocation" x="-60" y="124"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="icon-unlock" width="16" height="16"/>
+    </resources>
+</document>

@@ -123,7 +123,9 @@
     
     VideosViewController *videosViewController = (VideosViewController *)[ViewManager videosViewController];
     videosViewController.playlistId = playlistId;
-    [viewController.navigationController pushViewController:videosViewController animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [viewController.navigationController pushViewController:videosViewController animated:YES];
+    });
     
 }
 
@@ -133,7 +135,9 @@
     
     //set selected playlist
     [homeViewController setPlaylistItem:playlist];
-    [viewController.navigationController pushViewController:homeViewController animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [viewController.navigationController pushViewController:homeViewController animated:YES];
+    });
     
 }
 

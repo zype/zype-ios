@@ -30,6 +30,7 @@ NS_ENUM(NSInteger, ACSEpisodeControllerMode){
 
 static NSString * const reuseIdentifier = @"EpisodeCell";
 static NSString * const reusePlaylistIdentifier = @"PlaylistCell";
+static NSString * const reusePlaylistCollectionCellIdentifier = @"PlaylistCollectionCell";
 
 @interface EpisodeController : NSObject<NSFetchedResultsControllerDelegate, UIScrollViewDelegate, TLIndexPathControllerDelegate>
 

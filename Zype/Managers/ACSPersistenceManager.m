@@ -169,6 +169,52 @@
     
 }
 
++ (NSArray *)getPlaylistsWithParentID:(NSString *)playlistID {
+    
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityPlaylist];
+    request.predicate = [NSPredicate predicateWithFormat:@"parent_id = %@", playlistID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    return fetchedObjects;
+    
+    Playlist *playlist;
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        playlist = [fetchedObjects objectAtIndex:0];
+        
+    }
+    
+    return playlist;
+    
+}
+
++ (NSArray *)getVideosWithParentID:(NSString *)playlistID {
+    
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityVideo];
+    request.predicate = [NSPredicate predicateWithFormat:@"parent_id = %@", playlistID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    return fetchedObjects;
+    
+    Playlist *playlist;
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        playlist = [fetchedObjects objectAtIndex:0];
+        
+    }
+    
+    return playlist;
+    
+}
+
 + (NSFetchRequest *)playlistFetchRequestWithPredicate:(NSPredicate *)predicate{
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -301,6 +347,18 @@
     NSFetchRequest *requestPlaylistVideo = [NSFetchRequest fetchRequestWithEntityName:kEntityPlaylistVideo];
     requestPlaylistVideo.predicate = [NSPredicate predicateWithFormat:@"playlist.pId == %@", playlistId];
     requestPlaylistVideo.sortDescriptors = [NSArray arrayWithObjects:[[NSSortDescriptor alloc] initWithKey:@"orderingValue" ascending:YES], nil];
+    NSArray *playlistsVideos = [[ACSPersistenceManager sharedInstance].managedObjectContext executeFetchRequest:requestPlaylistVideo error:&LocalError];
+    
+    return playlistsVideos;
+    
+}
+
++ (NSArray *)playlistVideosFromParentPlaylistId:(NSString *)playlistId{
+    
+    NSError *LocalError = nil;
+    NSFetchRequest *requestPlaylistVideo = [NSFetchRequest fetchRequestWithEntityName:kEntityPlaylistVideo];
+    requestPlaylistVideo.predicate = [NSPredicate predicateWithFormat:@"playlist.pId == %@", playlistId];
+    requestPlaylistVideo.sortDescriptors = [NSArray arrayWithObjects:[[NSSortDescriptor alloc] initWithKey:@"parent_id" ascending:YES], nil];
     NSArray *playlistsVideos = [[ACSPersistenceManager sharedInstance].managedObjectContext executeFetchRequest:requestPlaylistVideo error:&LocalError];
     
     return playlistsVideos;

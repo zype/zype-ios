@@ -436,7 +436,39 @@
     
 }
 
-
+- (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)())complete
+{
+    NSString *urlAsString = [NSString stringWithFormat:kGetPlaylists, kApiDomain, kAppKey, parentId];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            
+            CLS_LOG(@"Success: %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+            }
+            else {
+                //remove old relationship
+                [ACSPersistenceManager resetPlaylistChilds:parentId];
+                
+                [ACSPersistenceManager populatePlaylistsFromDictionary:parsedObject];
+                if (complete) complete();
+            }
+            
+        }
+        
+    }];
+    
+    [dataTask resume];
+    
+}
 
 #pragma mark - Download App
 

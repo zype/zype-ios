@@ -32,6 +32,7 @@
 - (void)getAudioPlayerWithVideo:(Video *)video WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
 - (void)syncPlaylistsWithParentId:(NSString *)parentId;
+- (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)())complete;
 
 - (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
 - (PlaybackSource *)audioStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
