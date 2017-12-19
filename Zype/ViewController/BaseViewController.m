@@ -38,16 +38,18 @@
     
     if (kAppAppleTVLayout) {
         self.episodeController = [[BaseTVLayoutController alloc] initWithTableView:self.tableView];
+        [self.collectionView setHidden:YES];
     } else {
         if ([self isRegularSizeClass] == YES) {
             self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
+            [self.tableView setHidden:YES];
         } else {
             self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
+            [self.collectionView setHidden:YES];
         }
     }
     
     self.episodeController.delegate = self;
-    
     self.actionSheetManager = [ACActionSheetManager new];
     self.actionSheetManager.delegate = self;
     
@@ -58,20 +60,17 @@
     [super viewDidAppear:animated];
     
     [[DownloadOperationController sharedInstance] setDownloadProgressViewController:self];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
     [[DownloadOperationController sharedInstance] setDownloadProgressViewController:nil];
-    
 }
 
-- (void)dealloc{
+- (void)dealloc {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 
 
@@ -235,17 +234,17 @@
         
         if ([self isRegularSizeClass] == YES && (!kAppAppleTVLayout)) {
             [self.collectionView setHidden:YES];
-        }else{
+        } else {
             [self.tableView setHidden:YES];
         }
         
         [self.noResultsLabel setHidden:NO];
         
-    }else {
+    } else {
         
         if ([self isRegularSizeClass] == YES && (!kAppAppleTVLayout)) {
             [self.collectionView setHidden:NO];
-        }else{
+        } else {
             [self.tableView setHidden:NO];
         }
         
@@ -394,14 +393,12 @@
 - (void)episodeControllerPerformUpdates:(TLIndexPathUpdates *)updates{
     
     if (!updates.hasChanges) {
-        
         return;
-        
     }
     
     if (self.collectionView.superview != nil) {
         [self.collectionView reloadData];
-    }else if (self.tableView.superview != nil){
+    } else if (self.tableView.superview != nil){
         [self.tableView reloadData];
     }
     
@@ -423,6 +420,10 @@
         
     }
     
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSLog(@"%@", touches);
 }
 
 

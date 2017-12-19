@@ -17,6 +17,9 @@
 
 - (void)configureCell:(Playlist *)playlist;
 
++ (CGSize)cellSize;
++ (CGFloat)rowHeight;
+
 @end
 
 @protocol PlaylistCollectionCellDelegate <NSObject>

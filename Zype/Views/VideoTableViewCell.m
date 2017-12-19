@@ -123,6 +123,7 @@
         
         if (kAppAppleTVLayout) {
             self.contentView.backgroundColor = [UIColor clearColor];
+            self.selectionStyle = UITableViewCellSelectionStyleNone;
             self.imageThumbnail.layer.cornerRadius = 7;
         }
         

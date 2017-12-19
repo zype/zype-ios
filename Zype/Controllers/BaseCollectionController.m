@@ -71,10 +71,8 @@
 #pragma mark - Overrides
 
 
-- (void)reloadData{
-    
+- (void)reloadData {
     [self.collectionView reloadData];
-    
 }
 
 #pragma mark - Option Button Action
