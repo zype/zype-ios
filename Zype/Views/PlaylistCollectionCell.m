@@ -12,6 +12,9 @@
 #import "ACSPredicates.h"
 #import <TLIndexPathController.h>
 
+static const CGSize IphoneLayoutSize = {150, 80};
+static const CGSize IpadLayoutSize = {225, 120};
+
 @interface PlaylistCollectionCell() <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
@@ -25,7 +28,8 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-     
+    
+    [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     [self.collectionView registerNib:[UINib nibWithNibName:@"MediaItemCollectionCell" bundle:nil] forCellWithReuseIdentifier:@"MediaItemCollectionCell"];
     [self.collectionView setDelegate:self];
     [self.collectionView setDataSource:self];
@@ -74,7 +78,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(150, 80);
+    return [PlaylistCollectionCell cellSize];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -99,6 +103,20 @@
         [cell setVideo:video];
     }
     return cell;
+}
+
+#pragma mark - Class Methods
+
++ (CGSize)cellSize {
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        return IpadLayoutSize;
+    }
+    
+    return IphoneLayoutSize;
+}
+
++ (CGFloat)rowHeight {
+    return [PlaylistCollectionCell cellSize].height + 40.0;
 }
 
 @end

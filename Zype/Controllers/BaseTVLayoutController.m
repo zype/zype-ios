@@ -77,7 +77,7 @@
 
 #pragma mark - Lifecycle
 
-- (instancetype)initWithTableView:(UITableView *)tableView{
+- (instancetype)initWithTableView:(UITableView *)tableView {
     self = [super init];
     if (!self) {
         return nil;
@@ -146,24 +146,27 @@
     
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Video class]]){
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
+    
+    if ([dataModel isKindOfClass:[Video class]]) {
         return 90.0f;
-        
-    } else if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Playlist class]]){
-        return 120.0f;
+    }
+    
+    if ([dataModel isKindOfClass:[Playlist class]]) {
+        return [PlaylistCollectionCell rowHeight];
     }
     
     return 90.0f;
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    [self.delegate episodeControllerDidSelectItemAtIndexPath:indexPath];
-//    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-//
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.delegate episodeControllerDidSelectItemAtIndexPath:indexPath];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -186,7 +189,7 @@
             
             [ACDownloadManager deleteDownloadedVideo:video];
             
-        }else if (self.episodeControllerMode == ACSEpisodeControllerModeFavorites){
+        } else if (self.episodeControllerMode == ACSEpisodeControllerModeFavorites){
             
             [[RESTServiceController sharedInstance] unfavoriteVideo:video];
             
