@@ -399,6 +399,63 @@
     
 }
 
+- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos withCompletionHandler:(void (^)())complete
+{
+    if (page == nil) {
+        page = @1;
+    }
+    if (existingVideos == nil) {
+        existingVideos = [NSMutableArray new];
+    }
+    
+    NSString *urlAsString = [NSString stringWithFormat:kGetVideosFromPlaylist, kApiDomain, playlistId, kAppKey, page];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            CLS_LOG(@"Success %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+            }
+            else {
+                //remove old playlist relationships. may be check for stored videos, once download functionality will be added
+                if ([page isEqualToNumber:@1]){
+                    Playlist *currentPlaylist = [ACSPersistenceManager playlistWithID:playlistId];
+                    for (PlaylistVideo* playlistVideo in [currentPlaylist.playlistVideo allObjects]){
+                        [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:playlistVideo];
+                    }
+                }
+                
+                // Check if there's any next pages and continue to sync next one
+                NSNumber *pages = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_Pages];
+                NSNumber *nextPage = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_NextPage];
+                if ([UIUtil hasNextPage:nextPage InPages:pages WithData:parsedObject]){
+                    [self syncVideosFromPlaylist:playlistId InPage:nextPage WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos];
+                }
+                // Check if it's the last page or not, then populate videos
+                [ACSPersistenceManager populateVideosFromDict:parsedObject WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos IsLastPage:[UIUtil isLastPageInPages:pages WithData:parsedObject] addToPlaylist:playlistId];
+                
+            }
+            
+            /* //auto download latest video after loading results
+             [ACDownloadManager autoDownloadLatestVideo];*/
+            if (complete) complete();
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+            
+        }
+        
+    }];
+    
+    [dataTask resume];
+    
+}
+
 
 #pragma mark - Playlist App
 
@@ -457,12 +514,13 @@
             else {
                 //remove old relationship
                 [ACSPersistenceManager resetPlaylistChilds:parentId];
-                
                 [ACSPersistenceManager populatePlaylistsFromDictionary:parsedObject];
-                if (complete) complete();
+                
             }
             
         }
+        
+        if (complete) complete();
         
     }];
     
