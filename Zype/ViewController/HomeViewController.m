@@ -107,16 +107,31 @@
         [self trackScreenName:kAnalyticsScreenNameHome];
     }
     
-    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:currentPlaylistID withCompletionHandler:^{
+    [self loadDataWithPlaylistID:currentPlaylistID];
+}
+
+- (void)loadDataWithPlaylistID:(NSString *)playlistID {
+    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlistID withCompletionHandler:^{
+        
         if (kAppAppleTVLayout) {
-            NSArray *playlists = [ACSPersistenceManager getPlaylistsWithParentID:currentPlaylistID];
+            NSArray *playlists = [ACSPersistenceManager getPlaylistsWithParentID:playlistID];
+            dispatch_group_t group = dispatch_group_create();
             for (Playlist * playlist in playlists) {
+                dispatch_group_enter(group);
                 if (playlist.playlist_item_count.integerValue > 0) {
-                    [[RESTServiceController sharedInstance] syncVideosFromPlaylist:playlist.pId InPage:nil WithVideosInDB:nil WithExistingVideos:nil];
+                    [[RESTServiceController sharedInstance] syncVideosFromPlaylist:playlist.pId InPage:nil WithVideosInDB:nil WithExistingVideos:nil withCompletionHandler:^{
+                        dispatch_group_leave(group);
+                    }];
                 } else {
-                    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlist.pId withCompletionHandler:nil];
+                    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlist.pId withCompletionHandler:^{
+                        dispatch_group_leave(group);
+                    }];
                 }
             }
+            
+            dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+                [self.episodeController reloadData];
+            });
             NSLog(@"%@", playlists);
         }
     }];
