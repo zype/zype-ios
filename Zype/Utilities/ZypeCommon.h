@@ -27,6 +27,7 @@
 
 #define kAppColorLight NO
 #define kAppAppleTVLayout YES
+#define kAppAppleTVLayoutShowThumbanailTitle NO
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
