@@ -27,7 +27,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
+    [self.titleLabel setHidden:!kAppAppleTVLayoutShowThumbanailTitle];
     // Initialization code
 }
 
