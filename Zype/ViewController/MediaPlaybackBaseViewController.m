@@ -130,6 +130,7 @@
 
 - (void)showActivityIndicator{
     [self.activityIndicator setHidden:NO];
+    [self.activityIndicator setColor:[UIColor whiteColor]];
     [self.view bringSubviewToFront:self.activityIndicator];
     [self.activityIndicator startAnimating];
 }

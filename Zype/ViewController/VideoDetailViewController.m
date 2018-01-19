@@ -133,9 +133,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     
     self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
-    //self.adsContainerView.backgroundColor = [UIColor blueColor];
     [self.view addSubview:self.adsContainerView];
-    //need t
     [self setupNotifications];
 }
 
@@ -633,9 +631,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view bringSubviewToFront:self.imageThumbnail];
     [self.view bringSubviewToFront:self.avPlayerController.view];
     [self.view bringSubviewToFront:self.adsContainerView];
+    [self.view bringSubviewToFront:self.activityIndicator];
 }
 
-- (void)setupVideoPlayerView{
+- (void)setupVideoPlayerView {
     
     //[self.avPlayerController.view setFrame:self.imageThumbnail.frame];
     //[self.adsContainerView setFrame:self.imageThumbnail.frame];
