@@ -19,6 +19,7 @@
 @dynamic thumbnailUrl;
 @dynamic playlist_item_count;
 @dynamic priority;
+@dynamic thumbnail_layout;
 
 @dynamic playlistVideo;
 

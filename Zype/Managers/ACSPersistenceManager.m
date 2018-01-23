@@ -309,7 +309,8 @@
                 if ( ! customThumbnailImageIsLoaded)
                 playlist.thumbnailUrl = [UIUtil thumbnailUrlFromArray:[dictionary valueForKey:key]];
             } else if ([key isEqualToString:kAppKey_Images]){
-                NSString *tempUrl = [UIUtil thumbnailUrlFromImageArray:[dictionary valueForKey:key]];
+                NSString *layout = dictionary[@"thumbnail_layout"];
+                NSString *tempUrl = [UIUtil thumbnailUrlFromImageArray:[dictionary valueForKey:key] withLayout:layout];
                 if ( ! [tempUrl isEqualToString:@""]){
                     playlist.thumbnailUrl = tempUrl;
                     customThumbnailImageIsLoaded = true;
@@ -332,6 +333,7 @@
 
 
 #pragma mark PlaylistVideo
+
 
 + (PlaylistVideo *)newPlaylistVideo {
     PlaylistVideo *playlistVideo = (PlaylistVideo *)[NSEntityDescription insertNewObjectForEntityForName:kEntityPlaylistVideo inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];

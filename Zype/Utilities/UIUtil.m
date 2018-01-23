@@ -353,6 +353,21 @@
     return url;
 }
 
++ (NSString *)thumbnailUrlFromImageArray:(NSArray *)array withLayout:(NSString *)layout
+{
+    NSString *url = @"";
+    
+    for (NSDictionary *dict in array) {
+        
+        if ([[dict valueForKey:kAppKey_Layout] isEqualToString:layout] && [[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"]) {
+            url = [dict valueForKey:kAppKey_Url];
+        }
+
+    }
+    
+    return url;
+}
+
 + (NSString *)stringDownloadProgressWithBytes:(double)totalBytesWritten WithTotalBytes:(double)totalBytesExpectedToWrite
 {
     NSString *result = @"";

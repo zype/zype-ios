@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * thumbnailUrl;
 @property (nonatomic, retain) NSNumber * playlist_item_count;
 @property (nonatomic, retain) NSNumber * priority;
+@property (nonatomic, retain) NSString * thumbnail_layout;
 
 
 @property (nonatomic, retain) NSSet<PlaylistVideo *> *playlistVideo;

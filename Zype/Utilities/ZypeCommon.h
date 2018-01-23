@@ -105,6 +105,11 @@
 // Button Press
 // Play
 
+static const CGSize IphoneLayoutSize = {150, 80};
+static const CGSize IpadLayoutSize = {225, 120};
+
+static const CGSize IphonePosterLayoutSize = {80, 120};
+static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kYellowColor    [UIUtil colorWithHex:0xEAA824]
 #define kBlueColor      [UIColor colorWithRed:0.02 green:0.32 blue:0.64 alpha:1.0]
@@ -310,6 +315,7 @@
 #define kAppKey_Time               @"time"
 #define kAppKey_Categories         @"categories"
 #define kAppKey_Title              @"title"
+#define kAppKey_Layout             @"layout"
 #define kAppKey_Value              @"value"
 #define kAppKey_Keywords           @"keywords"
 #define kAppKey_ZobjectIds         @"zobject_ids"

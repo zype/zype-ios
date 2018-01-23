@@ -33,12 +33,14 @@
 
 - (void)setPlaylist:(Playlist *)playlist {
     self.titleLabel.text = playlist.title;
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl]];
+    //[self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl]];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:self.coverImageView.image];
 }
 
 - (void)setVideo:(Video *)video {
     self.titleLabel.text = video.title;
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]];
+    //[self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:self.coverImageView.image];
     
     if ([video.subscription_required intValue] == 1) {
         [self.iconLockedView setHidden:NO];
