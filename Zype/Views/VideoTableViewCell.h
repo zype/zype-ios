@@ -21,6 +21,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *iconLock;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthLayoutConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *posterLayoutConstraint;
 
 - (void)configureCell:(Video*)video viewController:(NSObject*)vc;
+- (void)configureCell:(Video*)video viewController:(NSObject*)vc withLayout:(NSString *)layout;
+
 @end

@@ -127,8 +127,15 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Video class]]){
         
+        Video * video = (Video *)[self.indexPathController.dataModel itemAtIndexPath:indexPath];
+        NSString * layout;
+        Playlist * playlist = [video playlistFromVideo];
+        if (playlist) {
+            layout = playlist.thumbnail_layout;
+        }
+        
         VideoTableViewCell *cell = (VideoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
-        [cell configureCell:[self.indexPathController.dataModel itemAtIndexPath:indexPath] viewController:self];
+        [cell configureCell:[self.indexPathController.dataModel itemAtIndexPath:indexPath] viewController:self withLayout:layout];
         cell.backgroundColor = [UIColor clearColor];
         return cell;
         
@@ -146,15 +153,39 @@
     
 }
 
+//- (NSString *)layoutFromVideo:(Video *)video {
+//    NSArray * playlists = [video.playlistVideo allObjects];
+//    for (PlaylistVideo *pVideo in playlists) {
+//        if (pVideo.playlist) {
+//            return pVideo.playlist.thumbnail_layout;
+//        }
+//    }
+//
+//    return @"landscape";
+//}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
     
     if ([dataModel isKindOfClass:[Video class]]) {
+        Video * video = (Video *)dataModel;
+        Playlist * playlist = [video playlistFromVideo];
+        if (playlist) {
+            if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
+                return [PlaylistCollectionCell cellPosterLayoutSize].height + 24;
+            }
+        }
+        
         return 90.0f;
     }
     
     if ([dataModel isKindOfClass:[Playlist class]]) {
+        Playlist * playlist = (Playlist *)dataModel;
+        if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
+            return [PlaylistCollectionCell rowPosterHeight];
+        }
+        
         return [PlaylistCollectionCell rowHeight];
     }
     

@@ -17,8 +17,11 @@
 
 - (void)configureCell:(Playlist *)playlist;
 
-+ (CGSize)cellSize;
+//+ (CGSize)cellSize;
++ (CGSize)cellPosterLayoutSize;
++ (CGSize)cellLanscapeLayoutSize;
 + (CGFloat)rowHeight;
++ (CGFloat)rowPosterHeight;
 
 @end
 

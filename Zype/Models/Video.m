@@ -7,6 +7,7 @@
 //
 
 #import "Video.h"
+#import "PlaylistVideo.h"
 
 
 @implementation Video
@@ -52,6 +53,17 @@
 @dynamic playTime;
 
 @dynamic playlistVideo;
+
+- (Playlist *)playlistFromVideo {
+    NSArray * playlists = [self.playlistVideo allObjects];
+    for (PlaylistVideo *pVideo in playlists) {
+        if (pVideo.playlist) {
+            return pVideo.playlist;
+        }
+    }
+    
+    return nil;
+}
 
 @end
 

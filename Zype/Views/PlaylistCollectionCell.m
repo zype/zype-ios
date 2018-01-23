@@ -12,14 +12,14 @@
 #import "ACSPredicates.h"
 #import <TLIndexPathController.h>
 
-static const CGSize IphoneLayoutSize = {150, 80};
-static const CGSize IpadLayoutSize = {225, 120};
+
 
 @interface PlaylistCollectionCell() <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *items;
+@property (strong, nonatomic) Playlist *currentPlaylist;
 
 @end
 
@@ -44,6 +44,7 @@ static const CGSize IpadLayoutSize = {225, 120};
 }
 
 - (void)configureCell:(Playlist *)playlist {
+    self.currentPlaylist = playlist;
     self.titleLabel.text = playlist.title;
 
     if (playlist.playlist_item_count.integerValue > 0) {
@@ -78,7 +79,11 @@ static const CGSize IpadLayoutSize = {225, 120};
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return [PlaylistCollectionCell cellSize];
+    if ([self.currentPlaylist.thumbnail_layout isEqualToString:@"poster"]) {
+        return [PlaylistCollectionCell cellPosterLayoutSize];
+    }
+    
+    return [PlaylistCollectionCell cellLanscapeLayoutSize];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -107,7 +112,17 @@ static const CGSize IpadLayoutSize = {225, 120};
 
 #pragma mark - Class Methods
 
-+ (CGSize)cellSize {
++ (CGSize)cellPosterLayoutSize {
+    
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        return IpadPosterLayoutSize;
+    }
+    
+    return IphonePosterLayoutSize;
+}
+
++ (CGSize)cellLanscapeLayoutSize {
+    
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         return IpadLayoutSize;
     }
@@ -115,8 +130,12 @@ static const CGSize IpadLayoutSize = {225, 120};
     return IphoneLayoutSize;
 }
 
++ (CGFloat)rowPosterHeight {
+    return [PlaylistCollectionCell cellPosterLayoutSize].height + 40.0;
+}
+
 + (CGFloat)rowHeight {
-    return [PlaylistCollectionCell cellSize].height + 40.0;
+    return [PlaylistCollectionCell cellLanscapeLayoutSize].height + 40.0;
 }
 
 @end
