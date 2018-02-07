@@ -62,7 +62,8 @@
         self.items = filterArray;
     } else {
         NSArray<Playlist *> *playlistVideos = [ACSPersistenceManager getPlaylistsWithParentID:playlist.pId];
-        self.items = playlistVideos;
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kAppKey_Priority ascending:YES];
+        self.items = [playlistVideos sortedArrayUsingDescriptors:@[sortDescriptor]];
     }
 
     [self.collectionView reloadData];

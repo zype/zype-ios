@@ -142,6 +142,9 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kMediaType_Video @"mediaTypeVideo"
 #define kEntityVideo @"Video"
 #define kEntityPlaylist @"Playlist"
+#define kEntityPresentableObject @"PresentableObject"
+#define kEntityZObject @"ZObject"
+#define kEntityPager @"Pager"
 #define kEntityPlaylistVideo @"PlaylistVideo"
 #define kEntityGuest @"Guest"
 #define kEntityFavorite @"Favorite"
@@ -280,6 +283,9 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kGetLiveStream @"https://%@/videos?on_air=true&app_key=%@&sort=created_at&order=desc"
 #define kGetLiveStreamPlayer @"https://%@/manifest/live/%@.m3u8?app_key=%@"
 #define kBackgroundSession @"backgroundSession"
+#define kZObjectContent @"https://%@/zobjects/?app_key=%@&zobject_type=%@&page=1&per_page=500&keywords=&sort=priority&order=desc"
+//#define kZObjectContent @"https://api.zype.com/zobjects/?app_key=%@&zobject_type=tvos_settings&page=1&per_page=500&keywords="
+//IKuC8xERY-oYRxQfE6c1HSeRrxKcpCwcsPr614RfaxCkYsJLgwpBkpkEo88EsyWr&zobject_type=top_playlists&page=1&per_page=500&keywords=&sort=priority&order=desc
 
 #define kApiConsumerURL            @"https://api.zype.com/consumers/?app_key=%@&id=%@"
 
@@ -306,6 +312,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_PublishedAt        @"published_at"
 #define kAppKey_UpdatedAt          @"updated_at"
 #define kAppKey_Priority           @"priority"
+#define kAppKey_Type               @"type"
 #define kAppKey_Description        @"description"
 #define kAppKey_Thumbnails         @"thumbnails"
 #define kAppKey_Pictures           @"pictures"

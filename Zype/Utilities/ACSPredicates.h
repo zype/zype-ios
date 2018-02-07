@@ -28,5 +28,6 @@ NS_ENUM(NSInteger, ACSSearchMode){
 + (NSPredicate *)predicateMatchingDownloadURL:(NSURL *)url;
 + (NSPredicate *)predicateWithSearchString:(NSString *)searchString searchMode:(enum ACSSearchMode)mode;
 + (NSPredicate *)predicateWithParentId:(NSString *)parentId;
++ (NSCompoundPredicate *)predicatePresentableObjectsWithParentId:(NSString *)parentId;
 
 @end

@@ -528,6 +528,40 @@
     
 }
 
+#pragma mark - ZObject
+
+- (void)syncZObject {
+    NSString * zypeType = @"top_playlists";
+    NSString * urlAsString = [NSString stringWithFormat:kZObjectContent, kApiDomain, @"IKuC8xERY-oYRxQfE6c1HSeRrxKcpCwcsPr614RfaxCkYsJLgwpBkpkEo88EsyWr", zypeType];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+            //if (complete) complete(error.localizedDescription);
+        } else {
+            
+            CLS_LOG(@"Success: %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                //if (complete) complete(localError.localizedDescription);
+                CLS_LOG(@"Failed: %@", localError);
+            }
+            else {
+                //if (complete) complete(nil);
+                //remove old relationship
+                //[ACSPersistenceManager resetPlaylistChilds:parentId];
+                [ACSPersistenceManager populateZObjectsFromDictionary:parsedObject];
+            }
+        }
+    }];
+    
+    [dataTask resume];
+}
+
 #pragma mark - Download App
 
 - (void)getDownloadVideoUrlWithVideoId:(NSString *)vId WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
