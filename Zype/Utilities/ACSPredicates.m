@@ -84,6 +84,19 @@
     
 }
 
++ (NSCompoundPredicate *)predicatePresentableObjectsWithParentId:(NSString *)parentId {
+    
+    //exact match, case insensitive
+    NSString *playlistString = [NSString stringWithFormat:@"parent_id == [c] '%@'", parentId];
+    NSString *pagerString = [NSString stringWithFormat:@"type == [c] '%@'", @"Pager"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:playlistString];
+    NSPredicate *predicatePager = [NSPredicate predicateWithFormat:pagerString];
+    NSCompoundPredicate *compoundPredicate = [[NSCompoundPredicate alloc] initWithType:NSOrPredicateType subpredicates:@[predicate, predicatePager]];
+    return compoundPredicate;
+    
+}
+
+
 + (NSPredicate *)predicateMatchingDownloadURL:(NSURL *)url{
     
     //exact match, case insensitive
@@ -156,5 +169,6 @@
     
     return predicate;
 }
+
 
 @end

@@ -14,6 +14,9 @@
 #import "Playlist.h"
 #import "PlaylistCollectionCell.h"
 #import "ACSPersistenceManager.h"
+#import "ZObject.h"
+#import "Pager.h"
+#import "PagerSectionCell.h"
 
 @implementation BaseTVLayoutController
 
@@ -94,6 +97,7 @@
     [_tableView registerClass:[PlaylistTableViewCell class] forCellReuseIdentifier:reusePlaylistIdentifier];
     [_tableView registerNib:[UINib nibWithNibName:reusePlaylistCollectionCellIdentifier bundle:nil] forCellReuseIdentifier:reusePlaylistCollectionCellIdentifier];
     [_tableView registerNib:[UINib nibWithNibName:@"PlaylistTableViewCell" bundle:nil] forCellReuseIdentifier:reusePlaylistIdentifier];
+    [_tableView registerNib:[UINib nibWithNibName:@"PagerSectionCell" bundle:nil] forCellReuseIdentifier:@"PagerSectionCell"];
     
     self.scrollView = _tableView;
     
@@ -125,6 +129,7 @@
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Video class]]){
         
         Video * video = (Video *)[self.indexPathController.dataModel itemAtIndexPath:indexPath];
@@ -139,7 +144,7 @@
         cell.backgroundColor = [UIColor clearColor];
         return cell;
         
-    } else if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Playlist class]]){
+    } else if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Playlist class]]) {
         
         PlaylistCollectionCell *cell = (PlaylistCollectionCell *)[tableView dequeueReusableCellWithIdentifier:reusePlaylistCollectionCellIdentifier];
         Playlist *playlist = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
@@ -147,6 +152,17 @@
         [cell configureCell:playlist];
         return cell;
 
+    } else if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Pager class]]) {
+        PagerSectionCell *cell = (PagerSectionCell *)[tableView dequeueReusableCellWithIdentifier:@"PagerSectionCell"];
+        Pager *pager = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
+        NSArray *zObjects = [pager zObjectsFromPager];
+        [cell setPager:zObjects];
+        cell.didSelectBlock = ^(NSString *playlist_id) {
+            Playlist *playlist = [ACSPersistenceManager playlistWithID:playlist_id];
+            [self.delegate episodeControllerDidSelectItem:playlist];
+        };
+        
+        return cell;
     } else {
         return [UITableViewCell new];//app will crash if it reaches this point
     }
@@ -166,7 +182,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
+    NSManagedObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
     
     if ([dataModel isKindOfClass:[Video class]]) {
         Video * video = (Video *)dataModel;
@@ -189,14 +205,16 @@
         return [PlaylistCollectionCell rowHeight];
     }
     
+    if ([dataModel isKindOfClass:[Pager class]]) {
+        return [PagerSectionCell rowHeight];
+    }
+    
     return 90.0f;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.delegate episodeControllerDidSelectItemAtIndexPath:indexPath];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

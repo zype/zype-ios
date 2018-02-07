@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Notification, Video, Guest, Favorite, Playlist, PlaylistVideo;
+@class Notification, Video, Guest, Favorite, Playlist, PlaylistVideo, Pager;
 
 @interface ACSPersistenceManager : NSObject
 
@@ -32,11 +32,18 @@
 + (Video *)videoWithID:(NSString *)videoID;
 + (Video *)videoForDownloadTaskID:(NSNumber *)downloadTaskID;
 
++ (Pager *)getPager;
++ (Pager *)newPager;
+
 + (void)deleteVideo:(Video *)video;
 + (void)resetVideosWithDownloadTaskID:(NSNumber *)downloadTaskID;
 + (void)resetDownloadStatusOfVideo:(Video *)video;
 + (void)saveVideoInDB:(Video *)video WithData:(NSDictionary *)dictData;
 + (void)populateVideosFromDict:(NSDictionary *)parsedObject WithVideosInDB:(NSArray *)videosInDB WithExistingVideos:(NSArray *)existingVideos IsLastPage:(BOOL)isLastPage addToPlaylist:(NSString*)playlistId;
+
++ (void)populateZObjectsFromDictionary:(NSDictionary *)dictionary;
++ (NSArray *)getZObjects;
++ (NSFetchRequest *)presentableObjectsFetchRequestWithPredicate:(NSPredicate *)predicate;
 
 + (Playlist *)newPlaylist;
 + (Playlist *)playlistWithID:(NSString *)playlistID;

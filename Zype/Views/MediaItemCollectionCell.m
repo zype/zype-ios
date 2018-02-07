@@ -33,14 +33,12 @@
 
 - (void)setPlaylist:(Playlist *)playlist {
     self.titleLabel.text = playlist.title;
-    //[self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl]];
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:self.coverImageView.image];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:nil];
 }
 
 - (void)setVideo:(Video *)video {
     self.titleLabel.text = video.title;
-    //[self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]];
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:self.coverImageView.image];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:nil];
     
     if ([video.subscription_required intValue] == 1) {
         [self.iconLockedView setHidden:NO];
@@ -50,6 +48,7 @@
             self.iconLockedView.image = [UIImage imageNamed:@"icon-lock"];
         }
     }
+    
     
 //    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
 //    if (downloadInfo && downloadInfo.isDownloading) {
@@ -93,6 +92,10 @@
 //            [self setNoDownload];
 //        });
 //    }
+}
+
+- (void)setZObject:(ZObject *)zObject {
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl]];
 }
 
 - (void)setNoDownload {

@@ -129,10 +129,13 @@
 		A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */; };
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
+		FA09369920238B88009E14E3 /* MediaItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA09369820238B88009E14E3 /* MediaItemView.m */; };
 		FA1940351FCC75AF005CE292 /* PlaylistCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */; };
 		FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */; };
 		FA19403A1FCC78A3005CE292 /* MediaItemCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1940381FCC78A3005CE292 /* MediaItemCollectionCell.m */; };
 		FA19403B1FCC78A3005CE292 /* MediaItemCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1940391FCC78A3005CE292 /* MediaItemCollectionCell.xib */; };
+		FA3C18F42020D4330087AA38 /* PagerSectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3C18F22020D4330087AA38 /* PagerSectionCell.m */; };
+		FA3C18F52020D4330087AA38 /* PagerSectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3C18F32020D4330087AA38 /* PagerSectionCell.xib */; };
 		FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */; };
 		FA4BA3221EF0754C004985F6 /* CustomizeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA31F1EF0754C004985F6 /* CustomizeImageView.m */; };
 		FA4BA3231EF0754C004985F6 /* CustomizeThemeTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BA3211EF0754C004985F6 /* CustomizeThemeTextField.m */; };
@@ -148,7 +151,10 @@
 		FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33D1EF076E9004985F6 /* Roboto-Medium.ttf */; };
 		FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */; };
 		FA5029041FDE8FB0003A1AB1 /* BaseTVLayoutController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5029031FDE8FB0003A1AB1 /* BaseTVLayoutController.m */; };
+		FA793E0C20250425005DFDB7 /* Pager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA793E0B20250425005DFDB7 /* Pager.m */; };
+		FA793E1020250D88005DFDB7 /* PresentableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FA793E0F20250D88005DFDB7 /* PresentableObject.m */; };
 		FAA90E051F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA90E041F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m */; };
+		FAAB4FBB201FA1C300451D80 /* ZObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAB4FBA201FA1C300451D80 /* ZObject.m */; };
 		FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC7B3DE1EFC496200C787E4 /* AdObject.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
@@ -356,12 +362,17 @@
 		F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		F1BB52CB1A7819BC00E901F1 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		F1BB52CC1A7819BC00E901F1 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "Fonts/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		FA09369720238B88009E14E3 /* MediaItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MediaItemView.h; path = Views/MediaItemView.h; sourceTree = "<group>"; };
+		FA09369820238B88009E14E3 /* MediaItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MediaItemView.m; path = Views/MediaItemView.m; sourceTree = "<group>"; };
 		FA1940321FCC75AF005CE292 /* PlaylistCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PlaylistCollectionCell.h; path = Views/PlaylistCollectionCell.h; sourceTree = "<group>"; };
 		FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PlaylistCollectionCell.m; path = Views/PlaylistCollectionCell.m; sourceTree = "<group>"; };
 		FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlaylistCollectionCell.xib; path = Views/PlaylistCollectionCell.xib; sourceTree = "<group>"; };
 		FA1940371FCC78A3005CE292 /* MediaItemCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MediaItemCollectionCell.h; path = Views/MediaItemCollectionCell.h; sourceTree = "<group>"; };
 		FA1940381FCC78A3005CE292 /* MediaItemCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MediaItemCollectionCell.m; path = Views/MediaItemCollectionCell.m; sourceTree = "<group>"; };
 		FA1940391FCC78A3005CE292 /* MediaItemCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MediaItemCollectionCell.xib; path = Views/MediaItemCollectionCell.xib; sourceTree = "<group>"; };
+		FA3C18F12020D4330087AA38 /* PagerSectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PagerSectionCell.h; path = Views/PagerSectionCell.h; sourceTree = "<group>"; };
+		FA3C18F22020D4330087AA38 /* PagerSectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PagerSectionCell.m; path = Views/PagerSectionCell.m; sourceTree = "<group>"; };
+		FA3C18F32020D4330087AA38 /* PagerSectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PagerSectionCell.xib; path = Views/PagerSectionCell.xib; sourceTree = "<group>"; };
 		FA4BA31B1EF07472004985F6 /* ACPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACPurchaseManager.h; path = Managers/ACPurchaseManager.h; sourceTree = "<group>"; };
 		FA4BA31C1EF07472004985F6 /* ACPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACPurchaseManager.m; path = Managers/ACPurchaseManager.m; sourceTree = "<group>"; };
 		FA4BA31E1EF0754C004985F6 /* CustomizeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomizeImageView.h; path = Views/CustomizeImageView.h; sourceTree = "<group>"; };
@@ -388,8 +399,15 @@
 		FA4BA33E1EF076E9004985F6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		FA5029021FDE8FB0003A1AB1 /* BaseTVLayoutController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseTVLayoutController.h; path = Controllers/BaseTVLayoutController.h; sourceTree = "<group>"; };
 		FA5029031FDE8FB0003A1AB1 /* BaseTVLayoutController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BaseTVLayoutController.m; path = Controllers/BaseTVLayoutController.m; sourceTree = "<group>"; };
+		FA793E0A20250425005DFDB7 /* Pager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Pager.h; path = Models/Pager.h; sourceTree = "<group>"; };
+		FA793E0B20250425005DFDB7 /* Pager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Pager.m; path = Models/Pager.m; sourceTree = "<group>"; };
+		FA793E0D20250ACE005DFDB7 /* ObjectTypeProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectTypeProtocol.h; sourceTree = "<group>"; };
+		FA793E0E20250D88005DFDB7 /* PresentableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresentableObject.h; path = Models/PresentableObject.h; sourceTree = "<group>"; };
+		FA793E0F20250D88005DFDB7 /* PresentableObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PresentableObject.m; path = Models/PresentableObject.m; sourceTree = "<group>"; };
 		FAA90E031F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVPlayerViewController+AVPlayerViewController_Transition.h"; sourceTree = "<group>"; };
 		FAA90E041F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVPlayerViewController+AVPlayerViewController_Transition.m"; sourceTree = "<group>"; };
+		FAAB4FB9201FA1C300451D80 /* ZObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZObject.h; path = Models/ZObject.h; sourceTree = "<group>"; };
+		FAAB4FBA201FA1C300451D80 /* ZObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ZObject.m; path = Models/ZObject.m; sourceTree = "<group>"; };
 		FAC7B3DD1EFC496200C787E4 /* AdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdObject.h; path = Models/AdObject.h; sourceTree = "<group>"; };
 		FAC7B3DE1EFC496200C787E4 /* AdObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdObject.m; path = Models/AdObject.m; sourceTree = "<group>"; };
 		FAE69B771EA7C9D60081A064 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -486,6 +504,7 @@
 			children = (
 				B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */,
 				A13AF3241D369B0B00DDA006 /* DownloadStatusCell.h */,
+				FA793E0D20250ACE005DFDB7 /* ObjectTypeProtocol.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -649,10 +668,14 @@
 				A13AF2B01D36985A00DDA006 /* Guest.m */,
 				A13AF2B11D36985A00DDA006 /* Notification.h */,
 				A13AF2B21D36985A00DDA006 /* Notification.m */,
+				FA793E0A20250425005DFDB7 /* Pager.h */,
+				FA793E0B20250425005DFDB7 /* Pager.m */,
 				A13AF2B31D36985A00DDA006 /* PlaybackSource.h */,
 				A13AF2B41D36985A00DDA006 /* PlaybackSource.m */,
 				A13AF2B51D36985A00DDA006 /* Playlist.h */,
 				A13AF2B61D36985A00DDA006 /* Playlist.m */,
+				FA793E0E20250D88005DFDB7 /* PresentableObject.h */,
+				FA793E0F20250D88005DFDB7 /* PresentableObject.m */,
 				FA4BA33A1EF07695004985F6 /* TableSectionDataSource.h */,
 				FA4BA33B1EF07695004985F6 /* TableSectionDataSource.m */,
 				A13AF2B71D36985A00DDA006 /* Timeline.h */,
@@ -661,6 +684,8 @@
 				A13AF2BA1D36985A00DDA006 /* Timing.m */,
 				A13AF2BB1D36985A00DDA006 /* Video.h */,
 				A13AF2BC1D36985A00DDA006 /* Video.m */,
+				FAAB4FB9201FA1C300451D80 /* ZObject.h */,
+				FAAB4FBA201FA1C300451D80 /* ZObject.m */,
 				A15D10CB1DE4CF3C00BAB958 /* PlaylistVideo.h */,
 				A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */,
 				FAC7B3DD1EFC496200C787E4 /* AdObject.h */,
@@ -718,6 +743,11 @@
 				FA1940371FCC78A3005CE292 /* MediaItemCollectionCell.h */,
 				FA1940381FCC78A3005CE292 /* MediaItemCollectionCell.m */,
 				FA1940391FCC78A3005CE292 /* MediaItemCollectionCell.xib */,
+				FA3C18F12020D4330087AA38 /* PagerSectionCell.h */,
+				FA3C18F22020D4330087AA38 /* PagerSectionCell.m */,
+				FA3C18F32020D4330087AA38 /* PagerSectionCell.xib */,
+				FA09369720238B88009E14E3 /* MediaItemView.h */,
+				FA09369820238B88009E14E3 /* MediaItemView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -923,6 +953,7 @@
 				FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */,
 				A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */,
 				780AC6FF1BDFD284007F1119 /* OpenSans-BoldItalic.ttf in Resources */,
+				FA3C18F52020D4330087AA38 /* PagerSectionCell.xib in Resources */,
 				FA4BA32D1EF075B9004985F6 /* SubscriptActiveCell.xib in Resources */,
 				780AC7021BDFD284007F1119 /* OpenSans-ExtraBold.ttf in Resources */,
 				A13AF37D1D369DB600DDA006 /* YouTubePlayer.html in Resources */,
@@ -959,7 +990,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		780AC7031BDFD284007F1119 /* ShellScript */ = {
@@ -1033,14 +1064,17 @@
 				A13AF30E1D369A2C00DDA006 /* HighlightsViewController.m in Sources */,
 				A13AF3231D369AB300DDA006 /* RESTServiceController.m in Sources */,
 				A13AF35B1D369CC600DDA006 /* MediaPlayerManager.m in Sources */,
+				FA793E1020250D88005DFDB7 /* PresentableObject.m in Sources */,
 				A13AF2C41D36985A00DDA006 /* Timeline.m in Sources */,
 				A13AF3101D369A2C00DDA006 /* LatestViewController.m in Sources */,
+				FA09369920238B88009E14E3 /* MediaItemView.m in Sources */,
 				A13AF3581D369CC600DDA006 /* ACSPersistenceManager.m in Sources */,
 				A13AF3161D369A2C00DDA006 /* SignInViewController.m in Sources */,
 				A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */,
 				A13AF3821D36AC7700DDA006 /* PlaylistTableViewCell.m in Sources */,
 				A13AF2EA1D36995000DDA006 /* SlidingHeaderView.m in Sources */,
 				A13AF36E1D369D1F00DDA006 /* UIViewController+AC.m in Sources */,
+				FA793E0C20250425005DFDB7 /* Pager.m in Sources */,
 				A13AF3121D369A2C00DDA006 /* MoreViewController.m in Sources */,
 				A13AF3531D369CC600DDA006 /* ACDownloadManager.m in Sources */,
 				A13AF2C21D36985A00DDA006 /* PlaybackSource.m in Sources */,
@@ -1054,6 +1088,7 @@
 				A13AF2EC1D36995000DDA006 /* VideoTableViewCell.m in Sources */,
 				A13AF2C11D36985A00DDA006 /* Notification.m in Sources */,
 				A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */,
+				FAAB4FBB201FA1C300451D80 /* ZObject.m in Sources */,
 				A13AF2E31D36995000DDA006 /* BottomBorderTextField.swift in Sources */,
 				780AC6D21BDFD284007F1119 /* ZypeDBMappingModel.xcmappingmodel in Sources */,
 				FA4BA3221EF0754C004985F6 /* CustomizeImageView.m in Sources */,
@@ -1085,6 +1120,7 @@
 				A13AF2E41D36995000DDA006 /* DownloadTableViewCell.m in Sources */,
 				A13AF3351D369B9A00DDA006 /* KeychainItemWrapper.m in Sources */,
 				A13AF35A1D369CC600DDA006 /* ACSTokenManager.m in Sources */,
+				FA3C18F42020D4330087AA38 /* PagerSectionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
