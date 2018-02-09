@@ -532,7 +532,7 @@
 
 - (void)syncZObject {
     NSString * zypeType = @"top_playlists";
-    NSString * urlAsString = [NSString stringWithFormat:kZObjectContent, kApiDomain, @"IKuC8xERY-oYRxQfE6c1HSeRrxKcpCwcsPr614RfaxCkYsJLgwpBkpkEo88EsyWr", zypeType];
+    NSString * urlAsString = [NSString stringWithFormat:kZObjectContent, kApiDomain, kAppKey, zypeType];
     NSURL *url = [NSURL withString:urlAsString];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];

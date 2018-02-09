@@ -127,7 +127,7 @@
         lockImage = [UIImage imageNamed:@"iconLocked"];
     }
     
-    BOOL downloadFeature = [[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_DownloadsFeature];
+    BOOL downloadFeature = kDownloadsEnabled;
     
     [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     [self setThumbnail:video];
@@ -168,64 +168,65 @@
 //    });
 
     // Set download progress
-    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
-    if (downloadInfo && downloadInfo.isDownloading) {
-
-        if (self != nil) {
-
-            if (downloadInfo.totalBytesWritten == 0.0) {
-
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self setDownloadStarted];
-                });
-
-            }else {
-
-                float progress = (double)downloadInfo.totalBytesWritten / (double)downloadInfo.totalBytesExpectedToWrite;
-
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self setDownloadProgress:progress];
-                });
-
-            }
-
-        }
-
-    } else if ([UIUtil isYes:video.isDownload]) {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-
+    if (kDownloadsEnabled){
+        DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
+        if (downloadInfo && downloadInfo.isDownloading) {
+            
             if (self != nil) {
-
-                if ([UIUtil isYes:video.isPlayed]) {
-                    [self setPlayed];
-                } else if ([UIUtil isYes:video.isPlaying]) {
-                    [self setPlaying];
-                } else {
-                    [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
+                
+                if (downloadInfo.totalBytesWritten == 0.0) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self setDownloadStarted];
+                    });
+                    
+                }else {
+                    
+                    float progress = (double)downloadInfo.totalBytesWritten / (double)downloadInfo.totalBytesExpectedToWrite;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self setDownloadProgress:progress];
+                    });
+                    
                 }
+                
             }
-        });
-
-    } else {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self setNoDownload];
-        });
-
+            
+        } else if ([UIUtil isYes:video.isDownload]) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if (self != nil) {
+                    
+                    if ([UIUtil isYes:video.isPlayed]) {
+                        [self setPlayed];
+                    } else if ([UIUtil isYes:video.isPlaying]) {
+                        [self setPlaying];
+                    } else {
+                        [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
+                    }
+                }
+            });
+            
+        } else {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setNoDownload];
+            });
+            
+        }
     }
-
     //need to check if this action is working
     //possibly implement protocol
     [self.buttonAction addTarget:vc action:@selector(buttonActionTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView setUserInteractionEnabled:YES];
 
     //hide cloud if video can't be downloaded
-    if (video.duration.integerValue > 1) {
+   /* if (video.duration.integerValue > 1) {
         self.imageCloud.hidden = NO;
     } else {
         self.imageCloud.hidden = YES;
-    }
+    }*/
     
 
 }
