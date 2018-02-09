@@ -60,7 +60,7 @@ Open terminal and __"cd"__ into the folder you want to save the files to.
 
 <a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQUnJoV05yaENPMEU"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQUnJoV05yaENPMEU" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
-2. Now you have the source code. Open the application folder and find the file named __"Podfile"__. Open this file and make sure the target is the name of the application.
+2. Now you have the source code. Open the application folder and find the file named __"Podfile"__. Open this file in the text editor of your choice and update the target name to match the name of the application.
 
 <a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQaERZcHl5T19lc1E"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQaERZcHl5T19lc1E" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
