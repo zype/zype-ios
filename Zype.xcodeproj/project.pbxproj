@@ -129,6 +129,9 @@
 		A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */; };
 		A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */; };
 		A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */ = {isa = PBXBuildFile; fileRef = A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */; };
+		A1B3C4172032268300784F64 /* ACAnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B3C4162032268300784F64 /* ACAnalyticsManager.m */; };
+		A1B3C41E203227E100784F64 /* libAKAMMediaExtensions-AV.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B3C41B203227E100784F64 /* libAKAMMediaExtensions-AV.a */; };
+		A1B3C420203227E100784F64 /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = A1B3C41D203227E100784F64 /* ReadMe */; };
 		FA09369920238B88009E14E3 /* MediaItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA09369820238B88009E14E3 /* MediaItemView.m */; };
 		FA1940351FCC75AF005CE292 /* PlaylistCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */; };
 		FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */; };
@@ -337,6 +340,11 @@
 		A15D10CB1DE4CF3C00BAB958 /* PlaylistVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistVideo.h; path = Models/PlaylistVideo.h; sourceTree = "<group>"; };
 		A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistVideo.m; path = Models/PlaylistVideo.m; sourceTree = "<group>"; };
 		A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = VideoSummaryLight.html; sourceTree = "<group>"; };
+		A1B3C4152032268300784F64 /* ACAnalyticsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ACAnalyticsManager.h; path = Managers/ACAnalyticsManager.h; sourceTree = "<group>"; };
+		A1B3C4162032268300784F64 /* ACAnalyticsManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ACAnalyticsManager.m; path = Managers/ACAnalyticsManager.m; sourceTree = "<group>"; };
+		A1B3C419203227E100784F64 /* AKAMMediaAnalytics_Av.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAMMediaAnalytics_Av.h; sourceTree = "<group>"; };
+		A1B3C41B203227E100784F64 /* libAKAMMediaExtensions-AV.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libAKAMMediaExtensions-AV.a"; sourceTree = "<group>"; };
+		A1B3C41D203227E100784F64 /* ReadMe */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe; sourceTree = "<group>"; };
 		A1D84BA0F72FFDAA8DEC35F6 /* Pods-Zype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zype.release.xcconfig"; path = "Pods/Target Support Files/Pods-Zype/Pods-Zype.release.xcconfig"; sourceTree = "<group>"; };
 		B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EpisodeControllerDelegate.h; path = Protocols/EpisodeControllerDelegate.h; sourceTree = "<group>"; };
 		B96FF88A1B17B535007CA447 /* ZypeDBMappingModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ZypeDBMappingModel.xcmappingmodel; sourceTree = "<group>"; };
@@ -430,6 +438,7 @@
 				780AC6EB1BDFD284007F1119 /* QuartzCore.framework in Frameworks */,
 				780AC6EC1BDFD284007F1119 /* Security.framework in Frameworks */,
 				654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */,
+				A1B3C41E203227E100784F64 /* libAKAMMediaExtensions-AV.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +489,17 @@
 			);
 			name = oswald;
 			path = Fonts/oswald;
+			sourceTree = "<group>";
+		};
+		A1B3C418203227E100784F64 /* AkamMAlibs */ = {
+			isa = PBXGroup;
+			children = (
+				A1B3C419203227E100784F64 /* AKAMMediaAnalytics_Av.h */,
+				A1B3C41B203227E100784F64 /* libAKAMMediaExtensions-AV.a */,
+				A1B3C41D203227E100784F64 /* ReadMe */,
+			);
+			name = AkamMAlibs;
+			path = Libraries/AkamMAlibs;
 			sourceTree = "<group>";
 		};
 		B944B3661B42E9290041B77D /* Controllers */ = {
@@ -538,6 +558,8 @@
 				A13AF3511D369CC600DDA006 /* ViewManager.m */,
 				A1149D831D89AB200021646B /* ACAdManager.h */,
 				A1149D841D89AB200021646B /* ACAdManager.m */,
+				A1B3C4152032268300784F64 /* ACAnalyticsManager.h */,
+				A1B3C4162032268300784F64 /* ACAnalyticsManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -590,6 +612,7 @@
 		F176C9BE1AB09E300080E334 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A1B3C418203227E100784F64 /* AkamMAlibs */,
 				A13AF3251D369B9A00DDA006 /* KeychainWrapper */,
 				9677B76A1ACB11FC0043515D /* libAdIdAccess.a */,
 				A13AF3281D369B9A00DDA006 /* NSDictionary+Extensions.h */,
@@ -944,6 +967,7 @@
 				FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */,
 				A13AF3951D36D3B700DDA006 /* Oswald-Bold.ttf in Resources */,
 				A13AF39D1D36D3B700DDA006 /* Oswald-Light.ttf in Resources */,
+				A1B3C420203227E100784F64 /* ReadMe in Resources */,
 				A13AF2ED1D36995000DDA006 /* VideoTableViewCell.xib in Resources */,
 				A13AF2E71D36995000DDA006 /* GuestTableViewCell.xib in Resources */,
 				780AC6FD1BDFD284007F1119 /* Images.xcassets in Resources */,
@@ -990,7 +1014,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		780AC7031BDFD284007F1119 /* ShellScript */ = {
@@ -1116,6 +1140,7 @@
 				FAA90E051F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m in Sources */,
 				A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */,
 				A13AF3571D369CC600DDA006 /* ACSNotificationsManager.m in Sources */,
+				A1B3C4172032268300784F64 /* ACAnalyticsManager.m in Sources */,
 				FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */,
 				A13AF2E41D36995000DDA006 /* DownloadTableViewCell.m in Sources */,
 				A13AF3351D369B9A00DDA006 /* KeychainItemWrapper.m in Sources */,
@@ -1167,6 +1192,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Zype",
+					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
@@ -1200,6 +1226,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Zype",
+					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";

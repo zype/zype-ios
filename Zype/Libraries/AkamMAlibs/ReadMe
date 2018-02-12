@@ -1,0 +1,25 @@
+Plugin version: 01.17.3
+Supported architectures: armv7 armv7s arm64 i386 x86_64 
+
+
+-> Following files and directories are contained in the compressed file
+----------------------------------------------------------------------------------------
+1) libAKAMMediaExtensions-AV.a	 			: 	This is a fat library for iOS simulator and device.
+2) libAKAMMediaExtensions-AV_debug.a		:	This is a fat library for iOS simulator and device. This is a debug build of library.
+3) Header file								:	Header for the integration which includes description for the APIs
+
+
+Notes
+----------------------------------------------------------------------------------------
+1) Example App - refer to integration guide for sample MA lib integration
+2) Please refer to the integration guide for further details on APIs.
+
+
+-> Notes for upgrading AVPlayer based plugin from the old versoin
+----------------------------------------------------------------------------------------
+Starting from plugin version 1.6 there are changes to the interfaces. This requires app to modify some of the calls in the integration. Following is what is modified
+1) AKAMMediaAnalytics is now AKAMMediaAnalytics_Av, so use AKAMMediaAnalytics_Av instead of AKAMMediaAnalytics
+2) setData API is modified and it does takes only two arguments. App must remove the first argument of the old setData API call. Refer to the integration guide for further details
+3) If App is playing a video when it goes to background and App requires to resume the same video then App must make sure that it makes appropriate plugin calls. Check integration guide for further details
+
+
