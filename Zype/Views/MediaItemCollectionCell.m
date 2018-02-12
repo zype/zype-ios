@@ -52,6 +52,11 @@
 
 - (void)setZObject:(ZObject *)zObject {
     [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl]];
+
+}
+
+- (void)setZObject:(ZObject *)zObject {
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl]];
 }
 
 - (void)setNoDownload {

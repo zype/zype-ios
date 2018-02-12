@@ -195,7 +195,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSManagedObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
-     
     if ([dataModel isKindOfClass:[Playlist class]]) {
         Playlist * playlist = (Playlist *)dataModel;
         if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {

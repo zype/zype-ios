@@ -26,7 +26,7 @@
     self.iCarucelView.dataSource = self;
     self.iCarucelView.decelerationRate = 0.0f;
     self.zObjects = [[NSArray alloc] init];
-    
+
     // Initialization code
 }
 
@@ -38,6 +38,7 @@
 
 - (void)setPager:(NSArray *)objects {
     self.zObjects = objects;
+
     [UIView transitionWithView:self.iCarucelView
                       duration:0.35f
                        options:UIViewAnimationOptionTransitionCrossDissolve
