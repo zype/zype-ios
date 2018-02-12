@@ -110,9 +110,7 @@
     [self loadDataWithPlaylistID:currentPlaylistID];
 }
 
-- (void)loadDataWithPlaylistID:(NSString *)playlistID {
-    
-
+- (void)loadDataWithPlaylistID:(NSString *)playlistID {    
     [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlistID withCompletionHandler:^{
         
         if (kAppAppleTVLayout) {
@@ -133,10 +131,10 @@
                     }];
                 }
             }
-
             dispatch_group_notify(group, dispatch_get_main_queue(), ^{
                 //[[RESTServiceController sharedInstance] syncZObject];
                 [self loadData];
+
             });
             NSLog(@"%@", playlists);
         }

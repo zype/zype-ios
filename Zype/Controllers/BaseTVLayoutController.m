@@ -181,6 +181,17 @@
     
 }
 
+//- (NSString *)layoutFromVideo:(Video *)video {
+//    NSArray * playlists = [video.playlistVideo allObjects];
+//    for (PlaylistVideo *pVideo in playlists) {
+//        if (pVideo.playlist) {
+//            return pVideo.playlist.thumbnail_layout;
+//        }
+//    }
+//
+//    return @"landscape";
+//}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSManagedObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
