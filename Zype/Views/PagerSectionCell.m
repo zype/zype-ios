@@ -26,10 +26,7 @@
     self.iCarucelView.dataSource = self;
     self.iCarucelView.decelerationRate = 0.0f;
     self.zObjects = [[NSArray alloc] init];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:7.0f
-                                                  target:self
-                                                selector:@selector(timerTicked) userInfo:nil
-                                                 repeats:YES];
+
     // Initialization code
 }
 
@@ -41,7 +38,22 @@
 
 - (void)setPager:(NSArray *)objects {
     self.zObjects = objects;
-    [self.iCarucelView reloadData];
+
+    [UIView transitionWithView:self.iCarucelView
+                      duration:0.35f
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^(void) {
+         [self.iCarucelView reloadData];
+                    } completion:^(BOOL finished) {
+                        if (self.zObjects.count > 1) {
+                            [self startTimer];
+                            [self.iCarucelView setScrollEnabled:YES];
+                        } else {
+                            [self.iCarucelView setScrollEnabled:NO];
+                            [self.timer invalidate];
+                            self.timer = nil;
+                        }
+                    }];
 }
 
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
@@ -51,7 +63,6 @@
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(MediaItemView *)view {
     if (view == nil) {
         view = [[MediaItemView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, [PagerSectionCell rowHeight])];
-        //view.backgroundColor = [UIColor blueColor];
     }
     
     ZObject *zObject = self.zObjects[index];
@@ -76,12 +87,28 @@
     if (self.didSelectBlock) self.didSelectBlock(zObject.playlistid);
 }
 
+- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
+    [self startTimer];
+}
+
 + (CGFloat)rowHeight {
     return 180;
 }
 
+#pragma - mark Timer
+
+- (void)startTimer {
+    [self.timer invalidate];
+    self.timer = nil;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:7.0f
+                                                  target:self
+                                                selector:@selector(timerTicked) userInfo:nil
+                                                 repeats:NO];
+}
+
 - (void)timerTicked {
     [self.iCarucelView scrollByNumberOfItems:1 duration:0.5];
+    [self startTimer];
 }
 
 @end

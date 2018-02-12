@@ -33,6 +33,9 @@
     [self.collectionView registerNib:[UINib nibWithNibName:@"MediaItemCollectionCell" bundle:nil] forCellWithReuseIdentifier:@"MediaItemCollectionCell"];
     [self.collectionView setDelegate:self];
     [self.collectionView setDataSource:self];
+    self.separatorInset = UIEdgeInsetsZero;
+    self.preservesSuperviewLayoutMargins = NO;
+    self.layoutMargins = UIEdgeInsetsZero;
     self.items = @[];
     // Initialization code
 }
@@ -49,24 +52,27 @@
 
     if (playlist.playlist_item_count.integerValue > 0) {
         NSArray<PlaylistVideo *> *playlistVideos = [ACSPersistenceManager playlistVideosFromPlaylistId:playlist.pId];
+
         NSMutableArray *filterArray = [[NSMutableArray alloc] init];
-        
         for (PlaylistVideo *currentPlaylistVideo in playlistVideos) {
             Video *currentVideo = currentPlaylistVideo.video;
-            
+
             if (![filterArray containsObject:currentVideo]){
                 [filterArray addObject:currentVideo];
             }
+            
         }
-
         self.items = filterArray;
+        if (self.items.count > 0) {
+            [self.collectionView reloadData];
+        }
     } else {
         NSArray<Playlist *> *playlistVideos = [ACSPersistenceManager getPlaylistsWithParentID:playlist.pId];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kAppKey_Priority ascending:YES];
         self.items = [playlistVideos sortedArrayUsingDescriptors:@[sortDescriptor]];
+        [self.collectionView reloadData];
     }
 
-    [self.collectionView reloadData];
 }
 
 #pragma mark - CollectionView
@@ -81,10 +87,10 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.currentPlaylist.thumbnail_layout isEqualToString:@"poster"]) {
-        return [PlaylistCollectionCell cellPosterLayoutSize];
+        return CGSizeMake([PlaylistCollectionCell cellPosterLayoutSize].width, self.collectionView.frame.size.height);
     }
     
-    return [PlaylistCollectionCell cellLanscapeLayoutSize];
+    return CGSizeMake([PlaylistCollectionCell cellLanscapeLayoutSize].width, self.collectionView.frame.size.height);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -101,14 +107,18 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaItemCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MediaItemCollectionCell" forIndexPath:indexPath];
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    MediaItemCollectionCell *madiaItemCell = (MediaItemCollectionCell *)cell;
     if ([self.items[indexPath.row] isKindOfClass:[Playlist class]]) {
         Playlist *playlist = self.items[indexPath.row];
-        [cell setPlaylist:playlist];
+        [madiaItemCell setPlaylist:playlist];
     } else if ([self.items[indexPath.row] isKindOfClass:[Video class]]) {
         Video *video = self.items[indexPath.row];
-        [cell setVideo:video];
+        [madiaItemCell setVideo:video];
     }
-    return cell;
 }
 
 #pragma mark - Class Methods
