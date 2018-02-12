@@ -55,10 +55,6 @@
 
 }
 
-- (void)setZObject:(ZObject *)zObject {
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl]];
-}
-
 - (void)setNoDownload {
     [self.progressView setHidden:YES];
     [self setNeedsDisplay];
