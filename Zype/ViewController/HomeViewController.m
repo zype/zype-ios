@@ -116,7 +116,9 @@
     [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlistID withCompletionHandler:^{
         
         if (kAppAppleTVLayout) {
-            [[RESTServiceController sharedInstance] syncZObject];
+            if ([playlistID  isEqualToString: kRootPlaylistId]) {
+                [[RESTServiceController sharedInstance] syncZObject];
+            }
             NSArray *playlists = [ACSPersistenceManager getPlaylistsWithParentID:playlistID];
             dispatch_group_t group = dispatch_group_create();
             for (Playlist * playlist in playlists) {

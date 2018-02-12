@@ -34,6 +34,7 @@
 
 + (Pager *)getPager;
 + (Pager *)newPager;
++ (void)resetPager;
 
 + (void)deleteVideo:(Video *)video;
 + (void)resetVideosWithDownloadTaskID:(NSNumber *)downloadTaskID;
@@ -41,6 +42,7 @@
 + (void)saveVideoInDB:(Video *)video WithData:(NSDictionary *)dictData;
 + (void)populateVideosFromDict:(NSDictionary *)parsedObject WithVideosInDB:(NSArray *)videosInDB WithExistingVideos:(NSArray *)existingVideos IsLastPage:(BOOL)isLastPage addToPlaylist:(NSString*)playlistId;
 
++ (void)resetZObjectChilds;
 + (void)populateZObjectsFromDictionary:(NSDictionary *)dictionary;
 + (NSArray *)getZObjects;
 + (NSFetchRequest *)presentableObjectsFetchRequestWithPredicate:(NSPredicate *)predicate;
@@ -50,6 +52,7 @@
 + (NSArray *)getPlaylistsWithParentID:(NSString *)playlistID;
 + (NSArray *)getVideosWithParentID:(NSString *)playlistID;
 + (void)resetPlaylistChilds:(NSString *)playlistID;
++ (void)populatePlaylistFromDictionary:(NSDictionary *)dictionary;
 + (void)populatePlaylistsFromDictionary:(NSDictionary *)dictionary;
 
 + (PlaylistVideo *)newPlaylistVideo;

@@ -9,6 +9,7 @@
 #define Zype_ZypeCommon_h
 
 #pragma mark - Client Settings
+
 #define kOAuth_ClientId @"efff34ee145c7bdc8a8408a339571005f8bcdf2fb0ae5dfd0dbb248188daaf54"
 #define kOAuth_ClientSecret @"0fdedb3cf72afa6b37fabfbe100e2a2db5d6f4ecdbfe71eb53c223d722201a1d"
 #define kAppKey @"HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU"
@@ -242,6 +243,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kDeviceId @"5429b1c769702d2f7c120000"
 #define kGetVideos @"https://%@/videos/?app_key=%@&page=%@"
 
+#define kGetPlaylist @"https://%@/playlists/%@?app_key=%@"
 #define kGetPlaylists @"https://%@/playlists/?app_key=%@&parent_id=%@&per_page=500"
 //#define kGetPlaylists @"https://%@/playlists/?app_key=%@"
 

@@ -150,7 +150,29 @@
         [ACSPersistenceManager saveZObjectWithDictionary:zObjectDictionary];
     }
     
+    if (results.count == 0) {
+         [self resetPager];
+    }
+    
     [[ACSPersistenceManager sharedInstance] saveContext];
+}
+
++ (void)resetZObjectChilds {
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityZObject];
+//    request.predicate = [NSPredicate predicateWithFormat:@"parent_id = %@", playlistID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        CLS_LOG(@"deleting %li playlists", [fetchedObjects count]);
+        for (ZObject *zObject in fetchedObjects) {
+            [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:zObject];
+        }
+    }
+    
 }
 
 + (void)saveZObjectWithDictionary:(NSDictionary *)dictionary {
@@ -290,6 +312,23 @@
     
 }
 
++ (void)resetPager {
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityPager];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        CLS_LOG(@"deleting %li playlists", [fetchedObjects count]);
+        for (Pager *pager in fetchedObjects) {
+            [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:pager];
+        }
+    }
+    
+}
+
 #pragma mark - Playlists
 
 + (Playlist *)newPlaylist{
@@ -406,6 +445,11 @@
 
 }
 
++ (void)populatePlaylistFromDictionary:(NSDictionary *)dictionary {
+    NSDictionary *result = [dictionary valueForKey:kAppKey_Response];
+    [ACSPersistenceManager savePlayliststWithDictionary:result];
+    [[ACSPersistenceManager sharedInstance] saveContext];
+}
 
 + (void)populatePlaylistsFromDictionary:(NSDictionary *)dictionary{
     

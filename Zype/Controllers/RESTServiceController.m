@@ -459,6 +459,43 @@
 
 #pragma mark - Playlist App
 
+- (void)syncPlaylistWithId:(NSString *)playlistId withCompletionHandler:(void (^)(NSString *))errorString {
+    NSString *urlAsString = [NSString stringWithFormat:kGetPlaylist, kApiDomain, playlistId ,kAppKey];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+            if (errorString) errorString(error.localizedDescription);
+            return;
+        } else {
+            
+            CLS_LOG(@"Success: %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+                if (errorString) errorString(localError.localizedDescription);
+                return;
+            }
+            else {
+                //remove old relationship
+//                [ACSPersistenceManager resetPlaylistChilds:parentId];
+//
+                [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
+                if (errorString) errorString(nil);
+                //CLS_LOG(@"parsedObject = %@", parsedObject);
+            }
+            
+        }
+        
+    }];
+    
+    [dataTask resume];
+}
+
 - (void)syncPlaylistsWithParentId:(NSString *)parentId
 {
     NSString *urlAsString = [NSString stringWithFormat:kGetPlaylists, kApiDomain, kAppKey, parentId];
@@ -532,7 +569,7 @@
 
 - (void)syncZObject {
     NSString * zypeType = @"top_playlists";
-    NSString * urlAsString = [NSString stringWithFormat:kZObjectContent, kApiDomain, @"IKuC8xERY-oYRxQfE6c1HSeRrxKcpCwcsPr614RfaxCkYsJLgwpBkpkEo88EsyWr", zypeType];
+    NSString * urlAsString = [NSString stringWithFormat:kZObjectContent, kApiDomain, kAppKey, zypeType];
     NSURL *url = [NSURL withString:urlAsString];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -553,7 +590,7 @@
             else {
                 //if (complete) complete(nil);
                 //remove old relationship
-                //[ACSPersistenceManager resetPlaylistChilds:parentId];
+                [ACSPersistenceManager resetZObjectChilds];
                 [ACSPersistenceManager populateZObjectsFromDictionary:parsedObject];
             }
         }

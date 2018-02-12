@@ -33,7 +33,7 @@
 - (void)getVideoPlayerWithVideo:(Video *)video downloadInfo:(BOOL)isDownloaded withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)getAudioPlayerWithVideo:(Video *)video WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
-- (void)syncPlaylistsWithParentId:(NSString *)parentId;
+- (void)syncPlaylistWithId:(NSString *)playlistId withCompletionHandler:(void (^)(NSString *))errorString;
 - (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)())complete;
 
 - (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;

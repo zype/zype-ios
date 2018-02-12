@@ -17,6 +17,7 @@
 #import "ZObject.h"
 #import "Pager.h"
 #import "PagerSectionCell.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @implementation BaseTVLayoutController
 
@@ -74,6 +75,9 @@
 
 
 - (void)reloadData {
+//    NSLog(@"%@", self.indexPathController.dataModel.items.firstObject);
+//    NSLog(@"%ld", self.indexPathController.dataModel.numberOfSections);
+    
     [self.tableView reloadData];
 }
 
@@ -100,6 +104,7 @@
     [_tableView registerNib:[UINib nibWithNibName:@"PagerSectionCell" bundle:nil] forCellReuseIdentifier:@"PagerSectionCell"];
     
     self.scrollView = _tableView;
+
     
     return self;
 }
@@ -145,7 +150,6 @@
         return cell;
         
     } else if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Playlist class]]) {
-        
         PlaylistCollectionCell *cell = (PlaylistCollectionCell *)[tableView dequeueReusableCellWithIdentifier:reusePlaylistCollectionCellIdentifier];
         Playlist *playlist = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
         [cell setDelegate:self];
@@ -158,8 +162,16 @@
         NSArray *zObjects = [pager zObjectsFromPager];
         [cell setPager:zObjects];
         cell.didSelectBlock = ^(NSString *playlist_id) {
+            if (playlist_id == nil) {
+                return;
+            }
+            
             Playlist *playlist = [ACSPersistenceManager playlistWithID:playlist_id];
-            [self.delegate episodeControllerDidSelectItem:playlist];
+            if (playlist != nil) {
+                [self.delegate episodeControllerDidSelectItem:playlist];
+            } else {
+                [self getPlaylist:playlist_id];
+            }
         };
         
         return cell;
@@ -172,19 +184,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSManagedObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
-    
-    if ([dataModel isKindOfClass:[Video class]]) {
-        Video * video = (Video *)dataModel;
-        Playlist * playlist = [video playlistFromVideo];
-        if (playlist) {
-            if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
-                return [PlaylistCollectionCell cellPosterLayoutSize].height + 24;
-            }
-        }
-        
-        return 90.0f;
-    }
-    
+     
     if ([dataModel isKindOfClass:[Playlist class]]) {
         Playlist * playlist = (Playlist *)dataModel;
         if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
@@ -240,10 +240,42 @@
     
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Remove seperator inset
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    // Prevent the cell from inheriting the Table View's margin settings
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+    
+    // Explictly set your cell's layout margins
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
 #pragma mark - PlaylistCollectionCell
 
 - (void)onDidSelectItem:(PlaylistCollectionCell *)cell item:(NSObject *)item {
     [self.delegate episodeControllerDidSelectItem:item];
+}
+
+#pragma mark - Playlists
+
+- (void)getPlaylist:(NSString *)playlistID {
+    [SVProgressHUD show];
+    [[RESTServiceController sharedInstance] syncPlaylistWithId:playlistID withCompletionHandler:^(NSString *errorString) {
+        [SVProgressHUD dismiss];
+        if (errorString == nil) {
+            Playlist *playlist = [ACSPersistenceManager playlistWithID:playlistID];
+            if (playlist != nil) {
+                [self.delegate episodeControllerDidSelectItem:playlist];
+            }
+        }
+    }];
 }
 
 
