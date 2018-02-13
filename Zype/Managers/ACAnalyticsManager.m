@@ -13,26 +13,53 @@
 
 #pragma mark - Singleton
 
-+ (void)initAkamaiWithConfigURL:(NSURL *)url {
+- (NSString *)beaconFromParsedDictionary:(NSDictionary *)dictionary {
+    
+    NSDictionary *response = [UIUtil dict:dictionary valueForKey:kAppKey_Response];
+    NSDictionary *body = [UIUtil dict:response valueForKey:kAppKey_Body];
+    NSDictionary *analytics = [UIUtil dict:body valueForKey:kAppKey_Analytics];
+    NSString *beaconUrl = [UIUtil dict:analytics valueForKey:kAppKey_Beacon];
+    
+    NSDictionary *dimensions = [UIUtil dict:analytics valueForKey:kAppKey_Dimensions];
+    self.siteId = [UIUtil dict:dimensions valueForKey:kAppKey_SiteId];
+    self.videoId = [UIUtil dict:dimensions valueForKey:kAppKey_VideoId];
+    
+    
+    if (beaconUrl){
+        [self initAkamaiWithConfigURL:[[NSURL alloc] initWithString:beaconUrl]];
+    }
+    
+    return beaconUrl;
+    
+}
+
+- (void)initAkamaiWithConfigURL:(NSURL *)url {
      [AKAMMediaAnalytics_Av initWithConfigURL:url];
 }
 
-+ (void)deinitAkamaiTracking {
+- (void)deinitAkamaiTracking {
     [AKAMMediaAnalytics_Av deinitMASDK];
 }
 
-+ (void) setupAkamaiMediaAnalytics:videoPlayer withViewerId:(NSString*)viewerId withCustomData:(NSMutableDictionary*)customData
+- (void) setupAkamaiMediaAnalytics:videoPlayer withVideo:(Video*)video
 {
+    /*
     if (viewerId) {
         [AKAMMediaAnalytics_Av setViewerId:viewerId];
     }
+    */
     
+     NSMutableDictionary *customData = [[NSMutableDictionary alloc]initWithObjectsAndKeys:
+                                        self.siteId, @"siteId",
+                                        self.videoId, @"videoId",
+                                        nil];
     if (customData) {
         id key;
         for (key in customData) {
             [AKAMMediaAnalytics_Av setData:key value:[customData objectForKey:key]];
         }
     }
+    
     [AKAMMediaAnalytics_Av processWithAVPlayer:videoPlayer];
 }
 

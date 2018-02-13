@@ -44,6 +44,8 @@
 #import "ACStatusManager.h"
 #import "UIUtil.h"
 
+#import "ACAnalyticsManager.h"
+
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =
 @"https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&"
@@ -86,7 +88,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic, assign) BOOL isReturnFullScreenIfNeeded;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *height;
-
+@property (nonatomic) NSString *beaconStringUrl;
 
 @end
 
@@ -97,6 +99,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    //stopAkamaiAnalytics
+    [[ACAnalyticsManager sharedInstance] deinitAkamaiTracking];
     
     if (self.playerObserver) {
         [self.contentPlayhead.player removeTimeObserver:self.playerObserver];
@@ -207,6 +212,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)moviePlayerDidReachedEnd:(NSNotification*) notification{
     if([notification.userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue] == MPMovieFinishReasonPlaybackEnded && notification.object == self.player) {
         self.isReachedEnd = YES;
+        
+        [ACAnalyticsManager playbackCompleted];
     }
 }
 
@@ -242,7 +249,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         //restrict rotation
         [AppDelegate appDelegate].restrictRotation = YES;
-        
     }
     
     if (self.avPlayer != nil && self.avPlayer.rate > 0.0f) {
@@ -488,7 +494,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 } else {
                     //check for Ads
                     self.adsArray = [[ACAdManager sharedInstance] adsArrayFromParsedDictionary:parsedObject];
-                    
+                   
+                    //check for beacon analytics
+                    self.beaconStringUrl = [[ACAnalyticsManager sharedInstance] beaconFromParsedDictionary:parsedObject];
+                  
+                   
                     //check if view is visible to avoid playing on background
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
@@ -578,6 +588,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
     }
 
+    //setup analytics for a player
+    if (self.beaconStringUrl)
+        [[ACAnalyticsManager sharedInstance] setupAkamaiMediaAnalytics:self.avPlayer withVideo:self.video];
     
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
     NSError *_error = nil;

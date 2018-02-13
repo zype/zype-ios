@@ -11,10 +11,16 @@
 
 @interface ACAnalyticsManager : NSObject
 
+@property (nonatomic) NSString *videoId;
+@property (nonatomic) NSString *siteId;
+
 //Akamai Engagement classes
-+ (void)initAkamaiWithConfigURL:(NSURL *)url;
-+ (void)deinitAkamaiTracking;
-+ (void) setupAkamaiMediaAnalytics:videoPlayer withViewerId:(NSString*)viewerId withCustomData:(NSMutableDictionary*)customData;
+- (NSString *)beaconFromParsedDictionary:(NSDictionary *)dictionary;
+
+- (void)initAkamaiWithConfigURL:(NSURL *)url;
+- (void)deinitAkamaiTracking;
+- (void) setupAkamaiMediaAnalytics:videoPlayer withVideo:(Video*)video
+;
 + (void) playbackCompleted;
 
 //Singleton
