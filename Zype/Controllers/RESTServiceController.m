@@ -399,7 +399,7 @@
     
 }
 
-- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos withCompletionHandler:(void (^)())complete
+- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos withCompletionHandler:(void (^)(void))complete
 {
     if (page == nil) {
         page = @1;
@@ -530,7 +530,7 @@
     
 }
 
-- (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)())complete
+- (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)(void))complete
 {
     NSString *urlAsString = [NSString stringWithFormat:kGetPlaylists, kApiDomain, kAppKey, parentId];
     NSURL *url = [NSURL withString:urlAsString];

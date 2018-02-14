@@ -371,17 +371,6 @@
     NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
     
     return fetchedObjects;
-    
-    Playlist *playlist;
-    
-    if (fetchedObjects.count > 0) {
-        // If it's been updated, update the guest in Core Data
-        playlist = [fetchedObjects objectAtIndex:0];
-        
-    }
-    
-    return playlist;
-    
 }
 
 + (NSArray *)getVideosWithParentID:(NSString *)playlistID {
@@ -394,17 +383,6 @@
     NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
     
     return fetchedObjects;
-    
-    Playlist *playlist;
-    
-    if (fetchedObjects.count > 0) {
-        // If it's been updated, update the guest in Core Data
-        playlist = [fetchedObjects objectAtIndex:0];
-        
-    }
-    
-    return playlist;
-    
 }
 
 + (NSFetchRequest *)playlistFetchRequestWithPredicate:(NSPredicate *)predicate{
