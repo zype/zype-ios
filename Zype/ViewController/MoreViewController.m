@@ -153,13 +153,13 @@
         }
             break;
         case 4: {
-            cell.textLabel.text = [NSString stringWithFormat:@"%@ on Web", bundleName];
-            // cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconTwitterBlue"]];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@ on Instagram", bundleName];
+            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconInstagram"]];
         }
             break;
         case 5: {
-            cell.textLabel.text = [NSString stringWithFormat:@"%@ on Instagram", bundleName];
-            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconInstagram"]];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@ on Web", bundleName];
+            // cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconTwitterBlue"]];
         }
             break;
     }
@@ -199,11 +199,11 @@
         }
         case 4:
         {
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameMore action:kAnalyticsCategoryButtonPressed label:@"Web Loaded" value:nil] build]];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameMore action:kAnalyticsCategoryButtonPressed label:@"Instagram Loaded" value:nil] build]];
         }
         case 5:
         {
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameMore action:kAnalyticsCategoryButtonPressed label:@"Instagram Loaded" value:nil] build]];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameMore action:kAnalyticsCategoryButtonPressed label:@"Web Loaded" value:nil] build]];
         }
         default:
             break;
