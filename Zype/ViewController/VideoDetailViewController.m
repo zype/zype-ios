@@ -108,9 +108,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     NSLog(@"Destroying");
     //remove the instance that was created in case of going to a full screen mode and back
-    if (self.avPlayerController != nil) {
-        [self.avPlayerController.player pause];
-        self.avPlayerController.player = nil;
+    if (self.avPlayerController) {
+        if (self.avPlayerController.player){
+            //[self.avPlayerController.player pause]; caused crash in the emulator
+            self.avPlayerController.player = nil;
+        }
         self.avPlayerController = nil;
     }
     

@@ -7,6 +7,7 @@
 //
 
 #import "ACAnalyticsManager.h"
+#import "ACStatusManager.h"
 
 @implementation ACAnalyticsManager
 
@@ -23,7 +24,6 @@
     NSDictionary *dimensions = [UIUtil dict:analytics valueForKey:kAppKey_Dimensions];
     self.siteId = [UIUtil dict:dimensions valueForKey:kAppKey_SiteId];
     self.videoId = [UIUtil dict:dimensions valueForKey:kAppKey_VideoId];
-    
     
     if (beaconUrl){
         [self initAkamaiWithConfigURL:[[NSURL alloc] initWithString:beaconUrl]];
@@ -43,11 +43,9 @@
 
 - (void) setupAkamaiMediaAnalytics:videoPlayer withVideo:(Video*)video
 {
-    /*
-    if (viewerId) {
-        [AKAMMediaAnalytics_Av setViewerId:viewerId];
+    if ([ACStatusManager isUserSignedIn]){
+        [AKAMMediaAnalytics_Av setViewerId:[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId]];
     }
-    */
     
      NSMutableDictionary *customData = [[NSMutableDictionary alloc]initWithObjectsAndKeys:
                                         self.siteId, @"siteId",
