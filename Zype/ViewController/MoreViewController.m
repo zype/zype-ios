@@ -159,7 +159,7 @@
             break;
         case 5: {
             cell.textLabel.text = [NSString stringWithFormat:@"%@ on Instagram", bundleName];
-            //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconTwitterBlue"]];
+            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconInstagram"]];
         }
             break;
     }
