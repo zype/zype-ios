@@ -27,6 +27,7 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
+//Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
 #define kAppColorLight NO
 
 //alternative new beta layout
