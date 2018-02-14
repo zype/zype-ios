@@ -167,7 +167,7 @@
     
     if (fetchedObjects.count > 0) {
         // If it's been updated, update the guest in Core Data
-        CLS_LOG(@"deleting %li playlists", [fetchedObjects count]);
+        CLS_LOG(@"deleting %li playlists", (unsigned long)[fetchedObjects count]);
         for (ZObject *zObject in fetchedObjects) {
             [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:zObject];
         }
@@ -321,7 +321,7 @@
     
     if (fetchedObjects.count > 0) {
         // If it's been updated, update the guest in Core Data
-        CLS_LOG(@"deleting %li playlists", [fetchedObjects count]);
+        CLS_LOG(@"deleting %li playlists", (unsigned long)[fetchedObjects count]);
         for (Pager *pager in fetchedObjects) {
             [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:pager];
         }
@@ -415,7 +415,7 @@
     
     if (fetchedObjects.count > 0) {
         // If it's been updated, update the guest in Core Data
-        CLS_LOG(@"deleting %li playlists", [fetchedObjects count]);
+        CLS_LOG(@"deleting %li playlists", (unsigned long)[fetchedObjects count]);
         for (Playlist *playlist in fetchedObjects) {
              [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:playlist];
         }
