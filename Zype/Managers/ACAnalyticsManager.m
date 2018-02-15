@@ -14,6 +14,7 @@
 
 #pragma mark - Singleton
 
+//if beaconUrl is NULL analytics will not start
 - (NSString *)beaconFromParsedDictionary:(NSDictionary *)dictionary {
     
     NSDictionary *response = [UIUtil dict:dictionary valueForKey:kAppKey_Response];
@@ -25,20 +26,19 @@
     self.siteId = [UIUtil dict:dimensions valueForKey:kAppKey_SiteId];
     self.videoId = [UIUtil dict:dimensions valueForKey:kAppKey_VideoId];
     
-    if (beaconUrl){
-        [self initAkamaiWithConfigURL:[[NSURL alloc] initWithString:beaconUrl]];
+    //we want to initilize Akamai only once
+    if (beaconUrl && !self.initialized){
+        [AKAMMediaAnalytics_Av initWithConfigURL:[[NSURL alloc] initWithString:beaconUrl]];
+        self.initialized = YES;
     }
     
     return beaconUrl;
     
 }
 
-- (void)initAkamaiWithConfigURL:(NSURL *)url {
-     [AKAMMediaAnalytics_Av initWithConfigURL:url];
-}
-
 - (void)deinitAkamaiTracking {
     [AKAMMediaAnalytics_Av deinitMASDK];
+    self.initialized = NO;
 }
 
 - (void) setupAkamaiMediaAnalytics:videoPlayer withVideo:(Video*)video

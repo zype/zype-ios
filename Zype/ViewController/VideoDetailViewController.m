@@ -100,9 +100,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    //stopAkamaiAnalytics
-    [[ACAnalyticsManager sharedInstance] deinitAkamaiTracking];
-    
+    //notify of complition of the video
+    [ACAnalyticsManager playbackCompleted];
+
     if (self.playerObserver) {
         [self.contentPlayhead.player removeTimeObserver:self.playerObserver];
     }
