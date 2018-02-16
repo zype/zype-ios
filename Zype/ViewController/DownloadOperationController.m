@@ -292,7 +292,7 @@
         
         if (!count){
             
-            void (^backgroundSessionCompletionHandler)() = [AppDelegate appDelegate].backgroundSessionCompletionHandler;
+            void (^backgroundSessionCompletionHandler)(void) = [AppDelegate appDelegate].backgroundSessionCompletionHandler;
             
             if (backgroundSessionCompletionHandler) {
                 

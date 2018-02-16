@@ -27,6 +27,7 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
+//Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
 #define kAppColorLight NO
 
 //alternative new beta layout
@@ -311,6 +312,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_ConsumerId         @"resource_owner_id"
 #define kAppKey_Id                 @"_id"
 #define kAppKey_VideoId            @"video_id"
+#define kAppKey_SiteId             @"site_id"
 #define kAppKey_Pagination         @"pagination"
 #define kAppKey_Pages              @"pages"
 #define kAppKey_NextPage           @"next"
@@ -319,6 +321,9 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_Body               @"body"
 #define kAppKey_Files              @"files"
 #define kAppKey_Advertising        @"advertising"
+#define kAppKey_Analytics          @"analytics"
+#define kAppKey_Beacon             @"beacon"
+#define kAppKey_Dimensions         @"dimensions"
 #define kAppKey_Schedule           @"schedule"
 #define kAppKey_Outputs            @"outputs"
 #define kAppKey_Url                @"url"

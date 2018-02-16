@@ -63,7 +63,6 @@ static NSString * const reusePlaylistCollectionCellIdentifier = @"PlaylistCollec
 - (void)loadPlaylists;
 - (void)loadPlaylist:(NSString*)playlistId;
 - (void)loadPresentableObjects:(NSString*)playlistId;
-- (void)loadZObjects;
 
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;
 - (id<DownloadStatusCell>)cellForDownloadTaskID:(NSNumber *)downloadTaskID;

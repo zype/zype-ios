@@ -128,7 +128,7 @@
     self.centerCredentialsConstraintY.constant = y;
     
     
-    void (^animations)() = ^() {
+    void (^animations)(void) = ^() {
         [self.view layoutIfNeeded];
     };
     

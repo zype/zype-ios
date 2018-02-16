@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BottomBorderTextField: UITextField
+@objc class BottomBorderTextField: UITextField
 {
     required init?(coder aDecoder: NSCoder)
     {

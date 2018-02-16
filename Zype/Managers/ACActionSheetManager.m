@@ -110,7 +110,7 @@
 #pragma mark - Private Methods
 
 
-- (void)checkingOnActiveFlags:(void(^)())complete failure:(void(^)())failure {
+- (void)checkingOnActiveFlags:(void(^)(void))complete failure:(void(^)(void))failure {
     
     if (kDownloadsForAllUsersEnabled == NO) {
         if (kNativeSubscriptionEnabled == YES) {
