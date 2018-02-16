@@ -123,7 +123,9 @@
     
     VideosViewController *videosViewController = (VideosViewController *)[ViewManager videosViewController];
     videosViewController.playlistId = playlistId;
-    [viewController.navigationController pushViewController:videosViewController animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [viewController.navigationController pushViewController:videosViewController animated:YES];
+    });
     
 }
 
@@ -133,7 +135,9 @@
     
     //set selected playlist
     [homeViewController setPlaylistItem:playlist];
-    [viewController.navigationController pushViewController:homeViewController animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [viewController.navigationController pushViewController:homeViewController animated:YES];
+    });
     
 }
 
@@ -344,6 +348,21 @@
         if ([[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"]) {
             url = [dict valueForKey:kAppKey_Url];
         }
+    }
+    
+    return url;
+}
+
++ (NSString *)thumbnailUrlFromImageArray:(NSArray *)array withLayout:(NSString *)layout
+{
+    NSString *url = @"";
+    
+    for (NSDictionary *dict in array) {
+        
+        if ([[dict valueForKey:kAppKey_Layout] isEqualToString:layout] && [[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"]) {
+            url = [dict valueForKey:kAppKey_Url];
+        }
+
     }
     
     return url;

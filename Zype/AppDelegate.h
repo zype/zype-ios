@@ -17,7 +17,7 @@
 @property (strong, nonatomic) OneSignal *oneSignal;
 
 @property (strong, nonatomic) KeychainItemWrapper *keychainItem;
-@property (copy, nonatomic) void (^backgroundSessionCompletionHandler)();
+@property (copy, nonatomic) void (^backgroundSessionCompletionHandler)(void);
 @property () BOOL restrictRotation;
 
 + (AppDelegate *)appDelegate;

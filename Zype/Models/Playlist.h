@@ -9,18 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "PlaylistVideo.h"
+#import "ObjectTypeProtocol.h"
+#import "PresentableObject.h"
 
-
-@interface Playlist : NSManagedObject
+@interface Playlist : PresentableObject
 
 @property (nonatomic, retain) NSString * pId;
-@property (nonatomic, retain) NSString * parent_id;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSDate * created_at;
 @property (nonatomic, retain) NSDate * updated_at;
 @property (nonatomic, retain) NSString * thumbnailUrl;
 @property (nonatomic, retain) NSNumber * playlist_item_count;
 @property (nonatomic, retain) NSNumber * priority;
+@property (nonatomic, retain) NSString * thumbnail_layout;
 
 
 @property (nonatomic, retain) NSSet<PlaylistVideo *> *playlistVideo;

@@ -91,7 +91,7 @@
     CGFloat y = (heightArea / 2) - (self.panelView.frame.size.height / 2) - bottomPadding;
     self.centerCredentialsConstraintY.constant = y;
     
-    void (^animations)() = ^() {
+    void (^animations)(void) = ^() {
         [self.view layoutIfNeeded];
     };
     

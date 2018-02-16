@@ -30,6 +30,7 @@ NS_ENUM(NSInteger, ACSEpisodeControllerMode){
 
 static NSString * const reuseIdentifier = @"EpisodeCell";
 static NSString * const reusePlaylistIdentifier = @"PlaylistCell";
+static NSString * const reusePlaylistCollectionCellIdentifier = @"PlaylistCollectionCell";
 
 @interface EpisodeController : NSObject<NSFetchedResultsControllerDelegate, UIScrollViewDelegate, TLIndexPathControllerDelegate>
 
@@ -61,6 +62,7 @@ static NSString * const reusePlaylistIdentifier = @"PlaylistCell";
 - (void)loadSearch:(NSString *)search searchMode:(enum ACSSearchMode)mode;
 - (void)loadPlaylists;
 - (void)loadPlaylist:(NSString*)playlistId;
+- (void)loadPresentableObjects:(NSString*)playlistId;
 
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;
 - (id<DownloadStatusCell>)cellForDownloadTaskID:(NSNumber *)downloadTaskID;

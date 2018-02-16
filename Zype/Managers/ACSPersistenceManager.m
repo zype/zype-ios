@@ -19,6 +19,8 @@
 #import "Video.h"
 #import "Guest.h"
 #import "Playlist.h"
+#import "ZObject.h"
+#import "Pager.h"
 
 @interface ACSPersistenceManager ()
 
@@ -137,12 +139,202 @@
     
 }
 
+#pragma mark - ZObjects
+
++ (void)populateZObjectsFromDictionary:(NSDictionary *)dictionary {
+    
+    NSArray *results = [dictionary valueForKey:kAppKey_Response];
+    CLS_LOG(@"Playlist Count %lu", (unsigned long)results.count);
+    
+    for (NSDictionary *zObjectDictionary in results) {
+        [ACSPersistenceManager saveZObjectWithDictionary:zObjectDictionary];
+    }
+    
+    if (results.count == 0) {
+         [self resetPager];
+    }
+    
+    [[ACSPersistenceManager sharedInstance] saveContext];
+}
+
++ (void)resetZObjectChilds {
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityZObject];
+//    request.predicate = [NSPredicate predicateWithFormat:@"parent_id = %@", playlistID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        CLS_LOG(@"deleting %li playlists", (unsigned long)[fetchedObjects count]);
+        for (ZObject *zObject in fetchedObjects) {
+            [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:zObject];
+        }
+    }
+    
+}
+
++ (void)saveZObjectWithDictionary:(NSDictionary *)dictionary {
+    
+    NSString *zId = [dictionary valueForKey:kAppKey_Id];
+    ZObject *zObject = [ACSPersistenceManager zObjectWithID:zId];
+    
+    //clean up. remove all of the playlist child relationship
+    
+    if (zObject != nil) {
+        
+        // If it's been updated, update the guest in Core Data
+        NSDate *dateUpdated = [[UIUtil dateFormatter] dateFromString:[dictionary valueForKey:kAppKey_UpdatedAt]];
+        if ([zObject.updated_at compare:dateUpdated] != NSOrderedSame) {
+            [ACSPersistenceManager updateZObject:zObject withDictionary:dictionary];
+            CLS_LOG(@"Updated zobject: %@", zObject.title);
+        }
+        
+    } else {
+        // If it's new, insert it into Core Data
+        zObject = [ACSPersistenceManager newZObject];
+        [ACSPersistenceManager updateZObject:zObject withDictionary:dictionary];
+        CLS_LOG(@"Added new playlist: %@", zObject.title);
+    }
+}
+
++ (ZObject *)zObjectWithID:(NSString *)zObjectID {
+    
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityZObject];
+    request.predicate = [NSPredicate predicateWithFormat:@"zId = %@", zObjectID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    ZObject * zObject;
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        zObject = [fetchedObjects objectAtIndex:0];
+    }
+    
+    return zObject;
+}
+
++ (void)updateZObject:(ZObject *)zObject withDictionary:(NSDictionary *)dictionary{
+    
+    // Set values
+    for (NSString *key in dictionary) {
+        if ([dictionary valueForKey:key] != nil &&
+            ![[dictionary valueForKey:key] isKindOfClass:[NSNull class]]) {
+            
+            if ([key isEqualToString:kAppKey_Id]){
+                zObject.zId = [dictionary valueForKey:key];
+            } else if ([key isEqualToString:kAppKey_Pictures]) {
+                NSArray *array = [dictionary valueForKey:key];
+                if ([array count] > 0) {
+                    zObject.thumbnailUrl = [array[0] valueForKey:kAppKey_Url];
+                }
+            } else if ([zObject respondsToSelector:NSSelectorFromString(key)]) {
+                if ([key stringContains:kAppKey_At])
+                    [zObject setValue:[[UIUtil dateFormatter] dateFromString:[dictionary valueForKey:key]] forKey:key];
+                else {
+                    //hasKey is a check that prevents the app from crashing if unknown keys comes in
+                    BOOL hasKey = [[zObject.entity propertiesByName] objectForKey:key] != nil;
+                    if (hasKey)
+                        [zObject setValue:[dictionary valueForKey:key] forKey:key];
+                }
+            }
+        }
+    }
+}
+
++ (ZObject *)newZObject {
+    
+    ZObject *zObject = (ZObject *)[NSEntityDescription insertNewObjectForEntityForName:kEntityZObject inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+    if ([self getPager] == nil) {
+        [self newPager];
+    }
+    return zObject;
+}
+
++ (NSArray *)getZObjects {
+    
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityZObject];
+    request.sortDescriptors = [NSArray arrayWithObjects:[[NSSortDescriptor alloc] initWithKey:kAppKey_Priority ascending:YES], nil];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    return fetchedObjects;
+    
+}
+
++ (NSFetchRequest *)presentableObjectsFetchRequestWithPredicate:(NSPredicate *)predicate {
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kEntityPresentableObject inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+    fetchRequest.includesSubentities = YES;
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:predicate];
+    return fetchRequest;
+    
+}
+
+#pragma mark - Pager
+
++ (Pager *)newPager {
+    
+    Pager *pager = (Pager *)[NSEntityDescription insertNewObjectForEntityForName:kEntityPager inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+    pager.type = @"Pager";
+    
+    return pager;
+    
+}
+
++ (NSArray *)zObjectsFromPager {
+    return [self getZObjects];
+}
+
++ (Pager *)getPager {
+    
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityPager];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    Pager *pager;
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        pager = [fetchedObjects objectAtIndex:0];
+        
+    }
+    
+    return pager;
+    
+}
+
++ (void)resetPager {
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityPager];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the guest in Core Data
+        CLS_LOG(@"deleting %li playlists", (unsigned long)[fetchedObjects count]);
+        for (Pager *pager in fetchedObjects) {
+            [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:pager];
+        }
+    }
+    
+}
 
 #pragma mark - Playlists
 
 + (Playlist *)newPlaylist{
     
     Playlist *playlist = (Playlist *)[NSEntityDescription insertNewObjectForEntityForName:kEntityPlaylist inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+    playlist.type = @"playlist";
     
     return playlist;
     
@@ -169,10 +361,44 @@
     
 }
 
++ (NSArray *)getPlaylistsWithParentID:(NSString *)playlistID {
+    
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityPlaylist];
+    request.predicate = [NSPredicate predicateWithFormat:@"parent_id = %@", playlistID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    return fetchedObjects;
+}
+
++ (NSArray *)getVideosWithParentID:(NSString *)playlistID {
+    
+    // Check if the playlists exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityVideo];
+    request.predicate = [NSPredicate predicateWithFormat:@"parent_id = %@", playlistID];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    return fetchedObjects;
+}
+
 + (NSFetchRequest *)playlistFetchRequestWithPredicate:(NSPredicate *)predicate{
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:kEntityPlaylist inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:predicate];
+    return fetchRequest;
+    
+}
+
++ (NSFetchRequest *)presentableObjectFetchRequestWithPredicate:(NSPredicate *)predicate{
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kEntityPresentableObject inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
     [fetchRequest setEntity:entity];
     [fetchRequest setPredicate:predicate];
     return fetchRequest;
@@ -189,7 +415,7 @@
     
     if (fetchedObjects.count > 0) {
         // If it's been updated, update the guest in Core Data
-        CLS_LOG(@"deleting %li playlists", [fetchedObjects count]);
+        CLS_LOG(@"deleting %li playlists", (unsigned long)[fetchedObjects count]);
         for (Playlist *playlist in fetchedObjects) {
              [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:playlist];
         }
@@ -197,6 +423,11 @@
 
 }
 
++ (void)populatePlaylistFromDictionary:(NSDictionary *)dictionary {
+    NSDictionary *result = [dictionary valueForKey:kAppKey_Response];
+    [ACSPersistenceManager savePlayliststWithDictionary:result];
+    [[ACSPersistenceManager sharedInstance] saveContext];
+}
 
 + (void)populatePlaylistsFromDictionary:(NSDictionary *)dictionary{
     
@@ -204,19 +435,15 @@
     CLS_LOG(@"Playlist Count %lu", (unsigned long)results.count);
     
     for (NSDictionary *playlistDictionary in results) {
-        
         [ACSPersistenceManager savePlayliststWithDictionary:playlistDictionary];
-        
     }
     
     [[ACSPersistenceManager sharedInstance] saveContext];
-    
 }
 
 + (void)savePlayliststWithDictionary:(NSDictionary *)dictionary{
     
     NSString *pId = [dictionary valueForKey:kAppKey_Id];
-    
     Playlist *playlist = [ACSPersistenceManager playlistWithID:pId];
     
     //clean up. remove all of the playlist child relationship
@@ -230,21 +457,15 @@
             
             [ACSPersistenceManager updatePlaylist:playlist withDictionary:dictionary];
             CLS_LOG(@"Updated playlist: %@", playlist.title);
-            
         }
         
-    }
-    else {
+    } else {
         
         // If it's new, insert it into Core Data
         playlist = [ACSPersistenceManager newPlaylist];
         [ACSPersistenceManager updatePlaylist:playlist withDictionary:dictionary];
         CLS_LOG(@"Added new playlist: %@", playlist.title);
-        
     }
-    
-    
-    
 }
 
 + (void)updatePlaylist:(Playlist *)playlist withDictionary:(NSDictionary *)dictionary{
@@ -263,7 +484,8 @@
                 if ( ! customThumbnailImageIsLoaded)
                 playlist.thumbnailUrl = [UIUtil thumbnailUrlFromArray:[dictionary valueForKey:key]];
             } else if ([key isEqualToString:kAppKey_Images]){
-                NSString *tempUrl = [UIUtil thumbnailUrlFromImageArray:[dictionary valueForKey:key]];
+                NSString *layout = dictionary[@"thumbnail_layout"];
+                NSString *tempUrl = [UIUtil thumbnailUrlFromImageArray:[dictionary valueForKey:key] withLayout:layout];
                 if ( ! [tempUrl isEqualToString:@""]){
                     playlist.thumbnailUrl = tempUrl;
                     customThumbnailImageIsLoaded = true;
@@ -287,6 +509,7 @@
 
 #pragma mark PlaylistVideo
 
+
 + (PlaylistVideo *)newPlaylistVideo {
     PlaylistVideo *playlistVideo = (PlaylistVideo *)[NSEntityDescription insertNewObjectForEntityForName:kEntityPlaylistVideo inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
     
@@ -301,6 +524,18 @@
     NSFetchRequest *requestPlaylistVideo = [NSFetchRequest fetchRequestWithEntityName:kEntityPlaylistVideo];
     requestPlaylistVideo.predicate = [NSPredicate predicateWithFormat:@"playlist.pId == %@", playlistId];
     requestPlaylistVideo.sortDescriptors = [NSArray arrayWithObjects:[[NSSortDescriptor alloc] initWithKey:@"orderingValue" ascending:YES], nil];
+    NSArray *playlistsVideos = [[ACSPersistenceManager sharedInstance].managedObjectContext executeFetchRequest:requestPlaylistVideo error:&LocalError];
+    
+    return playlistsVideos;
+    
+}
+
++ (NSArray *)playlistVideosFromParentPlaylistId:(NSString *)playlistId{
+    
+    NSError *LocalError = nil;
+    NSFetchRequest *requestPlaylistVideo = [NSFetchRequest fetchRequestWithEntityName:kEntityPlaylistVideo];
+    requestPlaylistVideo.predicate = [NSPredicate predicateWithFormat:@"playlist.pId == %@", playlistId];
+    requestPlaylistVideo.sortDescriptors = [NSArray arrayWithObjects:[[NSSortDescriptor alloc] initWithKey:@"parent_id" ascending:YES], nil];
     NSArray *playlistsVideos = [[ACSPersistenceManager sharedInstance].managedObjectContext executeFetchRequest:requestPlaylistVideo error:&LocalError];
     
     return playlistsVideos;

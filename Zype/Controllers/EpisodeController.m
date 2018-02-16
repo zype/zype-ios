@@ -43,7 +43,7 @@
     
 }
 
-- (void)loadVideosFromPlaylistId:(NSString*)playlistId{
+- (void)loadVideosFromPlaylistId:(NSString*)playlistId {
     
     self.playlistId = playlistId;
     
@@ -91,14 +91,11 @@
 - (void)loadSearch:(NSString *)search searchMode:(enum ACSSearchMode)mode{
     
     self.filterPredicate = [ACSPredicates predicateWithSearchString:search searchMode:mode];
-    
     [self performFetch];
     
 }
 
-
-
-- (void)performFetch{
+- (void)performFetch {
     
     // Fetch data from core data and reload table
     self.indexPathController.fetchRequest = [self fetchRequest];
@@ -109,22 +106,27 @@
     if (![self.indexPathController performFetch:&error]) {
         CLS_LOG(@"Fetched Results Error: %@", error);
     }
-    else{
+    else {
         [self reloadData];
     }
     
 }
 
-- (void)loadPlaylists{
+- (void)loadPlaylists {
     [self performPlaylistFetch];
 }
 
-- (void)loadPlaylist:(NSString*)playlistId{
+- (void)loadPlaylist:(NSString*)playlistId {
     self.filterPredicate = [ACSPredicates predicateWithParentId:playlistId];
     [self performPlaylistFetch];
 }
 
-- (void)performPlaylistFetch{
+- (void)loadPresentableObjects:(NSString*)playlistId {
+    self.filterPredicate = [ACSPredicates predicatePresentableObjectsWithParentId:playlistId];
+    [self performPresentableObjectsFetch];
+}
+
+- (void)performPlaylistFetch {
     // Fetch data from core data and reload table
     self.indexPathController.fetchRequest = [self fetchPlaylistRequest];
     self.currentFetchRequest = self.indexPathController.fetchRequest;
@@ -134,10 +136,26 @@
     if (![self.indexPathController performFetch:&error]) {
         CLS_LOG(@"Fetched Results Error: %@", error);
     }
-    else{
+    else {
         [self reloadData];
     }
     
+}
+
+- (void)performPresentableObjectsFetch {
+    // Fetch data from core data and reload table
+    self.indexPathController = [[TLIndexPathController alloc] initWithFetchRequest:[self fetchPresentableObjects] managedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext sectionNameKeyPath:kAppKey_Type identifierKeyPath:nil cacheName:nil];
+    self.currentFetchRequest = self.indexPathController.fetchRequest;
+    
+    NSError *error = nil;
+
+    if (![self.indexPathController performFetch:&error]) {
+        CLS_LOG(@"Fetched Results Error: %@", error);
+    }
+    else {
+        [self reloadData];
+    }
+
 }
 
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath{
@@ -168,9 +186,11 @@
     
     NSArray *items = self.indexPathController.items;
     for (Video *video in items) {
-        if ([video.downloadTaskId isEqualToNumber:downloadTaskID] == YES) {
-            return video;
-        }
+        if ([video isKindOfClass:[Video class]]) {
+            if ([video.downloadTaskId isEqualToNumber:downloadTaskID] == YES) {
+                return video;
+            }
+        } 
     }
     
     return nil;
@@ -296,6 +316,18 @@
     
     return fetchRequest;
     
+}
+
+- (NSFetchRequest *)fetchPresentableObjects {
+    
+    NSFetchRequest *fetchRequest = [ACSPersistenceManager presentableObjectsFetchRequestWithPredicate:self.filterPredicate];
+    fetchRequest.predicate = self.filterPredicate;
+    // Specify how the fetched objects should be sorted
+    NSSortDescriptor *sortTypeDescriptor = [[NSSortDescriptor alloc] initWithKey:kAppKey_Type ascending:YES];
+    NSSortDescriptor *sortPriorityDescriptor = [[NSSortDescriptor alloc] initWithKey:kAppKey_Priority ascending:YES];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortTypeDescriptor, sortPriorityDescriptor, nil]];
+    
+    return fetchRequest;
 }
 
 

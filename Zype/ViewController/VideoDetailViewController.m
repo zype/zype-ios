@@ -44,6 +44,8 @@
 #import "ACStatusManager.h"
 #import "UIUtil.h"
 
+#import "ACAnalyticsManager.h"
+
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =
 @"https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&"
@@ -86,7 +88,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic, assign) BOOL isReturnFullScreenIfNeeded;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *height;
-
+@property (nonatomic) NSString *beaconStringUrl;
 
 @end
 
@@ -98,14 +100,19 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    //notify of complition of the video
+    [ACAnalyticsManager playbackCompleted];
+
     if (self.playerObserver) {
         [self.contentPlayhead.player removeTimeObserver:self.playerObserver];
     }
     NSLog(@"Destroying");
     //remove the instance that was created in case of going to a full screen mode and back
-    if (self.avPlayerController != nil) {
-        [self.avPlayerController.player pause];
-        self.avPlayerController.player = nil;
+    if (self.avPlayerController) {
+        if (self.avPlayerController.player){
+            //[self.avPlayerController.player pause]; //caused crash in the emulator
+            self.avPlayerController.player = nil;
+        }
         self.avPlayerController = nil;
     }
     
@@ -133,9 +140,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     
     self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
-    //self.adsContainerView.backgroundColor = [UIColor blueColor];
     [self.view addSubview:self.adsContainerView];
-    //need t
     [self setupNotifications];
 }
 
@@ -172,16 +177,18 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         }
     }
     
-    TableSectionDataSource *favoriteItem = [[TableSectionDataSource alloc] init];
-    favoriteItem.type = Favourite;
-    if ([UIUtil isYes:self.video.isFavorite]) {
-        favoriteItem.title = @"Unfavorite";
-        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-    } else {
-        favoriteItem.title = @"Favorite";
-        favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
+    if ((kFavoritesViaAPI == NO) || ([ACStatusManager isUserSignedIn] == YES)) {
+        TableSectionDataSource *favoriteItem = [[TableSectionDataSource alloc] init];
+        favoriteItem.type = Favourite;
+        if ([UIUtil isYes:self.video.isFavorite]) {
+            favoriteItem.title = @"Unfavorite";
+            favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        } else {
+            favoriteItem.title = @"Favorite";
+            favoriteItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        }
+        [self.optionsDataSource addObject:favoriteItem];
     }
-    [self.optionsDataSource addObject:favoriteItem];
     
     if (kShareVideoEnabled) {
         TableSectionDataSource *shareItem = [[TableSectionDataSource alloc] init];
@@ -207,6 +214,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)moviePlayerDidReachedEnd:(NSNotification*) notification{
     if([notification.userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue] == MPMovieFinishReasonPlaybackEnded && notification.object == self.player) {
         self.isReachedEnd = YES;
+        
+        [ACAnalyticsManager playbackCompleted];
     }
 }
 
@@ -242,7 +251,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         //restrict rotation
         [AppDelegate appDelegate].restrictRotation = YES;
-        
     }
     
     if (self.avPlayer != nil && self.avPlayer.rate > 0.0f) {
@@ -488,7 +496,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 } else {
                     //check for Ads
                     self.adsArray = [[ACAdManager sharedInstance] adsArrayFromParsedDictionary:parsedObject];
-                    
+                   
+                    //check for beacon analytics
+                    self.beaconStringUrl = [[ACAnalyticsManager sharedInstance] beaconFromParsedDictionary:parsedObject];
+                  
+                   
                     //check if view is visible to avoid playing on background
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
@@ -578,6 +590,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
     }
 
+    //setup analytics for a player
+    if (self.beaconStringUrl)
+        [[ACAnalyticsManager sharedInstance] setupAkamaiMediaAnalytics:self.avPlayer withVideo:self.video];
     
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
     NSError *_error = nil;
@@ -631,9 +646,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view bringSubviewToFront:self.imageThumbnail];
     [self.view bringSubviewToFront:self.avPlayerController.view];
     [self.view bringSubviewToFront:self.adsContainerView];
+    [self.view bringSubviewToFront:self.activityIndicator];
 }
 
-- (void)setupVideoPlayerView{
+- (void)setupVideoPlayerView {
     
     //[self.avPlayerController.view setFrame:self.imageThumbnail.frame];
     //[self.adsContainerView setFrame:self.imageThumbnail.frame];

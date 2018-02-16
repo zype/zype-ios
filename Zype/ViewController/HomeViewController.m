@@ -95,16 +95,51 @@
 
 - (void)getPlaylistData {
     // Load playlists
+    NSString *currentPlaylistID;
+    
     if (self.playlistItem != nil) {
         [self trackScreenName:[NSString stringWithFormat:kAnalyticsScreenNamePlaylist, self.playlistItem.title]];
         self.title = self.playlistItem.title;
-        [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:self.playlistItem.pId];
-        
+        currentPlaylistID = self.playlistItem.pId;
     } else {
         //playlist item is nil, load root
-        [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:kRootPlaylistId];
+        currentPlaylistID = kRootPlaylistId;
         [self trackScreenName:kAnalyticsScreenNameHome];
     }
+    
+    [self loadDataWithPlaylistID:currentPlaylistID];
+}
+
+- (void)loadDataWithPlaylistID:(NSString *)playlistID {    
+    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlistID withCompletionHandler:^{
+        
+        if (kAppAppleTVLayout) {
+            if ([playlistID  isEqualToString: kRootPlaylistId]) {
+                [[RESTServiceController sharedInstance] syncZObject];
+            }
+
+            NSArray *playlists = [ACSPersistenceManager getPlaylistsWithParentID:playlistID];
+            dispatch_group_t group = dispatch_group_create();
+            for (Playlist * playlist in playlists) {
+                dispatch_group_enter(group);
+                if (playlist.playlist_item_count.integerValue > 0) {
+                    [[RESTServiceController sharedInstance] syncVideosFromPlaylist:playlist.pId InPage:nil WithVideosInDB:nil WithExistingVideos:nil withCompletionHandler:^{
+                        dispatch_group_leave(group);
+                    }];
+                } else {
+                    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlist.pId withCompletionHandler:^{
+                        dispatch_group_leave(group);
+                    }];
+                }
+            }
+            dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+                //[[RESTServiceController sharedInstance] syncZObject];
+                [self loadData];
+
+            });
+            NSLog(@"%@", playlists);
+        }
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -125,11 +160,18 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self loadData];
+}
+
+- (void)loadData {
     if (self.playlistItem != nil){
         [self.episodeController loadPlaylist:self.playlistItem.pId];
     } else {
-        //load root
-        [self.episodeController loadPlaylist:kRootPlaylistId];
+        if (kAppAppleTVLayout) {
+            [self.episodeController loadPresentableObjects:kRootPlaylistId];
+        } else {
+            [self.episodeController loadPlaylist:kRootPlaylistId];
+        }
     }
     
     [self setupHeader];
@@ -141,6 +183,17 @@
     
 }
 
+#pragma mark - Layout Configuration
+
+- (void)fillSections {
+    
+}
+
+//- (void)reloadData {
+//    
+//    
+//    
+//}
 
 #pragma mark - Setup
 

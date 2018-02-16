@@ -20,6 +20,7 @@
 #import "RESTServiceController.h"
 #import "PlaybackSource.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "BaseTVLayoutController.h"
 
 @interface BaseViewController ()
 
@@ -34,18 +35,21 @@
     [super viewDidLoad];
     
     // Init controller depending on view type
-    if ([self isRegularSizeClass] == YES) {
-        
-        self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
-        
+    
+    if (kAppAppleTVLayout) {
+        self.episodeController = [[BaseTVLayoutController alloc] initWithTableView:self.tableView];
+        [self.collectionView setHidden:YES];
     } else {
-        
-        self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
-        
+        if ([self isRegularSizeClass] == YES) {
+            self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
+            [self.tableView setHidden:YES];
+        } else {
+            self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
+            [self.collectionView setHidden:YES];
+        }
     }
     
     self.episodeController.delegate = self;
-    
     self.actionSheetManager = [ACActionSheetManager new];
     self.actionSheetManager.delegate = self;
     
@@ -56,20 +60,17 @@
     [super viewDidAppear:animated];
     
     [[DownloadOperationController sharedInstance] setDownloadProgressViewController:self];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
     [[DownloadOperationController sharedInstance] setDownloadProgressViewController:nil];
-    
 }
 
-- (void)dealloc{
+- (void)dealloc {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 
 
@@ -231,19 +232,19 @@
     
     if (show == NO) {
         
-        if ([self isRegularSizeClass] == YES) {
+        if ([self isRegularSizeClass] == YES && (!kAppAppleTVLayout)) {
             [self.collectionView setHidden:YES];
-        }else{
+        } else {
             [self.tableView setHidden:YES];
         }
         
         [self.noResultsLabel setHidden:NO];
         
-    }else {
+    } else {
         
-        if ([self isRegularSizeClass] == YES) {
+        if ([self isRegularSizeClass] == YES && (!kAppAppleTVLayout)) {
             [self.collectionView setHidden:NO];
-        }else{
+        } else {
             [self.tableView setHidden:NO];
         }
         
@@ -251,6 +252,24 @@
         
     }
     
+}
+
+- (void)episodeControllerDidSelectItem:(NSObject *)item {
+    
+    if ([item isKindOfClass:[Video class]]){
+        self.selectedVideo = (Video *)item;
+        [self videoItemSelected];
+        
+    } else if ([item isKindOfClass:[Playlist class]]){
+        Playlist *playlist = (Playlist *)item;
+        if ([playlist.playlist_item_count isEqual:@0]){
+            NSLog(@"load another screen of playlists");
+            [UIUtil loadPlaylist:playlist fromViewController:self];
+        } else {
+            NSLog(@"load videos");
+            [UIUtil loadVideosFromPlaylist:playlist.pId fromViewController:self];
+        }
+    }
 }
 
 - (void)episodeControllerDidSelectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -374,14 +393,12 @@
 - (void)episodeControllerPerformUpdates:(TLIndexPathUpdates *)updates{
     
     if (!updates.hasChanges) {
-        
         return;
-        
     }
     
     if (self.collectionView.superview != nil) {
         [self.collectionView reloadData];
-    }else if (self.tableView.superview != nil){
+    } else if (self.tableView.superview != nil){
         [self.tableView reloadData];
     }
     
@@ -403,6 +420,10 @@
         
     }
     
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSLog(@"%@", touches);
 }
 
 

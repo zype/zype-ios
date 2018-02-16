@@ -399,8 +399,102 @@
     
 }
 
+- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos withCompletionHandler:(void (^)(void))complete
+{
+    if (page == nil) {
+        page = @1;
+    }
+    if (existingVideos == nil) {
+        existingVideos = [NSMutableArray new];
+    }
+    
+    NSString *urlAsString = [NSString stringWithFormat:kGetVideosFromPlaylist, kApiDomain, playlistId, kAppKey, page];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            CLS_LOG(@"Success %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+            }
+            else {
+                //remove old playlist relationships. may be check for stored videos, once download functionality will be added
+                if ([page isEqualToNumber:@1]){
+                    Playlist *currentPlaylist = [ACSPersistenceManager playlistWithID:playlistId];
+                    for (PlaylistVideo* playlistVideo in [currentPlaylist.playlistVideo allObjects]){
+                        [[ACSPersistenceManager sharedInstance].managedObjectContext deleteObject:playlistVideo];
+                    }
+                }
+                
+                // Check if there's any next pages and continue to sync next one
+                NSNumber *pages = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_Pages];
+                NSNumber *nextPage = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_NextPage];
+                if ([UIUtil hasNextPage:nextPage InPages:pages WithData:parsedObject]){
+                    [self syncVideosFromPlaylist:playlistId InPage:nextPage WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos];
+                }
+                // Check if it's the last page or not, then populate videos
+                [ACSPersistenceManager populateVideosFromDict:parsedObject WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos IsLastPage:[UIUtil isLastPageInPages:pages WithData:parsedObject] addToPlaylist:playlistId];
+                
+            }
+            
+            /* //auto download latest video after loading results
+             [ACDownloadManager autoDownloadLatestVideo];*/
+            if (complete) complete();
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+            
+        }
+        
+    }];
+    
+    [dataTask resume];
+    
+}
+
 
 #pragma mark - Playlist App
+
+- (void)syncPlaylistWithId:(NSString *)playlistId withCompletionHandler:(void (^)(NSString *))errorString {
+    NSString *urlAsString = [NSString stringWithFormat:kGetPlaylist, kApiDomain, playlistId ,kAppKey];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+            if (errorString) errorString(error.localizedDescription);
+            return;
+        } else {
+            
+            CLS_LOG(@"Success: %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+                if (errorString) errorString(localError.localizedDescription);
+                return;
+            }
+            else {
+                //remove old relationship
+//                [ACSPersistenceManager resetPlaylistChilds:parentId];
+//
+                [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
+                if (errorString) errorString(nil);
+                //CLS_LOG(@"parsedObject = %@", parsedObject);
+            }
+            
+        }
+        
+    }];
+    
+    [dataTask resume];
+}
 
 - (void)syncPlaylistsWithParentId:(NSString *)parentId
 {
@@ -436,7 +530,74 @@
     
 }
 
+- (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)(void))complete
+{
+    NSString *urlAsString = [NSString stringWithFormat:kGetPlaylists, kApiDomain, kAppKey, parentId];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            
+            CLS_LOG(@"Success: %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+            }
+            else {
+                //remove old relationship
+                [ACSPersistenceManager resetPlaylistChilds:parentId];
+                [ACSPersistenceManager populatePlaylistsFromDictionary:parsedObject];
+                
+            }
+            
+        }
+        
+        if (complete) complete();
+        
+    }];
+    
+    [dataTask resume];
+    
+}
 
+#pragma mark - ZObject
+
+- (void)syncZObject {
+    NSString * zypeType = @"top_playlists";
+    NSString * urlAsString = [NSString stringWithFormat:kZObjectContent, kApiDomain, kAppKey, zypeType];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+            //if (complete) complete(error.localizedDescription);
+        } else {
+            
+            CLS_LOG(@"Success: %@", urlAsString);
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (localError != nil) {
+                //if (complete) complete(localError.localizedDescription);
+                CLS_LOG(@"Failed: %@", localError);
+            }
+            else {
+                //if (complete) complete(nil);
+                //remove old relationship
+                [ACSPersistenceManager resetZObjectChilds];
+                [ACSPersistenceManager populateZObjectsFromDictionary:parsedObject];
+            }
+        }
+    }];
+    
+    [dataTask resume];
+}
 
 #pragma mark - Download App
 
@@ -877,7 +1038,7 @@
                         
                         if (success == YES) {
                             [self syncFavoritesAfterRefreshed:YES InPage:page WithFavoritesInDB:favoritesInDB WithExistingFavorites:existingFavorites];
-                        }else if (error != nil){
+                        } else if (error != nil) {
                             CLS_LOG(@"Access Token Refresh Failed: %@", error);
                         }
                         
@@ -1025,35 +1186,38 @@
     __block Favorite *newFavorite = [ACSPersistenceManager newFavorite];
     newFavorite.fId = @"";
     newFavorite.video_id = video.vId;
-    [[ACSPersistenceManager sharedInstance] saveContext];
     
-    [ACSTokenManager accessToken:^(NSString *token, NSError *error){
-        
-        // Favorite using REST App
-        NSString *urlAsString = [NSString stringWithFormat:kPostFavorite, kApiDomain, [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId], token, video.vId];
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
-        [urlRequest setHTTPMethod:@"POST"];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest
-                                                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                        long statusCode = [((NSHTTPURLResponse *)response) statusCode];
-                                                        if (statusCode == 401) {
-                                                            
-                                                            CLS_LOG(@"Favorite Video Unauthorized 401: %@", error);
-                                                            
-                                                        }
-                                                        else if (error == nil && statusCode != 404)
-                                                        {
-                                                            
-                                                            [ACSPersistenceManager updateFavorite:newFavorite WithData:data];
-                                                            
-                                                        }
-                                                    }];
-        [dataTask resume];
-        
-    }];
+    if (kFavoritesViaAPI == NO) {
+        [[ACSPersistenceManager sharedInstance] saveContext];
+    } else {
+        [ACSTokenManager accessToken:^(NSString *token, NSError *error){
+            
+            // Favorite using REST App
+            NSString *urlAsString = [NSString stringWithFormat:kPostFavorite, kApiDomain, [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId], token, video.vId];
+            NSURL *url = [NSURL withString:urlAsString];
+            
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+            [urlRequest setHTTPMethod:@"POST"];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest
+                                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                            long statusCode = [((NSHTTPURLResponse *)response) statusCode];
+                                                            if (statusCode == 401) {
+                                                                
+                                                                CLS_LOG(@"Favorite Video Unauthorized 401: %@", error);
+                                                                
+                                                            }
+                                                            else if (error == nil && statusCode != 404)
+                                                            {
+                                                                
+                                                                [ACSPersistenceManager updateFavorite:newFavorite WithData:data];
+                                                                
+                                                            }
+                                                        }];
+            [dataTask resume];
+            
+        }];
+    }
     
 }
 

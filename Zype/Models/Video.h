@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class PlaylistVideo;
+@class Playlist;
 
 @interface Video : NSManagedObject
 
@@ -54,6 +55,8 @@
 @property (nonatomic, retain) NSNumber * playTime;
 
 @property (nonatomic, retain) NSSet *playlistVideo;
+
+- (Playlist *)playlistFromVideo;
 
 @end
 

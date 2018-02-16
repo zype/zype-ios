@@ -110,7 +110,7 @@
 #pragma mark - Private Methods
 
 
-- (void)checkingOnActiveFlags:(void(^)())complete failure:(void(^)())failure {
+- (void)checkingOnActiveFlags:(void(^)(void))complete failure:(void(^)(void))failure {
     
     if (kDownloadsForAllUsersEnabled == NO) {
         if (kNativeSubscriptionEnabled == YES) {
@@ -493,10 +493,9 @@
     }
     
     //add favorite or unfavorite button
-    if (video.isFavorite.boolValue == YES) {
-        [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonUnFavorite]];
-    }else{
-        [actionSheet addButtonWithTitle:[self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonFavorite]];
+    if (!kFavoritesViaAPI || [ACStatusManager isUserSignedIn]) {
+        NSString *title = (video.isFavorite.boolValue) ? [self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonUnFavorite] : [self titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonFavorite];
+        [actionSheet addButtonWithTitle:title];
     }
     
     //add share button

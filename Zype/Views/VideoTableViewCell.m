@@ -108,116 +108,137 @@
 }
 
 - (void)configureCell:(Video*)video viewController:(NSObject*)vc {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    
+    UIImage *origImage = [UIImage imageNamed:@"IconAction"];
+    UIImage *tintedImage = [origImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage * cloudImage;
+    if (video.downloadVideoLocalPath) {
+        cloudImage = [UIImage imageNamed:@"IconVideoW"];
+    } else if (video.downloadAudioLocalPath) {
+        cloudImage = [UIImage imageNamed:@"IconAudioW"];
+    } else {
+        cloudImage = [UIImage imageNamed:@"IconCloud"];
+    }
+    
+    UIImage * lockImage;
+    if ([ACStatusManager isUserSignedIn] == YES) {
+        lockImage = [UIImage imageNamed:@"iconUnlocked"];
+    } else {
+        lockImage = [UIImage imageNamed:@"iconLocked"];
+    }
+    
+    BOOL downloadFeature = kDownloadsEnabled;
+    
+    [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+    [self setThumbnail:video];
+
+    BOOL iconLockHidden = !([video.subscription_required intValue] == 1);
+    NSString *subtitleVideo = [UIUtil subtitleOfVideo:video];
+    
+    if (kAppColorLight) {
         
-        //[self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
-        
-        if (kAppColorLight) {
-            
-        } else {
-            self.contentView.backgroundColor = [UIColor blackColor];
-            
-            [self.textTitle setTextColor:[UIColor whiteColor]];
-            [self.labelSubtitle setTextColor:[UIColor lightGrayColor]];
-        }
-        
-        [self setThumbnail:video];
-        
+    } else {
+        self.contentView.backgroundColor = [UIColor blackColor];
+        [self.textTitle setTextColor:[UIColor whiteColor]];
+        [self.labelSubtitle setTextColor:[UIColor lightGrayColor]];
+    }
+    
+    if (kAppAppleTVLayout) {
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+
         self.textTitle.text = video.title;
-        
-        if (video.downloadVideoLocalPath){
-            [self.imageCloud setImage:[UIImage imageNamed:@"IconVideoW"]];
-        } else if (video.downloadAudioLocalPath){
-            [self.imageCloud setImage:[UIImage imageNamed:@"IconAudioW"]];
-        }else{
-            [self.imageCloud setImage:[UIImage imageNamed:@"IconCloud"]];
-        }
-        
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_DownloadsFeature])
-            self.imageCloud.hidden = YES;
-        
+        [self.imageCloud setImage:cloudImage];
+        self.imageCloud.hidden = !downloadFeature;
+
         //change color for action button icon
-        UIImage *origImage = [UIImage imageNamed:@"IconAction"];
-        UIImage *tintedImage = [origImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [self.buttonAction setImage:tintedImage forState:UIControlStateNormal];
         [self.buttonAction setTintColor:[UIColor lightGrayColor]];
-        
-        self.labelSubtitle.text = [UIUtil subtitleOfVideo:video];
+
+        self.labelSubtitle.text = subtitleVideo;
         self.textLabel.textColor = [UIColor clearColor];
-        
+
         //configure lock icon for videos that requires subscription
-        if ([video.subscription_required intValue] == 1){
-            if ([ACStatusManager isUserSignedIn] == YES){
-                self.iconLock.image = [UIImage imageNamed:@"iconUnlocked"];
-            } else {
-                self.iconLock.image = [UIImage imageNamed:@"iconLocked"];
-            }
-        } else {
-            [self.iconLock setHidden:YES];
-        }
-        
-    });
-    
+        self.iconLock.image = lockImage;
+        [self.iconLock setHidden:iconLockHidden];
+
+//    });
+
     // Set download progress
-    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
-    if (downloadInfo && downloadInfo.isDownloading) {
-        
-        if (self != nil) {
-            
-            if (downloadInfo.totalBytesWritten == 0.0) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self setDownloadStarted];
-                });
-                
-            }else {
-                
-                float progress = (double)downloadInfo.totalBytesWritten / (double)downloadInfo.totalBytesExpectedToWrite;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self setDownloadProgress:progress];
-                });
-                
-            }
-            
-        }
-        
-    }else if ([UIUtil isYes:video.isDownload]) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
+    if (kDownloadsEnabled){
+        DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
+        if (downloadInfo && downloadInfo.isDownloading) {
             
             if (self != nil) {
                 
-                if ([UIUtil isYes:video.isPlayed]) {
-                    [self setPlayed];
-                } else if ([UIUtil isYes:video.isPlaying]) {
-                    [self setPlaying];
-                } else {
-                    [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
+                if (downloadInfo.totalBytesWritten == 0.0) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self setDownloadStarted];
+                    });
+                    
+                }else {
+                    
+                    float progress = (double)downloadInfo.totalBytesWritten / (double)downloadInfo.totalBytesExpectedToWrite;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self setDownloadProgress:progress];
+                    });
+                    
                 }
+                
             }
-        });
-        
-    } else {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self setNoDownload];
-        });
-        
+            
+        } else if ([UIUtil isYes:video.isDownload]) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if (self != nil) {
+                    
+                    if ([UIUtil isYes:video.isPlayed]) {
+                        [self setPlayed];
+                    } else if ([UIUtil isYes:video.isPlaying]) {
+                        [self setPlaying];
+                    } else {
+                        [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
+                    }
+                }
+            });
+            
+        } else {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setNoDownload];
+            });
+            
+        }
     }
-    
     //need to check if this action is working
     //possibly implement protocol
     [self.buttonAction addTarget:vc action:@selector(buttonActionTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView setUserInteractionEnabled:YES];
-    
+
     //hide cloud if video can't be downloaded
-    if (video.duration.integerValue > 1) {
+   /* if (video.duration.integerValue > 1) {
         self.imageCloud.hidden = NO;
-    }else{
+    } else {
         self.imageCloud.hidden = YES;
-    }
+    }*/
     
+
+}
+
+- (void)configureCell:(Video *)video viewController:(NSObject *)vc withLayout:(NSString *)layout {
+    if ([layout isEqualToString:@"poster"]) {
+        self.widthLayoutConstraint.constant = [PlaylistCollectionCell cellPosterLayoutSize].width;
+    } else {
+        self.widthLayoutConstraint.constant = [PlaylistCollectionCell cellLanscapeLayoutSize].width;
+    }
+    [self configureCell:video viewController:vc];
+    [self layoutIfNeeded];
 }
 
 - (void)setThumbnail:(Video *)video {

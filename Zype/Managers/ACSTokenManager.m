@@ -76,7 +76,9 @@
                         [ACSDataManager loadUserInfo];
                         
                         CLS_LOG(@"Consumer ID Check: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_ConsumerId]);
-                        [[RESTServiceController sharedInstance] syncFavoritesAfterRefreshed:NO InPage:nil WithFavoritesInDB:nil WithExistingFavorites:nil];
+                        if (kFavoritesViaAPI) {
+                            [[RESTServiceController sharedInstance] syncFavoritesAfterRefreshed:NO InPage:nil WithFavoritesInDB:nil WithExistingFavorites:nil];
+                        }
                         
                         success = YES;
                         

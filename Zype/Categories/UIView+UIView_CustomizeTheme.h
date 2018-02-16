@@ -16,5 +16,6 @@
 - (void)borderColorCustomizeTheme;
 
 - (void)round:(CGFloat)value;
+- (void)dropShadow;
 
 @end
