@@ -93,34 +93,53 @@ App configuration, Theme color, native subscription, and enabling downloads are 
 1. Changing overall color of the app
 
 Light theme: `#define kAppColorLight YES`
+
 Dark theme: `#define kAppColorLight NO`
 
 2. Changing theme. Please feel free to try our theme that will match Apple TV layout
+
 `#define kAppAppleTVLayout YES`
+
 For Apple TV theme you can enable/disable titles on top of thumnails. It is useful to disable them in case that your thumnails already provide title of the movie.
+
 `kAppAppleTVLayoutShowThumbanailTitle NO`
 
 3. Configuring the way favorites works
+
 `#define kFavoritesViaAPI NO`
+
 setting favorites via api to no will keep favorites functionaliy local to the app. Recommended
+
 `#define kFavoritesViaAPI YES`
+
 setting to yes will synchronize favorites with users Zype account, so it is available across different devices.
 
 4. Subscribe to watch ad free
+
 `define kSubscribeToWatchAdFree YES` not recommended
-seetting to yes will show an extra button where users would be able to login. If users are logged in and have subscription the ads will not be shown. Please consult with Zype support on how to properly configure this feature in your property.
+
+seetting to yes will show an extra button where users would be able to login. If users are logged in and have subscription the ads will not be shown. Please consult with
+
+Zype support on how to properly configure this feature in your property.
 
 5. Downloads functionality for offline video playback
+
 Enable downloading: `#define kDownloadsEnabled YES`
+
 Will add an extra tab with downloaded videos.
+
 You can disable download functionality for guests by setting following flag. So, only users who are logged in would be able to download videos.
+
 `#define kDownloadsForAllUsersEnabled NO`
 
 6. Native subscription. Make sure that you know how to configure native subscription.
+
 Enable native subscription: `#define kNativeSubscriptionEnabled YES` Not recommended
+
 Disable native subscription: `#define kNativeSubscriptionEnabled NO`
 
 (Optional)Setting up OneSignal Push Notification
+
 1. Create account and follow OneSignal setup for iOS https://documentation.onesignal.com/docs/setup
 2. You would need a key which you would insert in kOneSignalNotificationsKey
 3. You woud need to have valid Push Certificate from Apple
