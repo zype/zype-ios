@@ -31,7 +31,8 @@
 #define kAppColorLight NO
 
 //alternative new beta layout
-#define kAppAppleTVLayout YES
+#define kAppAppleTVLayout NO
+
 //Show/Hide titles on thumbnails for playlist views on iPhone
 #define kAppAppleTVLayoutShowThumbanailTitle NO
 
@@ -64,6 +65,8 @@
 #define kCurrentAppColor (kAppColorLight) ? kLightTintColor : kDarkTintColor
 
 #define kViewCornerRounded 2.0f
+
+#define kZypeTemplateVersion @"1.6.2"
 
 #pragma mark - Base settings
 

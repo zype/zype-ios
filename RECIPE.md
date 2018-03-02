@@ -60,7 +60,7 @@ Open terminal and __"cd"__ into the folder you want to save the files to.
 
 <a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQUnJoV05yaENPMEU"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQUnJoV05yaENPMEU" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
-2. Now you have the source code. Open the application folder and find the file named __"Podfile"__. Open this file and make sure the target is the name of the application.
+2. Now you have the source code. Open the application folder and find the file named __"Podfile"__. Open this file in the text editor of your choice and update the target name to match the name of the application.
 
 <a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQaERZcHl5T19lc1E"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQaERZcHl5T19lc1E" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
@@ -76,27 +76,83 @@ Once the code is indexed, you can run a simulation of the app. Click the play bu
 
 <a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQZVhTMVB6WXZGSk0"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQZVhTMVB6WXZGSk0" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
+#### Required app changes
+
+Navigate to the file __"ZypeCommon.h"__ from Zype>Zype>Utilities
+1. Change App key to match your app property
+2. Update Oath keys to use login functionality
+3. Change root playlist id to the top level playlist in the
+4. Insert social links to your facebook, website, instagram and twitter.
+
 #### Optional app changes
 
-1. Theme color, native subscription, and enabling downloads are toggled/altered the same way. In Xcode, the left side has a folder directory. Navigate to the file __"ZypeCommon.h"__ from Zype>Zype>Utilities. 
+App configuration, Theme color, native subscription, and enabling downloads are toggled/altered the same way. In Xcode, the left side has a folder directory. Navigate to the file __"ZypeCommon.h"__ from Zype>Zype>Utilities.
 
 <a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQU0xPbW15M1dlUEU"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQU0xPbW15M1dlUEU" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
-2. Toward the top of the file, there are variables indicating the status of theme color, native subscription, and enabling downloads. Change the last word of the line to __"YES"__ or __"NO"__ to alter app appearance or presence of subscription or download functionality. 
-
-<a href="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQTFBtZnZhNDhmb1U"><img src="https://drive.google.com/uc?export=view&id=0BzMPADAfOuPQTFBtZnZhNDhmb1U" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+1. Changing overall color of the app
 
 Light theme: `#define kAppColorLight YES`
 
 Dark theme: `#define kAppColorLight NO`
 
+2. Changing theme. Please feel free to try our theme that will match Apple TV layout
+
+`#define kAppAppleTVLayout YES`
+
+For Apple TV theme you can enable/disable titles on top of thumnails. It is useful to disable them in case that your thumnails already provide title of the movie.
+
+`kAppAppleTVLayoutShowThumbanailTitle NO`
+
+3. Configuring the way favorites works
+
+`#define kFavoritesViaAPI NO`
+
+setting favorites via api to no will keep favorites functionaliy local to the app. Recommended
+
+`#define kFavoritesViaAPI YES`
+
+setting to yes will synchronize favorites with users Zype account, so it is available across different devices.
+
+4. Subscribe to watch ad free
+
+`define kSubscribeToWatchAdFree YES` not recommended
+
+seetting to yes will show an extra button where users would be able to login. If users are logged in and have subscription the ads will not be shown. Please consult with
+
+Zype support on how to properly configure this feature in your property.
+
+5. Downloads functionality for offline video playback
+
 Enable downloading: `#define kDownloadsEnabled YES`
 
-Disable downloading: `#define kDownloadsEnabled NO`
+Will add an extra tab with downloaded videos.
 
-Enable native subscription: `#define kNativeSubscriptionEnabled YES`
+You can disable download functionality for guests by setting following flag. So, only users who are logged in would be able to download videos.
+
+`#define kDownloadsForAllUsersEnabled NO`
+
+6. Native subscription. Make sure that you know how to configure native subscription.
+
+Enable native subscription: `#define kNativeSubscriptionEnabled YES` Not recommended
 
 Disable native subscription: `#define kNativeSubscriptionEnabled NO`
+
+(Optional)Setting up OneSignal Push Notification
+
+1. Create account and follow OneSignal setup for iOS https://documentation.onesignal.com/docs/setup
+2. You would need a key which you would insert in kOneSignalNotificationsKey
+3. You woud need to have valid Push Certificate from Apple
+4. Make sure to toggle Notifiactions in App features in XCode
+
+By linking your app with OneSignal you would be able to sent Push notifcations to your users via OneSignal portal.
+
+(Optional)Setting up Google Analytics
+1. Create new property in https://analytics.google.com/analytics/web
+2. Insert key from Google Analytics in kGoogleAnalyticsTracker
+
+By linking your app to Google Analytics you would be able to have insights on how users are browsing your app.
+
 
 #### Submitting to the Apple App Store
 

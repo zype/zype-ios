@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *placeholderView;
 
 
+
 @end
 
 @implementation MediaItemCollectionCell

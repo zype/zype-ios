@@ -14,7 +14,6 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImageView *placeholderImageView;
 
-
 @end
 
 @implementation MediaItemView
@@ -27,7 +26,6 @@
         [self addSubview:self.imageView];
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
         self.imageView.clipsToBounds = YES;
-        
         self.placeholderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
         [self addSubview:self.placeholderImageView];
         [self.placeholderImageView setImage:[UIImage imageNamed:@"slider-placeholder"]];
@@ -48,6 +46,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self.placeholderImageView setCenter:CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2)];
+
 }
 
 /*
