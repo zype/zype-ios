@@ -12,6 +12,7 @@
 @interface MediaItemView()
 
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *placeholderImageView;
 
 @end
 
@@ -25,12 +26,27 @@
         [self addSubview:self.imageView];
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
         self.imageView.clipsToBounds = YES;
+        self.placeholderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+        [self addSubview:self.placeholderImageView];
+        [self.placeholderImageView setImage:[UIImage imageNamed:@"slider-placeholder"]];
+        self.placeholderImageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return self;
 }
 
 - (void)setZObject:(ZObject *)zObject {
-    [self.imageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl]];
+    [self.placeholderImageView setHidden:NO];
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (image) {
+            [self.placeholderImageView setHidden:YES];
+        }
+    }];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.placeholderImageView setCenter:CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2)];
+
 }
 
 /*

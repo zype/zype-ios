@@ -32,6 +32,7 @@
 
 //alternative new beta layout
 #define kAppAppleTVLayout NO
+
 //Show/Hide titles on thumbnails for playlist views on iPhone
 #define kAppAppleTVLayoutShowThumbanailTitle NO
 
@@ -65,7 +66,7 @@
 
 #define kViewCornerRounded 2.0f
 
-#define kZypeTemplateVersion @"1.6.1"
+#define kZypeTemplateVersion @"1.6.2"
 
 #pragma mark - Base settings
 
@@ -124,10 +125,10 @@
 // Button Press
 // Play
 
-static const CGSize IphoneLayoutSize = {150, 80};
+static const CGSize IphoneLayoutSize = {180, 100};
 static const CGSize IpadLayoutSize = {225, 120};
 
-static const CGSize IphonePosterLayoutSize = {80, 120};
+static const CGSize IphonePosterLayoutSize = {100, 150};
 static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kYellowColor    [UIUtil colorWithHex:0xEAA824]
