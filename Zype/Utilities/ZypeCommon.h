@@ -10,25 +10,48 @@
 
 #pragma mark - Client Settings
 
+//Main app configuration for connecting to Zype property
 #define kOAuth_ClientId @"efff34ee145c7bdc8a8408a339571005f8bcdf2fb0ae5dfd0dbb248188daaf54"
 #define kOAuth_ClientSecret @"0fdedb3cf72afa6b37fabfbe100e2a2db5d6f4ecdbfe71eb53c223d722201a1d"
 #define kAppKey @"HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU"
-
 #define kRootPlaylistId @"577e65c85577de0d1000c1ee"
+
+//OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @""
+//Google Analytcis configuration
 #define kGoogleAnalyticsTracker @""
 
+//Social links on settings screen
 #define kACFacebook @"https://www.facebook.com/<your_branch>"
 #define kACWeb @"http://www.<your_branch>/"
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
+//Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
+#define kAppColorLight NO
+
+//alternative new beta layout
+#define kAppAppleTVLayout NO
+//Show/Hide titles on thumbnails for playlist views on iPhone
+#define kAppAppleTVLayoutShowThumbanailTitle NO
+
+//Features Configuration
+#define kFavoritesViaAPI NO
+#define kSubscribeToWatchAdFree NO
+
+//For downloads to function properly the video has to be transcoded with mp4 preset
+#define kDownloadsEnabled YES
+//Set to No to enforce downloads for only users that are signed in
+#define kDownloadsForAllUsersEnabled NO
+
+#define kNativeSubscriptionEnabled NO
+
+//Beta feature. Isn't functioning great at the moment
+#define kShareVideoEnabled NO
+
+//Only needed for Native or Native to universal subscriptions
 #define kMonthlySubscription @"monthly_subscription"
 #define kYearlySubscription @"yearly_subscription"
-
-#define kAppColorLight NO
-#define kAppAppleTVLayout YES
-#define kAppAppleTVLayoutShowThumbanailTitle NO
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
@@ -41,13 +64,6 @@
 #define kCurrentAppColor (kAppColorLight) ? kLightTintColor : kDarkTintColor
 
 #define kViewCornerRounded 2.0f
-
-#define kFavoritesViaAPI NO
-#define kSubscribeToWatchAdFree NO
-#define kDownloadsEnabled YES
-#define kNativeSubscriptionEnabled NO
-#define kDownloadsForAllUsersEnabled NO
-#define kShareVideoEnabled NO
 
 #pragma mark - Base settings
 
@@ -106,10 +122,10 @@
 // Button Press
 // Play
 
-static const CGSize IphoneLayoutSize = {180, 100};
+static const CGSize IphoneLayoutSize = {150, 80};
 static const CGSize IpadLayoutSize = {225, 120};
 
-static const CGSize IphonePosterLayoutSize = {100, 150};
+static const CGSize IphonePosterLayoutSize = {80, 120};
 static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kYellowColor    [UIUtil colorWithHex:0xEAA824]
@@ -296,6 +312,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_ConsumerId         @"resource_owner_id"
 #define kAppKey_Id                 @"_id"
 #define kAppKey_VideoId            @"video_id"
+#define kAppKey_SiteId             @"site_id"
 #define kAppKey_Pagination         @"pagination"
 #define kAppKey_Pages              @"pages"
 #define kAppKey_NextPage           @"next"
@@ -304,6 +321,9 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_Body               @"body"
 #define kAppKey_Files              @"files"
 #define kAppKey_Advertising        @"advertising"
+#define kAppKey_Analytics          @"analytics"
+#define kAppKey_Beacon             @"beacon"
+#define kAppKey_Dimensions         @"dimensions"
 #define kAppKey_Schedule           @"schedule"
 #define kAppKey_Outputs            @"outputs"
 #define kAppKey_Url                @"url"

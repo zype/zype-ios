@@ -164,16 +164,16 @@
         }
             break;
         case 4: {
-            self.title = @"Web";
+            self.title = @"Instagram";
             [self.webView setHidden:NO];
-            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACWeb]]];
+            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACInstagram]]];
         }
             break;
             
         case 5: {
-            self.title = @"Instagram";
+            self.title = @"Web";
             [self.webView setHidden:NO];
-            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACInstagram]]];
+            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACWeb]]];
         }
             break;
             
