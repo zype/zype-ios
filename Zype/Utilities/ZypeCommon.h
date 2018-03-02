@@ -31,7 +31,7 @@
 #define kAppColorLight NO
 
 //alternative new beta layout
-#define kAppAppleTVLayout NO
+#define kAppAppleTVLayout YES
 //Show/Hide titles on thumbnails for playlist views on iPhone
 #define kAppAppleTVLayoutShowThumbanailTitle NO
 
@@ -122,10 +122,10 @@
 // Button Press
 // Play
 
-static const CGSize IphoneLayoutSize = {150, 80};
+static const CGSize IphoneLayoutSize = {180, 100};
 static const CGSize IpadLayoutSize = {225, 120};
 
-static const CGSize IphonePosterLayoutSize = {80, 120};
+static const CGSize IphonePosterLayoutSize = {100, 150};
 static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kYellowColor    [UIUtil colorWithHex:0xEAA824]
