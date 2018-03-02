@@ -19,6 +19,7 @@
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) IBOutlet UIImageView *iconLockedView;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressView;
+@property (strong, nonatomic) IBOutlet UIImageView *placeholderView;
 
 
 @end
@@ -33,12 +34,24 @@
 
 - (void)setPlaylist:(Playlist *)playlist {
     self.titleLabel.text = playlist.title;
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:nil];
+    [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
+    [self.placeholderView setImage:[UIImage imageNamed:@"playlist-placeholder"]];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (image) {
+            [self.placeholderView setHidden:YES];
+        } 
+    }];
 }
 
 - (void)setVideo:(Video *)video {
     self.titleLabel.text = video.title;
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]];
+    [self.placeholderView setImage:[UIImage imageNamed:@"play-placeholder"]];
+    [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (image) {
+            [self.placeholderView setHidden:YES];
+        }
+    }];
     
     if ([video.subscription_required intValue] == 1) {
         [self.iconLockedView setHidden:NO];
@@ -51,12 +64,12 @@
 }
 
 - (void)setZObject:(ZObject *)zObject {
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl]];
-
-}
-
-- (void)setZObject:(ZObject *)zObject {
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl]];
+    [self.placeholderView setHidden:NO];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:zObject.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (image) {
+            [self.placeholderView setHidden:YES];
+        }
+    }];
 }
 
 - (void)setNoDownload {
