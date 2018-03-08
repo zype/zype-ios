@@ -47,6 +47,9 @@
 
 #define kNativeSubscriptionEnabled NO
 
+//adds new tab 'My Library' that shows what user had purchased from the website
+#define kUniversalTVOD YES
+
 //Beta feature. Isn't functioning great at the moment
 #define kShareVideoEnabled NO
 
