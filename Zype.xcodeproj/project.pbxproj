@@ -1026,7 +1026,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/Fabric/run 83465ef9de45bd3ccc1aeaa066ed7d13dd96a1e4 0b81dd3d4789d7cebb8ee4d77fe25dcaabbf0f8cb55d8c6f7392d4b798e8c57f";
 		};
