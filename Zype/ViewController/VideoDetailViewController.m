@@ -1,3 +1,4 @@
+
 //
 //  VideoDetailViewController.m
 //  Zype
@@ -90,6 +91,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *height;
 @property (nonatomic) NSString *beaconStringUrl;
 
+@property (nonatomic, assign) NSInteger currentVideoIndex;
+@property (nonatomic, assign) BOOL isPlayerRequestPending;
+
 @end
 
 
@@ -138,6 +142,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.indexPathController = [self indexPathController];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    
+    self.isPlayerRequestPending = NO;
     
     self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
     [self.view addSubview:self.adsContainerView];
@@ -299,6 +305,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)setVideos:(NSMutableArray<Video *>*)videos withIndex:(NSIndexPath*)index {
+    
+    // Get index from clicked item
+    self.currentVideoIndex = (int)[index row];
+    if (self.currentVideoIndex == nil) { self.currentVideoIndex = 0; }
+    
+    self.videos = videos;
+    
+    if (_detailItem != self.videos[self.currentVideoIndex]) {
+        _detailItem = self.videos[self.currentVideoIndex];
+    }
+    
+    self.video = (Video *)_detailItem;
+    
+    CLS_LOG(@"Current Video: %@", self.video);
+}
+
 - (void)configureView {
     
     // Update the user interface for the detail item.
@@ -411,34 +434,36 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self showActivityIndicator];
     [self checkDownloadVideo];
 
-    if (self.isAudio) {
-        
-        NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
-        BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
-        
-        NSURL *url;
-        
-        if (audioFileExists == YES) {
-            url = [NSURL fileURLWithPath:localAudioPath];
-            [self setupPlayer:url];
+    if (self.isPlayerRequestPending == NO){ // prevent multiple video player requests
+        if (self.isAudio) {
+            
+            NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
+            BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
+            
+            NSURL *url;
+            
+            if (audioFileExists == YES) {
+                url = [NSURL fileURLWithPath:localAudioPath];
+                [self setupPlayer:url];
+            } else {
+                [self playStreamingAudio];
+            }
+            
         } else {
-            [self playStreamingAudio];
+            
+            NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:self.video];
+            BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
+            
+            NSURL *url;
+            
+            if (videoFileExists == YES) {
+                url = [NSURL fileURLWithPath:localVideoPath];
+                [self setupPlayer:url];
+            } else {
+                [self playStreamingVideo];
+            }
+            
         }
-        
-    } else {
-        
-        NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:self.video];
-        BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
-        
-        NSURL *url;
-        
-        if (videoFileExists == YES) {
-            url = [NSURL fileURLWithPath:localVideoPath];
-            [self setupPlayer:url];
-        } else {
-            [self playStreamingVideo];
-        }
-        
     }
     
 }
@@ -468,6 +493,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)playStreamingVideo {
     
     [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo: NO withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        self.isPlayerRequestPending = NO;
         
         [self hideActivityIndicator];
         
@@ -868,6 +895,25 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         }
         
     }
+    
+    // Autoplay
+    if (kAutoplay && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
+        [self saveCurrentPlaybackTime];
+        
+        if ([self.videos count] - 1 > self.currentVideoIndex) {
+            self.currentVideoIndex++;
+        } else {
+            self.currentVideoIndex = 0;
+        }
+        
+        _detailItem = [self.videos objectAtIndex:(self.currentVideoIndex)];
+        self.video = (Video *)_detailItem;
+        
+        [self refreshPlayer];
+        self.isPlayerRequestPending = YES;
+        [self configureView];
+    }
+    
     
 }
 
