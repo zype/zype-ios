@@ -94,6 +94,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic, assign) NSInteger currentVideoIndex;
 @property (nonatomic, assign) BOOL isPlayerRequestPending;
 
+@property (strong, nonatomic) UIAlertView *alertViewSignInRequired;
+@property (strong, nonatomic) UIAlertView *alertViewNsvodRequired;
+
 @end
 
 
@@ -232,6 +235,30 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self initPlayer];
     }
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+
+    // if request still being made or autoplay triggered
+    if (self.isPlayerRequestPending){
+        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
+        
+        if (kNativeSubscriptionEnabled &&
+            [self.video.subscription_required intValue] == 1 &&
+            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            
+        } else if (requiresUniversalEntitlement &&
+                   [ACStatusManager isUserSignedIn] == false){
+
+        } else {
+            self.isPlayerRequestPending = NO;
+            self.avPlayer = nil;
+            self.avPlayerController = nil;
+            [self initPlayer];
+//            self.isPlayerRequestPending = YES;
+        }
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -688,6 +715,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)setupPlayerBackground {
+    [self setupAudioPlayerBackground];
+    CGRect frame = self.imageThumbnail.frame;
+    [self.avPlayerController.view setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
+    [self.adsContainerView setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
+    self.avPlayerController.view.backgroundColor = [UIColor clearColor];
+    [self setupConstraints];
+    
+    [self.avPlayerController.view setHidden:NO];
+}
+
 - (void)setupConstraints {
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -834,6 +872,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+#pragma mark - Video Entitlement Checks
+
+// only checks supported universal entitlement
+- (BOOL)videoRequiresUniversalEntitlement:(Video *)video {
+    if (video.subscription_required.intValue == 1){
+        return YES;
+    }
+    return NO;
+}
+
+// only checks supported native entitlement
+- (BOOL)videoRequiresNativeEntitlement:(Video *)video {
+    if (video.subscription_required.intValue == 1){
+        return YES;
+    }
+    return NO;
+}
 
 #pragma mark - Timeline
 
@@ -901,20 +956,51 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self saveCurrentPlaybackTime];
         
         if ([self.videos count] - 1 > self.currentVideoIndex) {
-            self.currentVideoIndex++;
+            self.currentVideoIndex = self.currentVideoIndex + 1;
         } else {
             self.currentVideoIndex = 0;
         }
         
         _detailItem = [self.videos objectAtIndex:(self.currentVideoIndex)];
-        self.video = (Video *)_detailItem;
+        self.video = (Video *)_detailItem; // next video
         
-        [self refreshPlayer];
-        self.isPlayerRequestPending = YES;
         [self configureView];
+        
+        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
+        
+        if (kNativeSubscriptionEnabled &&
+            [self.video.subscription_required intValue] == 1 &&
+            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showNsvodRequiredAlert];
+
+        } else if (requiresUniversalEntitlement &&
+                   [ACStatusManager isUserSignedIn] == false){
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showSignInRequiredAlert];
+
+        } else {
+            [self refreshPlayer];
+            self.isPlayerRequestPending = YES;
+        }
     }
-    
-    
+
 }
 
 - (void)moviePreloadDidFinish:(NSNotification *)notification {
@@ -1375,6 +1461,34 @@ NSString* machineName() {
     
 }
 
+- (void)showSignInRequiredAlert {
+    
+    if (!self.alertViewSignInRequired){
+        self.alertViewSignInRequired = [[UIAlertView alloc] initWithTitle:@"Sign In Required"
+                                                                  message:@"You do not have access to this video. Please sign in with your account to watch this video."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                        otherButtonTitles:@"Sign In", nil];
+    }
+    self.alertViewSignInRequired.tag = 997;
+    
+    [self.alertViewSignInRequired show];
+}
+
+- (void)showNsvodRequiredAlert {
+    
+    if (!self.alertViewNsvodRequired){
+        self.alertViewNsvodRequired = [[UIAlertView alloc] initWithTitle:@"Requires Subscription"
+                                                                  message:@"You do not have access to this video. Please subscribe to watch this video."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                        otherButtonTitles:@"Subscribe", nil];
+    }
+    self.alertViewNsvodRequired.tag = 996;
+    
+    [self.alertViewNsvodRequired show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     if (self != nil) {
@@ -1387,6 +1501,26 @@ NSString* machineName() {
         
         if (alertView.tag == 998 && buttonIndex == 0){
             [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+        if (alertView.tag == 997 && buttonIndex == 1){ // clicked sign in
+            // transition to sign in view
+            
+            if (self.isFullScreen){
+                [self.avPlayerController exitFullscreen];
+            }
+            
+            [UIUtil showSignInViewFromViewController:self];
+        }
+        
+        if (alertView.tag == 996 && buttonIndex == 1){ // clicked nsvod subscribe
+            
+            if (self.isFullScreen){
+                [self.avPlayerController exitFullscreen];
+            }
+            
+            // transition to native sub view
+            [UIUtil showSubscriptionViewFromViewController:self];
         }
         
     }
