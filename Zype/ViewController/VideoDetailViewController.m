@@ -37,6 +37,8 @@
 #import "PlaybackSource.h"
 #import "TableSectionDataSource.h"
 
+#import "UserPreferences.h"
+
 #import "TLIndexPathController.h"
 #import "TLIndexPathItem.h"
 
@@ -951,8 +953,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
     }
     
+    UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+    
     // Autoplay
-    if (kAutoplay && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
+    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
         [self saveCurrentPlaybackTime];
         
         if ([self.videos count] - 1 > self.currentVideoIndex) {
