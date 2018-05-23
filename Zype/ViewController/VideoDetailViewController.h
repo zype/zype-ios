@@ -11,6 +11,8 @@
 #import <WebKit/WebKit.h>
 #import <CoreData/CoreData.h>
 
+@class GCKMediaInformation;
+
 @import Social;
 @import MessageUI;
 @import GoogleInteractiveMediaAds;
@@ -35,6 +37,7 @@
 @property (strong, nonatomic) NSMutableArray *arrayTimeline;
 
 @property (strong, nonatomic) NSMutableArray<Video *> *videos;
+@property(nonatomic, strong, readwrite) GCKMediaInformation *mediaInfo;
 
 @property (nonatomic) BOOL isLive;
 

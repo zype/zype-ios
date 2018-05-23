@@ -8,6 +8,7 @@
 
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import <GoogleCast/GoogleCast.h>
 
 #import "AppDelegate.h"
 #import "RESTServiceController.h"
@@ -25,7 +26,7 @@
 
 #import "UIColor+AC.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <GCKLoggerDelegate>
 
 @property (nonatomic) unsigned long tabIndex;
 
@@ -33,6 +34,9 @@
 
 @implementation AppDelegate
 @synthesize keychainItem = _keychainItem;
+
+static NSString *const kReceiverAppID = @"084FBF77";
+static const BOOL kDebugLoggingEnabled = YES;
 
 + (AppDelegate *)appDelegate
 {
@@ -52,6 +56,28 @@
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
+    
+    //Google Cast Initialize
+    GCKCastOptions *options =
+    [[GCKCastOptions alloc] initWithReceiverApplicationID:kReceiverAppID];
+    [GCKCastContext setSharedInstanceWithOptions:options];
+    [GCKLogger sharedInstance].delegate = self;
+    
+    //Mini
+    UIStoryboard *appStoryboard =
+    [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UINavigationController *navigationController = [appStoryboard
+                                                    instantiateViewControllerWithIdentifier:@"TabBarViewController"];
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC = [[GCKCastContext sharedInstance]
+                       createCastContainerControllerForViewController:navigationController];
+    castContainerVC.miniMediaControlsItemEnabled = YES;
+    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.window.rootViewController = castContainerVC;
+    [self.window makeKeyAndVisible];
+    
+    //Expand
+    [GCKCastContext sharedInstance].useDefaultExpandedMediaControls = YES;
     
     return YES;
 }
@@ -329,6 +355,29 @@
         
         [UITabBar appearance].backgroundColor = [UIColor blackColor];
     }
+}
+
+
+#pragma mark - GCKLoggerDelegate
+
+- (void)logMessage:(NSString *)message fromFunction:(NSString *)function {
+    if (kDebugLoggingEnabled) {
+        NSLog(@"CastLogger %@  %@", function, message);
+    }
+}
+
+- (void)setCastControlBarsEnabled:(BOOL)notificationsEnabled {
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC =
+    (GCKUICastContainerViewController *)self.window.rootViewController;
+    castContainerVC.miniMediaControlsItemEnabled = notificationsEnabled;
+}
+
+- (BOOL)castControlBarsEnabled {
+    GCKUICastContainerViewController *castContainerVC;
+    castContainerVC =
+    (GCKUICastContainerViewController *)self.window.rootViewController;
+    return castContainerVC.miniMediaControlsItemEnabled;
 }
 
 @end
