@@ -203,6 +203,13 @@
     [self.userPreferencesTableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+-(void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // remove switches before view disappears
+    for (UIView *subview in cell.contentView.subviews) {
+        [subview removeFromSuperview];
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 55.0f;
@@ -251,7 +258,7 @@
     prefSwitch.frame = frame;
     prefSwitch.tag = tag;
     [prefSwitch addTarget:self action:@selector(switchClicked:) forControlEvents:UIControlEventValueChanged];
-    [prefSwitch setOn:initialValue animated:YES];
+    [prefSwitch setOn:initialValue animated:NO];
     
     return prefSwitch;
 }
