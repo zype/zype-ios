@@ -27,6 +27,8 @@
 #define kACInstagram @"http://www.instagram.com/<your_branch>"
 #define kACTwitter @"https://twitter.com/<your_branch>"
 
+#define kAutoplay YES
+
 //Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
 #define kAppColorLight NO
 
@@ -169,6 +171,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kEntityGuest @"Guest"
 #define kEntityFavorite @"Favorite"
 #define kEntityNotification @"Notification"
+#define kEntityUserPreferences @"UserPreferences"
 #define kNotificationStatus_New @"new"
 #define kNotificationStatus_Updated @"updated"
 #define kNotificationStatus_Removed @"removed"

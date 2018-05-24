@@ -34,9 +34,13 @@
 @property (strong, nonatomic) Video *video;
 @property (strong, nonatomic) NSMutableArray *arrayTimeline;
 
+@property (strong, nonatomic) NSMutableArray<Video *> *videos;
+
 @property (nonatomic) BOOL isLive;
 
 - (void)setupPlayer:(NSURL *)url;
+
+- (void)setVideos:(NSMutableArray<Video *>*)videos withIndex:(NSIndexPath*)index;
 
 @property (nonatomic, retain) NSDate *start;
 

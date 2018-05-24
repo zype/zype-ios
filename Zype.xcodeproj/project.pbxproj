@@ -132,6 +132,9 @@
 		A1B3C4172032268300784F64 /* ACAnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B3C4162032268300784F64 /* ACAnalyticsManager.m */; };
 		A1B3C41E203227E100784F64 /* libAKAMMediaExtensions-AV.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B3C41B203227E100784F64 /* libAKAMMediaExtensions-AV.a */; };
 		A1B3C420203227E100784F64 /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = A1B3C41D203227E100784F64 /* ReadMe */; };
+		E1C884AD20B4969F008D9184 /* UserPreferenceCellDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */; };
+		E1C884B020B496EF008D9184 /* UserPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884AF20B496EF008D9184 /* UserPreferences.m */; };
+		E1C884B320B49718008D9184 /* UserPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884B220B49718008D9184 /* UserPreferencesViewController.m */; };
 		FA09369920238B88009E14E3 /* MediaItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA09369820238B88009E14E3 /* MediaItemView.m */; };
 		FA1940351FCC75AF005CE292 /* PlaylistCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */; };
 		FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */; };
@@ -349,6 +352,12 @@
 		B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EpisodeControllerDelegate.h; path = Protocols/EpisodeControllerDelegate.h; sourceTree = "<group>"; };
 		B96FF88A1B17B535007CA447 /* ZypeDBMappingModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ZypeDBMappingModel.xcmappingmodel; sourceTree = "<group>"; };
 		B9C5863E1B1CC60A00647936 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E1C884AB20B4969F008D9184 /* UserPreferenceCellDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferenceCellDataSource.h; path = Models/UserPreferenceCellDataSource.h; sourceTree = "<group>"; };
+		E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferenceCellDataSource.m; path = Models/UserPreferenceCellDataSource.m; sourceTree = "<group>"; };
+		E1C884AE20B496EF008D9184 /* UserPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferences.h; path = Models/UserPreferences.h; sourceTree = "<group>"; };
+		E1C884AF20B496EF008D9184 /* UserPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferences.m; path = Models/UserPreferences.m; sourceTree = "<group>"; };
+		E1C884B120B49718008D9184 /* UserPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferencesViewController.h; path = ViewController/UserPreferencesViewController.h; sourceTree = "<group>"; };
+		E1C884B220B49718008D9184 /* UserPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferencesViewController.m; path = ViewController/UserPreferencesViewController.m; sourceTree = "<group>"; };
 		F176C9A51AA7963A0080E334 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F176C9B51AA8B9770080E334 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F176C9B91AAE18D30080E334 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -681,6 +690,10 @@
 		F1BB52AC1A76D99D00E901F1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E1C884AE20B496EF008D9184 /* UserPreferences.h */,
+				E1C884AF20B496EF008D9184 /* UserPreferences.m */,
+				E1C884AB20B4969F008D9184 /* UserPreferenceCellDataSource.h */,
+				E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */,
 				A13AF2A91D36985A00DDA006 /* Action.h */,
 				A13AF2AA1D36985A00DDA006 /* Action.m */,
 				A13AF2AB1D36985A00DDA006 /* DownloadInfo.h */,
@@ -778,6 +791,8 @@
 		F1BB52AE1A76D9B800E901F1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E1C884B120B49718008D9184 /* UserPreferencesViewController.h */,
+				E1C884B220B49718008D9184 /* UserPreferencesViewController.m */,
 				A11CBA4C1E78B5FD0006FC40 /* TabBarViewController.h */,
 				A11CBA4D1E78B5FD0006FC40 /* TabBarViewController.m */,
 				A13AF2EE1D369A2C00DDA006 /* BaseViewController.h */,
@@ -1064,6 +1079,7 @@
 				A13AF3361D369B9A00DDA006 /* NSDictionary+Extensions.m in Sources */,
 				A13AF30A1D369A2C00DDA006 /* BaseViewController.m in Sources */,
 				A13AF37A1D369DB600DDA006 /* ACSPredicates.m in Sources */,
+				E1C884B320B49718008D9184 /* UserPreferencesViewController.m in Sources */,
 				A13AF3201D369AB300DDA006 /* BaseCollectionController.m in Sources */,
 				A13AF3221D369AB300DDA006 /* EpisodeController.m in Sources */,
 				A13AF36A1D369D1F00DDA006 /* NSString+AC.m in Sources */,
@@ -1121,6 +1137,7 @@
 				FA4BA3301EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m in Sources */,
 				A13AF3691D369D1F00DDA006 /* NSMutableArray+LimitedStack.m in Sources */,
 				A13AF35C1D369CC600DDA006 /* ViewManager.m in Sources */,
+				E1C884B020B496EF008D9184 /* UserPreferences.m in Sources */,
 				A13AF36D1D369D1F00DDA006 /* UIStoryboard+NamedStoryboards.m in Sources */,
 				A13AF2E61D36995000DDA006 /* GuestTableViewCell.m in Sources */,
 				A13AF3111D369A2C00DDA006 /* MediaPlaybackBaseViewController.m in Sources */,
@@ -1134,6 +1151,7 @@
 				A13AF3381D369B9A00DDA006 /* Reachability.m in Sources */,
 				FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */,
 				A13AF2BE1D36985A00DDA006 /* DownloadInfo.m in Sources */,
+				E1C884AD20B4969F008D9184 /* UserPreferenceCellDataSource.m in Sources */,
 				A13AF2C61D36985A00DDA006 /* Video.m in Sources */,
 				FA4BA32C1EF075B9004985F6 /* SubscriptActiveCell.m in Sources */,
 				A13AF2E51D36995000DDA006 /* FavoriteTableViewCell.m in Sources */,

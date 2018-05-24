@@ -182,6 +182,14 @@
     [self.buttonDismissSearch addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
 }
 
+#pragma mark - Episode Controller Delegate
+
+- (void)episodeControllerDidSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.indexPathInAction = indexPath;
+
+    [super episodeControllerDidSelectItemAtIndexPath:indexPath];
+}
+
 
 #pragma mark - Video Player Notifications
 
@@ -228,7 +236,10 @@
         
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsCategoryButtonPressed label:@"Show Latest Detail" value:nil] build]];
         
-        [[segue destinationViewController] setDetailItem:self.selectedVideo];
+        // [[segue destinationViewController] setDetailItem:self.selectedVideo]; // old segue
+
+        NSMutableArray *videos = self.episodeController.indexPathController.dataModel.items;
+        [[segue destinationViewController] setVideos:videos withIndex:self.indexPathInAction];
         
     }else if ([[segue identifier] isEqualToString:@"showSearchResult"]) {
         

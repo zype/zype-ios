@@ -1,3 +1,4 @@
+
 //
 //  VideoDetailViewController.m
 //  Zype
@@ -35,6 +36,8 @@
 #import "Timing.h"
 #import "PlaybackSource.h"
 #import "TableSectionDataSource.h"
+
+#import "UserPreferences.h"
 
 #import "TLIndexPathController.h"
 #import "TLIndexPathItem.h"
@@ -90,6 +93,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *height;
 @property (nonatomic) NSString *beaconStringUrl;
 
+@property (nonatomic, assign) NSInteger currentVideoIndex;
+@property (nonatomic, assign) BOOL isPlayerRequestPending;
+
+@property (strong, nonatomic) UIAlertView *alertViewSignInRequired;
+@property (strong, nonatomic) UIAlertView *alertViewNsvodRequired;
+
 @end
 
 
@@ -138,6 +147,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.indexPathController = [self indexPathController];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    
+    self.isPlayerRequestPending = NO;
     
     self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
     [self.view addSubview:self.adsContainerView];
@@ -228,6 +239,30 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+
+    // if request still being made or autoplay triggered
+    if (self.isPlayerRequestPending){
+        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
+        
+        if (kNativeSubscriptionEnabled &&
+            [self.video.subscription_required intValue] == 1 &&
+            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            
+        } else if (requiresUniversalEntitlement &&
+                   [ACStatusManager isUserSignedIn] == false){
+
+        } else {
+            self.isPlayerRequestPending = NO;
+            self.avPlayer = nil;
+            self.avPlayerController = nil;
+            [self initPlayer];
+//            self.isPlayerRequestPending = YES;
+        }
+    }
+}
+
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
@@ -297,6 +332,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.video = (Video *)_detailItem;
     CLS_LOG(@"AFTER: %@", self.detailItem);
     
+}
+
+- (void)setVideos:(NSMutableArray<Video *>*)videos withIndex:(NSIndexPath*)index {
+    
+    // Get index from clicked item
+    self.currentVideoIndex = (int)[index row];
+    if (self.currentVideoIndex == nil) { self.currentVideoIndex = 0; }
+    
+    self.videos = videos;
+    
+    if (_detailItem != self.videos[self.currentVideoIndex]) {
+        _detailItem = self.videos[self.currentVideoIndex];
+    }
+    
+    self.video = (Video *)_detailItem;
+    
+    CLS_LOG(@"Current Video: %@", self.video);
 }
 
 - (void)configureView {
@@ -411,34 +463,36 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self showActivityIndicator];
     [self checkDownloadVideo];
 
-    if (self.isAudio) {
-        
-        NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
-        BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
-        
-        NSURL *url;
-        
-        if (audioFileExists == YES) {
-            url = [NSURL fileURLWithPath:localAudioPath];
-            [self setupPlayer:url];
+    if (self.isPlayerRequestPending == NO){ // prevent multiple video player requests
+        if (self.isAudio) {
+            
+            NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
+            BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
+            
+            NSURL *url;
+            
+            if (audioFileExists == YES) {
+                url = [NSURL fileURLWithPath:localAudioPath];
+                [self setupPlayer:url];
+            } else {
+                [self playStreamingAudio];
+            }
+            
         } else {
-            [self playStreamingAudio];
+            
+            NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:self.video];
+            BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
+            
+            NSURL *url;
+            
+            if (videoFileExists == YES) {
+                url = [NSURL fileURLWithPath:localVideoPath];
+                [self setupPlayer:url];
+            } else {
+                [self playStreamingVideo];
+            }
+            
         }
-        
-    } else {
-        
-        NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:self.video];
-        BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
-        
-        NSURL *url;
-        
-        if (videoFileExists == YES) {
-            url = [NSURL fileURLWithPath:localVideoPath];
-            [self setupPlayer:url];
-        } else {
-            [self playStreamingVideo];
-        }
-        
     }
     
 }
@@ -468,6 +522,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)playStreamingVideo {
     
     [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo: NO withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        self.isPlayerRequestPending = NO;
         
         [self hideActivityIndicator];
         
@@ -661,6 +717,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)setupPlayerBackground {
+    [self setupAudioPlayerBackground];
+    CGRect frame = self.imageThumbnail.frame;
+    [self.avPlayerController.view setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
+    [self.adsContainerView setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
+    self.avPlayerController.view.backgroundColor = [UIColor clearColor];
+    [self setupConstraints];
+    
+    [self.avPlayerController.view setHidden:NO];
+}
+
 - (void)setupConstraints {
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -807,6 +874,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+#pragma mark - Video Entitlement Checks
+
+// only checks supported universal entitlement
+- (BOOL)videoRequiresUniversalEntitlement:(Video *)video {
+    if (video.subscription_required.intValue == 1){
+        return YES;
+    }
+    return NO;
+}
+
+// only checks supported native entitlement
+- (BOOL)videoRequiresNativeEntitlement:(Video *)video {
+    if (video.subscription_required.intValue == 1){
+        return YES;
+    }
+    return NO;
+}
 
 #pragma mark - Timeline
 
@@ -869,6 +953,58 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
     }
     
+    UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+    
+    // Autoplay
+    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
+        [self saveCurrentPlaybackTime];
+        
+        if ([self.videos count] - 1 > self.currentVideoIndex) {
+            self.currentVideoIndex = self.currentVideoIndex + 1;
+        } else {
+            self.currentVideoIndex = 0;
+        }
+        
+        _detailItem = [self.videos objectAtIndex:(self.currentVideoIndex)];
+        self.video = (Video *)_detailItem; // next video
+        
+        [self configureView];
+        
+        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
+        
+        if (kNativeSubscriptionEnabled &&
+            [self.video.subscription_required intValue] == 1 &&
+            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showNsvodRequiredAlert];
+
+        } else if (requiresUniversalEntitlement &&
+                   [ACStatusManager isUserSignedIn] == false){
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showSignInRequiredAlert];
+
+        } else {
+            [self refreshPlayer];
+            self.isPlayerRequestPending = YES;
+        }
+    }
+
 }
 
 - (void)moviePreloadDidFinish:(NSNotification *)notification {
@@ -1329,6 +1465,34 @@ NSString* machineName() {
     
 }
 
+- (void)showSignInRequiredAlert {
+    
+    if (!self.alertViewSignInRequired){
+        self.alertViewSignInRequired = [[UIAlertView alloc] initWithTitle:@"Sign In Required"
+                                                                  message:@"You do not have access to this video. Please sign in with your account to watch this video."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                        otherButtonTitles:@"Sign In", nil];
+    }
+    self.alertViewSignInRequired.tag = 997;
+    
+    [self.alertViewSignInRequired show];
+}
+
+- (void)showNsvodRequiredAlert {
+    
+    if (!self.alertViewNsvodRequired){
+        self.alertViewNsvodRequired = [[UIAlertView alloc] initWithTitle:@"Requires Subscription"
+                                                                  message:@"You do not have access to this video. Please subscribe to watch this video."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                        otherButtonTitles:@"Subscribe", nil];
+    }
+    self.alertViewNsvodRequired.tag = 996;
+    
+    [self.alertViewNsvodRequired show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     if (self != nil) {
@@ -1341,6 +1505,26 @@ NSString* machineName() {
         
         if (alertView.tag == 998 && buttonIndex == 0){
             [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+        if (alertView.tag == 997 && buttonIndex == 1){ // clicked sign in
+            // transition to sign in view
+            
+            if (self.isFullScreen){
+                [self.avPlayerController exitFullscreen];
+            }
+            
+            [UIUtil showSignInViewFromViewController:self];
+        }
+        
+        if (alertView.tag == 996 && buttonIndex == 1){ // clicked nsvod subscribe
+            
+            if (self.isFullScreen){
+                [self.avPlayerController exitFullscreen];
+            }
+            
+            // transition to native sub view
+            [UIUtil showSubscriptionViewFromViewController:self];
         }
         
     }
