@@ -62,8 +62,6 @@ typedef NS_ENUM(NSInteger, PlaybackMode) {
     PlaybackModeRemote
 };
 
-static BOOL IS_CAST_DEBUG_MODE = NO;
-
 static NSString *GuestCellIdentifier = @"GuestCell";
 static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
@@ -593,7 +591,7 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
             } else {
                 PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
                 
-                if (IS_CAST_DEBUG_MODE){
+                if (kDebugCastEnabled){
                     //test data
                     source = [PlaybackSource alloc];
                     //[source setUrlString:@"https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8"];
@@ -2053,7 +2051,9 @@ NSString* machineName() {
     [metadata setString:self.video.title forKey:kGCKMetadataKeyTitle];
     [metadata setString:self.video.short_description forKey:kGCKMetadataKeySubtitle];
     
-    NSURL *imageURL = [[NSURL alloc] initWithString:@"https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/images/480x270/TearsOfSteel.jpg"];
+    /* self.video.thumbnailUrl is too large to use for Cast device.
+        prefer to provide 480x270 & 480X720 */
+    NSURL *imageURL = [[NSURL alloc] initWithString:self.video.thumbnailUrl];
     [metadata addImage:[[GCKImage alloc] initWithURL:imageURL
                                                width:480
                                               height:270]];

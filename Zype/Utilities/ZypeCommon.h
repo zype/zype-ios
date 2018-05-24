@@ -21,6 +21,11 @@
 //Google Analytcis configuration
 #define kGoogleAnalyticsTracker @""
 
+//Google Chromecast Receiver App ID (Zype: @"084FBF77")
+#define kReceiverAppID @"4F8B3483"//Sample ID
+#define kDebugLoggingEnabled YES
+#define kDebugCastEnabled  NO
+
 //Social links on settings screen
 #define kACFacebook @"https://www.facebook.com/<your_branch>"
 #define kACWeb @"http://www.<your_branch>/"

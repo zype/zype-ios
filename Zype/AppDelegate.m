@@ -23,7 +23,6 @@
 #import "GAI.h"
 #import "ACPurchaseManager.h"
 #import "ACAnalyticsManager.h"
-
 #import "UIColor+AC.h"
 
 @interface AppDelegate () <GCKLoggerDelegate>
@@ -34,9 +33,6 @@
 
 @implementation AppDelegate
 @synthesize keychainItem = _keychainItem;
-
-static NSString *const kReceiverAppID = @"084FBF77";
-static const BOOL kDebugLoggingEnabled = YES;
 
 + (AppDelegate *)appDelegate
 {
