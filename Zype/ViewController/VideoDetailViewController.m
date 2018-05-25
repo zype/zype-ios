@@ -159,6 +159,7 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
     [self setupAdsLoader];
     [self setupView];
     [self configureView];
+    [self getStreamingPlaybackForCast];
     
     self.actionSheetManager = [ACActionSheetManager new];
     self.actionSheetManager.delegate = self;
@@ -534,9 +535,7 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
             BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
             
             NSURL *url;
-            
-            BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
-            if (videoFileExists == YES && !hasConnectedCastSession) {
+            if (videoFileExists == YES) {
                 url = [NSURL fileURLWithPath:localVideoPath];
                 [self setupPlayer:url];
             } else {
@@ -590,62 +589,33 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
                 CLS_LOG(@"Failed: %@", localError);
             } else {
                 PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
                 
-                if (kDebugCastEnabled){
-                    //test data
-                    source = [PlaybackSource alloc];
-                    //[source setUrlString:@"https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8"];
-                    [source setUrlString:@"https://player.zype.com/manifest/5744abef9958b70d060008d3.m3u8?app_key=HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU&player_request_id=5b05afbd60caab11e3006cf1"];
-                    [source setFileType:@"m3u8"];
-                    self.videoPlaybackSource = source;
+                //check for status code family
+                if ([response isStatusFamilyError]) {
+                    NSMutableString *message = [[NSMutableString alloc] initWithString:@"Something is not right."];
+                    if ([[parsedObject valueForKey:@"message"] length] > 0) {
+                        message = [[NSMutableString alloc] initWithString:[parsedObject valueForKey:@"message"]];
+                    }
+                    [self showBasicAlertWithTitle:kString_TitleStreamFail WithMessage:message];
+                } else {
+                    //check for Ads
+                    self.adsArray = [[ACAdManager sharedInstance] adsArrayFromParsedDictionary:parsedObject];
+                    
+                    //check for beacon analytics
+                    self.beaconStringUrl = [[ACAnalyticsManager sharedInstance] beaconFromParsedDictionary:parsedObject];
                     
                     //check if view is visible to avoid playing on background
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
                         if (source != nil && source.urlString != nil) {
-                            BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
-                            if (!hasConnectedCastSession)
-                                [self playVideoFromSource:source];
-                            [self buildMediaInfo];
+                            [self playVideoFromSource:source];
                         }else{
                             [self playStreamingAudio];
                         }
                     }
-                }else{
-                    self.videoPlaybackSource = source;
-                    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-                    CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
-                    
-                    //check for status code family
-                    if ([response isStatusFamilyError]) {
-                        NSMutableString *message = [[NSMutableString alloc] initWithString:@"Something is not right."];
-                        if ([[parsedObject valueForKey:@"message"] length] > 0) {
-                            message = [[NSMutableString alloc] initWithString:[parsedObject valueForKey:@"message"]];
-                        }
-                        [self showBasicAlertWithTitle:kString_TitleStreamFail WithMessage:message];
-                    } else {
-                        //check for Ads
-                        self.adsArray = [[ACAdManager sharedInstance] adsArrayFromParsedDictionary:parsedObject];
-                        
-                        //check for beacon analytics
-                        self.beaconStringUrl = [[ACAnalyticsManager sharedInstance] beaconFromParsedDictionary:parsedObject];
-                        
-                        
-                        //check if view is visible to avoid playing on background
-                        if (self.navigationController.visibleViewController.class) {
-                            // viewController is visible
-                            if (source != nil && source.urlString != nil) {
-                                BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
-                                if (!hasConnectedCastSession) [self playVideoFromSource:source];
-                                
-                                [self buildMediaInfo];
-                            }else{
-                                [self playStreamingAudio];
-                            }
-                        }
-                    }
                 }
-               
             }
         }
     }];
@@ -695,6 +665,39 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
     
 }
 
+- (void) getStreamingPlaybackForCast {
+    [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo: NO withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            CLS_LOG(@"Success");
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+            } else {
+                PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                self.videoPlaybackSource = source;
+                
+                if (kDebugCastEnabled){
+                    //test data
+                    source = [PlaybackSource alloc];
+                    //[source setUrlString:@"https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8"];
+                    [source setUrlString:@"https://player.zype.com/manifest/5744abef9958b70d060008d3.m3u8?app_key=HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU&player_request_id=5b05afbd60caab11e3006cf1"];
+                    [source setFileType:@"m3u8"];
+                    self.videoPlaybackSource = source;
+                }
+                
+                if (source != nil && source.urlString != nil)
+                    [self buildMediaInfo];
+                
+                NSLog(@"********* build media selected ***");
+            }
+        }
+    }];
+}
 - (void)changeMediaType{
     
     self.isAudio = !self.isAudio;
@@ -1046,6 +1049,7 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
         self.video = (Video *)_detailItem; // next video
         
         [self configureView];
+        [self getStreamingPlaybackForCast];
         
         BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
         
@@ -2099,25 +2103,25 @@ NSString* machineName() {
     // If we were playing locally, load the local media on the remote player
     if ((_playbackMode != PlaybackModeRemote) && self.mediaInfo) {
         NSLog(@"loading media: %@", self.mediaInfo);
-        NSTimeInterval playPosition = 1  ;
        
         GCKMediaQueueItemBuilder *builder = [[GCKMediaQueueItemBuilder alloc] init];
         builder.mediaInformation = self.mediaInfo;
         builder.autoplay = YES;
         builder.preloadTime = 0;
+        builder.startTime = [self.video.playTime doubleValue];
         GCKMediaQueueItem *item = [builder build];
     
         GCKRequest *request = [_castSession.remoteMediaClient queueLoadItems:@[ item ]
                                             startIndex:0
-                                          playPosition:playPosition
                                             repeatMode:GCKMediaRepeatModeOff
                                             customData:nil];
         request.delegate = self;
+        
+        [self.avPlayer pause];
+        
+        [_castSession.remoteMediaClient addListener:self];
+        _playbackMode = PlaybackModeRemote;
     }
-    [self.avPlayer pause];
-   
-    [_castSession.remoteMediaClient addListener:self];
-    _playbackMode = PlaybackModeRemote;
 }
 
 #pragma mark - GCKSessionManagerListener
