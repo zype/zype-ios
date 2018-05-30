@@ -29,6 +29,7 @@
 #import "CustomizeImageView.h"
 #import "ACPurchaseManager.h"
 #import "AVPlayerViewController+AVPlayerViewController_Transition.h"
+#import "PlayerControlsOverlay.h"
 
 #import "Guest.h"
 #import "Timeline.h"
@@ -83,9 +84,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic, strong) NSMutableArray *optionsDataSource;
 
 @property (nonatomic, strong) AVPlayerViewController *avPlayerController;
+@property (nonatomic, strong) PlayerControlsOverlay *playerControlsView;
+
+@property (nonatomic) id playbackObserver;
 
 @property (nonatomic) NSArray *adsArray;
-@property (nonatomic, strong) id playerObserver;
+@property (nonatomic, strong) id playerAdsObserver;
 @property (nonatomic, strong) UIView *adsContainerView;
 
 @property (nonatomic, assign) BOOL isReturnFullScreenIfNeeded;
@@ -112,9 +116,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     //notify of complition of the video
     [ACAnalyticsManager playbackCompleted];
 
-    if (self.playerObserver) {
-        [self.contentPlayhead.player removeTimeObserver:self.playerObserver];
+    if (self.playerAdsObserver) {
+        [self.contentPlayhead.player removeTimeObserver:self.playerAdsObserver];
     }
+    if (self.playbackObserver) {
+        [self.avPlayer removeTimeObserver:self.playbackObserver];
+    }
+    
     NSLog(@"Destroying");
     //remove the instance that was created in case of going to a full screen mode and back
     if (self.avPlayerController) {
@@ -136,6 +144,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self setupAdsLoader];
     [self setupView];
     [self configureView];
+    
     
     self.actionSheetManager = [ACActionSheetManager new];
     self.actionSheetManager.delegate = self;
@@ -319,6 +328,48 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)setupPlayerControlsListeners {
+    UITapGestureRecognizer *viewPressed = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(viewPressed:)];
+    [self.playerControlsView.view addGestureRecognizer:viewPressed];
+    
+    
+    UITapGestureRecognizer *playPausePressed = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                  action:@selector(playPausePressed:)];
+    [self.playerControlsView.playPauseIcon addGestureRecognizer:playPausePressed];
+    
+    
+    UITapGestureRecognizer *backIconPressed = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                  action:@selector(backIconPressed:)];
+    [self.playerControlsView.backIcon addGestureRecognizer:backIconPressed];
+    
+    
+    UITapGestureRecognizer *nextIconPressed = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                  action:@selector(nextIconPressed:)];
+    [self.playerControlsView.nextIcon addGestureRecognizer:nextIconPressed];
+    
+    [self.playerControlsView.progressBar addTarget:self action:@selector(progressBarValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.playerControlsView.progressBar addTarget:self action:@selector(progressBarTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.playerControlsView.progressBar addTarget:self action:@selector(progressBarTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
+    
+    CMTime interval = CMTimeMakeWithSeconds(0.5, NSEC_PER_SEC);
+    self.playbackObserver = [self.avPlayer addPeriodicTimeObserverForInterval:interval
+                                              queue:NULL usingBlock:^(CMTime time) {
+                                                [self.playerControlsView updateCurrentTime:[NSNumber numberWithDouble:CMTimeGetSeconds(time)]];
+                                              }];
+}
+
+- (void)configurePlayerControlsState {
+    BOOL enableNav;
+    if ([self.videos count] > 1) {
+        enableNav = YES;
+    } else {
+        enableNav = NO;
+    }
+    [self.playerControlsView updateState:NO withCurrentTime:self.video.playTime withDuration:self.video.duration enableUserNavigation:enableNav];
+}
+
 - (void)configureColors{
     self.segmenedControl.tintColor = kClientColor;
 }
@@ -366,6 +417,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         _videoShareTitleString = self.video.title;
         
+    }
+    
+    if (self.playerControlsView){
+        [self configurePlayerControlsState];
     }
     
 }
@@ -644,7 +699,20 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.view addSubview:self.avPlayerController.view];
         [self.avPlayerController didMoveToParentViewController:self];
         self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        // use custom controls
+        self.avPlayerController.showsPlaybackControls = NO;
     }
+    
+    if (self.playerControlsView == nil) {
+        self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
+        self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:self.playerControlsView.view];
+        
+        [self configurePlayerControlsState];
+        [self setupPlayerControlsListeners];
+    }
+    
 
     //setup analytics for a player
     if (self.beaconStringUrl)
@@ -731,6 +799,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)setupConstraints {
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
+    // AVPlayerController
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -753,6 +822,36 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1
+                                                           constant:0]];
+
+    // Player Controls View
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.imageThumbnail
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
                                                           attribute:NSLayoutAttributeRight
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.imageThumbnail
@@ -760,6 +859,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                          multiplier:1
                                                            constant:0]];
     
+    // Ads View
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -870,8 +970,65 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self requestAds];
     } else {
         [self.avPlayer play];
+        
+        [self.playerControlsView setAsPlay];
+        [self.playerControlsView showSelf];
     }
     
+}
+
+- (void)loadNextVideo {
+    UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+    
+    // Autoplay
+    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
+        [self saveCurrentPlaybackTime];
+        
+        if ([self.videos count] - 1 > self.currentVideoIndex) {
+            self.currentVideoIndex = self.currentVideoIndex + 1;
+        } else {
+            self.currentVideoIndex = 0;
+        }
+        
+        _detailItem = [self.videos objectAtIndex:(self.currentVideoIndex)];
+        self.video = (Video *)_detailItem; // next video
+        
+        [self configureView];
+        
+        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
+        
+        if (kNativeSubscriptionEnabled &&
+            [self.video.subscription_required intValue] == 1 &&
+            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showNsvodRequiredAlert];
+            
+        } else if (requiresUniversalEntitlement &&
+                   [ACStatusManager isUserSignedIn] == false){
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showSignInRequiredAlert];
+            
+        } else {
+            [self refreshPlayer];
+            self.isPlayerRequestPending = YES;
+        }
+    }
 }
 
 #pragma mark - Video Entitlement Checks
@@ -922,6 +1079,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     //    CLS_LOG(@"currentTimeline: %d", currentTimeline);
 }
 
+
+
 #pragma mark - MoviePlayer Notifications
 
 - (void)setupNotifications{
@@ -953,58 +1112,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
     }
     
-    UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
-    
-    // Autoplay
-    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
-        [self saveCurrentPlaybackTime];
-        
-        if ([self.videos count] - 1 > self.currentVideoIndex) {
-            self.currentVideoIndex = self.currentVideoIndex + 1;
-        } else {
-            self.currentVideoIndex = 0;
-        }
-        
-        _detailItem = [self.videos objectAtIndex:(self.currentVideoIndex)];
-        self.video = (Video *)_detailItem; // next video
-        
-        [self configureView];
-        
-        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
-        
-        if (kNativeSubscriptionEnabled &&
-            [self.video.subscription_required intValue] == 1 &&
-            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
-            
-            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
-            
-            [self setThumbnailImage];
-            self.avPlayerController = nil;
-            [self setupPlayer:[NSURL URLWithString:@""]];
-            [self setupPlayerBackground];
-            
-            self.isPlayerRequestPending = YES;
-            [self showNsvodRequiredAlert];
-
-        } else if (requiresUniversalEntitlement &&
-                   [ACStatusManager isUserSignedIn] == false){
-            
-            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
-            
-            [self setThumbnailImage];
-            self.avPlayerController = nil;
-            [self setupPlayer:[NSURL URLWithString:@""]];
-            [self setupPlayerBackground];
-            
-            self.isPlayerRequestPending = YES;
-            [self showSignInRequiredAlert];
-
-        } else {
-            [self refreshPlayer];
-            self.isPlayerRequestPending = YES;
-        }
-    }
-
+    [self loadNextVideo];
 }
 
 - (void)moviePreloadDidFinish:(NSNotification *)notification {
@@ -1124,6 +1232,63 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
     }
     
+}
+
+// Player Controls View
+- (void)viewPressed:(id)sender {
+    [self.playerControlsView viewPressed:sender];
+}
+- (void)playPausePressed:(id)sender {
+    [self.playerControlsView playPausePressed:sender];
+    if ((self.avPlayer.rate != 0) && (self.avPlayer.error == nil)) {
+        [self.avPlayer pause];
+    } else {
+        [self.avPlayer play];
+    }
+}
+- (void)backIconPressed:(id)sender {
+    [self.playerControlsView backIconPressed:sender];
+
+    // save
+    [self.avPlayer pause];
+    [self saveCurrentPlaybackTime];
+    
+    NSInteger newIndex = self.currentVideoIndex - 2;
+    if (newIndex < 0) {
+        newIndex = [self.videos count] - newIndex;
+    }
+    self.currentVideoIndex = newIndex;
+    
+    [self loadNextVideo];
+}
+- (void)nextIconPressed:(id)sender {
+    [self.playerControlsView nextIconPressed:sender];
+
+    // save
+    [self.avPlayer pause];
+    [self saveCurrentPlaybackTime];
+    
+    [self loadNextVideo];
+}
+- (void)fullScreenPressed:(id)sender {
+    [self.playerControlsView fullScreenPressed:sender];
+    
+    // TODO: logic for full screen. should shift view between landscape mode and back
+}
+
+- (void)progressBarValueChanged:(id)sender {
+    [self.playerControlsView progressBarValueChanged:sender];
+}
+
+- (void)progressBarTouchUpInside:(id)sender {
+    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
+    [self.avPlayer seekToTime:time];
+    [self.playerControlsView progressBarTouchUpInside:sender];
+}
+- (void)progressBarTouchUpOutside:(id)sender {
+    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
+    [self.avPlayer seekToTime:time];
+    [self.playerControlsView progressBarTouchUpOutside:sender];
 }
 
 
@@ -1257,7 +1422,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (adOffsets.count > 0) {
         __weak typeof(self) weakSelf = self;
         
-        self.playerObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
+        self.playerAdsObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
 
             if (adsTags.count > 0) {
                 NSString *tag = adsTags.firstObject;
@@ -1273,6 +1438,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
     if (!isPrerollUsed) {
         [self.avPlayer play];
+        
+        [self.playerControlsView setAsPlay];
+        [self.playerControlsView showSelf];
     }
 
 }
@@ -1395,6 +1563,8 @@ NSString* machineName() {
     [self.adsContainerView setHidden:YES];
     [self.avPlayerController.view setHidden:NO];
     [self.avPlayer play];
+    [self.playerControlsView setAsPlay];
+    [self.playerControlsView showSelf];
 }
 
 #pragma mark AdsManager Delegates
@@ -1432,6 +1602,8 @@ NSString* machineName() {
     [self.adsContainerView setHidden:YES];
     [self.avPlayerController.view setHidden:NO];
     [self.avPlayer play];
+    [self.playerControlsView setAsPlay];
+    [self.playerControlsView showSelf];
 }
 
 - (void)adsManagerDidRequestContentPause:(IMAAdsManager *)adsManager {
@@ -1446,6 +1618,8 @@ NSString* machineName() {
     [self.adsContainerView setHidden:YES];
     [self.avPlayerController.view setHidden:NO];
     [self.avPlayer play];
+    [self.playerControlsView setAsPlay];
+    [self.playerControlsView showSelf];
 }
 
 
@@ -1814,6 +1988,8 @@ NSString* machineName() {
         Timeline *timeline = [self.arrayTimeline objectAtIndex:indexPath.row];
         [self.player setCurrentPlaybackTime:[UIUtil secondsWithMilliseconds:timeline.start]];
         [self.player play];
+        [self.playerControlsView setAsPlay];
+        [self.playerControlsView showSelf];
         
         // Update timeline cell
         self.selectedTimeline = (int)indexPath.row;
