@@ -9,11 +9,29 @@
 @implementation PlayerControlsOverlay
 
 #pragma mark - Initialization
+- (id)init {
+    self = [super init];
+    
+    if (self) {
+        [[NSBundle mainBundle] loadNibNamed:@"PlayerControlsOverlay" owner:self options:nil];
+        
+        UIImage *progressBarThumb = [UIImage imageNamed:@"ProgressBarThumb"];
+        [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateNormal];
+        [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateHighlighted];
+    }
+    
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [[NSBundle mainBundle] loadNibNamed:@"PlayerControlsOverlay" owner:self options:nil];
 
+        UIImage *progressBarThumb = [UIImage imageNamed:@"ProgressBarThumb"];
+        [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateNormal];
+        [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateHighlighted];
+        
         self.bounds = frame;
         self.view.bounds = self.bounds;
         self.view.frame = self.frame;
@@ -192,7 +210,7 @@
 
 - (void)hideSelf {
     if (self.playing) {
-        [UIView animateWithDuration:0.0
+        [UIView animateWithDuration:0.5
                          animations:^{
                              self.view.alpha = 0.03;
                          }

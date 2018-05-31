@@ -348,6 +348,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                                                   action:@selector(nextIconPressed:)];
     [self.playerControlsView.nextIcon addGestureRecognizer:nextIconPressed];
     
+    
+    UITapGestureRecognizer *fullScreenPressed = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                      action:@selector(fullScreenPressed:)];
+    [self.playerControlsView.fullScreenIcon addGestureRecognizer:fullScreenPressed];
+    
+    
     [self.playerControlsView.progressBar addTarget:self action:@selector(progressBarValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.playerControlsView.progressBar addTarget:self action:@selector(progressBarTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -706,7 +712,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     if (self.playerControlsView == nil) {
         self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
-        self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+        self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addSubview:self.playerControlsView.view];
         
         [self configurePlayerControlsState];
@@ -1273,7 +1279,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)fullScreenPressed:(id)sender {
     [self.playerControlsView fullScreenPressed:sender];
     
-    // TODO: logic for full screen. should shift view between landscape mode and back
+    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
+    
+    if (orientation != UIInterfaceOrientationPortrait && orientation != UIInterfaceOrientationPortraitUpsideDown) {
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
+    } else {
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+    }
 }
 
 - (void)progressBarValueChanged:(id)sender {
@@ -1400,6 +1412,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSMutableArray *adOffsets = [[NSMutableArray alloc] init];
     NSArray *requests = [[ACAdManager sharedInstance] adRequstsFromArray:self.adsArray];
     
+    BOOL isRequestPending = self.isPlayerRequestPending;
+    
     for (AdObject *adObject in requests) {
         
         NSString *newTag = [self replaceAdMacros:adObject.tag];
@@ -1409,7 +1423,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                           adDisplayContainer:adDisplayContainer
                                                              contentPlayhead:self.contentPlayhead
                                                                  userContext:nil];
-            [self.adsLoader requestAdsWithRequest:request];
+            
+            if (!isRequestPending) [self.adsLoader requestAdsWithRequest:request];
         } else {
             
             [adOffsets addObject:adObject.offsetValue];
@@ -1431,7 +1446,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                               adDisplayContainer:adDisplayContainer
                                                                  contentPlayhead:weakSelf.contentPlayhead
                                                                      userContext:nil];
-                [weakSelf.adsLoader requestAdsWithRequest:request];
+                if (!isRequestPending) [weakSelf.adsLoader requestAdsWithRequest:request];
             }
         }];
     }
@@ -1562,6 +1577,7 @@ NSString* machineName() {
     NSLog(@"Error loading ads: %@", adErrorData.adError.message);
     [self.adsContainerView setHidden:YES];
     [self.avPlayerController.view setHidden:NO];
+    [self.playerControlsView.view setHidden:NO];
     [self.avPlayer play];
     [self.playerControlsView setAsPlay];
     [self.playerControlsView showSelf];
@@ -1601,6 +1617,7 @@ NSString* machineName() {
     NSLog(@"AdsManager error: %@", error.message);
     [self.adsContainerView setHidden:YES];
     [self.avPlayerController.view setHidden:NO];
+    [self.playerControlsView.view setHidden:NO];
     [self.avPlayer play];
     [self.playerControlsView setAsPlay];
     [self.playerControlsView showSelf];
@@ -1610,6 +1627,7 @@ NSString* machineName() {
     // The SDK is going to play ads, so pause the content.
     [self.adsContainerView setHidden:NO];
     [self.avPlayerController.view setHidden:YES];
+    [self.playerControlsView.view setHidden:YES];
     [self.avPlayer pause];
 }
 
@@ -1617,6 +1635,7 @@ NSString* machineName() {
     // The SDK is done playing ads (at least for now), so resume the content.
     [self.adsContainerView setHidden:YES];
     [self.avPlayerController.view setHidden:NO];
+    [self.playerControlsView.view setHidden:NO];
     [self.avPlayer play];
     [self.playerControlsView setAsPlay];
     [self.playerControlsView showSelf];
