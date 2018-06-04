@@ -5,6 +5,7 @@
 //
 
 #import "PlayerControlsOverlay.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @implementation PlayerControlsOverlay
 
@@ -18,6 +19,15 @@
         UIImage *progressBarThumb = [UIImage imageNamed:@"ProgressBarThumb"];
         [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateNormal];
         [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateHighlighted];
+        
+        // Airplay button
+        MPVolumeView *volumeView = [ [MPVolumeView alloc] init];
+        [volumeView setShowsVolumeSlider:NO];
+        [volumeView sizeToFit];
+        volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        self.mpVolumeViewContainer.backgroundColor = [UIColor clearColor];
+        [self.mpVolumeViewContainer addSubview:volumeView];
     }
     
     return self;
@@ -31,6 +41,16 @@
         UIImage *progressBarThumb = [UIImage imageNamed:@"ProgressBarThumb"];
         [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateNormal];
         [self.progressBar setThumbImage:progressBarThumb forState:UIControlStateHighlighted];
+        
+        
+        // Airplay button
+        MPVolumeView *volumeView = [ [MPVolumeView alloc] init];
+        [volumeView setShowsVolumeSlider:NO];
+        [volumeView sizeToFit];
+        volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        self.mpVolumeViewContainer.backgroundColor = [UIColor clearColor];
+        [self.mpVolumeViewContainer addSubview:volumeView];
         
         self.bounds = frame;
         self.view.bounds = self.bounds;
@@ -106,12 +126,12 @@
         self.backIcon.alpha = 1.0;
         self.nextIcon.alpha = 1.0;
         self.backIcon.userInteractionEnabled = YES;
-        self.backIcon.userInteractionEnabled = YES;
+        self.nextIcon.userInteractionEnabled = YES;
     } else {
         self.backIcon.alpha = 0.3;
         self.nextIcon.alpha = 0.3;
         self.backIcon.userInteractionEnabled = NO;
-        self.backIcon.userInteractionEnabled = NO;
+        self.nextIcon.userInteractionEnabled = NO;
     }
 }
 
@@ -165,6 +185,10 @@
     self.durationLabel.text = timeString;
 }
 
+- (void)updateIsCasting:(BOOL)isCasting {
+    self.isCasting = isCasting;
+}
+
 - (BOOL)isVisible {
     if (self.alpha > 0.02){
         return YES;
@@ -179,6 +203,8 @@
     self.nextIcon.userInteractionEnabled = NO;
     self.progressBar.userInteractionEnabled = NO;
     self.fullScreenIcon.userInteractionEnabled = NO;
+    
+    self.mpVolumeViewContainer.userInteractionEnabled = NO;
 }
 
 - (void)enableControls {
@@ -191,6 +217,8 @@
     
     self.progressBar.userInteractionEnabled = YES;
     self.fullScreenIcon.userInteractionEnabled = YES;
+    
+    self.mpVolumeViewContainer.userInteractionEnabled = YES;
 }
 
 - (void)showSelf {
@@ -202,16 +230,17 @@
                          if (finished) {
                              [self enableControls];
                              
-                             [self performSelector:@selector(hideSelf) withObject:nil afterDelay:0.5];
+                             [self performSelector:@selector(hideSelf) withObject:nil afterDelay:1.0];
                          }
                      }
      ];
 }
 
 - (void)hideSelf {
-    if (self.playing) {
+    if (self.playing && !self.isCasting) {
         [UIView animateWithDuration:0.5
                          animations:^{
+                             // ios treats alpha lower than 0.02 as hidden. need invisible but still clickable
                              self.view.alpha = 0.03;
                          }
                          completion:^(BOOL finished) {

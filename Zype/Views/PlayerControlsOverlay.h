@@ -11,6 +11,9 @@
 #pragma mark - IBOutlets
 @property (strong, nonatomic) IBOutlet UIView *view;
 
+@property (weak, nonatomic) IBOutlet UIView *mpVolumeViewContainer;
+
+
 @property (weak, nonatomic) IBOutlet UIImageView *backIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *nextIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *playPauseIcon;
@@ -44,6 +47,7 @@
 @property (nonatomic) BOOL playing;
 
 @property (nonatomic) BOOL allowUserNavigation;
+@property (nonatomic) BOOL isCasting;
 
 #pragma mark - Update UI methods
 - (void)updateState:(BOOL)playing withCurrentTime:(NSNumber *)currentTime withDuration:(NSNumber *)duration enableUserNavigation:(BOOL)userNavigation;
@@ -52,6 +56,7 @@
 - (void)setAsPlay;
 - (void)updateCurrentTime:(NSNumber *)currentTime;
 - (void)updateDuration:(NSNumber *)time;
+- (void)updateIsCasting:(BOOL)isCasting;
 
 - (void)showSelf;
 - (void)hideSelf;

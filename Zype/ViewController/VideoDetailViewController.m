@@ -159,8 +159,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     self.isPlayerRequestPending = NO;
     
-    self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
-    [self.view addSubview:self.adsContainerView];
+    if (self.adsContainerView == nil){
+        self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
+        [self.view addSubview:self.adsContainerView];
+    }
     [self setupNotifications];
 }
 
@@ -250,7 +252,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-
+    
     // if request still being made or autoplay triggered
     if (self.isPlayerRequestPending){
         BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
@@ -258,16 +260,19 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         if (kNativeSubscriptionEnabled &&
             [self.video.subscription_required intValue] == 1 &&
             [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
-            
+            [self.playerControlsView setAsPause];
+            self.isPlayerRequestPending = NO;
+            [self.playerControlsView showSelf];
         } else if (requiresUniversalEntitlement &&
                    [ACStatusManager isUserSignedIn] == false){
-
+            [self.playerControlsView setAsPause];
+            self.isPlayerRequestPending = NO;
+            [self.playerControlsView showSelf];
         } else {
             self.isPlayerRequestPending = NO;
             self.avPlayer = nil;
             self.avPlayerController = nil;
             [self initPlayer];
-//            self.isPlayerRequestPending = YES;
         }
     }
 }
@@ -335,17 +340,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     
     UITapGestureRecognizer *playPausePressed = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                  action:@selector(playPausePressed:)];
+                                                                                action:@selector(playPausePressed:)];
     [self.playerControlsView.playPauseIcon addGestureRecognizer:playPausePressed];
     
     
     UITapGestureRecognizer *backIconPressed = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                  action:@selector(backIconPressed:)];
+                                                                                action:@selector(backIconPressed:)];
     [self.playerControlsView.backIcon addGestureRecognizer:backIconPressed];
     
     
     UITapGestureRecognizer *nextIconPressed = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                  action:@selector(nextIconPressed:)];
+                                                                                action:@selector(nextIconPressed:)];
     [self.playerControlsView.nextIcon addGestureRecognizer:nextIconPressed];
     
     
@@ -517,6 +522,21 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [self refreshPlayer];
     
+}
+
+- (BOOL)isPlayerUrlEmpty {
+    AVURLAsset *urlAsset = (AVURLAsset *)self.avPlayer.currentItem.asset;
+    
+    if ([urlAsset.URL.absoluteString length] > 0) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+- (int32_t)playerDurationTimeScale {
+    int32_t timeScale = self.avPlayer.currentItem.asset.duration.timescale;
+    return timeScale;
 }
 
 - (void)refreshPlayer{
@@ -717,8 +737,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         [self configurePlayerControlsState];
         [self setupPlayerControlsListeners];
+    } else {
+        [self configurePlayerControlsState];
     }
-    
 
     //setup analytics for a player
     if (self.beaconStringUrl)
@@ -777,6 +798,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view bringSubviewToFront:self.avPlayerController.view];
     [self.view bringSubviewToFront:self.adsContainerView];
     [self.view bringSubviewToFront:self.activityIndicator];
+    [self.view bringSubviewToFront:self.playerControlsView.view];
 }
 
 - (void)setupVideoPlayerView {
@@ -800,6 +822,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self setupConstraints];
     
     [self.avPlayerController.view setHidden:NO];
+    
+    
 }
 
 - (void)setupConstraints {
@@ -968,18 +992,26 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)loadSavedPlaybackTime{
     
-    CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], 1);
-    [self.avPlayer seekToTime:time];//HLS video cut to 10 seconds per segment. Your chapter start postion should fit the value which is multipes of 10. As the segment starts with I frame, on this way, you can get quick seek time and accurate time.
+    CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], [self playerDurationTimeScale]);
     
-    //pre-roll only for now only for non logged in users
-    if ([ACStatusManager isUserSignedIn] == NO && self.adsArray.count > 0 && [self.video.playTime intValue] == 0) {
-        [self requestAds];
-    } else {
-        [self.avPlayer play];
-        
-        [self.playerControlsView setAsPlay];
-        [self.playerControlsView showSelf];
-    }
+    // CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], 1);
+    [self.avPlayer seekToTime:time
+            toleranceBefore:kCMTimeZero
+            toleranceAfter:kCMTimeZero
+            completionHandler:^(BOOL finished) {
+                //pre-roll only for now only for non logged in users
+                if ([ACStatusManager isUserSignedIn] == NO && self.adsArray.count > 0 && [self.video.playTime intValue] == 0) {
+                    if ([self isPlayerUrlEmpty] == NO) {
+                        [self requestAds];
+                    }
+                    
+                } else {
+                    [self.avPlayer play];
+                    
+                    [self.playerControlsView setAsPlay];
+                    [self.playerControlsView showSelf];
+                }
+    }];//HLS video cut to 10 seconds per segment. Your chapter start postion should fit the value which is multipes of 10. As the segment starts with I frame, on this way, you can get quick seek time and accurate time.
     
 }
 
@@ -1103,22 +1135,28 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)moviePlayBackDidFinish:(NSNotification *)notification{
     
-    if ((int)CMTimeGetSeconds(self.avPlayer.currentItem.duration) ==  (int)CMTimeGetSeconds(self.avPlayer.currentItem.currentTime) ){
+    if ((int)CMTimeGetSeconds(self.avPlayer.currentItem.duration) ==  (int)CMTimeGetSeconds(self.avPlayer.currentItem.currentTime) && !self.isPlayerRequestPending ){
         //reset to beginning
         [self.avPlayer pause];
-        [self.avPlayer seekToTime:kCMTimeZero];
-        NSLog(@"moviePlayBackDidFinish");
-        // Set played
-        if (self.video.isDownload.boolValue == YES && self.video.isPlayed.boolValue == NO) {
-            
-            self.video.isPlayed = @YES;
-            [[ACSPersistenceManager sharedInstance] saveContext];
-            
-        }
-        
+        self.video.playTime = [NSNumber numberWithInt:0];
+
+        //[self.avPlayer seekToTime:kCMTimeZero];
+        [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0,[self playerDurationTimeScale])
+                toleranceBefore:kCMTimeZero
+                toleranceAfter:kCMTimeZero
+                completionHandler:^(BOOL finished) {
+                    NSLog(@"moviePlayBackDidFinish");
+                    // Set played
+                    if (self.video.isDownload.boolValue == YES && self.video.isPlayed.boolValue == NO) {
+                        self.video.isPlayed = @YES;
+                    }
+                    
+                    [[ACSPersistenceManager sharedInstance] saveContext];
+                    
+                    [self loadNextVideo];
+                }
+        ];
     }
-    
-    [self loadNextVideo];
 }
 
 - (void)moviePreloadDidFinish:(NSNotification *)notification {
@@ -1242,15 +1280,32 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 // Player Controls View
 - (void)viewPressed:(id)sender {
+    [self.playerControlsView updateIsCasting:self.avPlayer.externalPlaybackActive];
     [self.playerControlsView viewPressed:sender];
 }
 - (void)playPausePressed:(id)sender {
     [self.playerControlsView playPausePressed:sender];
-    if ((self.avPlayer.rate != 0) && (self.avPlayer.error == nil)) {
-        [self.avPlayer pause];
+    
+    BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
+    
+    if (kNativeSubscriptionEnabled &&
+        [self.video.subscription_required intValue] == 1 &&
+        [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+
+        [self showNsvodRequiredAlert];
+        
+    } else if (requiresUniversalEntitlement &&
+               [ACStatusManager isUserSignedIn] == false){
+        [self showSignInRequiredAlert];
+        
     } else {
-        [self.avPlayer play];
+        if ((self.avPlayer.rate != 0) && (self.avPlayer.error == nil)) {
+            [self.avPlayer pause];
+        } else {
+            [self.avPlayer play];
+        }
     }
+    
 }
 - (void)backIconPressed:(id)sender {
     [self.playerControlsView backIconPressed:sender];
@@ -1293,13 +1348,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)progressBarTouchUpInside:(id)sender {
-    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
-    [self.avPlayer seekToTime:time];
+    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, [self playerDurationTimeScale]);
+    [self.avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     [self.playerControlsView progressBarTouchUpInside:sender];
 }
 - (void)progressBarTouchUpOutside:(id)sender {
-    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
-    [self.avPlayer seekToTime:time];
+    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, [self playerDurationTimeScale]);
+    [self.avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     [self.playerControlsView progressBarTouchUpOutside:sender];
 }
 
@@ -1395,7 +1450,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 #pragma mark IMA SDK Setup
 
 - (void)setupAdsLoader {
-    self.adsLoader = [[IMAAdsLoader alloc] initWithSettings:nil];
+    if (self.adsLoader == nil){
+        self.adsLoader = [[IMAAdsLoader alloc] initWithSettings:nil];
+    }
     self.adsLoader.delegate = self;
 }
 
@@ -1708,6 +1765,10 @@ NSString* machineName() {
             }
             
             [UIUtil showSignInViewFromViewController:self];
+        } else if (alertView.tag == 997 && buttonIndex == 0){
+            [self configurePlayerControlsState];
+            self.isPlayerRequestPending = NO;
+            [self.playerControlsView showSelf];
         }
         
         if (alertView.tag == 996 && buttonIndex == 1){ // clicked nsvod subscribe
@@ -1718,6 +1779,10 @@ NSString* machineName() {
             
             // transition to native sub view
             [UIUtil showSubscriptionViewFromViewController:self];
+        } else if (alertView.tag == 996 && buttonIndex == 0){
+            [self configurePlayerControlsState];
+            self.isPlayerRequestPending = NO;
+            [self.playerControlsView showSelf];
         }
         
     }
