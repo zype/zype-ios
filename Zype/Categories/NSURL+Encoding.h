@@ -1,6 +1,5 @@
 //
 //  NSURL+Encoding.h
-//  acumiashow
 //
 //  Created by ZypeTech on 12/2/15.
 //  Copyright © 2015 Zype. All rights reserved.

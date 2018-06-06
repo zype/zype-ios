@@ -1,6 +1,5 @@
 //
 //  ACShareManager.m
-//  acumiashow
 //
 //  Created by ZypeTech on 5/29/15.
 //  Copyright (c) 2015 Zype. All rights reserved.
