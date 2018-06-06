@@ -534,11 +534,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
 }
 
-- (int32_t)playerDurationTimeScale {
-    int32_t timeScale = self.avPlayer.currentItem.asset.duration.timescale;
-    return timeScale;
-}
-
 - (void)refreshPlayer{
     
     [self showActivityIndicator];
@@ -992,46 +987,56 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)loadSavedPlaybackTime{
     
-    CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], [self playerDurationTimeScale]);
+    CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], 1);
+
+    [self.avPlayer seekToTime:time];//HLS video cut to 10 seconds per segment. Your chapter start postion should fit the value which is multipes of 10. As the segment starts with I frame, on this way, you can get quick seek time and accurate time.
     
-    // CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], 1);
-    [self.avPlayer seekToTime:time
-            toleranceBefore:kCMTimeZero
-            toleranceAfter:kCMTimeZero
-            completionHandler:^(BOOL finished) {
-                //pre-roll only for now only for non logged in users
-                if ([ACStatusManager isUserSignedIn] == NO && self.adsArray.count > 0 && [self.video.playTime intValue] == 0) {
-                    if ([self isPlayerUrlEmpty] == NO) {
-                        [self requestAds];
-                    }
-                    
-                } else {
-                    [self.avPlayer play];
-                    
-                    [self.playerControlsView setAsPlay];
-                    [self.playerControlsView showSelf];
-                }
-    }];//HLS video cut to 10 seconds per segment. Your chapter start postion should fit the value which is multipes of 10. As the segment starts with I frame, on this way, you can get quick seek time and accurate time.
-    
+    //pre-roll only for now only for non logged in users
+    if ([ACStatusManager isUserSignedIn] == NO && self.adsArray.count > 0 && [self.video.playTime intValue] == 0) {
+        if ([self isPlayerUrlEmpty] == NO) {
+            [self requestAds];
+        }
+        
+    } else {
+        [self.avPlayer play];
+        
+        [self.playerControlsView setAsPlay];
+        [self.playerControlsView showSelf];
+    }
 }
 
-- (void)loadNextVideo {
+- (NSUInteger)nextIndex {
+    int newIndex = (int)self.currentVideoIndex + 1;
+    if (newIndex < [self.videos count]){
+        return (NSUInteger)newIndex;
+    } else {
+        return 0;
+    }
+}
+
+- (NSUInteger)prevIndex {
+    int newIndex = (int)self.currentVideoIndex - 1;
+    if (newIndex >= 0){
+        return (NSUInteger)newIndex;
+    } else {
+        return (NSUInteger)[self.videos count] - 1;
+    }
+}
+
+- (void)loadVideo:(NSUInteger)newIndex {
     UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
     
     // Autoplay
-    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
-        [self saveCurrentPlaybackTime];
-        
-        if ([self.videos count] - 1 > self.currentVideoIndex) {
-            self.currentVideoIndex = self.currentVideoIndex + 1;
-        } else {
-            self.currentVideoIndex = 0;
-        }
+    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 0 && self.isPlayerRequestPending == NO){
+        [self saveCurrentPlaybackTime]; // save current video time first
+
+        self.currentVideoIndex = newIndex;
         
         _detailItem = [self.videos objectAtIndex:(self.currentVideoIndex)];
         self.video = (Video *)_detailItem; // next video
         
         [self configureView];
+        [self configurePlayerControlsState];
         
         BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
         
@@ -1134,16 +1139,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)moviePlayBackDidFinish:(NSNotification *)notification{
-    
-    if ((int)CMTimeGetSeconds(self.avPlayer.currentItem.duration) ==  (int)CMTimeGetSeconds(self.avPlayer.currentItem.currentTime) && !self.isPlayerRequestPending ){
+    if ((int)CMTimeGetSeconds(self.avPlayer.currentItem.currentTime) >=  (int)CMTimeGetSeconds(self.avPlayer.currentItem.duration) && !self.isPlayerRequestPending ){
         //reset to beginning
         [self.avPlayer pause];
         self.video.playTime = [NSNumber numberWithInt:0];
 
-        //[self.avPlayer seekToTime:kCMTimeZero];
-        [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0,[self playerDurationTimeScale])
-                toleranceBefore:kCMTimeZero
-                toleranceAfter:kCMTimeZero
+        [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0, 1)
                 completionHandler:^(BOOL finished) {
                     NSLog(@"moviePlayBackDidFinish");
                     // Set played
@@ -1153,7 +1154,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                     
                     [[ACSPersistenceManager sharedInstance] saveContext];
                     
-                    [self loadNextVideo];
+                    [self loadVideo:[self nextIndex]];
                 }
         ];
     }
@@ -1314,13 +1315,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.avPlayer pause];
     [self saveCurrentPlaybackTime];
     
-    NSInteger newIndex = self.currentVideoIndex - 2;
-    if (newIndex < 0) {
-        newIndex = [self.videos count] - newIndex;
-    }
-    self.currentVideoIndex = newIndex;
-    
-    [self loadNextVideo];
+    [self loadVideo:[self prevIndex]];
 }
 - (void)nextIconPressed:(id)sender {
     [self.playerControlsView nextIconPressed:sender];
@@ -1329,7 +1324,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.avPlayer pause];
     [self saveCurrentPlaybackTime];
     
-    [self loadNextVideo];
+    [self loadVideo:[self nextIndex]];
 }
 - (void)fullScreenPressed:(id)sender {
     [self.playerControlsView fullScreenPressed:sender];
@@ -1348,13 +1343,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)progressBarTouchUpInside:(id)sender {
-    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, [self playerDurationTimeScale]);
-    [self.avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
+    [self.avPlayer seekToTime:time];
     [self.playerControlsView progressBarTouchUpInside:sender];
 }
 - (void)progressBarTouchUpOutside:(id)sender {
-    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, [self playerDurationTimeScale]);
-    [self.avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
+    [self.avPlayer seekToTime:time];
     [self.playerControlsView progressBarTouchUpOutside:sender];
 }
 
