@@ -194,7 +194,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kSettingKey_DownloadAudio @"downloadAudio"
 #define kSettingKey_DownloadVideo @"downloadVideo"
 #define kSettingKey_SubscribeUrl @"settingSubscribeUrl"
-#define kSettingKey_SubscribeMessage @"Please subscribe to get full access to the Luis Show!"
+#define kSettingKey_SubscribeMessage @"Please subscribe to get full access to the video!"
 #define kSettingKey_SubscribeButtontitle @"Subscribe"
 #define kSettingKey_SubscribeCancelButtonTitle @"Not Now"
 #define kSettingKey_SubscribeTitleMessage @"Please Subscribe"

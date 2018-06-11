@@ -67,6 +67,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (kAppAppleTVLayout){
+        self.tableView.separatorColor = [UIColor clearColor];
+    }
+    
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;
     

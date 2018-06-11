@@ -34,19 +34,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Init controller depending on view type
-    
-    if (kAppAppleTVLayout) {
-        self.episodeController = [[BaseTVLayoutController alloc] initWithTableView:self.tableView];
-        [self.collectionView setHidden:YES];
+    if ([self isRegularSizeClass] == YES) {
+        self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
+        [self.tableView setHidden:YES];
     } else {
-        if ([self isRegularSizeClass] == YES) {
-            self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
-            [self.tableView setHidden:YES];
-        } else {
-            self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
-            [self.collectionView setHidden:YES];
-        }
+        self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
+        [self.collectionView setHidden:YES];
     }
     
     self.episodeController.delegate = self;
