@@ -133,6 +133,13 @@
     self.defaultStatusImageWidth = self.statusImage.frame.size.width;
     self.actionCoverView.layer.cornerRadius = 4;
     [self hideStatusImage:YES];
+    
+    if (kAppColorLight){
+        self.titleLabel.textColor = [UIColor blackColor];
+    } else {
+        self.titleLabel.textColor = [UIColor whiteColor];
+    }
+    
     [super awakeFromNib];
 }
 

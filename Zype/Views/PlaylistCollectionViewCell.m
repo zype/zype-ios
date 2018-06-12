@@ -127,6 +127,11 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    if (kAppColorLight){
+        self.titleLabel.textColor = [UIColor blackColor];
+    } else {
+        self.titleLabel.textColor = [UIColor whiteColor];
+    }
     
     [super awakeFromNib];
 }
