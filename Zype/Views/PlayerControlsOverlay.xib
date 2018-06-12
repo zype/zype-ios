@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayerControlsOverlay">
+            <connections>
+                <outlet property="backIcon" destination="wGG-lY-W3x" id="6sE-VG-wI5"/>
+                <outlet property="currentTimeLabel" destination="32W-Ox-7Zw" id="WrY-yf-Yks"/>
+                <outlet property="durationLabel" destination="4iu-CP-EkD" id="7nG-NC-ttj"/>
+                <outlet property="fullScreenIcon" destination="65r-If-JmO" id="7pI-td-QzM"/>
+                <outlet property="mpVolumeViewContainer" destination="s6l-hb-Y6B" id="0bs-FA-U1e"/>
+                <outlet property="nextIcon" destination="Cm8-ms-zyt" id="nMe-Ck-367"/>
+                <outlet property="playPauseIcon" destination="p64-28-KAO" id="NZC-Id-ii1"/>
+                <outlet property="progressBar" destination="AWI-Sv-jDn" id="Ztl-DU-TfV"/>
+                <outlet property="view" destination="iN0-l3-epB" id="awi-mC-cqR"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleAspectFill" id="iN0-l3-epB" customClass="PlayerControlsOverlay">
+            <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32W-Ox-7Zw">
+                    <rect key="frame" x="20" y="270" width="96" height="36"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </label>
+                <slider opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="AWI-Sv-jDn">
+                    <rect key="frame" x="18" y="314" width="538" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="maximumTrackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <action selector="progressBarTouchUpInside:" destination="-1" eventType="touchUpInside" id="Ank-2R-ejA"/>
+                        <action selector="progressBarTouchUpOutside:" destination="-1" eventType="touchUpOutside" id="wZU-Go-yqY"/>
+                        <action selector="progressBarValueChanged:" destination="-1" eventType="valueChanged" id="BcC-hX-7xz"/>
+                    </connections>
+                </slider>
+                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconFullscreenW" translatesAutoresizingMaskIntoConstraints="NO" id="65r-If-JmO">
+                    <rect key="frame" x="576" y="280" width="44" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="2G5-W0-nod" appends="YES" id="Ui0-FG-gQu"/>
+                    </connections>
+                </imageView>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconPlayW" translatesAutoresizingMaskIntoConstraints="NO" id="p64-28-KAO">
+                    <rect key="frame" x="287" y="148" width="64" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="Hc6-W9-ZZX" appends="YES" id="z78-tR-nb7"/>
+                    </connections>
+                </imageView>
+                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconBackW" translatesAutoresizingMaskIntoConstraints="NO" id="wGG-lY-W3x">
+                    <rect key="frame" x="192" y="148" width="64" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="XVh-sS-rEm" appends="YES" id="v34-XW-Nm4"/>
+                    </connections>
+                </imageView>
+                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconNextW" translatesAutoresizingMaskIntoConstraints="NO" id="Cm8-ms-zyt">
+                    <rect key="frame" x="387" y="148" width="64" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="qfQ-Kf-Mkd" appends="YES" id="9Ju-S1-FE1"/>
+                    </connections>
+                </imageView>
+                <view contentMode="TopLeft" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s6l-hb-Y6B">
+                    <rect key="frame" x="556" y="20" width="64" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iu-CP-EkD">
+                    <rect key="frame" x="446" y="270" width="96" height="36"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="4xQ-nE-2Cz" appends="YES" id="WSn-ai-4if"/>
+            </connections>
+            <point key="canvasLocation" x="72" y="-137"/>
+        </view>
+        <tapGestureRecognizer id="4xQ-nE-2Cz">
+            <connections>
+                <action selector="viewPressed:" destination="-1" id="BzI-zG-d2B"/>
+                <outlet property="delegate" destination="iN0-l3-epB" id="0LV-Be-hfq"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Hc6-W9-ZZX">
+            <connections>
+                <action selector="playPausePressed:" destination="-1" id="3sP-u8-Wmm"/>
+                <outlet property="delegate" destination="p64-28-KAO" id="BWM-mF-iAA"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="XVh-sS-rEm">
+            <connections>
+                <action selector="backIconPressed:" destination="-1" id="bbf-zD-w5w"/>
+                <outlet property="delegate" destination="wGG-lY-W3x" id="Lfx-wS-4fP"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="qfQ-Kf-Mkd">
+            <connections>
+                <action selector="nextIconPressed:" destination="-1" id="F6c-lf-HfW"/>
+                <outlet property="delegate" destination="Cm8-ms-zyt" id="z6q-13-3yx"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="2G5-W0-nod">
+            <connections>
+                <action selector="fullScreenPressed:" destination="-1" id="CeR-mc-o4p"/>
+                <outlet property="delegate" destination="65r-If-JmO" id="18Y-aP-lwD"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="IconBackW" width="64" height="64"/>
+        <image name="IconFullscreenW" width="32" height="32"/>
+        <image name="IconNextW" width="64" height="64"/>
+        <image name="IconPlayW" width="64" height="64"/>
+    </resources>
+</document>

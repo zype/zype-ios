@@ -1,6 +1,5 @@
 //
 //  BottomBorderTextField.swift
-//  acumiashow
 //
 //  Created by PJ Vea on 10/22/15.
 //  Copyright © 2015 Zype. All rights reserved.

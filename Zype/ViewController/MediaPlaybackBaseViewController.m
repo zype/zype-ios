@@ -1,6 +1,5 @@
 //
 //  MediaPlaybackBaseViewController.m
-//  acumiashow
 //
 //  Created by ZypeTech on 11/5/15.
 //  Copyright © 2015 Zype. All rights reserved.
