@@ -673,7 +673,6 @@
             urlAsString = [NSString stringWithFormat:@"%@&download=true", urlAsString];
         }
 
-        NSLog(@"urlAsString: %@", urlAsString);
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
