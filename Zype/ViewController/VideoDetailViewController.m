@@ -992,7 +992,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.avPlayer seekToTime:time];//HLS video cut to 10 seconds per segment. Your chapter start postion should fit the value which is multipes of 10. As the segment starts with I frame, on this way, you can get quick seek time and accurate time.
     
     //pre-roll only for now only for non logged in users
-    if ([ACStatusManager isUserSignedIn] == NO && self.adsArray.count > 0 && [self.video.playTime intValue] == 0) {
+    if ([ACStatusManager isUserSignedIn] == NO && self.adsArray.count > 0) {
         if ([self isPlayerUrlEmpty] == NO) {
             [self requestAds];
         }
@@ -1469,19 +1469,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     for (AdObject *adObject in requests) {
         
         NSString *newTag = [self replaceAdMacros:adObject.tag];
-        if (adObject.offset == 0) {
-            isPrerollUsed = YES;
-            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
-                                                          adDisplayContainer:adDisplayContainer
-                                                             contentPlayhead:self.contentPlayhead
-                                                                 userContext:nil];
-            
-            if (!isRequestPending) [self.adsLoader requestAdsWithRequest:request];
-        } else {
-            
-            [adOffsets addObject:adObject.offsetValue];
-            [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
-            [adsTags addObject:newTag];
+        
+        // only listen for ads at or after video start point
+        if ([NSNumber numberWithDouble:adObject.offset] >= self.video.playTime){
+            if (adObject.offset == 0) {
+                isPrerollUsed = YES;
+                IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
+                                                              adDisplayContainer:adDisplayContainer
+                                                                 contentPlayhead:self.contentPlayhead
+                                                                     userContext:nil];
+                
+                if (!isRequestPending) [self.adsLoader requestAdsWithRequest:request];
+            } else {
+                
+                [adOffsets addObject:adObject.offsetValue];
+                [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
+                [adsTags addObject:newTag];
+            }
         }
     }
     
