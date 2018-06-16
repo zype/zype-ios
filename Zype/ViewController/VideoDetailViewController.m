@@ -667,7 +667,7 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
 
 - (void) getStreamingPlaybackForCast {
     [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo: NO withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
+         self.mediaInfo = nil;
         if (error) {
             CLS_LOG(@"Failed: %@", error);
         } else {
@@ -681,19 +681,28 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
                 PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
                 self.videoPlaybackSource = source;
                 
-                if (kDebugCastEnabled){
-                    //test data
-                    source = [PlaybackSource alloc];
-                    //[source setUrlString:@"https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8"];
-                    [source setUrlString:@"https://player.zype.com/manifest/5744abef9958b70d060008d3.m3u8?app_key=HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU&player_request_id=5b05afbd60caab11e3006cf1"];
-                    [source setFileType:@"m3u8"];
-                    self.videoPlaybackSource = source;
+                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
+                
+                //check for status code family
+                if ([response isStatusFamilyError]) {
+                    BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
+                    if (hasConnectedCastSession){
+                        [_castSession.remoteMediaClient stop];
+                    }
+                }else{
+                    if (kDebugCastEnabled){
+                        //test data
+                        source = [PlaybackSource alloc];
+                        //[source setUrlString:@"https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8"];
+                        [source setUrlString:@"https://player.zype.com/manifest/5744abef9958b70d060008d3.m3u8?app_key=HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU&player_request_id=5b05afbd60caab11e3006cf1"];
+                        [source setFileType:@"m3u8"];
+                        self.videoPlaybackSource = source;
+                    }
+                    
+                    if (source != nil && source.urlString != nil)
+                        [self buildMediaInfo];
                 }
-                
-                if (source != nil && source.urlString != nil)
-                    [self buildMediaInfo];
-                
-                NSLog(@"********* build media selected ***");
             }
         }
     }];
