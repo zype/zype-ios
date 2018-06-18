@@ -36,6 +36,7 @@
 #define kAppAppleTVLayout NO
 
 //Show/Hide titles on thumbnails for playlist views on iPhone
+#define kHidePlaylistTitles NO
 #define kAppAppleTVLayoutShowThumbanailTitle NO
 
 //Features Configuration
