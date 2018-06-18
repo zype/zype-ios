@@ -56,7 +56,11 @@
         
         // [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
         
-        self.textTitle.text = playlist.title;
+        if (kHidePlaylistTitles){
+            self.textTitle.text = @"";
+        } else {
+            self.textTitle.text = playlist.title;
+        }
     });
 }
 
