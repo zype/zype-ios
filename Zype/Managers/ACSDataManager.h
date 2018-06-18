@@ -1,6 +1,5 @@
 //
 //  ACSDataManager.h
-//  acumiashow
 //
 //  Created by ZypeTech on 7/3/15.
 //  Copyright (c) 2015 Zype. All rights reserved.

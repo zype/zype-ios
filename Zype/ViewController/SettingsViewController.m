@@ -9,6 +9,7 @@
 #import <AdSupport/ASIdentifierManager.h>
 #import "SettingsViewController.h"
 #import "SettingsDetailViewController.h"
+#import "UserPreferencesViewController.h"
 #import "AppDelegate.h"
 #import "ACSDataManager.h"
 #import "ACDownloadManager.h"
@@ -58,12 +59,15 @@
 
 - (void)configureSettings {
     self.settingsDataSource = [[NSMutableArray alloc] init];
+    
+    // Terms of Service cell
     TableSectionDataSource *termsOfServise = [[TableSectionDataSource alloc] init];
     termsOfServise.title = @"Terms of Service & Privacy";
     termsOfServise.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     termsOfServise.type = TermsOfService;
     [self.settingsDataSource addObject:termsOfServise];
     
+    // Restore Purchase cell
     if (kNativeSubscriptionEnabled) {
         TableSectionDataSource *restorePurchase = [[TableSectionDataSource alloc] init];
         restorePurchase.title = @"Restore Purchase";
@@ -71,6 +75,7 @@
         [self.settingsDataSource addObject:restorePurchase];
     }
     
+    // Version cell
     TableSectionDataSource *version = [[TableSectionDataSource alloc] init];
     version.title = @"Version";
     UILabel *labelVersion = [[UILabel alloc] init];
@@ -81,6 +86,14 @@
     version.accessoryView = labelVersion;
     version.type = Version;
     [self.settingsDataSource addObject:version];
+    
+    // User Preferences cell
+    TableSectionDataSource *userPreferences = [[TableSectionDataSource alloc] init];
+    userPreferences.title = @"Preferences";
+    userPreferences.type = Preferences;
+    userPreferences.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    [self.settingsDataSource addObject:userPreferences];
     
     [self.tableView reloadData];
 }
@@ -116,6 +129,8 @@
     if ([[segue identifier] isEqualToString:@"showSettingsDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         [[segue destinationViewController] setPageIndex:indexPath];
+    } else if ([[segue identifier] isEqualToString:@"showUserPreferences"]) {
+        [[segue destinationViewController] fetchUserPreferences];
     }
 }
 
@@ -368,8 +383,9 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1 && indexPath.row == 2) return nil;
-    else return indexPath;
+//    if (indexPath.section == 1 && indexPath.row == 2) return nil;
+//    else return indexPath;
+    return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -406,11 +422,19 @@
                 break;
             }
 
-            case RestorePurchase:
+            case RestorePurchase: {
                 [self restorePurchases];
                 break;
-            default:
+            }
+            
+            case Preferences: {
+                [self performSegueWithIdentifier:@"showUserPreferences" sender:self];
                 break;
+            }
+                
+            default: {
+                break;
+            }
         }
         
 

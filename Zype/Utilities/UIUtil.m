@@ -345,7 +345,8 @@
     NSString *url = @"";
     
     for (NSDictionary *dict in array) {
-        if ([[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"]) {
+        // only select "mobile" image if device is not iPad
+        if ([[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"] && UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
             url = [dict valueForKey:kAppKey_Url];
         }
     }
@@ -358,8 +359,8 @@
     NSString *url = @"";
     
     for (NSDictionary *dict in array) {
-        
-        if ([[dict valueForKey:kAppKey_Layout] isEqualToString:layout] && [[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"]) {
+        // only select "mobile" image if device is not iPad
+        if ([[dict valueForKey:kAppKey_Layout] isEqualToString:layout] && [[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"] && UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
             url = [dict valueForKey:kAppKey_Url];
         }
 

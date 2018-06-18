@@ -1,6 +1,5 @@
 //
 //  BaseCollectionViewController.m
-//  acumiashow
 //
 //  Created by ZypeTech on 6/20/15.
 //  Copyright (c) 2015 Zype. All rights reserved.
@@ -34,19 +33,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Init controller depending on view type
-    
-    if (kAppAppleTVLayout) {
-        self.episodeController = [[BaseTVLayoutController alloc] initWithTableView:self.tableView];
-        [self.collectionView setHidden:YES];
+    if ([self isRegularSizeClass] == YES) {
+        self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
+        [self.tableView setHidden:YES];
     } else {
-        if ([self isRegularSizeClass] == YES) {
-            self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
-            [self.tableView setHidden:YES];
-        } else {
-            self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
-            [self.collectionView setHidden:YES];
-        }
+        self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
+        [self.collectionView setHidden:YES];
     }
     
     self.episodeController.delegate = self;

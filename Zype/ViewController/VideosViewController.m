@@ -1,6 +1,5 @@
 //
 //  HomeCollectionViewController.m
-//  acumiashow
 //
 //  Created by ZypeTech on 6/21/15.
 //  Copyright (c) 2015 Zype. All rights reserved.
@@ -66,6 +65,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (kAppAppleTVLayout){
+        self.tableView.separatorColor = [UIColor clearColor];
+    }
     
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;

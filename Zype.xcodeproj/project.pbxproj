@@ -132,6 +132,11 @@
 		A1B3C4172032268300784F64 /* ACAnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B3C4162032268300784F64 /* ACAnalyticsManager.m */; };
 		A1B3C41E203227E100784F64 /* libAKAMMediaExtensions-AV.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B3C41B203227E100784F64 /* libAKAMMediaExtensions-AV.a */; };
 		A1B3C420203227E100784F64 /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = A1B3C41D203227E100784F64 /* ReadMe */; };
+		E131B8EE20BE12C60074ACF5 /* PlayerControlsOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */; };
+		E131B8F020BE132B0074ACF5 /* PlayerControlsOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */; };
+		E1C884AD20B4969F008D9184 /* UserPreferenceCellDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */; };
+		E1C884B020B496EF008D9184 /* UserPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884AF20B496EF008D9184 /* UserPreferences.m */; };
+		E1C884B320B49718008D9184 /* UserPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884B220B49718008D9184 /* UserPreferencesViewController.m */; };
 		FA09369920238B88009E14E3 /* MediaItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA09369820238B88009E14E3 /* MediaItemView.m */; };
 		FA1940351FCC75AF005CE292 /* PlaylistCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1940331FCC75AF005CE292 /* PlaylistCollectionCell.m */; };
 		FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1940341FCC75AF005CE292 /* PlaylistCollectionCell.xib */; };
@@ -349,6 +354,15 @@
 		B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EpisodeControllerDelegate.h; path = Protocols/EpisodeControllerDelegate.h; sourceTree = "<group>"; };
 		B96FF88A1B17B535007CA447 /* ZypeDBMappingModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ZypeDBMappingModel.xcmappingmodel; sourceTree = "<group>"; };
 		B9C5863E1B1CC60A00647936 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E131B8EC20BE12C60074ACF5 /* PlayerControlsOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PlayerControlsOverlay.h; path = Views/PlayerControlsOverlay.h; sourceTree = "<group>"; };
+		E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PlayerControlsOverlay.m; path = Views/PlayerControlsOverlay.m; sourceTree = "<group>"; };
+		E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlayerControlsOverlay.xib; path = Views/PlayerControlsOverlay.xib; sourceTree = "<group>"; };
+		E1C884AB20B4969F008D9184 /* UserPreferenceCellDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferenceCellDataSource.h; path = Models/UserPreferenceCellDataSource.h; sourceTree = "<group>"; };
+		E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferenceCellDataSource.m; path = Models/UserPreferenceCellDataSource.m; sourceTree = "<group>"; };
+		E1C884AE20B496EF008D9184 /* UserPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferences.h; path = Models/UserPreferences.h; sourceTree = "<group>"; };
+		E1C884AF20B496EF008D9184 /* UserPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferences.m; path = Models/UserPreferences.m; sourceTree = "<group>"; };
+		E1C884B120B49718008D9184 /* UserPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferencesViewController.h; path = ViewController/UserPreferencesViewController.h; sourceTree = "<group>"; };
+		E1C884B220B49718008D9184 /* UserPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferencesViewController.m; path = ViewController/UserPreferencesViewController.m; sourceTree = "<group>"; };
 		F176C9A51AA7963A0080E334 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F176C9B51AA8B9770080E334 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F176C9B91AAE18D30080E334 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -681,6 +695,10 @@
 		F1BB52AC1A76D99D00E901F1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E1C884AE20B496EF008D9184 /* UserPreferences.h */,
+				E1C884AF20B496EF008D9184 /* UserPreferences.m */,
+				E1C884AB20B4969F008D9184 /* UserPreferenceCellDataSource.h */,
+				E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */,
 				A13AF2A91D36985A00DDA006 /* Action.h */,
 				A13AF2AA1D36985A00DDA006 /* Action.m */,
 				A13AF2AB1D36985A00DDA006 /* DownloadInfo.h */,
@@ -771,6 +789,9 @@
 				FA3C18F32020D4330087AA38 /* PagerSectionCell.xib */,
 				FA09369720238B88009E14E3 /* MediaItemView.h */,
 				FA09369820238B88009E14E3 /* MediaItemView.m */,
+				E131B8EC20BE12C60074ACF5 /* PlayerControlsOverlay.h */,
+				E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */,
+				E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -778,6 +799,8 @@
 		F1BB52AE1A76D9B800E901F1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E1C884B120B49718008D9184 /* UserPreferencesViewController.h */,
+				E1C884B220B49718008D9184 /* UserPreferencesViewController.m */,
 				A11CBA4C1E78B5FD0006FC40 /* TabBarViewController.h */,
 				A11CBA4D1E78B5FD0006FC40 /* TabBarViewController.m */,
 				A13AF2EE1D369A2C00DDA006 /* BaseViewController.h */,
@@ -875,7 +898,6 @@
 				780AC6DE1BDFD284007F1119 /* Frameworks */,
 				780AC6EE1BDFD284007F1119 /* Resources */,
 				780AC7031BDFD284007F1119 /* ShellScript */,
-				7A61F1D41D8E4610CCB40A8B /* [CP] Embed Pods Frameworks */,
 				2BF6A0A518748AED5DDC619B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -979,6 +1001,7 @@
 				780AC6FF1BDFD284007F1119 /* OpenSans-BoldItalic.ttf in Resources */,
 				FA3C18F52020D4330087AA38 /* PagerSectionCell.xib in Resources */,
 				FA4BA32D1EF075B9004985F6 /* SubscriptActiveCell.xib in Resources */,
+				E131B8F020BE132B0074ACF5 /* PlayerControlsOverlay.xib in Resources */,
 				780AC7021BDFD284007F1119 /* OpenSans-ExtraBold.ttf in Resources */,
 				A13AF37D1D369DB600DDA006 /* YouTubePlayer.html in Resources */,
 			);
@@ -993,9 +1016,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-resources.sh",
+				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1008,13 +1034,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Zype-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		780AC7031BDFD284007F1119 /* ShellScript */ = {
@@ -1029,21 +1058,6 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/Fabric/run 83465ef9de45bd3ccc1aeaa066ed7d13dd96a1e4 0b81dd3d4789d7cebb8ee4d77fe25dcaabbf0f8cb55d8c6f7392d4b798e8c57f";
-		};
-		7A61F1D41D8E4610CCB40A8B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1064,6 +1078,7 @@
 				A13AF3361D369B9A00DDA006 /* NSDictionary+Extensions.m in Sources */,
 				A13AF30A1D369A2C00DDA006 /* BaseViewController.m in Sources */,
 				A13AF37A1D369DB600DDA006 /* ACSPredicates.m in Sources */,
+				E1C884B320B49718008D9184 /* UserPreferencesViewController.m in Sources */,
 				A13AF3201D369AB300DDA006 /* BaseCollectionController.m in Sources */,
 				A13AF3221D369AB300DDA006 /* EpisodeController.m in Sources */,
 				A13AF36A1D369D1F00DDA006 /* NSString+AC.m in Sources */,
@@ -1121,6 +1136,7 @@
 				FA4BA3301EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m in Sources */,
 				A13AF3691D369D1F00DDA006 /* NSMutableArray+LimitedStack.m in Sources */,
 				A13AF35C1D369CC600DDA006 /* ViewManager.m in Sources */,
+				E1C884B020B496EF008D9184 /* UserPreferences.m in Sources */,
 				A13AF36D1D369D1F00DDA006 /* UIStoryboard+NamedStoryboards.m in Sources */,
 				A13AF2E61D36995000DDA006 /* GuestTableViewCell.m in Sources */,
 				A13AF3111D369A2C00DDA006 /* MediaPlaybackBaseViewController.m in Sources */,
@@ -1134,8 +1150,10 @@
 				A13AF3381D369B9A00DDA006 /* Reachability.m in Sources */,
 				FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */,
 				A13AF2BE1D36985A00DDA006 /* DownloadInfo.m in Sources */,
+				E1C884AD20B4969F008D9184 /* UserPreferenceCellDataSource.m in Sources */,
 				A13AF2C61D36985A00DDA006 /* Video.m in Sources */,
 				FA4BA32C1EF075B9004985F6 /* SubscriptActiveCell.m in Sources */,
+				E131B8EE20BE12C60074ACF5 /* PlayerControlsOverlay.m in Sources */,
 				A13AF2E51D36995000DDA006 /* FavoriteTableViewCell.m in Sources */,
 				FAA90E051F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m in Sources */,
 				A15D10CD1DE4CF3C00BAB958 /* PlaylistVideo.m in Sources */,
@@ -1188,7 +1206,7 @@
 				);
 				GCC_PREFIX_HEADER = Zype/Prefixheader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/Zype/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1224,7 +1242,7 @@
 				);
 				GCC_PREFIX_HEADER = Zype/Prefixheader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/Zype/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

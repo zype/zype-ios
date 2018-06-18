@@ -1,6 +1,5 @@
 //
 //  ACSCoreDataManager.m
-//  acumiashow
 //
 //  Created by ZypeTech on 7/16/15.
 //  Copyright (c) 2015 Zype. All rights reserved.
@@ -21,6 +20,7 @@
 #import "Playlist.h"
 #import "ZObject.h"
 #import "Pager.h"
+#import "UserPreferences.h"
 
 @interface ACSPersistenceManager ()
 
@@ -1481,6 +1481,37 @@
     
 }
 
+#pragma mark - User Preferences
+
++ (UserPreferences *)getUserPreferences {
+    NSError *error = nil;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityUserPreferences];
+    request.fetchLimit = 1;
+    NSArray *result = [[ACSPersistenceManager sharedInstance].managedObjectContext executeFetchRequest:request error:&error];
+    
+    UserPreferences *userPreferences;
+    
+    // if record exists get it, else create one
+    if (!error && result.count > 0){
+        userPreferences = (UserPreferences *)result.firstObject;
+    } else {
+        userPreferences = (UserPreferences *)[NSEntityDescription insertNewObjectForEntityForName:kEntityUserPreferences inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+        CLS_LOG(@"Added user preferences");
+    }
+    
+    userPreferences = [ACSPersistenceManager saveUserPreferences:userPreferences];
+
+    return userPreferences;
+}
+
++ (UserPreferences *)saveUserPreferences:(UserPreferences *)userPreferences {
+    // if any values are empty, set default values
+    if (userPreferences.autoplay == nil) userPreferences.autoplay = [NSNumber numberWithInt:1];
+    
+    [[ACSPersistenceManager sharedInstance] saveContext];
+    
+    return userPreferences;
+}
 
 #pragma mark - Core Data stack
 
@@ -1589,7 +1620,6 @@
     }
     
 }
-
 
 #pragma mark - Singleton
 

@@ -1,6 +1,5 @@
 //
 //  HomeCollectionViewController.m
-//  acumiashow
 //
 //  Created by ZypeTech on 6/21/15.
 //  Copyright (c) 2015 Zype. All rights reserved.
@@ -11,6 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "HomeViewController.h"
+#import "BaseTVLayoutController.h"
 #import "EpisodeControllerDelegate.h"
 #import "VideoDetailViewController.h"
 #import "SearchResultViewController.h"
@@ -63,6 +63,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Init controller depending on view type
+    if (kAppAppleTVLayout) {
+        self.episodeController = [[BaseTVLayoutController alloc] initWithTableView:self.tableView];
+        [self.collectionView setHidden:YES];
+        self.tableView.separatorColor = [UIColor clearColor];
+    } else {
+        if ([self isRegularSizeClass] == YES) {
+            self.episodeController = [[BaseCollectionController alloc] initWithCollectionView:self.collectionView];
+            [self.tableView setHidden:YES];
+        } else {
+            self.episodeController = [[BaseTableController alloc] initWithTableView:self.tableView];
+            [self.collectionView setHidden:YES];
+        }
+    }
+    self.episodeController.delegate = self;
+
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;
     

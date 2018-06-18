@@ -1,6 +1,5 @@
 //
 //  ACSCoreDataManager.h
-//  acumiashow
 //
 //  Created by ZypeTech on 7/16/15.
 //  Copyright (c) 2015 Zype. All rights reserved.
@@ -9,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Notification, Video, Guest, Favorite, Playlist, PlaylistVideo, Pager;
+@class Notification, Video, Guest, Favorite, Playlist, PlaylistVideo, Pager, UserPreferences;
 
 @interface ACSPersistenceManager : NSObject
 
@@ -87,6 +86,9 @@
 - (NSArray *)newNotifications;
 - (void)setScheduledNotification:(Notification *)notification;
 + (void)populateNotificationsFromDict:(NSDictionary *)parsedObject WithNotificationsInDB:(NSMutableArray *)notificationsInDB WithExistingNotifications:(NSMutableArray *)existingNotifications IsLastPage:(BOOL)isLastPage;
+
++ (UserPreferences *)getUserPreferences; // gets preferences. create defaults if necessary
+
 
 - (void)saveContext;
 - (NSManagedObjectContext *)managedObjectContext;

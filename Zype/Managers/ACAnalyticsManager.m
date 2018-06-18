@@ -51,6 +51,11 @@
                                         self.siteId, @"siteId",
                                         self.videoId, @"videoId",
                                         nil];
+    
+    if ([ACStatusManager isUserSignedIn]){
+        [customData setObject:[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId] forKey:@"consumerId"];
+    }
+    
     if (customData) {
         id key;
         for (key in customData) {
