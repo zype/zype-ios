@@ -1,0 +1,115 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+# Fetch Appfile configs
+app_id            = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+apple_dev_id      = CredentialsManager::AppfileConfig.try_fetch_value(:apple_id)
+
+app_display_name  = "Zype Template"
+app_version_num   = "1.0.0"
+app_build_num     = "1"
+
+# Zype iOS template - base Fastlane configs
+xcode_proj      = "Zype.xcodeproj"
+zype_workspace  = "Zype.xcworkspace"
+app_plist       = "Zype/Info.plist"
+app_scheme      = "Zype"
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Displays current app configs"
+  lane :display_config do
+    display_name = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleDisplayName"
+    )
+    identifier  = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleIdentifier"
+    )
+    version_num = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleShortVersionString"
+    )
+    build_num   = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleVersion"
+    )
+
+    puts "Current app configuration"
+    puts "\tdisplay name: #{display_name}"
+    puts "\tapp id: #{identifier}"
+    puts "\tversion number: #{version_num}"
+    puts "\tbuild number: #{build_num}"
+  end
+
+  desc "Updates the app configuration. Accepts: display_name, app_id, version_number, build_number"
+  lane :update_config do |options|
+    if options[:display_name]
+      update_info_plist(
+        xcodeproj:      xcode_proj,
+        plist_path:     app_plist,
+        display_name:   options[:display_name]
+      )
+    end
+
+    if options[:app_id]
+      update_app_identifier(
+        xcodeproj:      xcode_proj,
+        plist_path:     app_plist, # where app info is stored
+        app_identifier: options[:app_id]      # new app id
+      )
+    end
+
+    if options[:version_number]
+      increment_version_number(
+        version_number: options[:version_number],  # new version no.
+        xcodeproj:      xcode_proj,
+      )
+    end
+
+    if options[:build_number]
+      set_info_plist_value(
+        path: app_plist,
+        key: "CFBundleVersion",
+        value: options[:build_number] # new build no.
+      )
+    end
+  end
+
+  desc "Updates app config using the Appfile"
+  lane :update_with_appfile do
+    update_info_plist(
+      xcodeproj:      xcode_proj,
+      plist_path:     app_plist,
+      app_identifier: app_id
+    )
+    update_info_plist(
+      xcodeproj:      xcode_proj,
+      plist_path:     app_plist,
+      display_name:   app_display_name
+    )
+    increment_version_number(
+      xcodeproj:      xcode_proj,
+      version_number: app_version_num,
+    )
+    set_info_plist_value(
+      path: app_plist,
+      key: "CFBundleVersion",
+      value: app_build_num
+    )
+  end
+end
