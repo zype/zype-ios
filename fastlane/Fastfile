@@ -14,8 +14,9 @@
 # update_fastlane
 
 # Fetch Appfile configs
-app_id            = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
-apple_dev_id      = CredentialsManager::AppfileConfig.try_fetch_value(:apple_id)
+app_id        = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+apple_dev_id  = CredentialsManager::AppfileConfig.try_fetch_value(:apple_id)
+dev_team_id   = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
 
 app_display_name  = "Zype Template"
 app_version_num   = "1.0.0"
@@ -30,6 +31,57 @@ app_scheme      = "Zype"
 default_platform(:ios)
 
 platform :ios do
+  desc "Create iTunes Connect app"
+  lane :create_itc_app do
+    produce(
+      username: apple_dev_id,
+      team_id: dev_team_id,
+      itc_team_id: dev_team_id,
+      app_identifier: app_id,
+      app_name: app_display_name,
+      sku: app_id
+    )
+  end
+
+  desc "Create certificate"
+  lane :create_cert do
+    cert(
+      username: apple_dev_id,
+      team_id: dev_team_id,
+      output_path: "./code_signing"
+    )
+  end
+
+  desc "Create provisioning profile"
+  lane :create_prov do
+    sigh(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      team_id: dev_team_id,
+      output_path: "./code_signing"
+    )
+  end
+
+  desc "Build app"
+  lane :build do
+    build_app(
+      scheme: "Zype",
+      workspace: zype_workspace,
+      clean: true,
+      include_bitcode: true
+    )
+  end
+
+  desc "Uploads the app to iTunes Connect"
+  lane :upload do
+    deliver(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      team_id: dev_team_id,
+      dev_portal_team_id: dev_team_id
+    )
+  end
+
   desc "Displays current app configs"
   lane :display_config do
     display_name = get_info_plist_value(
