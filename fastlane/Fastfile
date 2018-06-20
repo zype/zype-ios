@@ -58,17 +58,35 @@ platform :ios do
       username: apple_dev_id,
       app_identifier: app_id,
       team_id: dev_team_id,
-      output_path: "./code_signing"
+      output_path: "./code_signing",
+      provisioning_name: app_id,
+      filename: app_id + ".mobileprovision"
     )
   end
 
   desc "Build app"
   lane :build do
+    disable_automatic_code_signing(
+      path: xcode_proj,
+      team_id: dev_team_id
+    )
+
+    cocoapods
+
+    # set up provisionProfiles
+    pp = {}
+    pp["#{app_id}"] = app_id
+
     build_app(
       scheme: "Zype",
       workspace: zype_workspace,
       clean: true,
-      include_bitcode: true
+      include_bitcode: true,
+      export_method: "app-store",
+      export_team_id: dev_team_id,
+      export_options: {
+        provisioningProfiles: pp
+      }
     )
   end
 
@@ -121,8 +139,11 @@ platform :ios do
     if options[:app_id]
       update_app_identifier(
         xcodeproj:      xcode_proj,
-        plist_path:     app_plist, # where app info is stored
-        app_identifier: options[:app_id]      # new app id
+        app_identifier: options[:app_id]
+      )
+      update_app_identifier(
+        plist_path:     app_plist,
+        app_identifier: options[:app_id]
       )
     end
 
@@ -144,7 +165,7 @@ platform :ios do
 
   desc "Updates app config using the Appfile"
   lane :update_with_appfile do
-    update_info_plist(
+    update_app_identifier(
       xcodeproj:      xcode_proj,
       plist_path:     app_plist,
       app_identifier: app_id
