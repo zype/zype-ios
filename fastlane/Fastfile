@@ -71,11 +71,13 @@ platform :ios do
       team_id: dev_team_id
     )
 
-    cocoapods
+    update_project_provisioning(
+      xcodeproj: xcode_proj,
+      profile: "./code_signing/" + app_id + ".mobileprovision",
+      build_configuration: "Release"
+    )
 
-    # set up provisionProfiles
-    pp = {}
-    pp["#{app_id}"] = app_id
+    cocoapods
 
     build_app(
       scheme: "Zype",
@@ -85,7 +87,9 @@ platform :ios do
       export_method: "app-store",
       export_team_id: dev_team_id,
       export_options: {
-        provisioningProfiles: pp
+        provisioningProfiles: {
+          "#{app_id}": app_id
+        }
       }
     )
   end
