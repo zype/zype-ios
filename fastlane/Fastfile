@@ -121,7 +121,10 @@ platform :ios do
   desc "Updates the app icon. App icon needs to be 1024x1024. Accepts: app_icon_url"
   lane :make_app_icons do |options|
     sh("brew", "install", "graphicsmagick")
-    sh("brew", "upgrade", "graphicsmagick")
+
+    # if graphicsmagick is outdated, upgrade graphicsmagick
+    sh("if (brew outdated | grep graphicsmagick > /dev/null); then brew upgrade graphicsmagick; fi")
+
     sh("fastlane", "add_plugin", "appicon")
 
     if options[:app_icon_url]
