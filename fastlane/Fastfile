@@ -31,77 +31,6 @@ app_scheme      = "Zype"
 default_platform(:ios)
 
 platform :ios do
-  desc "Create iTunes Connect app"
-  lane :create_itc_app do
-    produce(
-      username: apple_dev_id,
-      team_id: dev_team_id,
-      itc_team_id: dev_team_id,
-      app_identifier: app_id,
-      app_name: app_display_name,
-      sku: app_id
-    )
-  end
-
-  desc "Create certificate"
-  lane :create_cert do
-    cert(
-      username: apple_dev_id,
-      team_id: dev_team_id,
-      output_path: "./code_signing"
-    )
-  end
-
-  desc "Create provisioning profile"
-  lane :create_prov do
-    sigh(
-      username: apple_dev_id,
-      app_identifier: app_id,
-      team_id: dev_team_id,
-      output_path: "./code_signing",
-      provisioning_name: app_id,
-      filename: app_id + ".mobileprovision"
-    )
-  end
-
-  desc "Build app"
-  lane :build do
-    disable_automatic_code_signing(
-      path: xcode_proj,
-      team_id: dev_team_id
-    )
-
-    update_project_provisioning(
-      xcodeproj: xcode_proj,
-      profile: "./code_signing/" + app_id + ".mobileprovision",
-      build_configuration: "Release"
-    )
-
-    cocoapods
-
-    build_app(
-      scheme: "Zype",
-      workspace: zype_workspace,
-      clean: true,
-      export_method: "app-store",
-      export_team_id: dev_team_id,
-      export_options: {
-        provisioningProfiles: {
-          "#{app_id}": app_id
-        }
-      }
-    )
-  end
-
-  desc "Uploads the app to iTunes Connect"
-  lane :upload do
-    deliver(
-      username: apple_dev_id,
-      app_identifier: app_id,
-      team_id: dev_team_id,
-      dev_portal_team_id: dev_team_id
-    )
-  end
 
   desc "Displays current app configs"
   lane :display_config do
@@ -188,4 +117,92 @@ platform :ios do
       value: app_build_num
     )
   end
+
+  desc "Updates the app icon. App icon needs to be 1024x1024. Accepts: app_icon_url"
+  lane :make_app_icons do |options|
+    sh("brew", "install", "graphicsmagick")
+    sh("brew", "upgrade", "graphicsmagick")
+    sh("fastlane", "add_plugin", "appicon")
+
+    if options[:app_icon_url]
+      appicon(
+        appicon_image_file: options[:app_icon_url],
+        appicon_devices: [:ipad, :iphone, :ios_marketing],
+        appicon_path: "Zype/Images.xcassets"
+      )
+    end
+  end
+
+  desc "Create iTunes Connect app"
+  lane :create_itc_app do
+    produce(
+      username: apple_dev_id,
+      team_id: dev_team_id,
+      itc_team_id: dev_team_id,
+      app_identifier: app_id,
+      app_name: app_display_name,
+      sku: app_id
+    )
+  end
+
+  desc "Create certificate"
+  lane :create_cert do
+    cert(
+      username: apple_dev_id,
+      team_id: dev_team_id,
+      output_path: "./code_signing"
+    )
+  end
+
+  desc "Create provisioning profile"
+  lane :create_prov do
+    sigh(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      team_id: dev_team_id,
+      output_path: "./code_signing",
+      provisioning_name: app_id,
+      filename: app_id + ".mobileprovision"
+    )
+  end
+
+  desc "Build app"
+  lane :build do
+    disable_automatic_code_signing(
+      path: xcode_proj,
+      team_id: dev_team_id
+    )
+
+    update_project_provisioning(
+      xcodeproj: xcode_proj,
+      profile: "./code_signing/" + app_id + ".mobileprovision",
+      build_configuration: "Release"
+    )
+
+    cocoapods
+
+    build_app(
+      scheme: "Zype",
+      workspace: zype_workspace,
+      clean: true,
+      export_method: "app-store",
+      export_team_id: dev_team_id,
+      export_options: {
+        provisioningProfiles: {
+          "#{app_id}": app_id
+        }
+      }
+    )
+  end
+
+  desc "Uploads the app to iTunes Connect"
+  lane :upload do
+    deliver(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      team_id: dev_team_id,
+      dev_portal_team_id: dev_team_id
+    )
+  end
+
 end
