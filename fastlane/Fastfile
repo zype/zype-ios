@@ -83,7 +83,6 @@ platform :ios do
       scheme: "Zype",
       workspace: zype_workspace,
       clean: true,
-      include_bitcode: true,
       export_method: "app-store",
       export_team_id: dev_team_id,
       export_options: {
