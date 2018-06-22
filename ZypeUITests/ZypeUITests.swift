@@ -32,19 +32,35 @@ class ZypeUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
+        let collectionViewsQuery = app.collectionViews
+
+        var alertExists = app.alerts.element(boundBy: 0).exists
+        if (alertExists) {
+            app.alerts.element(boundBy: 0).buttons["Don't Allow"].tap()
+        }
+        alertExists = app.alerts.element(boundBy: 0).exists
+        if (alertExists) {
+            app.alerts.element(boundBy: 0).buttons["Don't Allow"].tap()
+        }
+        sleep(1) // allow alert to dismiss
         
         // First screenshot - Home Screen
         snapshot("01HomeScreen")
         
         // Second screenshot - First Playlist
-        tablesQuery.cells.element(boundBy: 0).tap()
+        let isIpadDevice = (UIDevice.current.userInterfaceIdiom == .pad)
+        if isIpadDevice {
+            collectionViewsQuery.cells.element(boundBy: 0).tap()
+        } else {
+            tablesQuery.cells.element(boundBy: 0).tap()
+        }
         snapshot("02Playlist")
         
         // Third screenshot - Settings Screen
         app.navigationBars.element(boundBy: 0).buttons["Back"].tap()
         app.tabBars.buttons["More"].tap()
         snapshot("03Settings")
-        
+
         // Fourth screenshot - Sign In Screen
         app.buttons["SIGN IN"].tap()
         snapshot("04SignInScreen")
