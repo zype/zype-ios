@@ -136,6 +136,11 @@ platform :ios do
     end
   end
 
+  desc "Take screenshots"
+  lane :screenshots do
+    snapshot
+  end
+
   desc "Create iTunes Connect app"
   lane :create_itc_app do
     produce(
