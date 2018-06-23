@@ -16,6 +16,7 @@
 #import "UIViewController+AC.h"
 #import "IntroViewController.h"
 #import "SignInViewController.h"
+#import "RESTServiceController.h"
 
 @interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate>
 
@@ -38,7 +39,7 @@
     [super viewDidLoad];
     
     [self configureController];
-
+    
     // Do any additional setup after loading the view.
 }
 
@@ -62,7 +63,33 @@
     UIColor * separateColor = (kAppColorLight) ? [UIColor whiteColor] : kDarkThemeBackgroundColor;
     self.separateNavigationView.backgroundColor = separateColor;
     
-    [self requestProducts];
+    [self getSubscriptionPlan];
+}
+
+#pragma mark - Subscription plan
+
+- (void)getSubscriptionPlan {
+    [SVProgressHUD show];
+    [[RESTServiceController sharedInstance] getSubscriptionPlan:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (data != nil) {
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (parsedObject != nil){
+                
+                CLS_LOG(@"SubscriptionPlan Parsed Object: %@", parsedObject);
+                _products = parsedObject[@"response"];
+                
+                [self.tableView reloadData];
+                [SVProgressHUD dismiss];
+            }else if (parsedObject != nil && parsedObject[@"error"] != nil) {
+                
+                CLS_LOG(@"SubscriptionPlan json error: %@", parsedObject[@"error"]);
+                [SVProgressHUD dismiss];
+                
+            }
+            
+        }
+    }];
 }
 
 #pragma mark - in app purchases
@@ -80,12 +107,26 @@
     }];
 }
 
-- (void)buySubscription:(NSString *)productID {
+- (void)buySubscription:(NSDictionary *)product {
     [SVProgressHUD showWithStatus:@"Purchasing..."];
-    [[ACPurchaseManager sharedInstance] buySubscription:productID success:^{
+    [[ACPurchaseManager sharedInstance] buySubscription:product[@"marketplace_ids"][@"itunes"] success:^(){
         NSLog(@"Success");
-        [SVProgressHUD dismiss];
-        [self dismisControllers];
+        
+        NSData*appReceipt = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
+        [[RESTServiceController sharedInstance] createMarketplace:appReceipt planId:product[@"_id"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+            } else {
+                [SVProgressHUD dismiss];
+                
+                [self dismisControllers];
+                if ( self.planDelegate != nil ) {
+                    [self.planDelegate subscriptionPlanDone];
+                }
+                
+            }
+        }];
+        
     } failure:^(NSString *errorString) {
         [SVProgressHUD dismiss];
         [ACSAlertViewManager showAlertWithTitle:nil WithMessage:errorString];
@@ -94,8 +135,8 @@
 
 #pragma mark - SubscriptActiveCellDelegate
 
-- (void)onDidTapSubsciptCell:(SubscriptActiveCell *)cell productID:(NSString *)productID {
-    [self buySubscription:productID];
+- (void)onDidTapSubsciptCell:(SubscriptActiveCell *)cell product:(NSDictionary *)product {
+    [self buySubscription:product];
 }
 
 #pragma mark - UITableViewDelegate
@@ -104,10 +145,11 @@
     static NSString *subscriptActiveCell = @"SubscriptActiveCell";
     
     SubscriptActiveCell *cell = [self.tableView dequeueReusableCellWithIdentifier:subscriptActiveCell forIndexPath:indexPath];
-    SKPayment *payment = self.products[indexPath.row];
+    //    SKPayment *payment = self.products[indexPath.row];
+    NSDictionary *product = self.products[indexPath.row];
     NSString *title = self.titles[indexPath.row];
     [cell setDelegate: self];
-    [cell configureCell:payment];
+    [cell configCell:product];
     cell.titleLabel.text = title;
     //[cell setSelectedCell:(self.selectedIndex == indexPath.row)];
     return cell;
@@ -149,13 +191,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

@@ -16,10 +16,11 @@
 #import "BaseTableController.h"
 #import "ACActionSheetManager.h"
 #import "UIViewController+AC.h"
+#import "SubscriptionPlanDelegate.h"
 
 @import WebKit;
 
-@interface BaseViewController : UIViewController<EpisodeControllerDelegate, ACActionSheetManagerDelegate>
+@interface BaseViewController : UIViewController<EpisodeControllerDelegate, ACActionSheetManagerDelegate, SubscriptionPlanDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
@@ -27,6 +28,7 @@
 
 @property (strong, nonatomic) EpisodeController *episodeController;
 @property (nonatomic, strong) ACActionSheetManager *actionSheetManager;
+@property (weak, nonatomic) id<SubscriptionPlanDelegate> planDelegate;
 
 @property (strong, nonatomic) Video *actionVideo;
 @property (strong, nonatomic) Video *selectedVideo;

@@ -144,24 +144,36 @@
 + (void)showSignInViewFromViewController:(UIViewController *)viewController
 {
     SignInViewController *signInViewController = (SignInViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"signInViewController"];
+    if ([viewController isKindOfClass:[BaseViewController class]]) {
+        signInViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    }
     [viewController presentViewController:signInViewController animated:YES completion:nil];
 }
 
 + (void)showSignUpViewFromViewController:(UIViewController *)viewController
 {
     RegisterViewController *regViewController = (RegisterViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"RegisterViewController"];
+    if ([viewController isKindOfClass:[SignInViewController class]]) {
+        regViewController.planDelegate = ((SignInViewController*)viewController).planDelegate;
+    }
     [viewController presentViewController:regViewController animated:YES completion:nil];
 }
 
 + (void)showIntroViewFromViewController:(UIViewController *)viewController
 {
     IntroViewController *introViewController = (IntroViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"IntroViewController"];
+    if ([viewController isKindOfClass:[BaseViewController class]]) {
+        introViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    }
     [viewController presentViewController:introViewController animated:YES completion:nil];
 }
 
 + (void)showSubscriptionViewFromViewController:(UIViewController *)viewController
 {
     SubsciptionViewController *subscriptionViewController = (SubsciptionViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"SubscriptionViewController"];
+    if ([viewController isKindOfClass:[VideosViewController class]]) {
+        subscriptionViewController.planDelegate = (VideosViewController*)viewController;
+    }
     [viewController presentViewController:subscriptionViewController animated:YES completion:nil];
 }
 

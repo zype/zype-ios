@@ -294,6 +294,9 @@
             
             if (self != nil) {
                 [self dismissController];
+                if (self.planDelegate != nil) {
+                    [self.planDelegate subscriptionSignInDone];
+                }
 //                if (self.presentingViewController.presentingViewController != nil) {
 //                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 //                } else {

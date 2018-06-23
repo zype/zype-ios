@@ -230,16 +230,11 @@
                     [SVProgressHUD dismiss];
                     if (self != nil) {
                         
-                        if ([self isFromMoreControllerPresented]) {
-                            [self dismissControllers];
-                        } else {
-                            if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
-                                [self dismissControllers];
-                            } else {
-                                [UIUtil showSubscriptionViewFromViewController:self];
-                            }
+                        [self dismissControllers];
+                        if (self.planDelegate != nil) {
+                            [self.planDelegate subscriptionSignInDone];
                         }
-
+                        
                     }
                 } else {
                     [SVProgressHUD showErrorWithStatus:error.localizedDescription];

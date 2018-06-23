@@ -26,7 +26,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -41,9 +41,19 @@
     [self.continueButton setTitle:[NSString stringWithFormat:@"Continue with %@", self.titleLabel.text] forState:UIControlStateNormal];
 }
 
+- (void)configCell:(NSDictionary *)product {
+    self.mkProduct = product;
+    self.descriptionLabel.text = product[@"description"];
+    self.titleLabel.text = product[@"name"];
+    NSString *strSubType = [product[@"interval"] isEqualToString:@"monthly"]?@"/mo":@"/ye";
+    self.priceLabel.text = [NSString stringWithFormat:@"$%@%@", product[@"amount"], strSubType];
+    [self.continueButton setTitle:[NSString stringWithFormat:@"Continue with %@", self.titleLabel.text] forState:UIControlStateNormal];
+}
+
 - (IBAction)acceptSubscriptButtonTapped:(id)sender {
-    [self.delegate onDidTapSubsciptCell:self productID:self.payment.productIdentifier];
+    [self.delegate onDidTapSubsciptCell:self product:self.mkProduct];
 }
 
 
 @end
+

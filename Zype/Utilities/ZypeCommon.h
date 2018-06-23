@@ -11,10 +11,10 @@
 #pragma mark - Client Settings
 
 //Main app configuration for connecting to Zype property
-#define kOAuth_ClientId @"efff34ee145c7bdc8a8408a339571005f8bcdf2fb0ae5dfd0dbb248188daaf54"
-#define kOAuth_ClientSecret @"0fdedb3cf72afa6b37fabfbe100e2a2db5d6f4ecdbfe71eb53c223d722201a1d"
-#define kAppKey @"HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU"
-#define kRootPlaylistId @"577e65c85577de0d1000c1ee"
+#define kOAuth_ClientId @"96ac73001eb2d45fbea3d1269af43b6cfacf4efa99122d63197878d13609aa94"
+#define kOAuth_ClientSecret @"5c923d380f4a860c8b1b753e2412a1b7c6a3271feff86887d7bbc30fed6983a2"
+#define kAppKey @"UxlADHfgBagOySYtTYWSbyBBGkvgf7gXyVa90wDmowe4apTkD1FD4TPwYynYOSvU"
+#define kRootPlaylistId @"5807ccdc849e2d0d11000146"
 
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @""
@@ -48,7 +48,7 @@
 //Set to No to enforce downloads for only users that are signed in
 #define kDownloadsForAllUsersEnabled NO
 
-#define kNativeSubscriptionEnabled NO
+#define kNativeSubscriptionEnabled YES
 
 //Beta feature. Isn't functioning great at the moment
 #define kShareVideoEnabled NO
@@ -313,6 +313,9 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 //IKuC8xERY-oYRxQfE6c1HSeRrxKcpCwcsPr614RfaxCkYsJLgwpBkpkEo88EsyWr&zobject_type=top_playlists&page=1&per_page=500&keywords=&sort=priority&order=desc
 
 #define kApiConsumerURL            @"https://api.zype.com/consumers/?app_key=%@&id=%@"
+#define kApiSubscriptionPlanURL    @"https://api.zype.com/plans/?app_key=%@"
+#define kApiSubscriptionStageURL    @"http://api-core-1591.stage.zy.pe/plans/?app_key=x_SyX9qKfHOC9ZuHyb6o-uuBE4pnLann3I_52CUQ763dcQYOPlKPca9pt-N9AarP"
+#define kApiMarketPlaceURL         @"https://mkt.zype.com/v1/itunes/"
 
 #define kAppKey_AccessToken        @"access_token"
 #define kAppKey_RefreshToken       @"refresh_token"
@@ -365,3 +368,4 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_ShareMessage       @"share_message"
 
 #endif
+

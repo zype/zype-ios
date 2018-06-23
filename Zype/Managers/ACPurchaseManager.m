@@ -42,7 +42,7 @@
                 return true;
             }
         }
-
+        
     }
     
     return false;
@@ -64,7 +64,7 @@
     [[RMStore defaultStore] requestProducts:self.subscriptions];
 }
 
-- (void)buySubscription:(NSString *)productID success:(void(^)())success failure:(void(^)(NSString *))failure {
+- (void)buySubscription:(NSString *)productID success:(void(^)(void))success failure:(void(^)(NSString *))failure {
     [[RMStore defaultStore] addPayment:productID success:^(SKPaymentTransaction *transaction) {
         if (success) {
             success();
@@ -79,7 +79,7 @@
     }];
 }
 
-- (void)restorePurchases:(void(^)())success failure:(void(^)(NSString *))failure {
+- (void)restorePurchases:(void(^)(void))success failure:(void(^)(NSString *))failure {
     [[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
         success();
     } failure:^(NSError *error) {
@@ -88,3 +88,4 @@
 }
 
 @end
+
