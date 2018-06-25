@@ -42,7 +42,6 @@ class ZypeUITests: XCTestCase {
         if (alertExists) {
             app.alerts.element(boundBy: 0).buttons["Don't Allow"].tap()
         }
-        sleep(1) // allow alert to dismiss
         
         // First screenshot - Home Screen
         snapshot("01HomeScreen")

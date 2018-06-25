@@ -122,7 +122,7 @@ platform :ios do
     )
   end
 
-  desc "Updates the app icon. App icon needs to be 1024x1024. Accepts: "
+  desc "Updates the app icon. App icon needs to be 1024x1024 PNG. Accepts: "
   desc "\tapp_icon_path - Path to app icon"
   lane :make_app_icons do |options|
     # list imagemagick versions or install if no versions
