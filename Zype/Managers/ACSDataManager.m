@@ -242,9 +242,14 @@
 //                    }
 //                    
 //                }];
-                
-                if (successBlock) {
-                    successBlock(YES, nil);
+                if (parsedObject[@"message"] != nil) {
+                    if (successBlock) {
+                        successBlock(NO, localError);
+                    }
+                } else {
+                    if (successBlock) {
+                        successBlock(YES, nil);
+                    }
                 }
                 
             }else if (parsedObject != nil && parsedObject[@"error"] != nil) {

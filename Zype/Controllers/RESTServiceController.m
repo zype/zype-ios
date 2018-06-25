@@ -39,13 +39,15 @@
                                  kOAuthProperty_ClientSecret : kOAuth_ClientSecret,
                                  kOAuthProperty_GrantType : kOAuth_GrantType,
                                  };
-    NSMutableString *parameterString = [NSMutableString string];
-    for (NSString *key in [parameters allKeys]) {
-        if ([parameterString length]) {
-            [parameterString appendString:@"&"];
-        }
-        [parameterString appendFormat:@"%@=%@", key, parameters[key]];
-    }
+//    NSMutableString *parameterString = [NSMutableString string];
+//    for (NSString *key in [parameters allKeys]) {
+//        if ([parameterString length]) {
+//            [parameterString appendString:@"&"];
+//        }
+//        [parameterString appendFormat:@"%@=%@", key, parameters[key]];
+//    }
+    NSError *error = nil;
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
     
     // Send request
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -53,8 +55,9 @@
     
     CLS_LOG(@"Sample Save Token URL: %@", request.URL);
     
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:requestData];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (completionHandler)
         {
