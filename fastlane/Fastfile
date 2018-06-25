@@ -18,9 +18,9 @@ app_id        = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifie
 apple_dev_id  = CredentialsManager::AppfileConfig.try_fetch_value(:apple_id)
 dev_team_id   = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
 
-app_display_name  = "Andy Fastlane test 4"
+app_display_name  = "Zype Template"
 app_version_num   = "1.0.0"
-app_build_num     = "2"
+app_build_num     = "1"
 
 # Zype iOS template - base Fastlane configs
 xcode_proj      = "Zype.xcodeproj"
@@ -125,10 +125,11 @@ platform :ios do
   desc "Updates the app icon. App icon needs to be 1024x1024. Accepts: "
   desc "\tapp_icon_path - Path to app icon"
   lane :make_app_icons do |options|
-    sh("brew", "install", "graphicsmagick")
+    # list imagemagick versions or install if no versions
+    sh("brew list imagemagick || brew install imagemagick")
 
-    # if graphicsmagick is outdated, upgrade graphicsmagick
-    sh("if (brew outdated | grep graphicsmagick > /dev/null); then brew upgrade graphicsmagick; fi")
+    # if imagemagick is outdated, upgrade imagemagick
+    sh("if (brew outdated | grep imagemagick > /dev/null); then brew upgrade imagemagick; fi")
 
     sh("fastlane", "add_plugin", "appicon")
 
