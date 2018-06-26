@@ -17,25 +17,25 @@ Before you can build your iOS app, there is some setup required.
 
 1. In order for Fastlane to automate your app building, you will need to log in to your Apple Developer account in XCode. This gives Fastlane permission to run tasks using your Apple login. You can log in to your Apple account by going to __Xcode -> Preferences -> Accounts -> + (bottom left corner)__
 
-<a href="https://drive.google.com/file/d/13xDiHGEopmZurpWRYKJb1wORpSgW5kFz/view?usp=sharing"><img src="https://drive.google.com/file/d/13xDiHGEopmZurpWRYKJb1wORpSgW5kFz/view?usp=sharing" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id=13xDiHGEopmZurpWRYKJb1wORpSgW5kFz"><img src="https://drive.google.com/uc?export=view&id=13xDiHGEopmZurpWRYKJb1wORpSgW5kFz" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 2. Once you have logged into your Apple Developer account in XCode, you will need to update __`fastlane/Appfile`__. You will need to update the `app_identifier`, `apple_id`, and `team_id`.
 - The `app_identifier` is the app id for your application. This should be unique and used on all future updates. If you already have a live app, please use the app id for your existing app.
 - The `apple_id` is the email for your Apple Developer account (same one you logged in with in step 1).
 - The `team_id` is the id for your development team. You will need this if your Apple account is tied to many development teams. You can find your __team_id__ in Apple's Developer dashboard by going to __Overview__.
 
-<a href="https://drive.google.com/file/d/14XJDbkj29mxln2jynLASDpSnrrtLFENM/view?usp=sharing"><img src="https://drive.google.com/file/d/14XJDbkj29mxln2jynLASDpSnrrtLFENM/view?usp=sharing" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id=14XJDbkj29mxln2jynLASDpSnrrtLFENM"><img src="https://drive.google.com/uc?export=view&id=14XJDbkj29mxln2jynLASDpSnrrtLFENM" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 3. Once the Appfile is updated, you will need to update __`fastlane/Fastfile`__. You will need to update the `app_display_name`, `app_version_num`, and `app_build_num`.
 - The `app_display_name` is the name of that shows for your app when it is on the phone.
 - The `app_version_num` is version of your app. If you are updating an existing app, remember to increase the version number to a version higher than your live app.
 - The `app_build_num` is the build number for your app. Normally this is left at 1, however if you are trying to update an app that has not been submitted yet you can simply increase the build number.
 
-<a href="https://drive.google.com/file/d/1DmLmPN482FFZTRWnRXZP9golMYPiaLuQ/view?usp=sharing"><img src="https://drive.google.com/file/d/1DmLmPN482FFZTRWnRXZP9golMYPiaLuQ/view?usp=sharing" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id=1DmLmPN482FFZTRWnRXZP9golMYPiaLuQ"><img src="https://drive.google.com/uc?export=view&id=1DmLmPN482FFZTRWnRXZP9golMYPiaLuQ" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 4. After you have updated the Fastfile, you should place your app icon (1024px by 1024px PNG) in base of the app folder.
 
-<a href="https://drive.google.com/file/d/1YLDNxkFxwWaWL1oKksfJ9_5bQjALodPt/view?usp=sharing"><img src="https://drive.google.com/file/d/1YLDNxkFxwWaWL1oKksfJ9_5bQjALodPt/view?usp=sharing" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+<a href="https://drive.google.com/uc?export=view&id=1YLDNxkFxwWaWL1oKksfJ9_5bQjALodPt"><img src="https://drive.google.com/uc?export=view&id=1YLDNxkFxwWaWL1oKksfJ9_5bQjALodPt" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 ### Automating with Fastlane
 
