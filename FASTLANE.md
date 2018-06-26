@@ -71,9 +71,17 @@ fastlane make_app_icons app_icon_path:< APP ICON FILENAME >.png
 fastlane screenshots
 ```
 
+#### Creating app on iTunes Connect
+
+8. Before you start creating your certificates and building your app, you need to create your app id and register the app under iTunes Connect. In order to do this you can use the following command:
+
+```
+fastlane create_itc_app
+```
+
 #### Creating certificates and profiles
 
-8. You can create your certificate and provision profile needed to upload your app with the following:
+9. You can create your certificate and provision profile needed to upload your app with the following:
 
 ```
 fastlane create_cert_and_prov
@@ -88,7 +96,7 @@ fastlane create_prov
 
 #### Building and uploading to iTunes Connect
 
-9. You can build and upload your app with the following:
+10. You can build and upload your app with the following:
 
 ```
 fastlane build_and_upload
