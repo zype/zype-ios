@@ -194,11 +194,11 @@
     NSString *errorString;
     
     if ([self.emailField.text  isEqual: @""] || [self.passwordField.text  isEqual: @""]) {
-        return @"Не все поля заполнены";
+        return @"Please fill out the missing fields and try again.";
     }
     
     if (![self.emailField.text validateEmail]) {
-        return @"Email не корректен";
+        return @"Please enter a valid email address and try again.";
     }
     
     return errorString;
