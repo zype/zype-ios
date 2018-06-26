@@ -19,6 +19,7 @@
 #import "IntroViewController.h"
 #import "SubsciptionViewController.h"
 #import "RegisterViewController.h"
+#import "SettingsViewController.h"
 
 @implementation UIUtil
 
@@ -164,6 +165,10 @@
     IntroViewController *introViewController = (IntroViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"IntroViewController"];
     if ([viewController isKindOfClass:[BaseViewController class]]) {
         introViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    } else if ([viewController isKindOfClass:[SettingsViewController class]]) {
+        introViewController.planDelegate = (SettingsViewController*)viewController;
+    } else if ([viewController isKindOfClass:[HomeViewController class]]) {
+        introViewController.planDelegate = (HomeViewController*)viewController;
     }
     [viewController presentViewController:introViewController animated:YES completion:nil];
 }

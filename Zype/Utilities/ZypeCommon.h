@@ -33,7 +33,7 @@
 #define kAppColorLight NO
 
 //alternative new beta layout
-#define kAppAppleTVLayout NO
+#define kAppAppleTVLayout YES
 
 //Show/Hide titles on thumbnails for playlist views on iPhone
 #define kHidePlaylistTitles NO
@@ -219,6 +219,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kString_ErrorPassword @"Your password must be provided."
 #define kString_TitleSignInFail @"Authentication Failed"
 #define kString_MessageSignInFail @"Please ensure your credentials are correct and try again."
+#define kString_MessageRegisterFail @"We're sorry, that email address already belongs to an account. Please click \"Sign in\" below if you'd like to sign into your existing account."
 #define kString_DownloadAudio @"Download Audio"
 #define kString_DownloadVideo @"Download Video"
 #define kString_DownloadingAudio @"Downloading Audio..."

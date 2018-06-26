@@ -1576,7 +1576,8 @@
         
         if([challenge.protectionSpace.host isEqualToString:kApiDomain] ||
            [challenge.protectionSpace.host isEqualToString:kApiPlayerDomain] ||
-           [challenge.protectionSpace.host isEqualToString:KOAuth_GetTokenDomain]){
+           [challenge.protectionSpace.host isEqualToString:KOAuth_GetTokenDomain]
+           || [challenge.protectionSpace.host isEqualToString:@"mkt.zype.com"]){
             
             NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);

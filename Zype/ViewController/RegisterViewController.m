@@ -242,7 +242,7 @@
             }];
         } else {
             [SVProgressHUD dismiss];
-            [ACSAlertViewManager showAlertWithTitle:kString_TitleSignInFail WithMessage:kString_MessageSignInFail];
+            [ACSAlertViewManager showAlertWithTitle:kString_TitleSignInFail WithMessage:kString_MessageRegisterFail];
         }
         
     }];
