@@ -19,6 +19,7 @@
 #import "Timing.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
+#import "ACStatusManager.h"
 #import "TableSectionDataSource.h"
 
 
@@ -423,7 +424,11 @@
             }
 
             case RestorePurchase: {
-                [self restorePurchases];
+                if ([ACStatusManager isUserSignedIn] == false) {
+                    [UIUtil showIntroViewFromViewController:self];
+                } else {
+                    [self restorePurchases];
+                }
                 break;
             }
             
@@ -462,6 +467,7 @@
 }
 
 - (void)restorePurchases {
+
     [SVProgressHUD show];
     [[ACPurchaseManager sharedInstance] restorePurchases:^{
         [SVProgressHUD showSuccessWithStatus:@"Success"];
@@ -470,6 +476,9 @@
     }];
 }
 
-
+#pragma mark - SubscriptionPlanDelegate
+- (void) subscriptionSignInDone {
+    [self restorePurchases];
+}
 
 @end

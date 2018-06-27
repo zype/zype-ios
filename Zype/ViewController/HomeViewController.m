@@ -26,7 +26,10 @@
 #import "Playlist.h"
 #import "ACSPersistenceManager.h"//remove this after test
 
-@interface HomeViewController ()<UIActionSheetDelegate, WKNavigationDelegate, ACActionSheetManagerDelegate>
+#import "SubscriptionPlanDelegate.h"
+#import "ACPurchaseManager.h"
+
+@interface HomeViewController ()<UIActionSheetDelegate, WKNavigationDelegate, ACActionSheetManagerDelegate, SubscriptionPlanDelegate>
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIImageView *imagePlaceholder;
@@ -40,6 +43,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerTopLayoutConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarWidthLayoutConstraint;
+
+@property (weak, nonatomic) id<SubscriptionPlanDelegate> planDelegate;
 
 @property (strong, nonatomic) UIView *viewDateFilter;
 @property (strong, nonatomic) UIDatePicker *pickerDateFilter;
@@ -62,6 +67,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.planDelegate = self;
     
     // Init controller depending on view type
     if (kAppAppleTVLayout) {
@@ -683,7 +690,18 @@
     
 }
 
+#pragma mark - SubscriptionPlanDelegate
+- (void) subscriptionSignInDone {
+    if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+        [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+    } else {
+        [UIUtil showSubscriptionViewFromViewController:self];
+    }
+}
 
+- (void) subscriptionPlanDone {
+    [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+}
 
 
 

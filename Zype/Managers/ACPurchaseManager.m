@@ -9,6 +9,7 @@
 #import "ACPurchaseManager.h"
 #import <RMStore/RMStore.h>
 #import <RMStore/RMAppReceipt.h>
+#import "RESTServiceController.h"
 
 @interface ACPurchaseManager()
 
@@ -42,7 +43,7 @@
                 return true;
             }
         }
-
+        
     }
     
     return false;
@@ -64,7 +65,7 @@
     [[RMStore defaultStore] requestProducts:self.subscriptions];
 }
 
-- (void)buySubscription:(NSString *)productID success:(void(^)())success failure:(void(^)(NSString *))failure {
+- (void)buySubscription:(NSString *)productID success:(void(^)(void))success failure:(void(^)(NSString *))failure {
     [[RMStore defaultStore] addPayment:productID success:^(SKPaymentTransaction *transaction) {
         if (success) {
             success();
@@ -79,8 +80,34 @@
     }];
 }
 
-- (void)restorePurchases:(void(^)())success failure:(void(^)(NSString *))failure {
+- (void)restorePurchases:(void(^)(void))success failure:(void(^)(NSString *))failure {
     [[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
+        for(SKPaymentTransaction *transaction in transactions) {
+            NSString *productID = transaction.payment.productIdentifier;
+            NSData*appReceipt = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
+            
+            [[RESTServiceController sharedInstance] getSubscriptionPlan:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (data != nil) {
+                    NSError *localError = nil;
+                    NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+                    if (parsedObject != nil) {
+                        NSMutableArray *planArray;
+                        planArray = parsedObject[@"response"];
+                        
+                        for(NSDictionary * plan in planArray) {
+                            if ([productID isEqualToString:plan[@"marketplace_ids"][@"itunes"]]) {
+                                [[RESTServiceController sharedInstance] createMarketplace:appReceipt planId:plan[@"_id"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {}];
+                            }
+                        }
+                    }else if (parsedObject != nil && parsedObject[@"error"] != nil) {
+                        
+                       
+                    }
+                    
+                }
+            }];
+            
+        }
         success();
     } failure:^(NSError *error) {
         failure(error.localizedDescription);
@@ -88,3 +115,4 @@
 }
 
 @end
+
