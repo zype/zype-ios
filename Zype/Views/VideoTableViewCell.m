@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DownloadOperationController.h"
 #import "ACStatusManager.h"
+#import "ACPurchaseManager.h"
 
 @implementation VideoTableViewCell
 
@@ -121,15 +122,22 @@
     }
     
     UIImage * lockImage;
-    if ([ACStatusManager isUserSignedIn] == YES) {
-        lockImage = [UIImage imageNamed:@"iconUnlocked"];
+    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
+    if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        lockImage = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        if (kUnlockTransparentEnabled == YES) {
+            [self.iconLock setTintColor:UIColor.clearColor];
+        } else {
+            [self.iconLock setTintColor:kUnlockColor];
+        }
     } else {
-        lockImage = [UIImage imageNamed:@"iconLocked"];
+        lockImage = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.iconLock setTintColor:kLockColor];
     }
     
     BOOL downloadFeature = kDownloadsEnabled;
     
-    [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+    //[self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     [self setThumbnail:video];
 
     BOOL iconLockHidden = !([video.subscription_required intValue] == 1);
@@ -257,6 +265,13 @@
                                       if (error) {
                                           [self.imageThumbnail setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
                                           CLS_LOG(@"Video thumbnail couldn't be loaded: %@", error);
+                                      } else {
+                                          [self.imageThumbnail setImage:image];
+                                          [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                                              if (image) {
+                                                  [self.imageThumbnail setImage:image];
+                                              }
+                                          }];
                                       }
                                   }];
 }

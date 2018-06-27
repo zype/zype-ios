@@ -39,13 +39,8 @@
                                  kOAuthProperty_ClientSecret : kOAuth_ClientSecret,
                                  kOAuthProperty_GrantType : kOAuth_GrantType,
                                  };
-    NSMutableString *parameterString = [NSMutableString string];
-    for (NSString *key in [parameters allKeys]) {
-        if ([parameterString length]) {
-            [parameterString appendString:@"&"];
-        }
-        [parameterString appendFormat:@"%@=%@", key, parameters[key]];
-    }
+    NSError *error = nil;
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
     
     // Send request
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -53,13 +48,12 @@
     
     CLS_LOG(@"Sample Save Token URL: %@", request.URL);
     
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:requestData];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (completionHandler)
-        {
+        if (completionHandler) {
             completionHandler(data, response, error);
-            //            CLS_LOG(@"LOGIN DATA RESPONSE:%@", data);
         }
     }];
     [task resume];
@@ -111,10 +105,10 @@
             if (error) {
                 CLS_LOG(@"Failed: %@", error);
             } else {
-                completion(data, response, error);
                 CLS_LOG(@"Success: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
                 
                 [[NSUserDefaults standardUserDefaults] setValue:[[[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:@"response"] valueForKey:@"subscription_count"] forKey:kOAuthProperty_Subscription];
+                completion(data, response, error);
             }
         }];
         [dataTask resume];
@@ -263,7 +257,7 @@
         if (error) {
             CLS_LOG(@"Failed: %@", error);
         } else {
-           CLS_LOG(@"Success %@", urlAsString);
+            CLS_LOG(@"Success %@", urlAsString);
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             if (localError != nil) {
@@ -317,7 +311,7 @@
             CLS_LOG(@"Failed: %@", error);
         } else {
             
-           CLS_LOG(@"Success %@", urlAsString);
+            CLS_LOG(@"Success %@", urlAsString);
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             if (localError != nil) {
@@ -351,7 +345,7 @@
     if (existingVideos == nil) {
         existingVideos = [NSMutableArray new];
     }
- 
+    
     NSString *urlAsString = [NSString stringWithFormat:kGetVideosFromPlaylist, kApiDomain, playlistId, kAppKey, page];
     NSURL *url = [NSURL withString:urlAsString];
     
@@ -387,8 +381,8 @@
                 
             }
             
-           /* //auto download latest video after loading results
-            [ACDownloadManager autoDownloadLatestVideo];*/
+            /* //auto download latest video after loading results
+             [ACDownloadManager autoDownloadLatestVideo];*/
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
             
         }
@@ -456,6 +450,17 @@
     
 }
 
+- (void)loadVideoWithId:(NSString *)videoId withCompletionHandler:(void(^)(NSData *data, NSError *error))success{
+    
+    NSString *urlAsString = [NSString stringWithFormat:kGetVideoById, kApiDomain, kAppKey, videoId];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        success(data, error);
+    }];
+    [dataTask resume];
+}
 
 #pragma mark - Playlist App
 
@@ -482,8 +487,8 @@
             }
             else {
                 //remove old relationship
-//                [ACSPersistenceManager resetPlaylistChilds:parentId];
-//
+                //                [ACSPersistenceManager resetPlaylistChilds:parentId];
+                //
                 [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
                 if (errorString) errorString(nil);
                 //CLS_LOG(@"parsedObject = %@", parsedObject);
@@ -519,7 +524,7 @@
                 [ACSPersistenceManager resetPlaylistChilds:parentId];
                 
                 [ACSPersistenceManager populatePlaylistsFromDictionary:parsedObject];
-               //CLS_LOG(@"parsedObject = %@", parsedObject);
+                //CLS_LOG(@"parsedObject = %@", parsedObject);
             }
             
         }
@@ -672,7 +677,7 @@
         if (isDownloaded) {
             urlAsString = [NSString stringWithFormat:@"%@&download=true", urlAsString];
         }
-
+        
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -1339,7 +1344,7 @@
                     [self syncLivePicturesWithArray:[settingDic dictValueForKey:kAppKey_Pictures]];
                     
                     //Svetlit Additional settings
-                     [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kSettingKey_DownloadsFeature];
+                    [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:kSettingKey_DownloadsFeature];
                 }
                 
             }
@@ -1573,7 +1578,8 @@
         
         if([challenge.protectionSpace.host isEqualToString:kApiDomain] ||
            [challenge.protectionSpace.host isEqualToString:kApiPlayerDomain] ||
-           [challenge.protectionSpace.host isEqualToString:KOAuth_GetTokenDomain]){
+           [challenge.protectionSpace.host isEqualToString:KOAuth_GetTokenDomain]
+           || [challenge.protectionSpace.host isEqualToString:@"mkt.zype.com"]){
             
             NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
@@ -1584,6 +1590,92 @@
     
 }
 
+#pragma mark - Subscription Plan
+
+- (void)getSubscriptionPlan:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion {
+    NSURLComponents *components = [NSURLComponents componentsWithString: kApiSubscriptionPlanURL];
+    
+    NSMutableArray *queryItems = [NSMutableArray array];
+    [queryItems addObject: [NSURLQueryItem queryItemWithName: @"app_key" value: kAppKey]];
+    for (id planIndex in kZypeSubscriptionIds) {
+        [queryItems addObject: [NSURLQueryItem queryItemWithName: @"id[]" value: planIndex]];
+    }
+    components.queryItems = queryItems;
+    NSURL *url = components.URL;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+            completion(data, response, error);
+        } else {
+            CLS_LOG(@"Success: %@", components.URL);
+            completion(data, response, error);
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void)syncSubscriptionPlan {
+    [self getSubscriptionPlan:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (data != nil) {
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (parsedObject != nil){
+              
+                NSMutableDictionary *subscriptions = [NSMutableDictionary dictionary];
+                
+                for(NSDictionary * plan in parsedObject[@"response"]) {
+                    if ([kZypeSubscriptionIds containsObject:plan[@"_id"]]) {
+                        [subscriptions setValue:plan[@"_id"] forKey:plan[@"marketplace_ids"][@"itunes"]];
+                    }
+                }
+              
+                [[NSUserDefaults standardUserDefaults] setObject:subscriptions forKey:kSettingKey_Subscriptions];
+              
+            }
+        }
+    }];
+}
+
+#pragma mark - Marketplace
+
+- (void)createMarketplace:(NSData*)receipt planId:(NSString*)planId completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion {
+    [ACSTokenManager accessToken:^(NSString *token, NSError *error) {
+        
+        // Prepare parameters
+        NSDictionary *parameters = @{
+                                     @"consumer_token" : token,
+                                     @"consumer_id" : [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId],
+                                     @"receipt" : [receipt base64EncodedStringWithOptions:0],
+                                     @"plan_id" : planId,
+                                     @"app_id" : kZypeAppId,
+                                     @"site_id" : kZypeSiteId
+                                     };
+        NSError *err = nil;
+        NSData *requestData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&err];
+        
+        // Send request
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:kApiMarketPlaceURL]]];
+        
+        CLS_LOG(@"Sample create Marketplace URL: %@", request.URL);
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody: requestData];
+        
+        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (error) {
+                CLS_LOG(@"Failed: %@", error);
+                completion(data, response, error);
+            } else {
+                CLS_LOG(@"Success: %@", request.URL);
+                completion(data, response, error);
+            }
+        }];
+        [dataTask resume];
+    }];
+}
 
 #pragma mark - Singleton
 
@@ -1601,3 +1693,4 @@
 }
 
 @end
+

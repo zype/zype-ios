@@ -10,6 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DownloadOperationController.h"
 #import "ACStatusManager.h"
+#import "ACPurchaseManager.h"
 #import "UIView+UIView_CustomizeTheme.h"
 
 @interface MediaItemCollectionCell()
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *iconLockedView;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIImageView *placeholderView;
+@property (weak, nonatomic) IBOutlet UIView *overlayView;
 
 
 
@@ -30,6 +32,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self.titleLabel setHidden:!kAppAppleTVLayoutShowThumbanailTitle];
+    [self.overlayView setHidden:!kAppAppleTVLayoutShowThumbanailTitle];
     // Initialization code
 }
 
@@ -40,8 +43,20 @@
     [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             [self.placeholderView setHidden:YES];
-        } 
+            [self.coverImageView setImage:image];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailBigUrl] placeholderImage:image];
+        } else {
+            [self.placeholderView setHidden:NO];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailBigUrl] placeholderImage:[UIImage imageNamed:@"playlist-placeholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (image) {
+                    [self.placeholderView setHidden:YES];
+                } else {
+                    [self.placeholderView setHidden:NO];
+                }
+            }];
+        }
     }];
+    [self.iconLockedView setHidden:YES];
 }
 
 - (void)setVideo:(Video *)video {
@@ -51,16 +66,36 @@
     [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             [self.placeholderView setHidden:YES];
+            [self.coverImageView setImage:image];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image];
+        } else {
+            [self.placeholderView setHidden:NO];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (image) {
+                    [self.placeholderView setHidden:YES];
+                } else {
+                    [self.placeholderView setHidden:NO];
+                }
+            }];
         }
     }];
     
     if ([video.subscription_required intValue] == 1) {
         [self.iconLockedView setHidden:NO];
-        if ([ACStatusManager isUserSignedIn] == YES) {
-            self.iconLockedView.image = [UIImage imageNamed:@"icon-unlock"];
+        NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
+        if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
+            self.iconLockedView.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            if (kUnlockTransparentEnabled == YES) {
+                [self.iconLockedView setTintColor:UIColor.clearColor];
+            } else {
+                [self.iconLockedView setTintColor:kUnlockColor];
+            }
         } else {
-            self.iconLockedView.image = [UIImage imageNamed:@"icon-lock"];
+            self.iconLockedView.image = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.iconLockedView setTintColor:kLockColor];
         }
+    } else {
+        [self.iconLockedView setHidden:YES];
     }
 }
 

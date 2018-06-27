@@ -328,9 +328,11 @@
                 [UIUtil showIntroViewFromViewController:self];
                 return;
             } else {
-                if ([self.selectedVideo.subscription_required intValue] == 1 && [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
-                    [UIUtil showSubscriptionViewFromViewController:self];
-                    return;
+                if ([self.selectedVideo.subscription_required intValue] == 1) {
+                    if ([[ACPurchaseManager sharedInstance] isActiveSubscription] == false && [[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
+                        [UIUtil showSubscriptionViewFromViewController:self];
+                        return;
+                    }
                 }
             }
         }

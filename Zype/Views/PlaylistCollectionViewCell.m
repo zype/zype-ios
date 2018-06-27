@@ -21,7 +21,16 @@
 @implementation PlaylistCollectionViewCell
 
 - (void)setPlaylist:(Playlist *)playlist{
-    [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
+    [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (image) {
+            [self.thumbnailImage setImage:image];
+            [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (image) {
+                    [self.thumbnailImage setImage:image];
+                }
+            }];
+        }
+    }];
     
     self.titleLabel.text = playlist.title;
 

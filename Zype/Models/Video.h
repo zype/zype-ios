@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * short_description;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSString * thumbnailUrl;
+@property (nonatomic, retain) NSString * thumbnailBigUrl;
 @property (nonatomic, retain) NSString * thumbnailLocalPath;
 @property (nonatomic, retain) NSString * downloadAudioUrl;
 @property (nonatomic, retain) NSString * downloadAudioLocalPath;
@@ -53,6 +54,7 @@
 @property (nonatomic, retain) NSString * keywordsString;
 @property (nonatomic, retain) NSString * zobjectString;
 @property (nonatomic, retain) NSNumber * playTime;
+@property (nonatomic, retain) NSNumber * is_zype_live;
 
 @property (nonatomic, retain) NSSet *playlistVideo;
 

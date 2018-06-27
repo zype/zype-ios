@@ -24,6 +24,7 @@
 #import "Playlist.h"
 
 #import "ACSPersistenceManager.h"
+#import "ACPurchaseManager.h"
 
 
 @interface VideosViewController ()<UIActionSheetDelegate, WKNavigationDelegate, ACActionSheetManagerDelegate>
@@ -87,7 +88,7 @@
         self.title = currentPlaylist.title;
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadVideos) name:@"ResultsFromPlaylistReturned" object:nil];
-    
+    self.planDelegate = self;
     //[self customizeSearchBar];
 }
 
@@ -189,7 +190,7 @@
 
 - (void)episodeControllerDidSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.indexPathInAction = indexPath;
-
+    
     [super episodeControllerDidSelectItemAtIndexPath:indexPath];
 }
 
@@ -240,7 +241,7 @@
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsCategoryButtonPressed label:@"Show Latest Detail" value:nil] build]];
         
         // [[segue destinationViewController] setDetailItem:self.selectedVideo]; // old segue
-
+        
         NSMutableArray *videos = self.episodeController.indexPathController.dataModel.items;
         [[segue destinationViewController] setVideos:videos withIndex:self.indexPathInAction];
         
@@ -452,5 +453,23 @@
     
 }
 
+#pragma mark - SubscriptionPlanDelegate
+- (void) subscriptionSignInDone {
+    
+    if (kNativeSubscriptionEnabled == NO) {
+        [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+    } else {
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] > 0) {
+            [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+        } else {
+            [UIUtil showSubscriptionViewFromViewController:self];
+        }
+    }
+}
+
+- (void) subscriptionPlanDone {
+    [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+}
 
 @end
+
