@@ -16,6 +16,9 @@
 #define kAppKey @"UxlADHfgBagOySYtTYWSbyBBGkvgf7gXyVa90wDmowe4apTkD1FD4TPwYynYOSvU"
 #define kRootPlaylistId @"5807ccdc849e2d0d11000146"
 
+#define kZypeAppId @"5b21713a73c3f912c60006c6"
+#define kZypeSiteId @"57c0bdb26b7f0f0d14000f38"
+
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @""
 //Google Analytcis configuration
@@ -178,7 +181,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kNotificationStatus_Removed @"removed"
 #define kNotificationStatus_Scheduled @"scheduled"
 #define kZypeURL @"http://www.zype.com"
-#define kLiveStream @"http://tacs.zype.com/archive.html"
+#define kLiveStream @"http://www.zype.com/archive.html"
 #define kToSPolicyHTML @"<html><body style=\"color:black;font-family:'Open Sans';\">%@</body></html>"
 
 #define kNotificationNameLiveStreamUpdated @"kNotificationNameLiveStreamUpdated"
@@ -315,7 +318,6 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kApiConsumerURL            @"https://api.zype.com/consumers/?app_key=%@&id=%@"
 #define kApiSubscriptionPlanURL    @"https://api.zype.com/plans/?app_key=%@"
-#define kApiSubscriptionStageURL    @"http://api-core-1591.stage.zy.pe/plans/?app_key=x_SyX9qKfHOC9ZuHyb6o-uuBE4pnLann3I_52CUQ763dcQYOPlKPca9pt-N9AarP"
 #define kApiMarketPlaceURL         @"https://mkt.zype.com/v1/itunes/"
 
 #define kAppKey_AccessToken        @"access_token"

@@ -1591,7 +1591,7 @@
 #pragma mark - Subscription Plan
 
 - (void)getSubscriptionPlan:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion {
-    NSString *urlAsString = [NSString stringWithFormat:kApiSubscriptionStageURL];
+    NSString *urlAsString = [NSString stringWithFormat:kApiSubscriptionPlanURL, kAppKey];
     NSURL *url = [NSURL withString:urlAsString];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -1617,7 +1617,9 @@
                                      @"consumer_token" : token,
                                      @"consumer_id" : [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId],
                                      @"receipt" : [receipt base64EncodedStringWithOptions:0],
-                                     @"plan_id" : planId
+                                     @"plan_id" : planId,
+                                     @"app_id" : kZypeAppId,
+                                     @"site_id" : kZypeSiteId
                                      };
         NSError *err = nil;
         NSData *requestData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&err];
