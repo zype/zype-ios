@@ -877,7 +877,7 @@
                                     <constraint firstAttribute="height" constant="100" id="RAM-wa-C6P"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1898,7 +1898,7 @@
         <image name="universal-gray-cancel" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WpG-5v-ygH"/>
+        <segue reference="geA-c6-7dt"/>
         <segue reference="gyF-Kv-T9Z"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>

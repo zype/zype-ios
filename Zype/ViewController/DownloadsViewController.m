@@ -66,7 +66,8 @@
 
 - (void)setNoResultsMessage{
 
-    self.noResultsLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_NoDownloadsMessage];
+    //self.noResultsLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_NoDownloadsMessage];
+    self.noResultsLabel.text = @"It looks like you haven't downloaded any videos yet";
 
 }
 

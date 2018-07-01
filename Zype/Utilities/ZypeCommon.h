@@ -54,8 +54,8 @@
 #define kShareVideoEnabled NO
 
 //Only needed for Native or Native to universal subscriptions
-#define kMonthlySubscription @"monthly_subscription"
-#define kYearlySubscription @"yearly_subscription"
+#define kMonthlySubscription @"5b366329849e2d140c00002f"
+#define kYearlySubscription @"5b366368849e2d141400002b"
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
@@ -66,6 +66,10 @@
 #define kDarkThemeBackgroundColor [UIColor colorWithRed:0.12 green:0.12 blue:0.12 alpha:1.00]
 #define kUniversalGray [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.00]
 #define kCurrentAppColor (kAppColorLight) ? kLightTintColor : kDarkTintColor
+
+// colors of lock & unlock image
+#define kLockColor      [UIUtil colorWithHex:0xFF0000]
+#define kUnlockColor    [UIUtil colorWithHex:0x0000FF]
 
 #define kViewCornerRounded 2.0f
 
@@ -178,7 +182,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kNotificationStatus_Removed @"removed"
 #define kNotificationStatus_Scheduled @"scheduled"
 #define kZypeURL @"http://www.zype.com"
-#define kLiveStream @"http://tacs.zype.com/archive.html"
+#define kLiveStream @"http://www.zype.com/archive.html"
 #define kToSPolicyHTML @"<html><body style=\"color:black;font-family:'Open Sans';\">%@</body></html>"
 
 #define kNotificationNameLiveStreamUpdated @"kNotificationNameLiveStreamUpdated"

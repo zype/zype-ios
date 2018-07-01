@@ -21,6 +21,7 @@
 #import "ACPurchaseManager.h"
 #import "ACStatusManager.h"
 #import "TableSectionDataSource.h"
+#import "UIView+UIView_CustomizeTheme.h"
 
 
 @interface SettingsViewController ()
@@ -160,7 +161,9 @@
 
 - (void)configureView
 {
-    self.buttonSignOut.backgroundColor = kClientColor;
+    //self.buttonSignOut.backgroundColor = kClientColor;
+    [self.buttonSignOut tintCustomizeTheme];
+    [self customizeAppearance];
     switch (self.pageIndex.row) {
         case 0: {
             self.title = @"Settings";

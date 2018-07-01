@@ -22,7 +22,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSSet *subscriptions;
-@property (strong, nonatomic) NSArray *products;
+@property (strong, nonatomic) NSMutableArray *products;
 @property (strong, nonatomic) NSArray *titles;
 @property (assign, nonatomic) NSInteger selectedIndex;
 @property (strong, nonatomic) IBOutlet UILabel *navigationTitle;
@@ -75,9 +75,14 @@
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             if (parsedObject != nil){
-                
+                self.products = [[NSMutableArray alloc] init];
                 CLS_LOG(@"SubscriptionPlan Parsed Object: %@", parsedObject);
-                _products = parsedObject[@"response"];
+                NSArray* allProducts = parsedObject[@"response"];
+                for(NSDictionary *product in allProducts) {
+                    if ([product[@"_id"] isEqualToString:kMonthlySubscription] || [product[@"_id"] isEqualToString:kYearlySubscription]) {
+                        [self.products addObject:product];
+                    }
+                }
                 
                 [self.tableView reloadData];
                 [SVProgressHUD dismiss];

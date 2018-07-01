@@ -100,7 +100,7 @@
     
     [ACSDataManager checkForLiveStream];
     [self getPlaylistData];
-    
+    [self loadData];
     //[self customizeSearchBar];
     
     //[self performSegueWithIdentifier:@"toIntro" sender:nil];
@@ -183,7 +183,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self loadData];
+    [self.episodeController reloadData];
 }
 
 - (void)loadData {

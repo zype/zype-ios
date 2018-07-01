@@ -345,6 +345,28 @@
     float width = 0;
     
     for (NSDictionary *dict in array) {
+        if (width > 0) {
+            if (width > [[dict valueForKey:kAppKey_Width] floatValue]) {
+                width = [[dict valueForKey:kAppKey_Width] floatValue];
+                url = [dict valueForKey:kAppKey_Url];
+            }
+        } else {
+            if (width < [[dict valueForKey:kAppKey_Width] floatValue]) {
+                width = [[dict valueForKey:kAppKey_Width] floatValue];
+                url = [dict valueForKey:kAppKey_Url];
+            }
+        }
+    }
+  
+    return url;
+}
+
++ (NSString *)thumbnailBigUrlFromArray:(NSArray *)array
+{
+    NSString *url = @"";
+    float width = 0;
+    
+    for (NSDictionary *dict in array) {
         if (width < [[dict valueForKey:kAppKey_Width] floatValue]) {
             width = [[dict valueForKey:kAppKey_Width] floatValue];
             url = [dict valueForKey:kAppKey_Url];
