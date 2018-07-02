@@ -40,8 +40,20 @@
     [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             [self.placeholderView setHidden:YES];
-        } 
+            [self.coverImageView setImage:image];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailBigUrl] placeholderImage:image];
+        } else {
+            [self.placeholderView setHidden:NO];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailBigUrl] placeholderImage:[UIImage imageNamed:@"playlist-placeholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (image) {
+                    [self.placeholderView setHidden:YES];
+                } else {
+                    [self.placeholderView setHidden:NO];
+                }
+            }];
+        }
     }];
+    [self.iconLockedView setHidden:YES];
 }
 
 - (void)setVideo:(Video *)video {
@@ -51,16 +63,31 @@
     [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             [self.placeholderView setHidden:YES];
+            [self.coverImageView setImage:image];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image];
+        } else {
+            [self.placeholderView setHidden:NO];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (image) {
+                    [self.placeholderView setHidden:YES];
+                } else {
+                    [self.placeholderView setHidden:NO];
+                }
+            }];
         }
     }];
     
     if ([video.subscription_required intValue] == 1) {
         [self.iconLockedView setHidden:NO];
         if ([ACStatusManager isUserSignedIn] == YES) {
-            self.iconLockedView.image = [UIImage imageNamed:@"icon-unlock"];
+            self.iconLockedView.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.iconLockedView setTintColor:kUnlockColor];
         } else {
-            self.iconLockedView.image = [UIImage imageNamed:@"icon-lock"];
+            self.iconLockedView.image = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.iconLockedView setTintColor:kLockColor];
         }
+    } else {
+        [self.iconLockedView setHidden:YES];
     }
 }
 

@@ -51,6 +51,13 @@
                                           if (error) {
                                               [self.imageThumbnail setImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
                                               CLS_LOG(@"Placeholder thumbnail couldn't be loaded: %@", error);
+                                          } else {
+                                              [self.imageThumbnail setImage:image];
+                                              [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                                                  if (image) {
+                                                      [self.imageThumbnail setImage:image];
+                                                  }
+                                              }];
                                           }
                                       }];
         

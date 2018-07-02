@@ -129,7 +129,7 @@
     
     BOOL downloadFeature = kDownloadsEnabled;
     
-    [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+    //[self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
     [self setThumbnail:video];
 
     BOOL iconLockHidden = !([video.subscription_required intValue] == 1);
@@ -257,6 +257,13 @@
                                       if (error) {
                                           [self.imageThumbnail setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
                                           CLS_LOG(@"Video thumbnail couldn't be loaded: %@", error);
+                                      } else {
+                                          [self.imageThumbnail setImage:image];
+                                          [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                                              if (image) {
+                                                  [self.imageThumbnail setImage:image];
+                                              }
+                                          }];
                                       }
                                   }];
 }

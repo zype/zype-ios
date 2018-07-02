@@ -68,8 +68,8 @@
 
 - (void)setNoResultsMessage{
     
-    self.noResultsLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_NoFavoritesMessage];
-    
+    //self.noResultsLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_NoFavoritesMessage];
+    self.noResultsLabel.text = @"It looks like you haven't added any videos to Favorites yet";
 }
 
 

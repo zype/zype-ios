@@ -13,6 +13,7 @@
 #import "GAITrackedViewController.h"
 #import "Timing.h"
 #import "AppDelegate.h"
+#import "UIView+UIView_CustomizeTheme.h"
 
 @interface MoreViewController ()
 
@@ -35,7 +36,7 @@
 }
 
 - (void)customizeAppearance {
-    self.buttonSignIn.backgroundColor = kClientColor;
+    [self.buttonSignIn tintCustomizeTheme];
     
     if (kAppColorLight) {
         

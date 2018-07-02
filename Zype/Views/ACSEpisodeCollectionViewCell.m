@@ -121,6 +121,13 @@
                                       if (error) {
                                           [self.thumbnailImage setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
                                           CLS_LOG(@"Video thumbnail couldn't be loaded: %@", error);
+                                      } else {
+                                          [self.thumbnailImage setImage:image];
+                                          [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                                              if (image) {
+                                                  [self.thumbnailImage setImage:image];
+                                              }
+                                          }];
                                       }
                                   }];
     
