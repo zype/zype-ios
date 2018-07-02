@@ -1,0 +1,245 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+# Fetch Appfile configs
+app_id        = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+apple_dev_id  = CredentialsManager::AppfileConfig.try_fetch_value(:apple_id)
+dev_team_id   = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+
+app_display_name  = "Zype Template"
+app_version_num   = "1.0.0"
+app_build_num     = "1"
+
+# Zype iOS template - base Fastlane configs
+xcode_proj      = "Zype.xcodeproj"
+zype_workspace  = "Zype.xcworkspace"
+app_plist       = "Zype/Info.plist"
+app_scheme      = "Zype"
+
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Displays current app configs"
+  lane :display_config do
+    display_name = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleDisplayName"
+    )
+    identifier  = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleIdentifier"
+    )
+    version_num = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleShortVersionString"
+    )
+    build_num   = get_info_plist_value(
+      path: app_plist,
+      key: "CFBundleVersion"
+    )
+
+    puts "Current app configuration"
+    puts "\tdisplay name: #{display_name}"
+    puts "\tapp id: #{identifier}"
+    puts "\tversion number: #{version_num}"
+    puts "\tbuild number: #{build_num}"
+  end
+
+  desc "Updates the app configuration. Accepts: "
+  desc "\t(Optional) display_name"
+  desc "\t(Optional) app_id"
+  desc "\t(Optional) version_number"
+  desc "\t(Optional) build_number"
+  lane :update_config do |options|
+    if options[:display_name]
+      update_info_plist(
+        xcodeproj:      xcode_proj,
+        plist_path:     app_plist,
+        display_name:   options[:display_name]
+      )
+    end
+
+    if options[:app_id]
+      update_app_identifier(
+        xcodeproj:      xcode_proj,
+        app_identifier: options[:app_id]
+      )
+      update_app_identifier(
+        plist_path:     app_plist,
+        app_identifier: options[:app_id]
+      )
+    end
+
+    if options[:version_number]
+      increment_version_number(
+        version_number: options[:version_number],  # new version no.
+        xcodeproj:      xcode_proj,
+      )
+    end
+
+    if options[:build_number]
+      set_info_plist_value(
+        path: app_plist,
+        key: "CFBundleVersion",
+        value: options[:build_number] # new build no.
+      )
+    end
+  end
+
+  desc "Updates app config using the Appfile"
+  lane :update_with_appfile do
+    update_app_identifier(
+      xcodeproj:      xcode_proj,
+      plist_path:     app_plist,
+      app_identifier: app_id
+    )
+    update_info_plist(
+      xcodeproj:      xcode_proj,
+      plist_path:     app_plist,
+      display_name:   app_display_name
+    )
+    increment_version_number(
+      xcodeproj:      xcode_proj,
+      version_number: app_version_num,
+    )
+    set_info_plist_value(
+      path: app_plist,
+      key: "CFBundleVersion",
+      value: app_build_num
+    )
+  end
+
+  desc "Updates the app icon. App icon needs to be 1024x1024 PNG. Accepts: "
+  desc "\tapp_icon_path - Path to app icon"
+  lane :make_app_icons do |options|
+    # list imagemagick versions or install if no versions
+    sh("brew list imagemagick || brew install imagemagick")
+
+    # if imagemagick is outdated, upgrade imagemagick
+    sh("if (brew outdated | grep imagemagick > /dev/null); then brew upgrade imagemagick; fi")
+
+    sh("fastlane", "add_plugin", "appicon")
+
+    if options[:app_icon_path]
+      appicon(
+        appicon_image_file: options[:app_icon_path],
+        appicon_devices: [:ipad, :iphone, :ios_marketing],
+        appicon_path: "Zype/Images.xcassets"
+      )
+    end
+  end
+
+  desc "Take screenshots"
+  lane :screenshots do
+    snapshot
+  end
+
+  desc "Create iTunes Connect app"
+  lane :create_itc_app do
+    produce(
+      username: apple_dev_id,
+      team_id: dev_team_id,
+      itc_team_id: dev_team_id,
+      app_identifier: app_id,
+      app_name: app_display_name,
+      sku: app_id
+    )
+  end
+
+  desc "Create certificate. Stores in /code_signing folder"
+  lane :create_cert do
+    cert(
+      username: apple_dev_id,
+      team_id: dev_team_id,
+      output_path: "./code_signing"
+    )
+  end
+
+  desc "Create provisioning profile. Stores in /code_signing folder"
+  lane :create_prov do
+    sigh(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      team_id: dev_team_id,
+      output_path: "./code_signing",
+      provisioning_name: app_id,
+      filename: app_id + ".mobileprovision"
+    )
+  end
+
+  desc "Create certificate and provisioning profile"
+  lane :create_cert_and_prov do
+    create_cert
+    create_prov
+  end
+
+  desc "Build app. Accepts: "
+  desc "\t(Optional) profile_path - Path to provisioning profile. Default path is in /code_signing"
+  desc "\t(Optional) profile_name - Name of provisioning profile. Default is the app_id"
+  lane :build do |options|
+    disable_automatic_code_signing(
+      path: xcode_proj,
+      team_id: dev_team_id
+    )
+
+    if options[:profile_path]
+      p_path = options[:profile_path]
+    else
+      p_path = "./code_signing/" + app_id + ".mobileprovision"
+    end
+
+    update_project_provisioning(
+      xcodeproj: xcode_proj,
+      profile: p_path,
+      build_configuration: "Release"
+    )
+
+    cocoapods
+
+    build_app(
+      scheme: "Zype",
+      workspace: zype_workspace,
+      clean: true,
+      export_method: "app-store",
+      export_team_id: dev_team_id,
+      export_options: {
+        provisioningProfiles: {
+          "#{app_id}": options[:profile_name] || app_id
+        }
+      }
+    )
+  end
+
+  desc "Uploads the app to iTunes Connect"
+  lane :upload do
+    deliver(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      team_id: dev_team_id,
+      dev_portal_team_id: dev_team_id,
+      screenshots_path: "./screenshots"
+    )
+  end
+
+  desc "Build app, then upload to iTunes Connect. Accepts: "
+  desc "\t(Optional) profile_path - Path to provisioning profile. Default path is in /code_signing"
+  desc "\t(Optional) profile_name - Name of provisioning profile. Default is the app_id"
+  lane :build_and_upload do |options|
+    build(profile_path: options[:profile_path], profile_name: options[:profile_name])
+    upload
+  end
+
+end
