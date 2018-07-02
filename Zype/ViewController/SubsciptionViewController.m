@@ -147,7 +147,8 @@
     SubscriptActiveCell *cell = [self.tableView dequeueReusableCellWithIdentifier:subscriptActiveCell forIndexPath:indexPath];
     //    SKPayment *payment = self.products[indexPath.row];
     NSDictionary *product = self.products[indexPath.row];
-    NSString *title = self.titles[indexPath.row];
+//    NSString *title = self.titles[indexPath.row];
+    NSString *title = product[@"name"];
     [cell setDelegate: self];
     [cell configCell:product];
     cell.titleLabel.text = title;
@@ -169,7 +170,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.tableView.frame.size.height / 2;
+//    return self.tableView.frame.size.height / 2;
+    return self.tableView.frame.size.height / self.products.count;
 }
 
 #pragma mark - Actions
