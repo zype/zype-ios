@@ -79,7 +79,7 @@
                 CLS_LOG(@"SubscriptionPlan Parsed Object: %@", parsedObject);
                 NSArray* allProducts = parsedObject[@"response"];
                 for(NSDictionary *product in allProducts) {
-                    if ([product[@"_id"] isEqualToString:kMonthlySubscription] || [product[@"_id"] isEqualToString:kYearlySubscription]) {
+                    if ([product[@"_id"] isEqualToString:kMonthlySubscriptionID] || [product[@"_id"] isEqualToString:kYearlySubscriptionID]) {
                         [self.products addObject:product];
                     }
                 }
@@ -105,7 +105,7 @@
     });
     [[ACPurchaseManager sharedInstance] requestSubscriptions:^(NSArray *products) {
         [SVProgressHUD dismiss];
-        self.products = products;
+        self.products = products.mutableCopy;
         [self.tableView reloadData];
     } failure:^(NSString *errorString) {
         [SVProgressHUD showErrorWithStatus:errorString];
@@ -152,7 +152,7 @@
     SubscriptActiveCell *cell = [self.tableView dequeueReusableCellWithIdentifier:subscriptActiveCell forIndexPath:indexPath];
     //    SKPayment *payment = self.products[indexPath.row];
     NSDictionary *product = self.products[indexPath.row];
-    NSString *title = self.titles[indexPath.row];
+    NSString *title = product[@"name"];
     [cell setDelegate: self];
     [cell configCell:product];
     cell.titleLabel.text = title;
@@ -174,7 +174,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.tableView.frame.size.height / 2;
+    return self.tableView.frame.size.height / self.products.count;
 }
 
 #pragma mark - Actions

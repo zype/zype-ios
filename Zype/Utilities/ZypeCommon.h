@@ -59,6 +59,8 @@
 //Only needed for Native or Native to universal subscriptions
 #define kMonthlySubscription @"monthly_subscription"
 #define kYearlySubscription @"yearly_subscription"
+#define kMonthlySubscriptionID @"5b366329849e2d140c00002f"
+#define kYearlySubscriptionID @"5b366368849e2d141400002b"
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
