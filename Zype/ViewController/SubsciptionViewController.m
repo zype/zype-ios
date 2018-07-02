@@ -75,6 +75,7 @@
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             if (parsedObject != nil){
+              
                 self.products = [[NSMutableArray alloc] init];
                 CLS_LOG(@"SubscriptionPlan Parsed Object: %@", parsedObject);
                 NSArray* allProducts = parsedObject[@"response"];

@@ -377,3 +377,4 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_ShareMessage       @"share_message"
 
 #endif
+
