@@ -11,6 +11,7 @@
 #import "ACDownloadManager.h"
 #import "DownloadOperationController.h"
 #import "ACStatusManager.h"
+#import "ACPurchaseManager.h"
 
 @interface ACSEpisodeCollectionViewCell ()
 
@@ -46,7 +47,8 @@
     self.subtitleLabel.text = [UIUtil subtitleOfVideo:video];
     
     if ([video.subscription_required intValue] == 1){
-        if ([ACStatusManager isUserSignedIn] == YES){
+        NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
+        if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]){
             self.iconLock.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             if (kUnlockTransparentEnabled == YES) {
                 [self.iconLock setTintColor:UIColor.clearColor];

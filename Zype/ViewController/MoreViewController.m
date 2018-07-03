@@ -14,6 +14,8 @@
 #import "Timing.h"
 #import "AppDelegate.h"
 #import "UIView+UIView_CustomizeTheme.h"
+#import "ACSDataManager.h"
+#import "ACStatusManager.h"
 
 @interface MoreViewController ()
 
@@ -67,8 +69,11 @@
         self.navigationItem.rightBarButtonItem = nil;
     
     // Set subscribe button
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) [self.buttonSignIn setHidden:YES];
-    else [self.buttonSignIn setHidden:NO];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) {
+        [self.buttonSignIn setTitle: @"SIGN OUT" forState: UIControlStateNormal];
+    } else {
+        [self.buttonSignIn setTitle: @"SIGN IN" forState: UIControlStateNormal];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -219,7 +224,17 @@
 }
 
 - (IBAction)signInTapped:(id)sender {
-    [UIUtil showSignInViewFromViewController:self];
+    
+    if ([ACStatusManager isUserSignedIn] == false) {
+        [UIUtil showSignInViewFromViewController:self];
+    } else {    
+        [ACSDataManager logout];
+        
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameSettings action:kAnalyticsCategoryButtonPressed label:@"Sign Out" value:nil] build]];
+        
+        [self.buttonSignIn setTitle: @"SIGN IN" forState: UIControlStateNormal];
+    }
 }
 
 @end

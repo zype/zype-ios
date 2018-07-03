@@ -97,6 +97,7 @@
                 <outlet property="containerView" destination="6Pn-Aa-tao" id="aL3-v1-tct"/>
                 <outlet property="coverImageView" destination="i7y-vL-iIw" id="IsR-85-rWk"/>
                 <outlet property="iconLockedView" destination="b8R-fN-sgj" id="MYg-kY-jXW"/>
+                <outlet property="overlayView" destination="Igq-G4-CEU" id="CWb-LL-Nmx"/>
                 <outlet property="placeholderView" destination="5bH-7K-kuq" id="3q6-eM-yYt"/>
                 <outlet property="progressView" destination="Qfr-0p-4tg" id="XrF-Ht-VDc"/>
                 <outlet property="titleLabel" destination="rPn-Js-52I" id="h2W-8j-MQX"/>

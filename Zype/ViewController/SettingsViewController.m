@@ -54,8 +54,9 @@
     }
     
     // Set sign-out button
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) [self.buttonSignOut setHidden:NO];
-    else [self.buttonSignOut setHidden:YES];
+    //if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) [self.buttonSignOut setHidden:NO];
+    //else
+    [self.buttonSignOut setHidden:YES];
     [self customizeAppearance];
 }
 

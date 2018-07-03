@@ -904,10 +904,10 @@
                                 <exclude reference="V9P-vg-sXY"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="AsR-42-vpo"/>
                                 <exclude reference="0jb-Mh-v7R"/>
                                 <exclude reference="3tf-gQ-rI7"/>
                                 <exclude reference="lDr-gc-Pu7"/>
-                                <exclude reference="AsR-42-vpo"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -916,15 +916,15 @@
                                 <exclude reference="DsE-oC-IFw"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="0jb-Mh-v7R"/>
-                                <include reference="3tf-gQ-rI7"/>
-                                <include reference="lDr-gc-Pu7"/>
                                 <exclude reference="apH-tr-T2G"/>
                                 <exclude reference="gyt-CF-fDj"/>
                                 <exclude reference="zgM-3g-eNC"/>
                                 <include reference="wnZ-G9-kdz"/>
                                 <include reference="AsR-42-vpo"/>
                                 <exclude reference="mQA-9u-TYb"/>
+                                <include reference="0jb-Mh-v7R"/>
+                                <include reference="3tf-gQ-rI7"/>
+                                <include reference="lDr-gc-Pu7"/>
                             </mask>
                         </variation>
                     </view>
@@ -1439,7 +1439,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="eil-It-qjB">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="474"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="524"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCell" id="uMe-YJ-y6m">
@@ -1459,10 +1459,10 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gdk-Bz-f9O">
-                                <rect key="frame" x="12" y="484" width="351" height="50"/>
+                                <rect key="frame" x="12" y="534" width="351" height="0.0"/>
                                 <color key="backgroundColor" red="0.0039215686274509803" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="PKa-zG-90k"/>
+                                    <constraint firstAttribute="height" id="PKa-zG-90k"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                                 <state key="normal" title="SIGN OUT">

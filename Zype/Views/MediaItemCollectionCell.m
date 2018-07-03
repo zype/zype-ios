@@ -10,6 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DownloadOperationController.h"
 #import "ACStatusManager.h"
+#import "ACPurchaseManager.h"
 #import "UIView+UIView_CustomizeTheme.h"
 
 @interface MediaItemCollectionCell()
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *iconLockedView;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIImageView *placeholderView;
+@property (weak, nonatomic) IBOutlet UIView *overlayView;
 
 
 
@@ -30,6 +32,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self.titleLabel setHidden:!kAppAppleTVLayoutShowThumbanailTitle];
+    [self.overlayView setHidden:!kAppAppleTVLayoutShowThumbanailTitle];
     // Initialization code
 }
 
@@ -79,7 +82,8 @@
     
     if ([video.subscription_required intValue] == 1) {
         [self.iconLockedView setHidden:NO];
-        if ([ACStatusManager isUserSignedIn] == YES) {
+        NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
+        if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
             self.iconLockedView.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             if (kUnlockTransparentEnabled == YES) {
                 [self.iconLockedView setTintColor:UIColor.clearColor];

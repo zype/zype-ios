@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DownloadOperationController.h"
 #import "ACStatusManager.h"
+#import "ACPurchaseManager.h"
 
 @implementation VideoTableViewCell
 
@@ -121,7 +122,8 @@
     }
     
     UIImage * lockImage;
-    if ([ACStatusManager isUserSignedIn] == YES) {
+    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
+    if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
         lockImage = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         if (kUnlockTransparentEnabled == YES) {
             [self.iconLock setTintColor:UIColor.clearColor];
