@@ -28,9 +28,13 @@
 
 - (id)init {
     if (self = [super init]) {
-        // self.subscriptions = [NSSet setWithObjects: kMonthlySubscription,
-        //                       kYearlySubscription, nil];
+        self.subscriptions = [NSSet set];
+        
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions] != NULL) {
+            self.subscriptions = [self.subscriptions setByAddingObjectsFromArray:[[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions]];
+        }
     }
+    NSLog(@"Subscriptions >>> %@", self.subscriptions);
     return self;
 }
 

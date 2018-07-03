@@ -78,7 +78,12 @@
               
                 self.products = [[NSMutableArray alloc] init];
                 CLS_LOG(@"SubscriptionPlan Parsed Object: %@", parsedObject);
-                _products = parsedObject[@"response"];
+                //_products = parsedObject[@"response"];
+                for(NSDictionary * plan in parsedObject[@"response"]) {
+                    if ([kZypeSubscriptionIds containsObject:plan[@"_id"]]) {
+                        self.products = [self.products arrayByAddingObject:plan];
+                    }
+                }
                 
                 [self.tableView reloadData];
                 [SVProgressHUD dismiss];
