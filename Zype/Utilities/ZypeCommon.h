@@ -57,10 +57,11 @@
 #define kShareVideoEnabled NO
 
 //Only needed for Native or Native to universal subscriptions
-#define kMonthlySubscription @"monthly_subscription"
-#define kYearlySubscription @"yearly_subscription"
-#define kMonthlySubscriptionID @"5b366329849e2d140c00002f"
-#define kYearlySubscriptionID @"5b366368849e2d141400002b"
+#define kZypeSubscriptionIds [NSArray arrayWithObjects: @"5b366329849e2d140c00002f", @"5b366368849e2d141400002b", nil]
+// #define kMonthlySubscription @"monthly_subscription"
+// #define kYearlySubscription @"yearly_subscription"
+// #define kMonthlySubscriptionID @"5b366329849e2d140c00002f"
+// #define kYearlySubscriptionID @"5b366368849e2d141400002b"
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
@@ -325,7 +326,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 //IKuC8xERY-oYRxQfE6c1HSeRrxKcpCwcsPr614RfaxCkYsJLgwpBkpkEo88EsyWr&zobject_type=top_playlists&page=1&per_page=500&keywords=&sort=priority&order=desc
 
 #define kApiConsumerURL            @"https://api.zype.com/consumers/?app_key=%@&id=%@"
-#define kApiSubscriptionPlanURL    @"https://api.zype.com/plans/?app_key=%@"
+#define kApiSubscriptionPlanURL    @"https://api.zype.com/plans/"
 #define kApiMarketPlaceURL         @"https://mkt.zype.com/v1/itunes/"
 
 #define kAppKey_AccessToken        @"access_token"

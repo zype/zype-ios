@@ -28,8 +28,8 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.subscriptions = [NSSet setWithObjects: kMonthlySubscription,
-                              kYearlySubscription, nil];
+        // self.subscriptions = [NSSet setWithObjects: kMonthlySubscription,
+        //                       kYearlySubscription, nil];
     }
     return self;
 }

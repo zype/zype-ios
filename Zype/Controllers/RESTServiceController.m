@@ -39,13 +39,6 @@
                                  kOAuthProperty_ClientSecret : kOAuth_ClientSecret,
                                  kOAuthProperty_GrantType : kOAuth_GrantType,
                                  };
-//    NSMutableString *parameterString = [NSMutableString string];
-//    for (NSString *key in [parameters allKeys]) {
-//        if ([parameterString length]) {
-//            [parameterString appendString:@"&"];
-//        }
-//        [parameterString appendFormat:@"%@=%@", key, parameters[key]];
-//    }
     NSError *error = nil;
     NSData *requestData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
     
@@ -59,10 +52,8 @@
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:requestData];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (completionHandler)
-        {
+        if (completionHandler) {
             completionHandler(data, response, error);
-            //            CLS_LOG(@"LOGIN DATA RESPONSE:%@", data);
         }
     }];
     [task resume];
@@ -1591,8 +1582,15 @@
 #pragma mark - Subscription Plan
 
 - (void)getSubscriptionPlan:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion {
-    NSString *urlAsString = [NSString stringWithFormat:kApiSubscriptionPlanURL, kAppKey];
-    NSURL *url = [NSURL withString:urlAsString];
+    NSURLComponents *components = [NSURLComponents componentsWithString: kApiSubscriptionPlanURL];
+    
+    NSMutableArray *queryItems = [NSMutableArray array];
+    [queryItems addObject: [NSURLQueryItem queryItemWithName: @"app_key" value: kAppKey]];
+    for (id planIndex in kZypeSubscriptionIds) {
+        [queryItems addObject: [NSURLQueryItem queryItemWithName: @"id[]" value: planIndex]];
+    }
+    components.queryItems = queryItems;
+    NSURL *url = components.URL;
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -1600,7 +1598,7 @@
             CLS_LOG(@"Failed: %@", error);
             completion(data, response, error);
         } else {
-            CLS_LOG(@"Success: %@", urlAsString);
+            CLS_LOG(@"Success: %@", components.URL);
             completion(data, response, error);
         }
     }];
