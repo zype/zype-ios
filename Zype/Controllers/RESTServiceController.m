@@ -1607,6 +1607,26 @@
     [dataTask resume];
 }
 
+- (void)syncSubscriptionPlan {
+    [self getSubscriptionPlan:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (data != nil) {
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            if (parsedObject != nil){
+                
+                NSMutableArray *subscriptions = [[NSMutableArray alloc] init];
+                
+                for(NSDictionary * plan in parsedObject[@"response"]) {
+                    if ([kZypeSubscriptionIds containsObject:plan[@"_id"]]) {
+                        [subscriptions addObject:plan[@"marketplace_ids"][@"itunes"]];
+                    }
+                }
+                [[NSUserDefaults standardUserDefaults] setObject:subscriptions forKey:kSettingKey_Subscriptions];
+            }
+        }
+    }];
+}
+
 #pragma mark - Marketplace
 
 - (void)createMarketplace:(NSData*)receipt planId:(NSString*)planId completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion {

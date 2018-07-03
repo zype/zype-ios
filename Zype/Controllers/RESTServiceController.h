@@ -67,6 +67,7 @@
 
 - (void)syncNotificationsInPage:(NSNumber *)page WithNotificationsInDB:(NSMutableArray *)notificationsInDB WithExistingNotifications:(NSMutableArray *)existingNotifications;
 
+- (void)syncSubscriptionPlan;
 - (void)getSubscriptionPlan:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
 - (void)createMarketplace:(NSData*)receipt planId:(NSString*)planId completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
 
