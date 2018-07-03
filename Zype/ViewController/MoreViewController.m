@@ -37,6 +37,7 @@
 
 - (void)customizeAppearance {
     [self.buttonSignIn tintCustomizeTheme];
+    [self.buttonSignIn round:kViewCornerRounded];
     
     if (kAppColorLight) {
         

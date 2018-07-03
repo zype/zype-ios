@@ -692,10 +692,14 @@
 
 #pragma mark - SubscriptionPlanDelegate
 - (void) subscriptionSignInDone {
-    if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+    if (kNativeSubscriptionEnabled == NO) {
         [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
     } else {
-        [UIUtil showSubscriptionViewFromViewController:self];
+        if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+            [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+        } else {
+            [UIUtil showSubscriptionViewFromViewController:self];
+        }
     }
 }
 

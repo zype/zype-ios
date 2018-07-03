@@ -22,7 +22,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSSet *subscriptions;
-@property (strong, nonatomic) NSMutableArray *products;
+@property (strong, nonatomic) NSArray *products;
 @property (strong, nonatomic) NSArray *titles;
 @property (assign, nonatomic) NSInteger selectedIndex;
 @property (strong, nonatomic) IBOutlet UILabel *navigationTitle;
@@ -78,12 +78,7 @@
               
                 self.products = [[NSMutableArray alloc] init];
                 CLS_LOG(@"SubscriptionPlan Parsed Object: %@", parsedObject);
-                NSArray* allProducts = parsedObject[@"response"];
-                for(NSDictionary *product in allProducts) {
-                    if ([product[@"_id"] isEqualToString:kMonthlySubscriptionID] || [product[@"_id"] isEqualToString:kYearlySubscriptionID]) {
-                        [self.products addObject:product];
-                    }
-                }
+                _products = parsedObject[@"response"];
                 
                 [self.tableView reloadData];
                 [SVProgressHUD dismiss];
@@ -106,7 +101,7 @@
     });
     [[ACPurchaseManager sharedInstance] requestSubscriptions:^(NSArray *products) {
         [SVProgressHUD dismiss];
-        self.products = products.mutableCopy;
+        self.products = products;
         [self.tableView reloadData];
     } failure:^(NSString *errorString) {
         [SVProgressHUD showErrorWithStatus:errorString];

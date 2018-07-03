@@ -164,6 +164,7 @@
     //self.buttonSignOut.backgroundColor = kClientColor;
     [self.buttonSignOut tintCustomizeTheme];
     [self customizeAppearance];
+    [self.buttonSignOut round:kViewCornerRounded];
     switch (self.pageIndex.row) {
         case 0: {
             self.title = @"Settings";

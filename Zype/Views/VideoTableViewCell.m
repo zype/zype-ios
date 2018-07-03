@@ -122,9 +122,11 @@
     
     UIImage * lockImage;
     if ([ACStatusManager isUserSignedIn] == YES) {
-        lockImage = [UIImage imageNamed:@"iconUnlocked"];
+        lockImage = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.iconLock setTintColor:kUnlockColor];
     } else {
-        lockImage = [UIImage imageNamed:@"iconLocked"];
+        lockImage = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.iconLock setTintColor:kLockColor];
     }
     
     BOOL downloadFeature = kDownloadsEnabled;

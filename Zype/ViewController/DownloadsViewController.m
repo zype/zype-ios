@@ -67,7 +67,7 @@
 - (void)setNoResultsMessage{
 
     //self.noResultsLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_NoDownloadsMessage];
-    self.noResultsLabel.text = @"It looks like you haven't downloaded any videos yet";
+    self.noResultsLabel.text = @"It looks like you haven't downloaded any videos yet. \n\nYou can download videos in order to watch them offline by clicking on the Download icon for any individual video.";
 
 }
 
