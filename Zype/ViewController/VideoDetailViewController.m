@@ -103,6 +103,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (strong, nonatomic) UIAlertView *alertViewSignInRequired;
 @property (strong, nonatomic) UIAlertView *alertViewNsvodRequired;
 
+@property (strong, nonatomic) NSLayoutConstraint *left;
+
 @end
 
 
@@ -135,9 +137,33 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)liveStreamUpdated:(NSNotification *)notification{
+    
+    UNMutableNotificationContent *content = [UNMutableNotificationContent new];
+    content.title = @"New Live Event";
+    content.body = @"New live event has begun streaming.";
+    content.sound = [UNNotificationSound defaultSound];
+    
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:300
+                                                                                                    repeats:NO];
+    
+    NSString *identifier = @"UYLLocalNotification";
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
+                                                                          content:content trigger:trigger];
+    
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"Something went wrong: %@",error);
+        }
+    }];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(liveStreamUpdated:) name:kNotificationNameLiveStreamUpdated object:nil];
     
     [self trackScreenName:kAnalyticsScreenNameVideoDetail];
     
@@ -248,6 +274,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self initPlayer];
     }
     
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -280,6 +309,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
+        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    }
+    
     if (self.isMovingFromParentViewController) {
         
         // Disable timer
@@ -309,6 +343,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (self.adsManager != nil) {
         [self.adsManager pause];
     }
+}
+
+- (void)deviceDidRotate:(NSNotification *)notification
+{
+    [self setupConstraints];
 }
 
 
@@ -440,7 +479,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     NSURL *thumbnailURL = [NSURL URLWithString:self.video.thumbnailUrl];
     [self.imageThumbnail sd_setImageWithURL:thumbnailURL completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        self.imageThumbnail.image = image;
+        if (image) {
+            self.imageThumbnail.image = image;
+            [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:self.video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                self.imageThumbnail.image = image;
+            }];
+        }
     }];
 }
 
@@ -579,7 +623,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         if (error) {
             CLS_LOG(@"Failed: %@", error);
         } else {
-            CLS_LOG(@"Success");
+            CLS_LOG(@"Success checkDownloadVideo");
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             
@@ -607,7 +651,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             CLS_LOG(@"Failed: %@", error);
         } else {
             
-            CLS_LOG(@"Success");
+            CLS_LOG(@"Success playStreamingVideo");
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             
@@ -660,7 +704,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             
         } else {
             
-            CLS_LOG(@"Success");
+            CLS_LOG(@"Success playStreamingAudio");
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             
@@ -787,7 +831,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.imageThumbnail setHidden:NO];
     NSURL *thumbnailURL = [NSURL URLWithString:self.video.thumbnailUrl];
     [self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        self.imageThumbnail.image = image;
+        if (image) {
+            self.imageThumbnail.image = image;
+            [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:self.video.thumbnailBigUrl] placeholderImage:image];
+        }
     }];
     [self.view bringSubviewToFront:self.imageThumbnail];
     [self.view bringSubviewToFront:self.avPlayerController.view];
@@ -824,32 +871,55 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)setupConstraints {
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
+    UIView* constraintItemView = self.view;
+    
+    if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) || [[UIDevice currentDevice] orientation] == UIDeviceOrientationUnknown) {
+        constraintItemView = self.imageThumbnail;
+        [[self navigationController] setNavigationBarHidden:NO animated:YES];
+    } else {
+        [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    }
+    
+    [self.avPlayerController.view removeFromSuperview];
+    [self.playerControlsView.view removeFromSuperview];
+    [self.adsContainerView removeFromSuperview];
+    
+    [self.view addSubview:self.avPlayerController.view];
+    [self.view addSubview:self.playerControlsView.view];
+    [self.view addSubview:self.adsContainerView];
+    
+    [self.view bringSubviewToFront:self.imageThumbnail];
+    [self.view bringSubviewToFront:self.avPlayerController.view];
+    [self.view bringSubviewToFront:self.adsContainerView];
+    [self.view bringSubviewToFront:self.activityIndicator];
+    [self.view bringSubviewToFront:self.playerControlsView.view];
+    
     // AVPlayerController
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1
-                                                           constant:0]];
+                                                           attribute:NSLayoutAttributeTop
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:constraintItemView
+                                                           attribute:NSLayoutAttributeTop
+                                                          multiplier:1
+                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeLeft
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
                                                           attribute:NSLayoutAttributeRight
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeRight
                                                          multiplier:1
                                                            constant:0]];
@@ -858,28 +928,28 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeLeft
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
                                                           attribute:NSLayoutAttributeRight
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeRight
                                                          multiplier:1
                                                            constant:0]];
@@ -888,28 +958,28 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
                                                           attribute:NSLayoutAttributeLeading
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeLeading
                                                          multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
                                                           attribute:NSLayoutAttributeTrailing
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.imageThumbnail
+                                                             toItem:constraintItemView
                                                           attribute:NSLayoutAttributeTrailing
                                                          multiplier:1
                                                            constant:0]];

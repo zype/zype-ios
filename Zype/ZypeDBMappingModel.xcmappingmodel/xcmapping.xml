@@ -1,16 +1,16 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "file:///System/Library/DTDs/CoreData.dtd">
 
 <database>
     <databaseInfo>
         <version>134481920</version>
         <UUID>6392B34F-C655-43B1-A817-23F562D518B4</UUID>
-        <nextObjectID>173</nextObjectID>
+        <nextObjectID>174</nextObjectID>
         <metadata>
             <plist version="1.0">
                 <dict>
                     <key>NSPersistenceFrameworkVersion</key>
-                    <integer>526</integer>
+                    <integer>754</integer>
                     <key>NSStoreModelVersionHashes</key>
                     <dict>
                         <key>XDDevAttributeMapping</key>
@@ -246,7 +246,7 @@ cBIAAYagrxEG1AAHAAgAFwAzADQANQBDAEQARQBGAEcAYgBjAGQAagBrAHcAiwCMAI0AjgCPAJAAkQCS
         <attribute name="destinationname" type="string">Video</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z103"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z109 z159 z126 z117 z129 z106 z142 z118 z125 z108 z166 z121 z171 z127 z141 z107 z173 z150 z128 z134 z169 z144 z163 z114 z153 z113 z157 z119 z156 z155 z145 z148 z154 z123 z168 z162 z147 z138"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z153 z145 z127 z138 z118 z119 z156 z147 z142 z150 z129 z134 z126 z107 z166 z155 z168 z128 z108 z117 z169 z114 z123 z154 z173 z163 z157 z125 z162 z159 z141 z121 z109 z113 z144 z148 z171 z106"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z147">
@@ -362,5 +362,8 @@ cBIAAYagrxEG1AAHAAgAFwAzADQANQBDAEQARQBGAEcAYgBjAGQAagBrAHcAiwCMAI0AjgCPAJAAkQCS
     <object type="XDDEVATTRIBUTEMAPPING" id="z173">
         <attribute name="name" type="string">keywordsString</attribute>
         <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z146"></relationship>
+    </object>
+    <object type="XDDEVATTRIBUTEMAPPING" id="z174">
+        <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING"></relationship>
     </object>
 </database>

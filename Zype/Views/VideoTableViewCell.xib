@@ -79,10 +79,10 @@
                         </state>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconLocked" translatesAutoresizingMaskIntoConstraints="NO" id="X0o-ZP-l2I">
-                        <rect key="frame" x="29" y="19.5" width="20" height="20.5"/>
+                        <rect key="frame" x="35" y="26" width="14" height="14"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="FIc-Y8-E4Z"/>
-                            <constraint firstAttribute="height" constant="20" id="i7p-kp-m9e"/>
+                            <constraint firstAttribute="width" constant="14" id="FIc-Y8-E4Z"/>
+                            <constraint firstAttribute="height" constant="14" id="i7p-kp-m9e"/>
                         </constraints>
                     </imageView>
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="71Y-dZ-uAN">

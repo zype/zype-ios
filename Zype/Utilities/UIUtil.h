@@ -39,6 +39,7 @@
 
 + (NSString *)tagsWithKeywords:(NSArray *)keywords;
 + (NSString *)thumbnailUrlFromArray:(NSArray *)array;
++ (NSString *)thumbnailBigUrlFromArray:(NSArray *)array;
 + (NSString *)thumbnailUrlFromImageArray:(NSArray *)array;
 + (NSString *)thumbnailUrlFromImageArray:(NSArray *)array withLayout:(NSString *)layout;
 + (NSString *)stringDownloadProgressWithBytes:(double)totalBytesWritten WithTotalBytes:(double)totalBytesExpectedToWrite;

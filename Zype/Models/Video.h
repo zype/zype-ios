@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * short_description;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSString * thumbnailUrl;
+@property (nonatomic, retain) NSString * thumbnailBigUrl;
 @property (nonatomic, retain) NSString * thumbnailLocalPath;
 @property (nonatomic, retain) NSString * downloadAudioUrl;
 @property (nonatomic, retain) NSString * downloadAudioLocalPath;

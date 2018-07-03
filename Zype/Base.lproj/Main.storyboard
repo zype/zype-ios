@@ -17,9 +17,6 @@
         <array key="OpenSans-Regular.ttf">
             <string>OpenSans</string>
         </array>
-        <array key="Oswald-Bold.ttf">
-            <string>Oswald-Bold</string>
-        </array>
         <array key="Roboto-Medium.ttf">
             <string>Roboto-Medium</string>
         </array>
@@ -871,13 +868,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="0FI-Le-re5">
-                                <rect key="frame" x="0.0" y="251.5" width="375" height="100"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="0FI-Le-re5">
+                                <rect key="frame" x="185.5" y="251.5" width="4" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="RAM-wa-C6P"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="RAM-wa-C6P"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -888,18 +885,17 @@
                             <constraint firstItem="V9P-vg-sXY" firstAttribute="leading" secondItem="Q5Y-cK-cKh" secondAttribute="leading" id="3tf-gQ-rI7"/>
                             <constraint firstItem="GY3-KG-W61" firstAttribute="leading" secondItem="Q5Y-cK-cKh" secondAttribute="leading" id="7dN-0L-TPw"/>
                             <constraint firstItem="bgp-46-32H" firstAttribute="top" secondItem="V9P-vg-sXY" secondAttribute="bottom" id="AsR-42-vpo"/>
-                            <constraint firstAttribute="trailing" secondItem="0FI-Le-re5" secondAttribute="trailing" id="KW4-LM-S9g"/>
                             <constraint firstItem="GY3-KG-W61" firstAttribute="top" secondItem="mwq-RJ-Bna" secondAttribute="bottom" id="LVp-1Z-DTV"/>
                             <constraint firstAttribute="trailing" secondItem="GY3-KG-W61" secondAttribute="trailing" id="LoE-wU-kYD"/>
                             <constraint firstItem="GY3-KG-W61" firstAttribute="top" secondItem="mwq-RJ-Bna" secondAttribute="bottom" id="OGb-bX-uN2"/>
                             <constraint firstItem="GY3-KG-W61" firstAttribute="leading" secondItem="Q5Y-cK-cKh" secondAttribute="leading" id="QXQ-iS-OBa"/>
-                            <constraint firstItem="0FI-Le-re5" firstAttribute="leading" secondItem="Q5Y-cK-cKh" secondAttribute="leading" id="VCQ-Zh-dG8"/>
                             <constraint firstItem="bgp-46-32H" firstAttribute="top" secondItem="GY3-KG-W61" secondAttribute="bottom" id="Y0C-4d-yg9"/>
                             <constraint firstAttribute="trailing" secondItem="DsE-oC-IFw" secondAttribute="trailing" id="apH-tr-T2G"/>
                             <constraint firstItem="DsE-oC-IFw" firstAttribute="top" secondItem="mwq-RJ-Bna" secondAttribute="bottom" id="gyt-CF-fDj"/>
                             <constraint firstAttribute="trailing" secondItem="V9P-vg-sXY" secondAttribute="trailing" id="lDr-gc-Pu7"/>
                             <constraint firstItem="bgp-46-32H" firstAttribute="top" secondItem="DsE-oC-IFw" secondAttribute="bottom" id="mQA-9u-TYb"/>
                             <constraint firstAttribute="trailing" secondItem="GY3-KG-W61" secondAttribute="trailing" id="p2G-Ez-eUp"/>
+                            <constraint firstItem="0FI-Le-re5" firstAttribute="centerX" secondItem="Q5Y-cK-cKh" secondAttribute="centerX" id="qS7-1A-5Fe"/>
                             <constraint firstAttribute="centerY" secondItem="0FI-Le-re5" secondAttribute="centerY" id="wnZ-G9-kdz"/>
                             <constraint firstItem="DsE-oC-IFw" firstAttribute="leading" secondItem="Q5Y-cK-cKh" secondAttribute="leading" id="zgM-3g-eNC"/>
                         </constraints>
@@ -1263,7 +1259,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="3N8-sH-SjD">
                                 <rect key="frame" x="187.5" y="227" width="0.0" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="S8S-54-lKq"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="S8S-54-lKq"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1355,7 +1351,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="pSN-o0-2AR">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="464"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="474"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MoreCell" id="egF-4t-X6e">
@@ -1375,12 +1371,12 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5qa-Lv-zZc">
-                                <rect key="frame" x="12" y="474" width="351" height="60"/>
+                                <rect key="frame" x="12" y="484" width="351" height="50"/>
                                 <color key="backgroundColor" red="0.0039215686274509803" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="cJf-4T-n3k"/>
+                                    <constraint firstAttribute="height" constant="50" id="cJf-4T-n3k"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Oswald-Bold" family="Oswald" pointSize="26"/>
+                                <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                                 <state key="normal" title="SIGN IN">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1443,7 +1439,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="eil-It-qjB">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="464"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="524"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCell" id="uMe-YJ-y6m">
@@ -1463,12 +1459,12 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gdk-Bz-f9O">
-                                <rect key="frame" x="12" y="474" width="351" height="60"/>
+                                <rect key="frame" x="12" y="534" width="351" height="0.0"/>
                                 <color key="backgroundColor" red="0.0039215686274509803" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="PKa-zG-90k"/>
+                                    <constraint firstAttribute="height" id="PKa-zG-90k"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Oswald-Bold" family="Oswald" pointSize="26"/>
+                                <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                                 <state key="normal" title="SIGN OUT">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -1898,7 +1894,7 @@
         <image name="universal-gray-cancel" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WpG-5v-ygH"/>
+        <segue reference="eLX-aL-mae"/>
         <segue reference="gyF-Kv-T9Z"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>

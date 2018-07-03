@@ -59,6 +59,8 @@
 //Only needed for Native or Native to universal subscriptions
 #define kMonthlySubscription @"monthly_subscription"
 #define kYearlySubscription @"yearly_subscription"
+#define kMonthlySubscriptionID @"5b366329849e2d140c00002f"
+#define kYearlySubscriptionID @"5b366368849e2d141400002b"
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
@@ -69,6 +71,12 @@
 #define kDarkThemeBackgroundColor [UIColor colorWithRed:0.12 green:0.12 blue:0.12 alpha:1.00]
 #define kUniversalGray [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.00]
 #define kCurrentAppColor (kAppColorLight) ? kLightTintColor : kDarkTintColor
+
+// colors of lock & unlock image
+#define kLockColor      [UIUtil colorWithHex:0xFF0000]
+#define kUnlockColor    [UIUtil colorWithHex:0x0000FF]
+
+#define kUnlockTransparentEnabled NO
 
 #define kViewCornerRounded 2.0f
 
