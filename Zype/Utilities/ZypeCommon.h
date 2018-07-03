@@ -76,6 +76,8 @@
 #define kLockColor      [UIUtil colorWithHex:0xFF0000]
 #define kUnlockColor    [UIUtil colorWithHex:0x0000FF]
 
+#define kUnlockTransparentEnabled NO
+
 #define kViewCornerRounded 2.0f
 
 #define kZypeTemplateVersion @"1.6.2"

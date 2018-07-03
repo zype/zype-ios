@@ -123,7 +123,11 @@
     UIImage * lockImage;
     if ([ACStatusManager isUserSignedIn] == YES) {
         lockImage = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [self.iconLock setTintColor:kUnlockColor];
+        if (kUnlockTransparentEnabled == YES) {
+            [self.iconLock setTintColor:UIColor.clearColor];
+        } else {
+            [self.iconLock setTintColor:kUnlockColor];
+        }
     } else {
         lockImage = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [self.iconLock setTintColor:kLockColor];

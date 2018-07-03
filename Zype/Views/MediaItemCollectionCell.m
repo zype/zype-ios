@@ -81,7 +81,11 @@
         [self.iconLockedView setHidden:NO];
         if ([ACStatusManager isUserSignedIn] == YES) {
             self.iconLockedView.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            [self.iconLockedView setTintColor:kUnlockColor];
+            if (kUnlockTransparentEnabled == YES) {
+                [self.iconLockedView setTintColor:UIColor.clearColor];
+            } else {
+                [self.iconLockedView setTintColor:kUnlockColor];
+            }
         } else {
             self.iconLockedView.image = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             [self.iconLockedView setTintColor:kLockColor];

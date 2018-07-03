@@ -48,7 +48,11 @@
     if ([video.subscription_required intValue] == 1){
         if ([ACStatusManager isUserSignedIn] == YES){
             self.iconLock.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            [self.iconLock setTintColor:kUnlockColor];
+            if (kUnlockTransparentEnabled == YES) {
+                [self.iconLock setTintColor:UIColor.clearColor];
+            } else {
+                [self.iconLock setTintColor:kUnlockColor];
+            }
         } else {
             self.iconLock.image = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             [self.iconLock setTintColor:kLockColor];
