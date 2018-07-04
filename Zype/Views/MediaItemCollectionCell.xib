@@ -42,7 +42,7 @@
                                 </constraints>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-unlock" translatesAutoresizingMaskIntoConstraints="NO" id="b8R-fN-sgj">
-                                <rect key="frame" x="6" y="6" width="14" height="14"/>
+                                <rect key="frame" x="3" y="3" width="14" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="3Ho-aW-vaA"/>
                                     <constraint firstAttribute="width" constant="14" id="bgM-ej-fW4"/>
@@ -74,10 +74,10 @@
                             <constraint firstAttribute="trailing" secondItem="rPn-Js-52I" secondAttribute="trailing" constant="16" id="X4x-C6-TIc"/>
                             <constraint firstAttribute="trailing" secondItem="Igq-G4-CEU" secondAttribute="trailing" id="Y2K-AA-C7Y"/>
                             <constraint firstItem="i7y-vL-iIw" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" id="bUG-IP-OSK"/>
-                            <constraint firstItem="b8R-fN-sgj" firstAttribute="top" secondItem="6Pn-Aa-tao" secondAttribute="top" constant="6" id="c8l-B5-IUK"/>
+                            <constraint firstItem="b8R-fN-sgj" firstAttribute="top" secondItem="6Pn-Aa-tao" secondAttribute="top" constant="3" id="c8l-B5-IUK"/>
                             <constraint firstAttribute="trailing" secondItem="Qfr-0p-4tg" secondAttribute="trailing" id="dep-LE-TY7"/>
                             <constraint firstAttribute="bottom" secondItem="Qfr-0p-4tg" secondAttribute="bottom" id="fGu-bU-EHT"/>
-                            <constraint firstItem="b8R-fN-sgj" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" constant="6" id="jZQ-eX-RVt"/>
+                            <constraint firstItem="b8R-fN-sgj" firstAttribute="leading" secondItem="6Pn-Aa-tao" secondAttribute="leading" constant="3" id="jZQ-eX-RVt"/>
                             <constraint firstItem="Igq-G4-CEU" firstAttribute="top" secondItem="6Pn-Aa-tao" secondAttribute="top" id="tyE-FK-laj"/>
                             <constraint firstItem="5bH-7K-kuq" firstAttribute="centerY" secondItem="6Pn-Aa-tao" secondAttribute="centerY" id="xk1-cl-gLs"/>
                             <constraint firstItem="i7y-vL-iIw" firstAttribute="top" secondItem="6Pn-Aa-tao" secondAttribute="top" id="zTh-hL-3WR"/>
