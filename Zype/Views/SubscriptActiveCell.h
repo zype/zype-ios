@@ -18,19 +18,20 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (strong, nonatomic) IBOutlet UILabel *priceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *trialLabel;
 
 @property (weak, nonatomic) id <SubscriptActiveCellDelegate> delegate;
 @property (strong, nonatomic) SKPayment *payment;
-@property (strong, nonatomic) NSDictionary *mkProduct;
+@property (strong, nonatomic) SKProduct *mkProduct;
 
 - (void)configureCell:(SKPayment*)payment;
-- (void)configCell:(NSDictionary *)product;
+- (void)configCell:(SKProduct *)product;
 
 @end
 
 @protocol SubscriptActiveCellDelegate <NSObject>
 
-- (void)onDidTapSubsciptCell:(SubscriptActiveCell *)cell product:(NSDictionary *)product;
+- (void)onDidTapSubsciptCell:(SubscriptActiveCell *)cell product:(SKProduct *)product;
 
 @end
 

@@ -1612,11 +1612,11 @@
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             if (parsedObject != nil){
                 
-                NSMutableArray *subscriptions = [[NSMutableArray alloc] init];
+                NSMutableDictionary *subscriptions = [NSMutableDictionary dictionary];
                 
                 for(NSDictionary * plan in parsedObject[@"response"]) {
                     if ([kZypeSubscriptionIds containsObject:plan[@"_id"]]) {
-                        [subscriptions addObject:plan[@"marketplace_ids"][@"itunes"]];
+                        [subscriptions setValue:plan[@"_id"] forKey:plan[@"marketplace_ids"][@"itunes"]];
                     }
                 }
                 [[NSUserDefaults standardUserDefaults] setObject:subscriptions forKey:kSettingKey_Subscriptions];
