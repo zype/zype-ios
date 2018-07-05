@@ -25,6 +25,7 @@
     });
     
     if ([[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions] != NULL) {
+        sharedInstance.subscriptions = [NSSet set];
         NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions];
         for (NSString* key in dictionary) {
             sharedInstance.subscriptions = [sharedInstance.subscriptions setByAddingObject:key];

@@ -404,9 +404,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.playerControlsView.progressBar addTarget:self action:@selector(progressBarTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
     
     CMTime interval = CMTimeMakeWithSeconds(0.5, NSEC_PER_SEC);
+    __weak typeof(self) weakSelf = self;
     self.playbackObserver = [self.avPlayer addPeriodicTimeObserverForInterval:interval
                                               queue:NULL usingBlock:^(CMTime time) {
-                                                [self.playerControlsView updateCurrentTime:[NSNumber numberWithDouble:CMTimeGetSeconds(time)]];
+                                                  [weakSelf.playerControlsView updateCurrentTime:[NSNumber numberWithDouble:CMTimeGetSeconds(time)]];
                                               }];
 }
 
@@ -439,7 +440,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // Get index from clicked item
     self.currentVideoIndex = (int)[index row];
-    if (self.currentVideoIndex == nil) { self.currentVideoIndex = 0; }
+    if (self.currentVideoIndex == NSNotFound) { self.currentVideoIndex = 0; }
     
     self.videos = videos;
     
