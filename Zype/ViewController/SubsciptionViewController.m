@@ -63,7 +63,7 @@
     UIColor * separateColor = (kAppColorLight) ? [UIColor whiteColor] : kDarkThemeBackgroundColor;
     self.separateNavigationView.backgroundColor = separateColor;
     
-    [self getSubscriptionPlan];
+    [self requestProducts];
 }
 
 #pragma mark - Subscription plan
@@ -113,13 +113,14 @@
     }];
 }
 
-- (void)buySubscription:(NSDictionary *)product {
+- (void)buySubscription:(SKProduct *)product {
     [SVProgressHUD showWithStatus:@"Purchasing..."];
-    [[ACPurchaseManager sharedInstance] buySubscription:product[@"marketplace_ids"][@"itunes"] success:^(){
+    [[ACPurchaseManager sharedInstance] buySubscription:product.productIdentifier success:^(){
         NSLog(@"Success");
         
         NSData*appReceipt = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
-        [[RESTServiceController sharedInstance] createMarketplace:appReceipt planId:product[@"_id"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions];
+        [[RESTServiceController sharedInstance] createMarketplace:appReceipt planId:dictionary[product.productIdentifier] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (error) {
                 [SVProgressHUD showErrorWithStatus:error.localizedDescription];
             } else {
@@ -141,7 +142,7 @@
 
 #pragma mark - SubscriptActiveCellDelegate
 
-- (void)onDidTapSubsciptCell:(SubscriptActiveCell *)cell product:(NSDictionary *)product {
+- (void)onDidTapSubsciptCell:(SubscriptActiveCell *)cell product:(SKProduct *)product {
     [self buySubscription:product];
 }
 
@@ -151,12 +152,11 @@
     static NSString *subscriptActiveCell = @"SubscriptActiveCell";
     
     SubscriptActiveCell *cell = [self.tableView dequeueReusableCellWithIdentifier:subscriptActiveCell forIndexPath:indexPath];
-    //    SKPayment *payment = self.products[indexPath.row];
-    NSDictionary *product = self.products[indexPath.row];
-    NSString *title = product[@"name"];
+
+    SKProduct *product = self.products[indexPath.row];
     [cell setDelegate: self];
     [cell configCell:product];
-    cell.titleLabel.text = title;
+    
     //[cell setSelectedCell:(self.selectedIndex == indexPath.row)];
     return cell;
 }

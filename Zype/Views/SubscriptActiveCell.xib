@@ -112,6 +112,7 @@
                 <outlet property="descriptionLabel" destination="2Fr-0i-80y" id="6bL-Qg-dlX"/>
                 <outlet property="priceLabel" destination="n4p-q6-6KG" id="NNK-Dv-qDZ"/>
                 <outlet property="titleLabel" destination="z3T-cs-3tF" id="f3M-AR-gSI"/>
+                <outlet property="trialLabel" destination="uNJ-nn-wtY" id="YU3-wE-pw7"/>
             </connections>
             <point key="canvasLocation" x="-65" y="78.5"/>
         </tableViewCell>

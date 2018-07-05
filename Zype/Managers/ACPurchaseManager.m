@@ -23,18 +23,20 @@
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
     });
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions] != NULL) {
+        NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions];
+        for (NSString* key in dictionary) {
+            sharedInstance.subscriptions = [sharedInstance.subscriptions setByAddingObject:key];
+        }
+    }
     return sharedInstance;
 }
 
 - (id)init {
     if (self = [super init]) {
         self.subscriptions = [NSSet set];
-        
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions] != NULL) {
-            self.subscriptions = [self.subscriptions setByAddingObjectsFromArray:[[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_Subscriptions]];
-        }
     }
-    NSLog(@"Subscriptions >>> %@", self.subscriptions);
     return self;
 }
 
