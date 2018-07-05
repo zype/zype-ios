@@ -1611,7 +1611,7 @@
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             if (parsedObject != nil){
-                
+              
                 NSMutableDictionary *subscriptions = [NSMutableDictionary dictionary];
                 
                 for(NSDictionary * plan in parsedObject[@"response"]) {
@@ -1619,7 +1619,9 @@
                         [subscriptions setValue:plan[@"_id"] forKey:plan[@"marketplace_ids"][@"itunes"]];
                     }
                 }
+              
                 [[NSUserDefaults standardUserDefaults] setObject:subscriptions forKey:kSettingKey_Subscriptions];
+              
             }
         }
     }];
