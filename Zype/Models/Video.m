@@ -52,6 +52,7 @@
 @dynamic keywordsString;
 @dynamic zobjectString;
 @dynamic playTime;
+@dynamic is_zype_live;
 
 @dynamic playlistVideo;
 

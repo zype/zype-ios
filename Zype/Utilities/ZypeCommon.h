@@ -53,6 +53,9 @@
 
 #define kNativeSubscriptionEnabled YES
 
+// Set to check if the video is in live or not
+#define kLiveEventPolling YES
+
 //Beta feature. Isn't functioning great at the moment
 #define kShareVideoEnabled NO
 
