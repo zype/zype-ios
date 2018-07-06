@@ -103,6 +103,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (strong, nonatomic) UIAlertView *alertViewSignInRequired;
 @property (strong, nonatomic) UIAlertView *alertViewNsvodRequired;
+@property (strong, nonatomic) UIAlertView *alertViewIntro;
 
 @property (strong, nonatomic) NSLayoutConstraint *left;
 
@@ -285,19 +286,25 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // if request still being made or autoplay triggered
     if (self.isPlayerRequestPending){
-        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
         
+        // Marketplace connect. Signed in but no sub
         if (kNativeSubscriptionEnabled &&
             [self.video.subscription_required intValue] == 1 &&
-            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            [ACStatusManager isUserSignedIn] == true &&
+            [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] <= 0){
+            
             [self.playerControlsView setAsPause];
             self.isPlayerRequestPending = NO;
             [self.playerControlsView showSelf];
-        } else if (requiresUniversalEntitlement &&
+            
+            // Sub required but not logged in
+        } else if ([self.video.subscription_required intValue] == 1 &&
                    [ACStatusManager isUserSignedIn] == false){
+            
             [self.playerControlsView setAsPause];
             self.isPlayerRequestPending = NO;
             [self.playerControlsView showSelf];
+            
         } else {
             self.isPlayerRequestPending = NO;
             self.avPlayer = nil;
@@ -1159,11 +1166,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self configureView];
         [self configurePlayerControlsState];
         
-        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
-        
+        // Marketplace connect. Signed in but no sub
         if (kNativeSubscriptionEnabled &&
             [self.video.subscription_required intValue] == 1 &&
-            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            [ACStatusManager isUserSignedIn] == true &&
+            [[NSUserDefaults standardUserDefaults] integerForKey:kOAuthProperty_Subscription] <= 0){
             
             if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
             
@@ -1175,7 +1182,22 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             self.isPlayerRequestPending = YES;
             [self showNsvodRequiredAlert];
             
-        } else if (requiresUniversalEntitlement &&
+        } else if (kNativeSubscriptionEnabled &&
+                   [self.video.subscription_required intValue] == 1 &&
+                   [ACStatusManager isUserSignedIn] == false){
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showIntroViewAlert];
+            
+            // Sub required but not logged in
+        } else if ([self.video.subscription_required intValue] == 1 &&
                    [ACStatusManager isUserSignedIn] == false){
             
             if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
@@ -1188,6 +1210,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             self.isPlayerRequestPending = YES;
             [self showSignInRequiredAlert];
             
+            // Allow request to go through. If user does not have entitlement, DPT should return error message
         } else {
             [self refreshPlayer];
             self.isPlayerRequestPending = YES;
@@ -1408,15 +1431,22 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)playPausePressed:(id)sender {
     [self.playerControlsView playPausePressed:sender];
     
-    BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
-    
+    // Marketplace connect. Signed in but no sub
     if (kNativeSubscriptionEnabled &&
         [self.video.subscription_required intValue] == 1 &&
-        [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
-
+        [ACStatusManager isUserSignedIn] == true &&
+        [[NSUserDefaults standardUserDefaults] integerForKey:kOAuthProperty_Subscription] <= 0){
+        
         [self showNsvodRequiredAlert];
         
-    } else if (requiresUniversalEntitlement &&
+    } else if (kNativeSubscriptionEnabled &&
+               [self.video.subscription_required intValue] == 1 &&
+               [ACStatusManager isUserSignedIn] == false){
+        
+        [self showIntroViewAlert];
+        
+        // Sub required but not logged in
+    } else if ([self.video.subscription_required intValue] == 1 &&
                [ACStatusManager isUserSignedIn] == false){
         [self showSignInRequiredAlert];
         
@@ -1863,6 +1893,20 @@ NSString* machineName() {
     [self.alertViewNsvodRequired show];
 }
 
+- (void)showIntroViewAlert {
+    
+    if (!self.alertViewIntro){
+        self.alertViewIntro = [[UIAlertView alloc] initWithTitle:@"Requires Subscription"
+                                                                 message:@"You do not have access to this video. Please sign up or login."
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Cancel"
+                                                       otherButtonTitles:@"Continue", nil];
+    }
+    self.alertViewIntro.tag = 995;
+    
+    [self.alertViewIntro show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     if (self != nil) {
@@ -1900,6 +1944,20 @@ NSString* machineName() {
             // transition to native sub view
             [UIUtil showSubscriptionViewFromViewController:self];
         } else if (alertView.tag == 996 && buttonIndex == 0){
+            [self configurePlayerControlsState];
+            self.isPlayerRequestPending = NO;
+            [self.playerControlsView showSelf];
+        }
+        
+        if (alertView.tag == 995 && buttonIndex == 1){ // intro view - show signup or login
+            
+            if (self.isFullScreen){
+                [self.avPlayerController exitFullscreen];
+            }
+            
+            // transition to intro view
+            [UIUtil showIntroViewFromViewController:self];
+        } else if (alertView.tag == 995 && buttonIndex == 0){
             [self configurePlayerControlsState];
             self.isPlayerRequestPending = NO;
             [self.playerControlsView showSelf];

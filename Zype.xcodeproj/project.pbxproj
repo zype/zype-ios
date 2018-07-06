@@ -379,6 +379,7 @@
 		E1C884AF20B496EF008D9184 /* UserPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferences.m; path = Models/UserPreferences.m; sourceTree = "<group>"; };
 		E1C884B120B49718008D9184 /* UserPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferencesViewController.h; path = ViewController/UserPreferencesViewController.h; sourceTree = "<group>"; };
 		E1C884B220B49718008D9184 /* UserPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferencesViewController.m; path = ViewController/UserPreferencesViewController.m; sourceTree = "<group>"; };
+		E1CB1AA920F013A3005EA5A5 /* SubscriptionPlanDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SubscriptionPlanDelegate.h; path = Protocols/SubscriptionPlanDelegate.h; sourceTree = "<group>"; };
 		F176C9A51AA7963A0080E334 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F176C9B51AA8B9770080E334 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F176C9B91AAE18D30080E334 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -559,6 +560,7 @@
 		B952FAC61B4B6FBB003A6180 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E1CB1AA920F013A3005EA5A5 /* SubscriptionPlanDelegate.h */,
 				B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */,
 				A13AF3241D369B0B00DDA006 /* DownloadStatusCell.h */,
 				FA793E0D20250ACE005DFDB7 /* ObjectTypeProtocol.h */,

@@ -11,6 +11,8 @@
 
 @interface BaseTVLayoutController : EpisodeController<UITableViewDataSource, UITableViewDelegate, PlaylistCollectionCellDelegate>
 
+@property (strong, nonatomic) PlaylistCollectionCell * playlistCellSelected;
+
 @property (strong, nonatomic) UITableView *tableView;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;

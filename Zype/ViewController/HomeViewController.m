@@ -309,7 +309,13 @@
         
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsCategoryButtonPressed label:@"Show Latest Detail" value:nil] build]];
         
-        [[segue destinationViewController] setDetailItem:self.selectedVideo];
+        if (kAppAppleTVLayout){
+            PlaylistCollectionCell *selectedCell = [(BaseTVLayoutController *) self.episodeController playlistCellSelected];
+            NSMutableArray *videos = [NSMutableArray arrayWithArray:selectedCell.items];
+            [[segue destinationViewController] setVideos:videos withIndex:selectedCell.selectedPath];
+        } else {
+            [[segue destinationViewController] setDetailItem:self.selectedVideo];
+        }
         
     }else if ([[segue identifier] isEqualToString:@"showSearchResult"]) {
         
