@@ -74,6 +74,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (strong, nonatomic) NSTimer *timerPlayback;
 @property (strong, nonatomic) NSTimer *timerDownload;
+@property (strong, nonatomic) NSTimer *timerPolling;
 
 @property (nonatomic) NSInteger selectedTimeline;
 @property (nonatomic) BOOL isPlaying;
@@ -314,6 +315,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     }
     
+    if (self.timerPolling != nil && self.timerPolling.isValid) {
+        [self.timerPolling invalidate];
+        self.timerPolling = nil;
+    }
+    
     if (self.isMovingFromParentViewController) {
         
         // Disable timer
@@ -404,9 +410,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.playerControlsView.progressBar addTarget:self action:@selector(progressBarTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
     
     CMTime interval = CMTimeMakeWithSeconds(0.5, NSEC_PER_SEC);
+    __weak typeof(self) weakSelf = self;
     self.playbackObserver = [self.avPlayer addPeriodicTimeObserverForInterval:interval
                                               queue:NULL usingBlock:^(CMTime time) {
-                                                [self.playerControlsView updateCurrentTime:[NSNumber numberWithDouble:CMTimeGetSeconds(time)]];
+                                                  [weakSelf.playerControlsView updateCurrentTime:[NSNumber numberWithDouble:CMTimeGetSeconds(time)]];
                                               }];
 }
 
@@ -439,7 +446,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // Get index from clicked item
     self.currentVideoIndex = (int)[index row];
-    if (self.currentVideoIndex == nil) { self.currentVideoIndex = 0; }
+    if (self.currentVideoIndex == NSNotFound) { self.currentVideoIndex = 0; }
     
     self.videos = videos;
     
@@ -564,7 +571,28 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         }
     }
     
-    [self refreshPlayer];
+    if ([self.video.is_zype_live boolValue] == YES) {
+        if ([self.video.on_air boolValue] == YES) {
+            [self refreshPlayer];
+        } else {
+            [self.imageThumbnail setHidden:NO];
+            [self showActivityIndicator];
+            NSURL *thumbnailURL = [NSURL URLWithString:self.video.thumbnailUrl];
+            [self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                [self hideActivityIndicator];
+                if (image) {
+                    self.imageThumbnail.image = image;
+                    [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:self.video.thumbnailBigUrl] placeholderImage:image];
+                }
+            }];
+            
+            if (kLiveEventPolling == YES) {
+                self.timerPolling = [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(checkAirStatus:) userInfo:nil repeats:YES];
+            }
+        }
+    } else {
+        [self refreshPlayer];
+    }
     
 }
 
@@ -781,7 +809,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
 
     //setup analytics for a player
-    if (self.beaconStringUrl)
+    if (self.beaconStringUrl && self.video.duration > 0)
         [[ACAnalyticsManager sharedInstance] setupAkamaiMediaAnalytics:self.avPlayer withVideo:self.video];
     
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
@@ -869,6 +897,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)setupConstraints {
+    if (![self.imageThumbnail isHidden]) return;
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
     UIView* constraintItemView = self.view;
@@ -895,95 +924,97 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view bringSubviewToFront:self.playerControlsView.view];
     
     // AVPlayerController
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                           attribute:NSLayoutAttributeTop
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:constraintItemView
-                                                           attribute:NSLayoutAttributeTop
-                                                          multiplier:1
-                                                            constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1
-                                                           constant:0]];
-
-    // Player Controls View
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1
-                                                           constant:0]];
-    
-    // Ads View
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
-                                                          attribute:NSLayoutAttributeLeading
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeLeading
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
-                                                          attribute:NSLayoutAttributeTrailing
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:constraintItemView
-                                                          attribute:NSLayoutAttributeTrailing
-                                                         multiplier:1
-                                                           constant:0]];
-    [self.view layoutIfNeeded];
+    if (self.avPlayerController.view != nil && constraintItemView != nil) {
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:constraintItemView
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1
+                                                                constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                              attribute:NSLayoutAttributeLeft
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeLeft
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1
+                                                               constant:0]];
+        
+        // Player Controls View
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                              attribute:NSLayoutAttributeLeft
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeLeft
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1
+                                                               constant:0]];
+        
+        // Ads View
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                              attribute:NSLayoutAttributeLeading
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeLeading
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
+                                                              attribute:NSLayoutAttributeTrailing
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:constraintItemView
+                                                              attribute:NSLayoutAttributeTrailing
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view layoutIfNeeded];
+    }
 }
 
 - (void)setupSharedPlayerView {
@@ -1035,6 +1066,26 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     int screenWidth = (int)(round(self.view.frame.size.width));
     int avPlayerWidth = (int)(round(self.avPlayerController.videoBounds.size.width));
     return (screenWidth == avPlayerWidth);
+}
+
+- (void)checkAirStatus:(NSTimer*)theTimer {
+    
+    [[RESTServiceController sharedInstance] loadVideoWithId:self.video.vId withCompletionHandler:^(NSData *data, NSError *error) {
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            
+            if (localError == nil) {
+                if ([parsedObject[@"on_air"] intValue] == 1) {
+                    [self.timerPolling invalidate];
+                    self.timerPolling = nil;
+                    [self refreshPlayer];
+                }
+            }
+        }
+    }];
 }
 
 #pragma mark - Place Saving

@@ -54,6 +54,7 @@
 @property (nonatomic, retain) NSString * keywordsString;
 @property (nonatomic, retain) NSString * zobjectString;
 @property (nonatomic, retain) NSNumber * playTime;
+@property (nonatomic, retain) NSNumber * is_zype_live;
 
 @property (nonatomic, retain) NSSet *playlistVideo;
 
