@@ -459,7 +459,7 @@
     if (kNativeSubscriptionEnabled == NO) {
         [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
     } else {
-        if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] > 0) {
             [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
         } else {
             [UIUtil showSubscriptionViewFromViewController:self];

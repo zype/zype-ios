@@ -105,10 +105,10 @@
             if (error) {
                 CLS_LOG(@"Failed: %@", error);
             } else {
-                completion(data, response, error);
                 CLS_LOG(@"Success: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
                 
                 [[NSUserDefaults standardUserDefaults] setValue:[[[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:@"response"] valueForKey:@"subscription_count"] forKey:kOAuthProperty_Subscription];
+                completion(data, response, error);
             }
         }];
         [dataTask resume];

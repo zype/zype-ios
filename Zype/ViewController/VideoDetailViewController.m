@@ -809,7 +809,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
 
     //setup analytics for a player
-    if (self.beaconStringUrl && self.video.duration > 0)
+    if (self.beaconStringUrl && [self.video.duration intValue] > 0)
         [[ACAnalyticsManager sharedInstance] setupAkamaiMediaAnalytics:self.avPlayer withVideo:self.video];
     
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use

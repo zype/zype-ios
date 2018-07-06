@@ -48,7 +48,7 @@
             }
         }
         
-       
+        
         [[RESTServiceController sharedInstance] saveConsumerIdWithToken:token WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             
             BOOL success;
@@ -72,48 +72,61 @@
                         [[NSUserDefaults standardUserDefaults] setObject:consumerId forKey:kSettingKey_ConsumerId];
                         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSettingKey_SignInStatus];
                         
-                        [ACSDataManager loadUserInfo];
-                        
-                        CLS_LOG(@"Consumer ID Check: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_ConsumerId]);
-                        if (kFavoritesViaAPI) {
-                            [[RESTServiceController sharedInstance] syncFavoritesAfterRefreshed:NO InPage:nil WithFavoritesInDB:nil WithExistingFavorites:nil];
-                        }
-                        
-                        success = YES;
+                        //[ACSDataManager loadUserInfo];
+                        [[RESTServiceController sharedInstance] getConsumerInformationWithID:[[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_ConsumerId] withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+                            
+                            if (error == nil)
+                            {
+                                CLS_LOG(@"Consumer ID Check: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_ConsumerId]);
+                                if (kFavoritesViaAPI) {
+                                    [[RESTServiceController sharedInstance] syncFavoritesAfterRefreshed:NO InPage:nil WithFavoritesInDB:nil WithExistingFavorites:nil];
+                                }
+                                
+                                if (block) {
+                                    block(YES, nil);
+                                }
+                            }
+                            else
+                            {
+                                CLS_LOG(@"getConsumerInformationWithID Error: %@", [error localizedDescription]);
+                                if (block) {
+                                    block(NO, nil);
+                                }
+                            }
+                            
+                        }];
                         
                     }else {
-                        
                         success = NO;
-                        
+                        if (block) {
+                            block(success, nil);
+                        }
                     }
                     
                 }
-                
             }else {
                 
                 CLS_LOG(@"saveConsumerIdWithToken Error: %@", error);
                 
                 success = NO;
+                if (block) {
+                    block(success, nil);
+                }
                 
             }
-            
-            if (block) {
-                block(success, nil);
-            }
-            
         }];
-
+        
     }];
     
 }
 
 
 + (void)setAccessToken:(NSString *)accessToken refreshToken:(NSString *)refreshToken expiration:(NSDate *)expiration{
-
+    
     [[ACSTokenManager sharedInstance].valet setString:accessToken forKey:kValetKeyAccessToken];
     [[ACSTokenManager sharedInstance].valet setString:refreshToken forKey:kValetKeyRefreshToken];
     [ACSTokenManager setTokenExpiration:expiration];
-
+    
 }
 
 + (void)refreshAccessToken:(successBlock)block{
@@ -200,7 +213,7 @@
 }
 
 + (NSString *)refreshToken{
-
+    
     NSString *token = [[ACSTokenManager sharedInstance].valet stringForKey:kValetKeyRefreshToken];
     return token;
     
@@ -252,7 +265,7 @@
     if (_valet != nil) {
         return _valet;
     }
-
+    
     _valet = [[VALValet alloc] initWithIdentifier:@"AppSignIn" accessibility:VALAccessibilityAfterFirstUnlock];
     return _valet;
     
@@ -295,3 +308,4 @@
 
 
 @end
+
