@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,11 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="313"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="312"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="312.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XeJ-b9-t5B">
-                        <rect key="frame" x="32" y="8" width="256" height="199"/>
+                        <rect key="frame" x="32" y="11" width="256" height="199"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ocg-yh-wiN">
                                 <rect key="frame" x="0.0" y="151" width="256" height="40"/>
@@ -110,7 +110,9 @@
                 <outlet property="backgroundView" destination="XeJ-b9-t5B" id="t7t-N5-4hX"/>
                 <outlet property="continueButton" destination="ocg-yh-wiN" id="kR5-G2-EjS"/>
                 <outlet property="descriptionLabel" destination="2Fr-0i-80y" id="6bL-Qg-dlX"/>
+                <outlet property="priceLabel" destination="n4p-q6-6KG" id="NNK-Dv-qDZ"/>
                 <outlet property="titleLabel" destination="z3T-cs-3tF" id="f3M-AR-gSI"/>
+                <outlet property="trialLabel" destination="uNJ-nn-wtY" id="YU3-wE-pw7"/>
             </connections>
             <point key="canvasLocation" x="-65" y="78.5"/>
         </tableViewCell>

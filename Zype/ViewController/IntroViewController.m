@@ -12,6 +12,8 @@
 #import "ACPurchaseManager.h"
 #import "ACStatusManager.h"
 #import "UIView+UIView_CustomizeTheme.h"
+#import "RegisterViewController.h"
+#import "SignInViewController.h"
 
 @interface IntroViewController ()
 
@@ -48,6 +50,18 @@
     [super viewWillAppear: animated];
     if ([ACStatusManager isUserSignedIn] == true) {
         [self dismissViewControllerAnimated:false completion:nil];
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([[segue identifier] isEqualToString:@"introToRegister"]) {
+        
+        ((RegisterViewController*)[segue destinationViewController]).planDelegate = self.planDelegate;
+        
+    } else if ([[segue identifier] isEqualToString:@"introToSignin"]) {
+        
+        ((SignInViewController*)[segue destinationViewController]).planDelegate = self.planDelegate;
     }
 }
 

@@ -110,6 +110,8 @@
     [self initDismissSearchButton];
     self.selectedSegment = 0;
     
+    self.tableView.tableFooterView = [UIView new];
+    
 }
 
 #pragma mark - UITextField Delegate Methods
@@ -265,7 +267,7 @@
         
     }else{
         
-        self.noResultsLabel.text = NSLocalizedString(@"Searching...", @"search status");
+        self.noResultsLabel.text = NSLocalizedString(@"Please enter search terms in order to begin a new search.", @"search status");
         
     }
     

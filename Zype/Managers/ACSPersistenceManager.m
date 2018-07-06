@@ -481,8 +481,10 @@
                 playlist.pId = [dictionary valueForKey:key];
             } else if ([key isEqualToString:kAppKey_Thumbnails]){
                 //don't load regular thumbnail if mobile image is added
-                if ( ! customThumbnailImageIsLoaded)
-                playlist.thumbnailUrl = [UIUtil thumbnailUrlFromArray:[dictionary valueForKey:key]];
+                if ( ! customThumbnailImageIsLoaded) {
+                    playlist.thumbnailUrl = [UIUtil thumbnailUrlFromArray:[dictionary valueForKey:key]];
+                    playlist.thumbnailBigUrl = [UIUtil thumbnailBigUrlFromArray:[dictionary valueForKey:key]];
+                }
             } else if ([key isEqualToString:kAppKey_Images]){
                 NSString *layout = dictionary[@"thumbnail_layout"];
                 NSString *tempUrl = [UIUtil thumbnailUrlFromImageArray:[dictionary valueForKey:key] withLayout:layout];
@@ -931,6 +933,7 @@
                 video.full_description = [dictData valueForKey:key];
             }else if ([key isEqualToString:kAppKey_Thumbnails]){
                 video.thumbnailUrl = [UIUtil thumbnailUrlFromArray:[dictData valueForKey:key]];
+                video.thumbnailUrl = [UIUtil thumbnailBigUrlFromArray:[dictData valueForKey:key]];
             }else if ([video respondsToSelector:NSSelectorFromString(key)]) {
                 
                 if ([key stringContains:kAppKey_At]){

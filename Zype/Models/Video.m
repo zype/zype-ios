@@ -19,6 +19,7 @@
 @dynamic short_description;
 @dynamic status;
 @dynamic thumbnailUrl;
+@dynamic thumbnailBigUrl;
 @dynamic thumbnailLocalPath;
 @dynamic downloadAudioUrl;
 @dynamic downloadAudioLocalPath;
@@ -51,6 +52,7 @@
 @dynamic keywordsString;
 @dynamic zobjectString;
 @dynamic playTime;
+@dynamic is_zype_live;
 
 @dynamic playlistVideo;
 

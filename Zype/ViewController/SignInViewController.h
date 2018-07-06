@@ -10,6 +10,7 @@
 #import "GAI.h"
 #import "BorderedTextField.h"
 #import "CustomizeThemeTextField.h"
+#import "SubscriptionPlanDelegate.h"
 
 @interface SignInViewController : GAITrackedViewController <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet CustomizeThemeTextField *textFieldEmail;
@@ -17,5 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonSignIn;
 
 @property (nonatomic, retain) NSDate *start;
+
+@property (weak, nonatomic) id<SubscriptionPlanDelegate> planDelegate;
 
 @end

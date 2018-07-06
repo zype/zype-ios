@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GAI.h"
 #import "GAITrackedViewController.h"
+#import "SubscriptionPlanDelegate.h"
 
-@interface SettingsViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SettingsViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate, SubscriptionPlanDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) NSIndexPath *pageIndex;
