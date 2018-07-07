@@ -1078,10 +1078,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             
             if (localError == nil) {
-                if ([parsedObject[@"on_air"] intValue] == 1) {
+                NSLog(@"%@", parsedObject[@"response"][0][@"on_air"]);
+                if ([parsedObject[@"response"][0][@"on_air"] intValue] == 1) {
                     [self.timerPolling invalidate];
                     self.timerPolling = nil;
                     [self refreshPlayer];
+                    [self.imageThumbnail setHidden:YES];
                 }
             }
         }
