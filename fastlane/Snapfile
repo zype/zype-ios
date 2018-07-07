@@ -1,0 +1,23 @@
+# Snapfile for configuring fastlane snapshot
+
+# List of devices to capture. Edit as needed
+devices([
+  "iPhone 6",
+  "iPhone 8",
+  "iPad Pro (9.7-inch)",
+  "iPad Air"
+])
+
+# List of languages for screenshots. Edit as needed
+languages([
+  "en-US"
+])
+
+workspace "./Zype.xcworkspace"
+scheme "Zype"
+configuration "Release"
+
+output_directory "./screenshots"
+
+clean true
+clear_previous_screenshots true

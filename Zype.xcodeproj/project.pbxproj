@@ -134,6 +134,8 @@
 		A1B3C420203227E100784F64 /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = A1B3C41D203227E100784F64 /* ReadMe */; };
 		E131B8EE20BE12C60074ACF5 /* PlayerControlsOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */; };
 		E131B8F020BE132B0074ACF5 /* PlayerControlsOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */; };
+		E14EABA520DD78B600625E8C /* ZypeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14EABA420DD78B600625E8C /* ZypeUITests.swift */; };
+		E14EABAD20DD78D100625E8C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14EABAC20DD78D100625E8C /* SnapshotHelper.swift */; };
 		E1C884AD20B4969F008D9184 /* UserPreferenceCellDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */; };
 		E1C884B020B496EF008D9184 /* UserPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884AF20B496EF008D9184 /* UserPreferences.m */; };
 		E1C884B320B49718008D9184 /* UserPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C884B220B49718008D9184 /* UserPreferencesViewController.m */; };
@@ -166,6 +168,16 @@
 		FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC7B3DE1EFC496200C787E4 /* AdObject.m */; };
 		FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE69B771EA7C9D60081A064 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E14EABA720DD78B600625E8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1BB52781A76D7D100E901F1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 780AC69F1BDFD284007F1119;
+			remoteInfo = Zype;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		050C941A20DEA1CC00F987A3 /* SubscriptionPlanDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SubscriptionPlanDelegate.h; path = Protocols/SubscriptionPlanDelegate.h; sourceTree = "<group>"; };
@@ -358,6 +370,10 @@
 		E131B8EC20BE12C60074ACF5 /* PlayerControlsOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PlayerControlsOverlay.h; path = Views/PlayerControlsOverlay.h; sourceTree = "<group>"; };
 		E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PlayerControlsOverlay.m; path = Views/PlayerControlsOverlay.m; sourceTree = "<group>"; };
 		E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlayerControlsOverlay.xib; path = Views/PlayerControlsOverlay.xib; sourceTree = "<group>"; };
+		E14EABA220DD78B600625E8C /* ZypeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZypeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E14EABA420DD78B600625E8C /* ZypeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZypeUITests.swift; sourceTree = "<group>"; };
+		E14EABA620DD78B600625E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E14EABAC20DD78D100625E8C /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		E1C884AB20B4969F008D9184 /* UserPreferenceCellDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferenceCellDataSource.h; path = Models/UserPreferenceCellDataSource.h; sourceTree = "<group>"; };
 		E1C884AC20B4969F008D9184 /* UserPreferenceCellDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserPreferenceCellDataSource.m; path = Models/UserPreferenceCellDataSource.m; sourceTree = "<group>"; };
 		E1C884AE20B496EF008D9184 /* UserPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserPreferences.h; path = Models/UserPreferences.h; sourceTree = "<group>"; };
@@ -454,6 +470,13 @@
 				780AC6EC1BDFD284007F1119 /* Security.framework in Frameworks */,
 				654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */,
 				A1B3C41E203227E100784F64 /* libAKAMMediaExtensions-AV.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E14EAB9F20DD78B600625E8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +628,16 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
+		E14EABA320DD78B600625E8C /* ZypeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E14EABAC20DD78D100625E8C /* SnapshotHelper.swift */,
+				E14EABA420DD78B600625E8C /* ZypeUITests.swift */,
+				E14EABA620DD78B600625E8C /* Info.plist */,
+			);
+			path = ZypeUITests;
+			sourceTree = "<group>";
+		};
 		F176C9A71AA796BE0080E334 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -645,6 +678,7 @@
 			isa = PBXGroup;
 			children = (
 				F1BB52821A76D7D100E901F1 /* Zype */,
+				E14EABA320DD78B600625E8C /* ZypeUITests */,
 				F176C9A71AA796BE0080E334 /* Frameworks */,
 				F1BB52811A76D7D100E901F1 /* Products */,
 				F652EFF2D75B39EA363A2B9B /* Pods */,
@@ -655,6 +689,7 @@
 			isa = PBXGroup;
 			children = (
 				780AC7081BDFD284007F1119 /* Zype TV.app */,
+				E14EABA220DD78B600625E8C /* ZypeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -912,20 +947,37 @@
 			productReference = 780AC7081BDFD284007F1119 /* Zype TV.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E14EABA120DD78B600625E8C /* ZypeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E14EABAB20DD78B600625E8C /* Build configuration list for PBXNativeTarget "ZypeUITests" */;
+			buildPhases = (
+				E14EAB9E20DD78B600625E8C /* Sources */,
+				E14EAB9F20DD78B600625E8C /* Frameworks */,
+				E14EABA020DD78B600625E8C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E14EABA820DD78B600625E8C /* PBXTargetDependency */,
+			);
+			name = ZypeUITests;
+			productName = ZypeUITests;
+			productReference = E14EABA220DD78B600625E8C /* ZypeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		F1BB52781A76D7D100E901F1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = Zype;
 				TargetAttributes = {
 					780AC69F1BDFD284007F1119 = {
-						DevelopmentTeam = 66JU87JGLE;
 						LastSwiftMigration = 0920;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -934,6 +986,11 @@
 								enabled = 0;
 							};
 						};
+					};
+					E14EABA120DD78B600625E8C = {
+						CreatedOnToolsVersion = 9.4.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 780AC69F1BDFD284007F1119;
 					};
 				};
 			};
@@ -951,6 +1008,7 @@
 			projectRoot = "";
 			targets = (
 				780AC69F1BDFD284007F1119 /* Zype */,
+				E14EABA120DD78B600625E8C /* ZypeUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1007,6 +1065,13 @@
 				E131B8F020BE132B0074ACF5 /* PlayerControlsOverlay.xib in Resources */,
 				780AC7021BDFD284007F1119 /* OpenSans-ExtraBold.ttf in Resources */,
 				A13AF37D1D369DB600DDA006 /* YouTubePlayer.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E14EABA020DD78B600625E8C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1079,6 +1144,24 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/Fabric/run 83465ef9de45bd3ccc1aeaa066ed7d13dd96a1e4 0b81dd3d4789d7cebb8ee4d77fe25dcaabbf0f8cb55d8c6f7392d4b798e8c57f";
+		};
+		900C1745E5D5BA8D071E916B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-frameworks.sh",
+				"${PODS_ROOT}/GoogleAds-IMA-iOS-SDK/GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleInteractiveMediaAds.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1188,7 +1271,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E14EAB9E20DD78B600625E8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E14EABA520DD78B600625E8C /* ZypeUITests.swift in Sources */,
+				E14EABAD20DD78D100625E8C /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E14EABA820DD78B600625E8C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 780AC69F1BDFD284007F1119 /* Zype */;
+			targetProxy = E14EABA720DD78B600625E8C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F1BB52901A76D7D100E901F1 /* Main.storyboard */ = {
@@ -1216,7 +1316,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: ZYPE MEDIA GROUP LLC (66JU87JGLE)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 66JU87JGLE;
@@ -1234,7 +1334,6 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1270,7 +1369,6 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1278,6 +1376,62 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E14EABA920DD78B600625E8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ZypeUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox.ZypeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Zype;
+			};
+			name = Debug;
+		};
+		E14EABAA20DD78B600625E8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ZypeUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox.ZypeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Zype;
 			};
 			name = Release;
 		};
@@ -1395,6 +1549,15 @@
 			buildConfigurations = (
 				780AC7061BDFD284007F1119 /* Debug */,
 				780AC7071BDFD284007F1119 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E14EABAB20DD78B600625E8C /* Build configuration list for PBXNativeTarget "ZypeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E14EABA920DD78B600625E8C /* Debug */,
+				E14EABAA20DD78B600625E8C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
