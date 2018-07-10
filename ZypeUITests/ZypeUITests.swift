@@ -61,7 +61,7 @@ class ZypeUITests: XCTestCase {
         snapshot("03Settings")
 
         // Fourth screenshot - Sign In Screen
-        app.buttons["SIGN IN"].tap()
+        app.buttons["Sign In"].tap()
         snapshot("04SignInScreen")
         app.buttons["universal gray cancel"].tap()
 

@@ -37,7 +37,7 @@
 #define kAppColorLight NO
 
 //Enable Gallery layout
-#define kAppAppleTVLayout YES
+#define kAppAppleTVLayout NO
 
 //Show/Hide titles on thumbnails for playlist views on iPhone
 #define kHidePlaylistTitles NO
@@ -50,7 +50,7 @@
 // For downloads to function properly the video has to be transcoded with mp4 preset
 #define kDownloadsEnabled YES
 // Set to No to enforce downloads for only users that are signed in
-#define kDownloadsForAllUsersEnabled NO
+#define kDownloadsForAllUsersEnabled YES
 
 // Enable Zype Marketplace Connect
 #define kNativeSubscriptionEnabled NO
@@ -58,7 +58,7 @@
 #define kZypeSubscriptionIds [NSArray arrayWithObjects: @"monthly_plan_id", @"yearly_plan_id", nil]
 
 // If the Video is a ZypeLive video enable status polling
-#define kLiveEventPolling YES
+#define kLiveEventPolling NO
 
 // Enable Video Sharing <BETA> (not recommended fo ruse)
 #define kShareVideoEnabled NO

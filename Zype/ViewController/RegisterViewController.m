@@ -68,7 +68,7 @@
     UIColor * termsTextColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
     NSDictionary * attributes = @{NSForegroundColorAttributeName: termsTextColor,
                                   NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
-    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Create my login, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Create Account, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
                                                                                                                                                 NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
     NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Terms of Service and Privacy" attributes:attributes];
     [attrstring appendAttributedString:signupText];

@@ -70,9 +70,9 @@
     
     // Set subscribe button
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) {
-        [self.buttonSignIn setTitle: @"SIGN OUT" forState: UIControlStateNormal];
+        [self.buttonSignIn setTitle: @"Sign Out" forState: UIControlStateNormal];
     } else {
-        [self.buttonSignIn setTitle: @"SIGN IN" forState: UIControlStateNormal];
+        [self.buttonSignIn setTitle: @"Sign In" forState: UIControlStateNormal];
     }
 }
 

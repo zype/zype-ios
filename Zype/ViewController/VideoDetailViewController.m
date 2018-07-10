@@ -107,8 +107,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (strong, nonatomic) NSLayoutConstraint *left;
 
-@property (strong, nonatomic) NSLayoutConstraint *left;
-
 @end
 
 
