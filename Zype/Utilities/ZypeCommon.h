@@ -54,7 +54,7 @@
 // Enable Zype Marketplace Connect
 #define kNativeSubscriptionEnabled NO
 // Provide the Zype Plan IDs linked ot native purchases
-//#define kZypeSubscriptionIds [NSArray arrayWithObjects: @"5b366329849e2d140c00002f", @"5b366368849e2d141400002b", nil]
+#define kZypeSubscriptionIds [NSArray arrayWithObjects: @"monthly_plan_id", @"yearly_plan_id", nil]
 
 // If the Video is a ZypeLive video enable status polling
 #define kLiveEventPolling YES
