@@ -299,7 +299,7 @@
         
     }else{
         
-        self.noResultsLabel.text = NSLocalizedString(@"Checking for shows...", @"no results message");
+        self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
         
     }
     
