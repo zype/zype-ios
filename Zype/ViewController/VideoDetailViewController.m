@@ -107,6 +107,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (strong, nonatomic) NSLayoutConstraint *left;
 
+@property (strong, nonatomic) NSLayoutConstraint *left;
+
 @end
 
 
@@ -909,7 +911,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     UIView* constraintItemView = self.view;
     
-    if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) || [[UIDevice currentDevice] orientation] == UIDeviceOrientationUnknown) {
+    CGSize screenSize = UIScreen.mainScreen.bounds.size;
+    if (screenSize.width < screenSize.height) {
         constraintItemView = self.imageThumbnail;
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
     } else {
@@ -1085,10 +1088,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
             
             if (localError == nil) {
-                if ([parsedObject[@"on_air"] intValue] == 1) {
+                NSLog(@"%@", parsedObject[@"response"][0][@"on_air"]);
+                if ([parsedObject[@"response"][0][@"on_air"] intValue] == 1) {
                     [self.timerPolling invalidate];
                     self.timerPolling = nil;
                     [self refreshPlayer];
+                    [self.imageThumbnail setHidden:YES];
                 }
             }
         }
