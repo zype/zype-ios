@@ -11,13 +11,14 @@
 #pragma mark - Client Settings
 
 //Main app configuration for connecting to Zype property
-#define kOAuth_ClientId @"96ac73001eb2d45fbea3d1269af43b6cfacf4efa99122d63197878d13609aa94"
-#define kOAuth_ClientSecret @"5c923d380f4a860c8b1b753e2412a1b7c6a3271feff86887d7bbc30fed6983a2"
-#define kAppKey @"UxlADHfgBagOySYtTYWSbyBBGkvgf7gXyVa90wDmowe4apTkD1FD4TPwYynYOSvU"
-#define kRootPlaylistId @"5807ccdc849e2d0d11000146"
 
-#define kZypeAppId @"5b21713a73c3f912c60006c6"
-#define kZypeSiteId @"57c0bdb26b7f0f0d14000f38"
+#define kOAuth_ClientId @"<Client ID>"
+#define kOAuth_ClientSecret @"<Client Secret>"
+#define kAppKey @"<Zype App Key>"
+#define kRootPlaylistId @"<Root Playlist ID>"
+
+#define kZypeAppId @"<Zype App ID>"
+#define kZypeSiteId @"<Zype Site ID>"
 
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @""
@@ -51,16 +52,13 @@
 // Set to No to enforce downloads for only users that are signed in
 #define kDownloadsForAllUsersEnabled NO
 
-#define kNativeSubscriptionEnabled YES
-
-// Set to check if the video is in live or not
-#define kLiveEventPolling YES
+// Enable Zype Marketplace Connect
+#define kNativeSubscriptionEnabled NO
+// Provide the Zype Plan IDs linked ot native purchases
+#define kZypeSubscriptionIds [NSArray arrayWithObjects: @"monthly_plan_id", @"yearly_plan_id", nil]
 
 // If the Video is a ZypeLive video enable status polling
 #define kLiveEventPolling YES
-
-//Only needed for Native or Native to universal subscriptions
-#define kZypeSubscriptionIds [NSArray arrayWithObjects: @"5b366329849e2d140c00002f", @"5b366368849e2d141400002b", nil]
 
 // Enable Video Sharing <BETA> (not recommended fo ruse)
 #define kShareVideoEnabled NO
