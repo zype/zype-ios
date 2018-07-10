@@ -21,7 +21,7 @@
 
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @""
-//Google Analytcis configuration
+//Google Analytics configuration
 #define kGoogleAnalyticsTracker @""
 
 //Social links on settings screen
@@ -35,7 +35,8 @@
 //Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
 #define kAppColorLight NO
 
-//alternative new beta layout
+=======
+//Enable Gallery layout
 #define kAppAppleTVLayout YES
 
 //Show/Hide titles on thumbnails for playlist views on iPhone
@@ -46,9 +47,9 @@
 #define kFavoritesViaAPI NO
 #define kSubscribeToWatchAdFree NO
 
-//For downloads to function properly the video has to be transcoded with mp4 preset
+// For downloads to function properly the video has to be transcoded with mp4 preset
 #define kDownloadsEnabled YES
-//Set to No to enforce downloads for only users that are signed in
+// Set to No to enforce downloads for only users that are signed in
 #define kDownloadsForAllUsersEnabled NO
 
 #define kNativeSubscriptionEnabled YES
@@ -56,11 +57,14 @@
 // Set to check if the video is in live or not
 #define kLiveEventPolling YES
 
-//Beta feature. Isn't functioning great at the moment
-#define kShareVideoEnabled NO
+// If the Video is a ZypeLive video enable status polling
+#define kLiveEventPolling YES
 
 //Only needed for Native or Native to universal subscriptions
 #define kZypeSubscriptionIds [NSArray arrayWithObjects: @"5b366329849e2d140c00002f", @"5b366368849e2d141400002b", nil]
+
+// Enable Video Sharing <BETA> (not recommended fo ruse)
+#define kShareVideoEnabled NO
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]

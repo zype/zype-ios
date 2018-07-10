@@ -241,7 +241,7 @@
         [UIView animateWithDuration:0.5
                          animations:^{
                              // ios treats alpha lower than 0.02 as hidden. need invisible but still clickable
-                             self.view.alpha = 0.03;
+                             self.view.alpha = 0.02;
                          }
                          completion:^(BOOL finished) {
                              if (finished) [self disableControls];
