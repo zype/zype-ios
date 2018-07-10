@@ -185,17 +185,6 @@
 
 + (void)showTermOfServicesFromViewController:(UIViewController *)viewController
 {
-//    NSString *htmlString = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_Terms];
-//
-//    UIViewController *vController = [UIViewController new];
-//    vController.view.frame = viewController.view.bounds;
-//
-//    UIWebView *webview = [UIWebView new];
-//    webview.frame = vController.view.bounds;
-//
-//    [vController.view addSubview:webview];
-    
-//    [webview loadHTMLString:htmlString baseURL:nil];
     PrivacyViewController *privacyViewController = (PrivacyViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"PrivacyViewController"];
     [viewController presentViewController:privacyViewController animated:YES completion:nil];
 }

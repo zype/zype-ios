@@ -274,6 +274,16 @@
     
 }
 
++ (void)resetPasswordWithUsername:(NSString *)username WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler{
+    
+    __block NSString *blockUsername = username;
+    
+    [[RESTServiceController sharedInstance] resetPasswordWithUsername:blockUsername WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        completionHandler(data, response, error);
+    }];
+    
+}
+
 + (void)loadUserInfo{
     
     [[RESTServiceController sharedInstance] getConsumerInformationWithID:[[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_ConsumerId] withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error){

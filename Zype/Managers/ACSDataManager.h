@@ -23,6 +23,7 @@ typedef void(^urlBlock)(NSURL *url, NSError *error);
 
 + (void)loginWithUsername:(NSString *)username password:(NSString *)password  block:(successBlock)successBlock;
 + (void)registerWithUsername:(NSString *)username password:(NSString *)password block:(successBlock)successBlock;
++ (void)resetPasswordWithUsername:(NSString *)username WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 + (void)loadUserInfo;
 + (void)logout;
 

@@ -35,7 +35,6 @@
 //Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
 #define kAppColorLight NO
 
-=======
 //Enable Gallery layout
 #define kAppAppleTVLayout YES
 
@@ -236,6 +235,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kString_TitleSignInFail @"Authentication Failed"
 #define kString_MessageSignInFail @"Please ensure your credentials are correct and try again."
 #define kString_MessageRegisterFail @"We're sorry, that email address already belongs to an account. Please click \"Sign in\" below if you'd like to sign into your existing account."
+#define kString_TitleResetPasswordFail @"Reset Password Failed"
 #define kString_DownloadAudio @"Download Audio"
 #define kString_DownloadVideo @"Download Video"
 #define kString_DownloadingAudio @"Downloading Audio..."
@@ -257,6 +257,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 //#define KOAuth_GetTokenDomain @"login.uat.zype.com"
 #define KOAuth_GetTokenDomain @"login.zype.com"
 #define KOAuth_RegisterDomain @"https://api.zype.com/consumers?app_key=%@"
+#define KOAuth_ForgotPasswordDomain @"https://api.zype.com/consumers/forgot_password?app_key=%@"
 #define kOAuth_GetToken @"https://%@/oauth/token"
 #define kOAuth_GetTokenInfo @"https://%@/oauth/token/info?access_token=%@"
 
