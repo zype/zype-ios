@@ -902,7 +902,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     UIView* constraintItemView = self.view;
     
-    if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) || [[UIDevice currentDevice] orientation] == UIDeviceOrientationUnknown) {
+    CGSize screenSize = UIScreen.mainScreen.bounds.size;
+    
+//    if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) || [[UIDevice currentDevice] orientation] == UIDeviceOrientationUnknown) {
+    if (screenSize.width < screenSize.height) {
         constraintItemView = self.imageThumbnail;
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
     } else {

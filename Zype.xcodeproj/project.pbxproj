@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05CEB5BC20F4CD2A005F1FAB /* PrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CEB5BB20F4CD2A005F1FAB /* PrivacyViewController.m */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
 		780AC6B41BDFD284007F1119 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52851A76D7D100E901F1 /* main.m */; };
@@ -169,6 +170,8 @@
 
 /* Begin PBXFileReference section */
 		050C941A20DEA1CC00F987A3 /* SubscriptionPlanDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SubscriptionPlanDelegate.h; path = Protocols/SubscriptionPlanDelegate.h; sourceTree = "<group>"; };
+		05CEB5BA20F4CD2A005F1FAB /* PrivacyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrivacyViewController.h; path = ViewController/PrivacyViewController.h; sourceTree = "<group>"; };
+		05CEB5BB20F4CD2A005F1FAB /* PrivacyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PrivacyViewController.m; path = ViewController/PrivacyViewController.m; sourceTree = "<group>"; };
 		0DD0AEA7B5AE6D1C598FD3F3 /* Pods-Zype.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zype.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Zype/Pods-Zype.debug.xcconfig"; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -841,6 +844,8 @@
 				A13AF3091D369A2C00DDA006 /* VideoDetailViewController.m */,
 				A13AF3AB1D37D90D00DDA006 /* VideosViewController.h */,
 				A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */,
+				05CEB5BA20F4CD2A005F1FAB /* PrivacyViewController.h */,
+				05CEB5BB20F4CD2A005F1FAB /* PrivacyViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1183,6 +1188,7 @@
 				FA4BA33C1EF07695004985F6 /* TableSectionDataSource.m in Sources */,
 				A13AF2E41D36995000DDA006 /* DownloadTableViewCell.m in Sources */,
 				A13AF3351D369B9A00DDA006 /* KeychainItemWrapper.m in Sources */,
+				05CEB5BC20F4CD2A005F1FAB /* PrivacyViewController.m in Sources */,
 				A13AF35A1D369CC600DDA006 /* ACSTokenManager.m in Sources */,
 				FA3C18F42020D4330087AA38 /* PagerSectionCell.m in Sources */,
 			);

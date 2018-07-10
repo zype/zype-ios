@@ -489,7 +489,9 @@
                 //remove old relationship
                 //                [ACSPersistenceManager resetPlaylistChilds:parentId];
                 //
-                [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
+                if ([parsedObject[@"response"][@"active"] intValue] == 1) {
+                    [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
+                }
                 if (errorString) errorString(nil);
                 //CLS_LOG(@"parsedObject = %@", parsedObject);
             }
