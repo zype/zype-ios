@@ -13,6 +13,9 @@
 @protocol PlaylistCollectionCellDelegate;
 @interface PlaylistCollectionCell : UITableViewCell
 
+@property (strong, nonatomic) NSIndexPath *selectedPath;
+@property (strong, nonatomic) NSArray *items;
+
 @property (nonatomic, weak) id <PlaylistCollectionCellDelegate> delegate;
 
 - (void)configureCell:(Playlist *)playlist;

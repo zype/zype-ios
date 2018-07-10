@@ -18,7 +18,6 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic) NSArray *items;
 @property (strong, nonatomic) Playlist *currentPlaylist;
 
 @end
@@ -102,6 +101,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedPath = indexPath;
     [self.delegate onDidSelectItem:self item:self.items[indexPath.row]];
 }
 

@@ -91,6 +91,34 @@
     [task resume];
 }
 
+- (void)resetPasswordWithUsername:(NSString *)username WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler{
+    
+    // Prepare parameters
+    NSDictionary *parameters = @{
+                                 kOAuthProperty_Email : username,
+                                 };
+    NSError *error = nil;
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
+    
+    // Send request
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:KOAuth_ForgotPasswordDomain, kAppKey]]];
+    
+    CLS_LOG(@"Sample Save Token URL: %@", request.URL);
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPMethod:@"PUT"];
+    [request setHTTPBody: requestData];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (completionHandler)
+        {
+            completionHandler(data, response, error);
+            //            CLS_LOG(@"LOGIN DATA RESPONSE:%@", data);
+        }
+    }];
+    [task resume];
+}
+
 - (void)getConsumerInformationWithID:(NSString *)consumerId withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion
 {
     
@@ -489,7 +517,9 @@
                 //remove old relationship
                 //                [ACSPersistenceManager resetPlaylistChilds:parentId];
                 //
-                [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
+                if ([parsedObject[@"response"][@"active"] intValue] == 1) {
+                    [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
+                }
                 if (errorString) errorString(nil);
                 //CLS_LOG(@"parsedObject = %@", parsedObject);
             }
