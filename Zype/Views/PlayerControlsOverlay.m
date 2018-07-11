@@ -222,15 +222,15 @@
 }
 
 - (void)showSelf {
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.3
                      animations:^(void){
-                         self.view.alpha = 1.0;
+                         self.view.alpha = 0.8;
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
                              [self enableControls];
                              
-                             [self performSelector:@selector(hideSelf) withObject:nil afterDelay:1.0];
+                             [self performSelector:@selector(hideSelf) withObject:nil afterDelay:4.0];
                          }
                      }
      ];
@@ -238,7 +238,7 @@
 
 - (void)hideSelf {
     if (self.playing && !self.isCasting) {
-        [UIView animateWithDuration:0.5
+        [UIView animateWithDuration:0.3
                          animations:^{
                              // ios treats alpha lower than 0.02 as hidden. need invisible but still clickable
                              self.view.alpha = 0.02;

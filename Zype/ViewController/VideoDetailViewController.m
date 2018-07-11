@@ -911,13 +911,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     UIView* constraintItemView = self.view;
     
     CGSize screenSize = UIScreen.mainScreen.bounds.size;
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if ((orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) ||
-        (orientation == UIInterfaceOrientationUnknown && screenSize.width < screenSize.height)) {
+    UIDeviceOrientation orientation = UIDevice.currentDevice.orientation;
+    
+    if (orientation == UIInterfaceOrientationLandscapeLeft ||
+        orientation == UIInterfaceOrientationLandscapeRight) {
+        [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    } else {
         constraintItemView = self.imageThumbnail;
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
-    } else {
-        [[self navigationController] setNavigationBarHidden:YES animated:YES];
     }
     
     [self.avPlayerController.view removeFromSuperview];
