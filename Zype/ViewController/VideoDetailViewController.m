@@ -905,9 +905,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)setupConstraints {
-    
-    self.
-    //if (![self.imageThumbnail isHidden]) return;
+    if (![self.imageThumbnail isHidden]) return;
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
     UIView* constraintItemView = self.view;
