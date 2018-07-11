@@ -577,7 +577,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             self.isAudio = YES;
         }
     }
-    
+
     if ([self.video.is_zype_live boolValue] == YES) {
         if ([self.video.on_air boolValue] == YES) {
             [self refreshPlayer];
@@ -596,6 +596,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             if (kLiveEventPolling == YES) {
                 self.timerPolling = [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(checkAirStatus:) userInfo:nil repeats:YES];
             }
+            [self checkAirStatus:nil];
         }
     } else {
         [self refreshPlayer];
@@ -910,7 +911,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     UIView* constraintItemView = self.view;
     
     CGSize screenSize = UIScreen.mainScreen.bounds.size;
-    if (screenSize.width < screenSize.height) {
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    if ((orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) ||
+        (orientation == UIInterfaceOrientationUnknown && screenSize.width < screenSize.height)) {
         constraintItemView = self.imageThumbnail;
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
     } else {
@@ -1084,11 +1087,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         } else {
             NSError *localError = nil;
             NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
-            
             if (localError == nil) {
-                NSLog(@"%@", parsedObject[@"response"][0][@"on_air"]);
+                NSLog(@"%@", [[parsedObject valueForKey:kAppKey_Response] objectAtIndex:0]);
                 if ([parsedObject[@"response"][0][@"on_air"] intValue] == 1) {
-                    [self.timerPolling invalidate];
+                    
+                    if (self.timerPolling != nil && self.timerPolling.isValid) {
+                        [self.timerPolling invalidate];
+                    }
                     self.timerPolling = nil;
                     [self refreshPlayer];
                     [self.imageThumbnail setHidden:YES];
