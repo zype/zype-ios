@@ -55,7 +55,7 @@
                         <outletCollection property="gestureRecognizers" destination="Hc6-W9-ZZX" appends="YES" id="z78-tR-nb7"/>
                     </connections>
                 </imageView>
-                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconNextW" translatesAutoresizingMaskIntoConstraints="NO" id="Cm8-ms-zyt">
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconNextW" translatesAutoresizingMaskIntoConstraints="NO" id="Cm8-ms-zyt">
                     <rect key="frame" x="375" y="155" width="50" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <gestureRecognizers/>
@@ -75,7 +75,7 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </label>
-                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconFullscreenW" translatesAutoresizingMaskIntoConstraints="NO" id="65r-If-JmO">
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconFullscreenW" translatesAutoresizingMaskIntoConstraints="NO" id="65r-If-JmO">
                     <rect key="frame" x="540" y="264" width="96" height="96"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <gestureRecognizers/>
@@ -83,7 +83,7 @@
                         <outletCollection property="gestureRecognizers" destination="2G5-W0-nod" appends="YES" id="Ui0-FG-gQu"/>
                     </connections>
                 </imageView>
-                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconBackW" translatesAutoresizingMaskIntoConstraints="NO" id="wGG-lY-W3x">
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconBackW" translatesAutoresizingMaskIntoConstraints="NO" id="wGG-lY-W3x">
                     <rect key="frame" x="215" y="155" width="50" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <gestureRecognizers/>
