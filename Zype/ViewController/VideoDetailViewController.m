@@ -360,7 +360,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)deviceDidRotate:(NSNotification *)notification
 {
-    [self setupConstraints];
+    UIDeviceOrientation orientation = UIDevice.currentDevice.orientation;
+    if (orientation != UIDeviceOrientationPortraitUpsideDown){
+        [self setupConstraints];
+    }
 }
 
 
