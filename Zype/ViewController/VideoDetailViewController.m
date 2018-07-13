@@ -922,7 +922,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         orientation == UIDeviceOrientationLandscapeRight ||
         (orientation == UIDeviceOrientationUnknown && screenSize.width > screenSize.height) ||
         (orientation == UIDeviceOrientationFaceUp && screenSize.width > screenSize.height) ||
-        (orientation == UIDeviceOrientationFaceDown && screenSize.width > screenSize.height)) {
+        (orientation == UIDeviceOrientationFaceDown && screenSize.width > screenSize.height) ||
+        (orientation == UIDeviceOrientationPortraitUpsideDown && self.bFullscreen)) {
         [[self navigationController] setNavigationBarHidden:YES animated:YES];
         self.bFullscreen = YES;
     } else {
