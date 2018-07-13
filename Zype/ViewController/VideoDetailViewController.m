@@ -105,7 +105,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (strong, nonatomic) UIAlertView *alertViewNsvodRequired;
 @property (strong, nonatomic) UIAlertView *alertViewIntro;
 
-@property (strong, nonatomic) NSLayoutConstraint *left;
+@property (nonatomic) BOOL bFullscreen;
 
 @end
 
@@ -905,20 +905,30 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)setupConstraints {
-    if (![self.imageThumbnail isHidden]) return;
+    
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.avPlayerController.view.transform = CGAffineTransformIdentity;
+    self.playerControlsView.view.transform = CGAffineTransformIdentity;
+    self.adsContainerView.transform = CGAffineTransformIdentity;
     
     UIView* constraintItemView = self.view;
     
     CGSize screenSize = UIScreen.mainScreen.bounds.size;
     UIDeviceOrientation orientation = UIDevice.currentDevice.orientation;
     
-    if (orientation == UIInterfaceOrientationLandscapeLeft ||
-        orientation == UIInterfaceOrientationLandscapeRight) {
+    if (orientation == UIDeviceOrientationLandscapeLeft ||
+        orientation == UIDeviceOrientationLandscapeRight ||
+        (orientation == UIDeviceOrientationUnknown && screenSize.width > screenSize.height) ||
+        (orientation == UIDeviceOrientationFaceUp && screenSize.width > screenSize.height) ||
+        (orientation == UIDeviceOrientationFaceDown && screenSize.width > screenSize.height)) {
         [[self navigationController] setNavigationBarHidden:YES animated:YES];
+        self.bFullscreen = YES;
     } else {
         constraintItemView = self.imageThumbnail;
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
+        self.bFullscreen = NO;
     }
     
     [self.avPlayerController.view removeFromSuperview];
@@ -937,6 +947,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // AVPlayerController
     if (self.avPlayerController.view != nil && constraintItemView != nil) {
+        BOOL isHidden = self.imageThumbnail.isHidden;
+        [self.imageThumbnail setHidden:NO];
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.avPlayerController.view
                                                                attribute:NSLayoutAttributeTop
                                                                relatedBy:NSLayoutRelationEqual
@@ -1025,6 +1037,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                               attribute:NSLayoutAttributeTrailing
                                                              multiplier:1
                                                                constant:0]];
+        [self.imageThumbnail setHidden:isHidden];
         [self.view layoutIfNeeded];
     }
 }
@@ -1489,13 +1502,69 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)fullScreenPressed:(id)sender {
     [self.playerControlsView fullScreenPressed:sender];
     
-    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
-    
-    if (orientation != UIInterfaceOrientationPortrait && orientation != UIInterfaceOrientationPortraitUpsideDown) {
-        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
+    if (self.bFullscreen) {
+        [[self navigationController] setNavigationBarHidden:NO animated:YES];
+        self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
+        self.avPlayerController.view.transform = CGAffineTransformIdentity;
+        self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
+        self.playerControlsView.view.transform = CGAffineTransformIdentity;
+        self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.adsContainerView.transform = CGAffineTransformIdentity;
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIDeviceOrientationPortrait] forKey:@"orientation"];
     } else {
-        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+        [[self navigationController] setNavigationBarHidden:YES animated:YES];
+        
+        CGSize size = UIScreen.mainScreen.bounds.size;
+        
+        BOOL bPortrait = NO;
+        if (self.view.frame.size.width > self.view.frame.size.height) {
+            bPortrait = NO;
+        } else {
+            bPortrait = YES;
+        }
+        
+        if (size.width < size.height) {
+            CGFloat temp = size.width;
+            size.width = size.height;
+            size.height = temp;
+        }
+        
+        self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = YES;
+        self.avPlayerController.view.transform = CGAffineTransformIdentity;
+        self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = YES;
+        self.playerControlsView.view.transform = CGAffineTransformIdentity;
+        self.adsContainerView.translatesAutoresizingMaskIntoConstraints = YES;
+        self.adsContainerView.transform = CGAffineTransformIdentity;
+        
+        [self.view addSubview:self.avPlayerController.view];
+        [self.view addSubview:self.playerControlsView.view];
+        [self.view addSubview:self.adsContainerView];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.avPlayerController.view.frame = CGRectMake(0, 0, size.width, size.height);
+            self.avPlayerController.view.center = self.view.center;
+            
+            self.playerControlsView.view.frame = CGRectMake(0, 0, size.width, size.height);
+            self.playerControlsView.view.center = self.view.center;
+            
+            self.adsContainerView.frame = CGRectMake(0, 0, size.width, size.height);
+            self.adsContainerView.center = self.view.center;
+            
+            if (bPortrait) {
+                self.avPlayerController.view.transform = CGAffineTransformMakeRotation(M_PI_2);
+                self.playerControlsView.view.transform = CGAffineTransformMakeRotation(M_PI_2);
+                self.adsContainerView.transform = CGAffineTransformMakeRotation(M_PI_2);
+            }
+            [self.view layoutIfNeeded];
+        }];
+        
+        [self.view bringSubviewToFront:self.imageThumbnail];
+        [self.view bringSubviewToFront:self.avPlayerController.view];
+        [self.view bringSubviewToFront:self.adsContainerView];
+        [self.view bringSubviewToFront:self.activityIndicator];
+        [self.view bringSubviewToFront:self.playerControlsView.view];
     }
+    self.bFullscreen = !self.bFullscreen;
 }
 
 - (void)progressBarValueChanged:(id)sender {
