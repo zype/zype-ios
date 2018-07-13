@@ -272,6 +272,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    // Disable swipe back gesture on this view controller
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    }
+    
     if (!self.isPlaying){
         [self initPlayer];
     }
@@ -316,6 +322,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    
+    // Set back swipe gesture to normal state
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+        self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
@@ -366,6 +378,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
 }
 
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return NO;
+}
 
 #pragma mark - Setup
 
