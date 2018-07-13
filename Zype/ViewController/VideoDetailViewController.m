@@ -1238,6 +1238,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             
             // Allow request to go through. If user does not have entitlement, DPT should return error message
         } else {
+            [self setupPlayerBackground];
             [self refreshPlayer];
             self.isPlayerRequestPending = YES;
         }
