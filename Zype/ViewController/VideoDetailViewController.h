@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableViewGuestList;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewTimeline;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewOptions;
+@property (weak, nonatomic) IBOutlet UILabel *lblAudioTitle;
 @property (strong, nonatomic) NSString *videoShareTitleString;
 @property (strong, nonatomic) Video *video;
 @property (strong, nonatomic) NSMutableArray *arrayTimeline;
