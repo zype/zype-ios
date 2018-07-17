@@ -119,11 +119,13 @@
 - (IBAction)progressBarTouchUpInside:(id)sender {
     NSLog(@"PlayerControlsOverlay progressBarTouchUpInside");
     [self updateCurrentTime:[NSNumber numberWithFloat:self.progressBar.value]];
+    [self showSelf];
 }
 
 - (IBAction)progressBarTouchUpOutside:(id)sender {
     NSLog(@"PlayerControlsOverlay progressBarTouchUpOutside");
     [self updateCurrentTime:[NSNumber numberWithFloat:self.progressBar.value]];
+    [self showSelf];
 }
 
 #pragma mark - Update UI
