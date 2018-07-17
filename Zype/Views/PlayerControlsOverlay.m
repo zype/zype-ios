@@ -6,6 +6,8 @@
 
 #import "PlayerControlsOverlay.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "ACSPersistenceManager.h"
+#import "UserPreferences.h"
 
 @implementation PlayerControlsOverlay
 
@@ -28,6 +30,16 @@
         
         self.mpVolumeViewContainer.backgroundColor = [UIColor clearColor];
         [self.mpVolumeViewContainer addSubview:volumeView];
+        
+        UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+        if (kAutoplay && [userPrefs.autoplay boolValue]) {
+            // initialization for autoplay
+        } else {
+            self.backIcon.alpha = 0.0;
+            self.nextIcon.alpha = 0.0;
+            self.backIcon.userInteractionEnabled = NO;
+            self.nextIcon.userInteractionEnabled = NO;
+        }
     }
     
     return self;
@@ -57,6 +69,16 @@
         self.view.frame = self.frame;
         
         [self addSubview:self.view];
+        
+        UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+        if (kAutoplay && [userPrefs.autoplay boolValue]) {
+            // initialization for autoplay
+        } else {
+            self.backIcon.alpha = 0.0;
+            self.nextIcon.alpha = 0.0;
+            self.backIcon.userInteractionEnabled = NO;
+            self.nextIcon.userInteractionEnabled = NO;
+        }
     }
     
     return self;
@@ -122,14 +144,23 @@
 - (void)updateNavigation:(BOOL)allowNavigation {
     self.allowUserNavigation = allowNavigation;
     
-    if (allowNavigation) {
-        self.backIcon.alpha = 1.0;
-        self.nextIcon.alpha = 1.0;
-        self.backIcon.userInteractionEnabled = YES;
-        self.nextIcon.userInteractionEnabled = YES;
+    UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+    
+    if (kAutoplay && [userPrefs.autoplay boolValue]) {
+        if (allowNavigation) {
+            self.backIcon.alpha = 1.0;
+            self.nextIcon.alpha = 1.0;
+            self.backIcon.userInteractionEnabled = YES;
+            self.nextIcon.userInteractionEnabled = YES;
+        } else {
+            self.backIcon.alpha = 0.3;
+            self.nextIcon.alpha = 0.3;
+            self.backIcon.userInteractionEnabled = NO;
+            self.nextIcon.userInteractionEnabled = NO;
+        }
     } else {
-        self.backIcon.alpha = 0.3;
-        self.nextIcon.alpha = 0.3;
+        self.backIcon.alpha = 0.0;
+        self.nextIcon.alpha = 0.0;
         self.backIcon.userInteractionEnabled = NO;
         self.nextIcon.userInteractionEnabled = NO;
     }

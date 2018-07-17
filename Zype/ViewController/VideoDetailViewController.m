@@ -1329,6 +1329,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if ((int)CMTimeGetSeconds(self.avPlayer.currentItem.currentTime) >=  (int)CMTimeGetSeconds(self.avPlayer.currentItem.duration) && !self.isPlayerRequestPending ){
         //reset to beginning
         [self.avPlayer pause];
+        [self.playerControlsView setAsPause];
         self.video.playTime = [NSNumber numberWithInt:0];
 
         [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0, 1)
