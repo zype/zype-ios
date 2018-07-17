@@ -233,7 +233,7 @@
         id tracker = [[GAI sharedInstance] defaultTracker];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameSettings action:kAnalyticsCategoryButtonPressed label:@"Sign Out" value:nil] build]];
         
-        [self.buttonSignIn setTitle: @"SIGN IN" forState: UIControlStateNormal];
+        [self.buttonSignIn setTitle: @"Sign In" forState: UIControlStateNormal];
     }
 }
 
