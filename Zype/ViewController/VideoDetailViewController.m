@@ -106,6 +106,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (strong, nonatomic) UIAlertView *alertViewIntro;
 
 @property (nonatomic) BOOL bFullscreen;
+@property (strong, nonatomic) UIView* ivOverlayView;
 
 @end
 
@@ -965,12 +966,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view addSubview:self.playerControlsView.view];
     [self.view addSubview:self.adsContainerView];
     
-    [self.view bringSubviewToFront:self.imageThumbnail];
-    [self.view bringSubviewToFront:self.avPlayerController.view];
-    [self.view bringSubviewToFront:self.adsContainerView];
-    [self.view bringSubviewToFront:self.activityIndicator];
-    [self.view bringSubviewToFront:self.playerControlsView.view];
-    
     // AVPlayerController
     if (self.avPlayerController.view != nil && constraintItemView != nil) {
         BOOL isHidden = self.imageThumbnail.isHidden;
@@ -1065,6 +1060,60 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                                constant:0]];
         [self.imageThumbnail setHidden:isHidden];
         [self.view layoutIfNeeded];
+    }
+    
+    if (self.isAudio) {
+        if (self.ivOverlayView == nil) {
+            self.ivOverlayView = [[UIView alloc] init];
+            [self.avPlayerController.contentOverlayView addSubview:self.ivOverlayView];
+            self.ivOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.avPlayerController.contentOverlayView addConstraint:[NSLayoutConstraint constraintWithItem:self.ivOverlayView
+                                                                                                   attribute:NSLayoutAttributeTop
+                                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                                      toItem:self.avPlayerController.contentOverlayView
+                                                                                                   attribute:NSLayoutAttributeTop
+                                                                                                  multiplier:1
+                                                                                                    constant:0]];
+            [self.avPlayerController.contentOverlayView addConstraint:[NSLayoutConstraint constraintWithItem:self.ivOverlayView
+                                                                                                   attribute:NSLayoutAttributeBottom
+                                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                                      toItem:self.avPlayerController.contentOverlayView
+                                                                                                   attribute:NSLayoutAttributeBottom
+                                                                                                  multiplier:1
+                                                                                                    constant:0]];
+            [self.avPlayerController.contentOverlayView addConstraint:[NSLayoutConstraint constraintWithItem:self.ivOverlayView
+                                                                                                   attribute:NSLayoutAttributeLeft
+                                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                                      toItem:self.avPlayerController.contentOverlayView
+                                                                                                   attribute:NSLayoutAttributeLeft
+                                                                                                  multiplier:1
+                                                                                                    constant:0]];
+            [self.avPlayerController.contentOverlayView addConstraint:[NSLayoutConstraint constraintWithItem:self.ivOverlayView
+                                                                                                   attribute:NSLayoutAttributeRight
+                                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                                      toItem:self.avPlayerController.contentOverlayView
+                                                                                                   attribute:NSLayoutAttributeRight
+                                                                                                  multiplier:1
+                                                                                                    constant:0]];
+        }
+        [self.lblAudioTitle setHidden: NO];
+        [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
+        
+        [self.view bringSubviewToFront:self.avPlayerController.view];
+        [self.view bringSubviewToFront:self.imageThumbnail];
+        [self.view bringSubviewToFront:self.lblAudioTitle];
+        [self.view bringSubviewToFront:self.adsContainerView];
+        [self.view bringSubviewToFront:self.activityIndicator];
+        [self.view bringSubviewToFront:self.playerControlsView.view];
+    } else {
+        [self.lblAudioTitle setHidden: YES];
+        [self.ivOverlayView setBackgroundColor:UIColor.clearColor];
+        
+        [self.view bringSubviewToFront:self.imageThumbnail];
+        [self.view bringSubviewToFront:self.avPlayerController.view];
+        [self.view bringSubviewToFront:self.adsContainerView];
+        [self.view bringSubviewToFront:self.activityIndicator];
+        [self.view bringSubviewToFront:self.playerControlsView.view];
     }
 }
 
@@ -1591,8 +1640,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self.view layoutIfNeeded];
         }];
         
-        [self.view bringSubviewToFront:self.imageThumbnail];
-        [self.view bringSubviewToFront:self.avPlayerController.view];
+        if (self.isAudio) {
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+            [self.view bringSubviewToFront:self.imageThumbnail];
+        } else {
+            [self.view bringSubviewToFront:self.imageThumbnail];
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+        }
         [self.view bringSubviewToFront:self.adsContainerView];
         [self.view bringSubviewToFront:self.activityIndicator];
         [self.view bringSubviewToFront:self.playerControlsView.view];
@@ -2420,7 +2474,7 @@ NSString* machineName() {
 #pragma mark - OptionTableViewCellDelegate
 
 - (void)onDidPlayTapped:(OptionTableViewCell *)cell {
-    [self.actionSheetManager showPlayAsActionSheet];
+    [self.actionSheetManager showPlayAsActionSheet:self.playbackSources];
 }
 
 - (void)onDidDownloadTapped:(OptionTableViewCell *)cell {

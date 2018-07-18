@@ -89,9 +89,9 @@
     
 }
 
-- (void)showPlayAsActionSheet{
+- (void)showPlayAsActionSheet:(NSArray *) sources{
     
-    UIActionSheet *actionSheet = [ACActionSheetManager videoDetailPlayAsActionSheet];
+    UIActionSheet *actionSheet = [ACActionSheetManager videoDetailPlayAsActionSheet:sources];
     actionSheet.delegate = self;
     [self delegateShowActionSheet:actionSheet];
     
@@ -576,7 +576,7 @@
     
 }
 
-+ (UIActionSheet *)videoDetailPlayAsActionSheet{
++ (UIActionSheet *)videoDetailPlayAsActionSheet:(NSArray *) sources{
     
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"action button title");
     
@@ -587,7 +587,21 @@
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil otherButtonTitles:nil];
     
-    [actionSheet addButtonWithTitle:[self titleForPlayAsActionSheetButtonWithType:ACActionSheetPlayAsButtonListen]];
+    BOOL isVideo = NO;
+    BOOL isAudio = NO;
+    for (PlaybackSource *source in sources) {
+        if ([source.fileType isEqualToString:@"mp4"]) {
+            isVideo = YES;
+        }
+        if ([source.fileType isEqualToString:@"m4a"]) {
+            isAudio = YES;
+        }
+    }
+    
+    if (isAudio) {
+        [actionSheet addButtonWithTitle:[self titleForPlayAsActionSheetButtonWithType:ACActionSheetPlayAsButtonListen]];
+    }
+    
     [actionSheet addButtonWithTitle:[self titleForPlayAsActionSheetButtonWithType:ACActionSheetPlayAsButtonWatch]];
     
     actionSheet.tag = ACLatestActionSheetTypePlayAs;
