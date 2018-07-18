@@ -17,6 +17,7 @@
 
 + (UIColor *)colorWithHex:(int)rgbValue;
 + (UIColor *)colorWithHex:(int)rgbValue alpha:(float)a;
++ (NSString *)hexStringWithUicolor:(UIColor*)color;
 + (void)addActions:(NSArray *)actions IntoContainerView:(UIView *)containerView Width:(float)width Height:(float)height;
 + (UIButton *)buttonNowPlayingInViewController:(UIViewController *)viewController;
 + (void)showNowPlayingFromViewController:(UIViewController *)viewController;

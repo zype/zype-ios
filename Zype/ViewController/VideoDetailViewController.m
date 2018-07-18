@@ -543,7 +543,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
     }
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-    htmlString = [NSString stringWithFormat:htmlString, self.video.title, self.video.short_description, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
+    
+    UIColor *brandColor = kClientColor;
+    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], self.video.short_description];
+    
+    htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.webViewSummary loadHTMLString:htmlString baseURL:nil];
     
 }
