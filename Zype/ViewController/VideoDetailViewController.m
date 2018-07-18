@@ -854,7 +854,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self loadSavedPlaybackTime];
     
     //timer to update timeline
-    self.timerPlayback = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updatePlaybackTime:) userInfo:nil repeats:YES];
+    if (self.timerPlayback == nil){
+        self.timerPlayback = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updatePlaybackTime:) userInfo:nil repeats:YES];
+    }
     
     [self setPlayingStatus];
 }
@@ -1194,10 +1196,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)loadVideo:(NSUInteger)newIndex {
-    UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
-    
     // Autoplay
-    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 0 && self.isPlayerRequestPending == NO){
+    if ([self.videos count] > 0 && self.isPlayerRequestPending == NO){
         [self saveCurrentPlaybackTime]; // save current video time first
 
         self.currentVideoIndex = newIndex;
@@ -1347,7 +1347,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 
                 [[ACSPersistenceManager sharedInstance] saveContext];
                 
-                [self loadVideo:[self nextIndex]];
+                UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+                if (kAutoplay && [userPrefs.autoplay boolValue]){
+                    [self loadVideo:[self nextIndex]];
+                }
             }
      ];
 }
