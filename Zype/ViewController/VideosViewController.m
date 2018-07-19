@@ -120,7 +120,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    //[self loadVideos];
+    [self loadVideos];
     
     [self setupHeader];
     

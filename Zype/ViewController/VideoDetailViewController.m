@@ -285,7 +285,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -369,6 +368,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (self.adsManager != nil) {
         [self.adsManager pause];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    if ([self isFirstResponder]) {
+        [self resignFirstResponder];
+    }
+    [super viewDidDisappear:animated];
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification
@@ -578,6 +585,33 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     return YES;
 }
 
+#pragma mark - Remote control events
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
+    NSLog(@"Received remote control event!");
+    if (event.type == UIEventTypeRemoteControl) {
+        switch (event.subtype) {
+            case UIEventSubtypeRemoteControlTogglePlayPause:
+                if (self.avPlayer.rate > 0.0) {
+                    [self.avPlayer pause];
+                } else {
+                    [self.avPlayer play];
+                }
+                break;
+                
+            case UIEventSubtypeRemoteControlPlay:
+                [self.avPlayer play];
+                break;
+                
+            case UIEventSubtypeRemoteControlPause:
+                [self.avPlayer pause];
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
 
 #pragma mark - Video Player
 
@@ -809,6 +843,30 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     } else {
         [self.avPlayer replaceCurrentItemWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
     }
+    
+    if (self.isAudio) {
+        
+        [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+        [self becomeFirstResponder];
+
+        // set audio category with options
+        NSError *categoryError = nil;
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&categoryError];
+        if (categoryError) {
+            NSLog(@"Error setting category! %@", [categoryError description]);
+        }
+        
+        // activation of audio sesion
+        NSError *activationError = nil;
+        BOOL success = [[AVAudioSession sharedInstance] setActive:YES error:&activationError];
+        if (!success) {
+            if (activationError) {
+                NSLog(@"Could not activate audio session. %@", [activationError localizedDescription]);
+            } else {
+                NSLog(@"audio session could not be activated");
+            }
+        }
+    } 
     
     self.contentPlayhead = [[IMAAVPlayerContentPlayhead alloc] initWithAVPlayer:self.avPlayer];
     //Create PlayerViewController for player controls
@@ -2507,7 +2565,7 @@ NSString* machineName() {
 
 - (void)acActionSheetManagerDelegateDownloadTapped {
     self.isDownloadStarted = NO;
-    self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(showDownloadProgress:) userInfo:nil repeats:YES];
+    self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:0.3f target:self selector:@selector(showDownloadProgress:) userInfo:nil repeats:YES];
 }
 
 - (void)acActionSheetManagerDelegateReloadVideo:(Video *)video{

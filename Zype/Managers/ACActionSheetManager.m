@@ -593,7 +593,7 @@
         if ([source.fileType isEqualToString:@"mp4"]) {
             isVideo = YES;
         }
-        if ([source.fileType isEqualToString:@"m4a"]) {
+        if ([source.fileType isEqualToString:@"m4a"] || [source.fileType isEqualToString:@"mp3"] || [source.fileType isEqualToString:@"mp3"]) {
             isAudio = YES;
         }
     }

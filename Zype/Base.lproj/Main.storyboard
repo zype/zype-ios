@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1258,7 +1258,7 @@
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playing Audio Only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Zh-th-isR">
                                 <rect key="frame" x="123.5" y="10" width="129.5" height="17"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="0.054324776790000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="NJf-g7-cd5">
@@ -1428,7 +1428,6 @@
                             <constraint firstAttribute="trailing" secondItem="ZN8-RW-Jnh" secondAttribute="trailing" id="79X-zk-7Oq"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" constant="10" id="8rd-mx-zXW"/>
                             <constraint firstItem="A0e-5B-SaA" firstAttribute="top" secondItem="P9Z-eA-mdp" secondAttribute="bottom" id="9A8-1v-Hoo"/>
-                            <constraint firstItem="6Zh-th-isR" firstAttribute="centerX" secondItem="ewh-xg-vbD" secondAttribute="centerX" id="9tP-l5-f8E"/>
                             <constraint firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="AA8-zL-iAQ"/>
                             <constraint firstItem="9KN-jf-j1V" firstAttribute="top" secondItem="hkC-ag-CoJ" secondAttribute="bottom" id="Ab4-al-ym5"/>
                             <constraint firstItem="fTa-SE-w5e" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="DQm-ts-0Nx"/>
@@ -1446,7 +1445,6 @@
                             <constraint firstItem="ZN8-RW-Jnh" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="dIV-ka-qPn"/>
                             <constraint firstAttribute="trailing" secondItem="HYN-AC-QLQ" secondAttribute="trailing" id="fpG-KE-dwZ"/>
                             <constraint firstItem="NJf-g7-cd5" firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="h5e-dS-1L2"/>
-                            <constraint firstItem="6Zh-th-isR" firstAttribute="top" secondItem="P9Z-eA-mdp" secondAttribute="bottom" constant="10" id="iFn-wr-FRt"/>
                             <constraint firstItem="9KN-jf-j1V" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="jCx-Tz-XAB"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="mbs-X5-2Xf"/>
                             <constraint firstItem="A0e-5B-SaA" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="nb8-oN-Ht8"/>
@@ -1454,8 +1452,10 @@
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="ZN8-RW-Jnh" secondAttribute="bottom" priority="999" id="pPn-JW-Z3Y"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="HYN-AC-QLQ" secondAttribute="bottom" id="r6B-aI-F3u"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="A0e-5B-SaA" secondAttribute="bottom" id="rcn-a7-Kmn"/>
+                            <constraint firstItem="6Zh-th-isR" firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="t4t-65-Dpn"/>
                             <constraint firstItem="hkC-ag-CoJ" firstAttribute="top" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" priority="750" constant="4" id="tRy-SK-Jk4"/>
                             <constraint firstAttribute="trailing" secondItem="fTa-SE-w5e" secondAttribute="trailing" id="wSz-TX-czv"/>
+                            <constraint firstItem="Qjb-Ka-fqE" firstAttribute="top" secondItem="6Zh-th-isR" secondAttribute="bottom" constant="-27" id="xMp-4S-jTW"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="yEB-Z0-q69"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="centerX" secondItem="ewh-xg-vbD" secondAttribute="centerX" id="zEI-Ug-rEg"/>
                             <constraint firstAttribute="trailing" secondItem="9KN-jf-j1V" secondAttribute="trailing" id="zWm-E3-KMd"/>
@@ -2190,7 +2190,7 @@
         <image name="universal-gray-cancel" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IAe-78-xc4"/>
+        <segue reference="eLX-aL-mae"/>
         <segue reference="gyF-Kv-T9Z"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
