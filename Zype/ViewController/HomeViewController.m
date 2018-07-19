@@ -336,11 +336,11 @@
     
     if (self.doneLoadingFromNetwork == YES) {
         
-        self.noResultsLabel.text = NSLocalizedString(@"There are no shows yet this week.  Keep an eye out here or check out the archives.", @"no results message");
+        self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
         
     }else{
         
-        self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
+        self.noResultsLabel.text = NSLocalizedString(@"Loading videos", @"no results message");
         
     }
     

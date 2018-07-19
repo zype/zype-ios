@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1428,6 +1428,7 @@
                             <constraint firstAttribute="trailing" secondItem="ZN8-RW-Jnh" secondAttribute="trailing" id="79X-zk-7Oq"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" constant="10" id="8rd-mx-zXW"/>
                             <constraint firstItem="A0e-5B-SaA" firstAttribute="top" secondItem="P9Z-eA-mdp" secondAttribute="bottom" id="9A8-1v-Hoo"/>
+                            <constraint firstItem="6Zh-th-isR" firstAttribute="centerX" secondItem="ewh-xg-vbD" secondAttribute="centerX" id="9tP-l5-f8E"/>
                             <constraint firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="AA8-zL-iAQ"/>
                             <constraint firstItem="9KN-jf-j1V" firstAttribute="top" secondItem="hkC-ag-CoJ" secondAttribute="bottom" id="Ab4-al-ym5"/>
                             <constraint firstItem="fTa-SE-w5e" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="DQm-ts-0Nx"/>
@@ -1445,6 +1446,7 @@
                             <constraint firstItem="ZN8-RW-Jnh" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="dIV-ka-qPn"/>
                             <constraint firstAttribute="trailing" secondItem="HYN-AC-QLQ" secondAttribute="trailing" id="fpG-KE-dwZ"/>
                             <constraint firstItem="NJf-g7-cd5" firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="h5e-dS-1L2"/>
+                            <constraint firstItem="6Zh-th-isR" firstAttribute="top" secondItem="P9Z-eA-mdp" secondAttribute="bottom" constant="10" id="iFn-wr-FRt"/>
                             <constraint firstItem="9KN-jf-j1V" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="jCx-Tz-XAB"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="mbs-X5-2Xf"/>
                             <constraint firstItem="A0e-5B-SaA" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="nb8-oN-Ht8"/>
@@ -1996,8 +1998,8 @@
                                     <constraint firstAttribute="height" constant="1" id="aFN-Ii-xdO"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No videos found. Please check again later." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="xL4-uM-1M0" userLabel="No Results Label">
-                                <rect key="frame" x="41" y="267" width="293.5" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading videos" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="xL4-uM-1M0" userLabel="No Results Label">
+                                <rect key="frame" x="135.5" y="267" width="105" height="20.5"/>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -2116,8 +2118,8 @@
                                     <constraint firstAttribute="height" constant="1" id="RCH-l0-k1O"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No videos found. Please check again later." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="gkN-TC-naV" userLabel="No Results Label">
-                                <rect key="frame" x="41" y="22" width="293.5" height="643"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading videos" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="gkN-TC-naV" userLabel="No Results Label">
+                                <rect key="frame" x="135.5" y="22" width="105" height="643"/>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>

@@ -6,6 +6,8 @@
 
 #import "PlayerControlsOverlay.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "ACSPersistenceManager.h"
+#import "UserPreferences.h"
 
 @implementation PlayerControlsOverlay
 
@@ -121,7 +123,7 @@
 // Enable or disable back and next
 - (void)updateNavigation:(BOOL)allowNavigation {
     self.allowUserNavigation = allowNavigation;
-    
+
     if (allowNavigation) {
         self.backIcon.alpha = 1.0;
         self.nextIcon.alpha = 1.0;
