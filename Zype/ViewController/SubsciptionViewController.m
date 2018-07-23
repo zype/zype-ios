@@ -17,6 +17,7 @@
 #import "IntroViewController.h"
 #import "SignInViewController.h"
 #import "RESTServiceController.h"
+#import "ACSDataManager.h"
 
 @interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate>
 
@@ -125,6 +126,9 @@
                 [SVProgressHUD showErrorWithStatus:error.localizedDescription];
             } else {
                 [SVProgressHUD dismiss];
+                
+                // Update local user info. Should have subscription
+                [ACSDataManager loadUserInfo];
                 
                 [self dismisControllers];
                 if ( self.planDelegate != nil ) {
