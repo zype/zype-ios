@@ -250,6 +250,8 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kString_MessageNoEmail @"Your device doesn't support email."
 #define kString_MessageNoSms @"Your device doesn't support SMS."
 #define kString_MessageSmsFail @"Failed to send SMS."
+#define kString_TitleNoConnection @"No Connection Detected"
+#define kString_MessageNoConnection @"Your device's internet connection isn't working. Please check your connection and try again."
 
 #pragma mark - OAuth 2
 //#define KOAuth_GetTokenDomain @"login.uat.zype.com"
@@ -383,3 +385,4 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_ShareMessage       @"share_message"
 
 #endif
+
