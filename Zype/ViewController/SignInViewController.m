@@ -93,7 +93,7 @@
     
     void (^animations)(void) = ^() {
         [self.view layoutIfNeeded];
-        self.view.frame = CGRectMake(self.view.frame.origin.x, -200, self.view.frame.size.width, self.view.frame.size.height);
+        self.view.frame = CGRectMake(self.view.frame.origin.x, -100, self.view.frame.size.width, self.view.frame.size.height);
     };
     
     //

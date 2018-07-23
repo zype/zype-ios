@@ -10,6 +10,7 @@
 #import <RMStore/RMStore.h>
 #import <RMStore/RMAppReceipt.h>
 #import "RESTServiceController.h"
+#import "ACSDataManager.h"
 
 @interface ACPurchaseManager()
 
@@ -106,7 +107,10 @@
                             
                             for(NSDictionary * plan in planArray) {
                                 if ([productID isEqualToString:plan[@"marketplace_ids"][@"itunes"]]) {
-                                    [[RESTServiceController sharedInstance] createMarketplace:appReceipt planId:plan[@"_id"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {}];
+                                    [[RESTServiceController sharedInstance] createMarketplace:appReceipt planId:plan[@"_id"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                        // Update local user info. Should have subscription
+                                        [ACSDataManager loadUserInfo];
+                                    }];
                                     isCreatedPlace = YES;
                                     break;
                                 }
