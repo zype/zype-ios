@@ -166,6 +166,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self checkInternetConnection];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(liveStreamUpdated:) name:kNotificationNameLiveStreamUpdated object:nil];
     
     [self trackScreenName:kAnalyticsScreenNameVideoDetail];
@@ -593,18 +595,18 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         switch (event.subtype) {
             case UIEventSubtypeRemoteControlTogglePlayPause:
                 if (self.avPlayer.rate > 0.0) {
-                    [self.avPlayer pause];
+                    [self playPausePressed:self];
                 } else {
-                    [self.avPlayer play];
+                    [self playPausePressed:self];
                 }
                 break;
                 
             case UIEventSubtypeRemoteControlPlay:
-                [self.avPlayer play];
+                [self playPausePressed:self];
                 break;
                 
             case UIEventSubtypeRemoteControlPause:
-                [self.avPlayer pause];
+                [self playPausePressed:self];
                 break;
                 
             default:
@@ -866,7 +868,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 NSLog(@"audio session could not be activated");
             }
         }
-    } 
+    }
     
     self.contentPlayhead = [[IMAAVPlayerContentPlayhead alloc] initWithAVPlayer:self.avPlayer];
     //Create PlayerViewController for player controls
@@ -1147,6 +1149,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                                                                    attribute:NSLayoutAttributeRight
                                                                                                   multiplier:1
                                                                                                     constant:0]];
+            
         }
         [self.lblAudioTitle setHidden: NO];
         [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
@@ -1242,6 +1245,21 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             }
         }
     }];
+}
+
+- (BOOL)checkInternetConnection {
+    if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable) {
+        UIAlertController *alertNoConnection = [UIAlertController alertControllerWithTitle:kString_TitleNoConnection message:kString_MessageNoConnection preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *buttonOk = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        
+        [alertNoConnection addAction:buttonOk];
+        [self presentViewController:alertNoConnection animated:YES completion:nil];
+        return false;
+    }
+    return true;
 }
 
 #pragma mark - Place Saving
@@ -1401,19 +1419,22 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)updatePlaybackTime:(NSTimer*)theTimer {
     
-    int currentTimeline = [self currentTimelineIndex];
-    
-    // Update timeline cell
-    if (currentTimeline > self.selectedTimeline) {
-        self.selectedTimeline = currentTimeline;
-        [self.tableViewTimeline reloadData];
-        TimelineTableViewCell *cell = (TimelineTableViewCell *)[self.tableViewTimeline cellForRowAtIndexPath:[NSIndexPath indexPathForRow:currentTimeline inSection:0]];
-        cell.labelTime.textColor = kYellowColor;
-        cell.labelDescription.textColor = kYellowColor;
-        cell.imagePlayIndicator.hidden = NO;
+    if ([self checkInternetConnection]){
+        int currentTimeline = [self currentTimelineIndex];
+        
+        // Update timeline cell
+        if (currentTimeline > self.selectedTimeline) {
+            self.selectedTimeline = currentTimeline;
+            [self.tableViewTimeline reloadData];
+            TimelineTableViewCell *cell = (TimelineTableViewCell *)[self.tableViewTimeline cellForRowAtIndexPath:[NSIndexPath indexPathForRow:currentTimeline inSection:0]];
+            cell.labelTime.textColor = kYellowColor;
+            cell.labelDescription.textColor = kYellowColor;
+            cell.imagePlayIndicator.hidden = NO;
+        }
+        
+        //    CLS_LOG(@"currentTimeline: %d", currentTimeline);
     }
     
-    //    CLS_LOG(@"currentTimeline: %d", currentTimeline);
 }
 
 
@@ -1638,6 +1659,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.playerControlsView.view.transform = CGAffineTransformIdentity;
         self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         self.adsContainerView.transform = CGAffineTransformIdentity;
+        self.lblAudioTitle.translatesAutoresizingMaskIntoConstraints = NO;
+        self.lblAudioTitle.transform = CGAffineTransformIdentity;
+        self.imageThumbnail.translatesAutoresizingMaskIntoConstraints = NO;
+        self.imageThumbnail.transform = CGAffineTransformIdentity;
+        
         [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIDeviceOrientationPortrait] forKey:@"orientation"];
     } else {
         [[self navigationController] setNavigationBarHidden:YES animated:YES];
@@ -1663,10 +1689,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.playerControlsView.view.transform = CGAffineTransformIdentity;
         self.adsContainerView.translatesAutoresizingMaskIntoConstraints = YES;
         self.adsContainerView.transform = CGAffineTransformIdentity;
+        self.lblAudioTitle.translatesAutoresizingMaskIntoConstraints = YES;
+        self.lblAudioTitle.transform = CGAffineTransformIdentity;
+        self.imageThumbnail.translatesAutoresizingMaskIntoConstraints = YES;
+        self.imageThumbnail.transform = CGAffineTransformIdentity;
         
         [self.view addSubview:self.avPlayerController.view];
         [self.view addSubview:self.playerControlsView.view];
         [self.view addSubview:self.adsContainerView];
+        [self.view addSubview:self.lblAudioTitle];
+        [self.view addSubview:self.imageThumbnail];
         
         [UIView animateWithDuration:0.2 animations:^{
             self.avPlayerController.view.frame = CGRectMake(0, 0, size.width, size.height);
@@ -1678,10 +1710,18 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             self.adsContainerView.frame = CGRectMake(0, 0, size.width, size.height);
             self.adsContainerView.center = self.view.center;
             
+            self.lblAudioTitle.frame = CGRectMake(0, 0, size.width, size.height);
+            self.lblAudioTitle.center = self.view.center;
+            
+            self.imageThumbnail.frame = CGRectMake(0, 0, size.width, size.height);
+            self.imageThumbnail.center = self.view.center;
+            
             if (bPortrait) {
                 self.avPlayerController.view.transform = CGAffineTransformMakeRotation(M_PI_2);
                 self.playerControlsView.view.transform = CGAffineTransformMakeRotation(M_PI_2);
                 self.adsContainerView.transform = CGAffineTransformMakeRotation(M_PI_2);
+                self.lblAudioTitle.transform = CGAffineTransformMakeRotation(M_PI_2);
+                self.imageThumbnail.transform = CGAffineTransformMakeRotation(M_PI_2);
             }
             [self.view layoutIfNeeded];
         }];
@@ -1696,6 +1736,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.view bringSubviewToFront:self.adsContainerView];
         [self.view bringSubviewToFront:self.activityIndicator];
         [self.view bringSubviewToFront:self.playerControlsView.view];
+        [self.view bringSubviewToFront:self.lblAudioTitle];
     }
     self.bFullscreen = !self.bFullscreen;
 }
