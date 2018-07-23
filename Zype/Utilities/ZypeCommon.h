@@ -12,10 +12,10 @@
 
 //Main app configuration for connecting to Zype property
 
-#define kOAuth_ClientId @"efff34ee145c7bdc8a8408a339571005f8bcdf2fb0ae5dfd0dbb248188daaf54"
-#define kOAuth_ClientSecret @"0fdedb3cf72afa6b37fabfbe100e2a2db5d6f4ecdbfe71eb53c223d722201a1d"
-#define kAppKey @"HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU"
-#define kRootPlaylistId @"577e65c85577de0d1000c1ee"
+#define kOAuth_ClientId @"<Client ID>"
+#define kOAuth_ClientSecret @"<Client Secret>"
+#define kAppKey @"<Zype App Key>"
+#define kRootPlaylistId @"<Root Playlist ID>"
 
 #define kZypeAppId @"<Zype App ID>"
 #define kZypeSiteId @"<Zype Site ID>"
@@ -37,7 +37,7 @@
 #define kAppColorLight NO
 
 //Enable Gallery layout
-#define kAppAppleTVLayout YES
+#define kAppAppleTVLayout NO
 
 //Show/Hide titles on thumbnails for playlist views on iPhone
 #define kHidePlaylistTitles NO
@@ -53,7 +53,7 @@
 #define kDownloadsForAllUsersEnabled YES
 
 // Enable Zype Marketplace Connect
-#define kNativeSubscriptionEnabled YES
+#define kNativeSubscriptionEnabled NO
 // Provide the Zype Plan IDs linked ot native purchases
 #define kZypeSubscriptionIds [NSArray arrayWithObjects: @"monthly_plan_id", @"yearly_plan_id", nil]
 
@@ -250,8 +250,6 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kString_MessageNoEmail @"Your device doesn't support email."
 #define kString_MessageNoSms @"Your device doesn't support SMS."
 #define kString_MessageSmsFail @"Failed to send SMS."
-#define kString_TitleNoConnection @"No Connection Detected"
-#define kString_MessageNoConnection @"Your device's internet connection isn't working. Please check your connection and try again."
 
 #pragma mark - OAuth 2
 //#define KOAuth_GetTokenDomain @"login.uat.zype.com"
@@ -385,4 +383,3 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kAppKey_ShareMessage       @"share_message"
 
 #endif
-
