@@ -553,7 +553,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
     }
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-    htmlString = [NSString stringWithFormat:htmlString, self.video.title, self.video.short_description, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
+    
+    UIColor *brandColor = kClientColor;
+    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], self.video.short_description];
+    
+    htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.webViewSummary loadHTMLString:htmlString baseURL:nil];
     
 }
@@ -915,7 +919,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self loadSavedPlaybackTime];
     
     //timer to update timeline
-    self.timerPlayback = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updatePlaybackTime:) userInfo:nil repeats:YES];
+    if (self.timerPlayback == nil){
+        self.timerPlayback = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updatePlaybackTime:) userInfo:nil repeats:YES];
+    }
     
     [self setPlayingStatus];
 }
@@ -1319,10 +1325,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)loadVideo:(NSUInteger)newIndex {
-    UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
-    
     // Autoplay
-    if (kAutoplay && [userPrefs.autoplay boolValue] && [self.videos count] > 0 && self.isPlayerRequestPending == NO){
+    if ([self.videos count] > 0 && self.isPlayerRequestPending == NO){
         [self saveCurrentPlaybackTime]; // save current video time first
 
         self.currentVideoIndex = newIndex;
@@ -1455,24 +1459,32 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)moviePlayBackDidFinish:(NSNotification *)notification{
     if ((int)CMTimeGetSeconds(self.avPlayer.currentItem.currentTime) >=  (int)CMTimeGetSeconds(self.avPlayer.currentItem.duration) && !self.isPlayerRequestPending ){
-        //reset to beginning
-        [self.avPlayer pause];
-        self.video.playTime = [NSNumber numberWithInt:0];
+        [self resetToBeginning];
+    }
+}
 
-        [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0, 1)
-                completionHandler:^(BOOL finished) {
-                    NSLog(@"moviePlayBackDidFinish");
-                    // Set played
-                    if (self.video.isDownload.boolValue == YES && self.video.isPlayed.boolValue == NO) {
-                        self.video.isPlayed = @YES;
-                    }
-                    
-                    [[ACSPersistenceManager sharedInstance] saveContext];
-                    
+- (void)resetToBeginning {
+    //reset to beginning
+    [self.avPlayer pause];
+    [self.playerControlsView setAsPause];
+    self.video.playTime = [NSNumber numberWithInt:0];
+    
+    [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0, 1)
+            completionHandler:^(BOOL finished) {
+                NSLog(@"moviePlayBackDidFinish");
+                // Set played
+                if (self.video.isDownload.boolValue == YES && self.video.isPlayed.boolValue == NO) {
+                    self.video.isPlayed = @YES;
+                }
+                
+                [[ACSPersistenceManager sharedInstance] saveContext];
+                
+                UserPreferences *userPrefs = [ACSPersistenceManager getUserPreferences];
+                if (kAutoplay && [userPrefs.autoplay boolValue]){
                     [self loadVideo:[self nextIndex]];
                 }
-        ];
-    }
+            }
+     ];
 }
 
 - (void)moviePreloadDidFinish:(NSNotification *)notification {
@@ -1746,14 +1758,36 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)progressBarTouchUpInside:(id)sender {
-    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
-    [self.avPlayer seekToTime:time];
-    [self.playerControlsView progressBarTouchUpInside:sender];
+    double remainingTime = [self.video.duration doubleValue] - self.playerControlsView.progressBar.value;
+    if (fabs(remainingTime) <= 1) { // scrubbed to end
+        [self resetToBeginning];
+    } else {
+        CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
+        [self.avPlayer seekToTime:time completionHandler:^(BOOL finished) {
+            [self.playerControlsView progressBarTouchUpInside:sender];
+            if ((self.avPlayer.rate != 0) && (self.avPlayer.error == nil)) {
+                [self.playerControlsView setAsPlay];
+            } else {
+                [self.playerControlsView setAsPause];
+            }
+        }];
+    }
 }
 - (void)progressBarTouchUpOutside:(id)sender {
-    CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
-    [self.avPlayer seekToTime:time];
-    [self.playerControlsView progressBarTouchUpOutside:sender];
+    double remainingTime = [self.video.duration doubleValue] - self.playerControlsView.progressBar.value;
+    if (fabs(remainingTime) <= 1) { // scrubbed to end
+        [self resetToBeginning];
+    } else {
+        CMTime time = CMTimeMakeWithSeconds(self.playerControlsView.progressBar.value, 1);
+        [self.avPlayer seekToTime:time completionHandler:^(BOOL finished) {
+            [self.playerControlsView progressBarTouchUpOutside:sender];
+            if ((self.avPlayer.rate != 0) && (self.avPlayer.error == nil)) {
+                [self.playerControlsView setAsPlay];
+            } else {
+                [self.playerControlsView setAsPause];
+            }
+        }];
+    }
 }
 
 
