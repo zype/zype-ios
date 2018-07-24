@@ -902,6 +902,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         } else {
             [self configurePlayerControlsState];
         }
+    } else {
+        self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
+        self.playerControlsView.alpha = 0.0; // setting alpha to 0.0 is equivalent to setHidden:YES
+        self.playerControlsView.view.alpha = 0.0;
     }
 
     //setup analytics for a player
