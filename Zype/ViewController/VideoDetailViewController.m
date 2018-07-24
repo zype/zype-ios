@@ -885,19 +885,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.avPlayerController didMoveToParentViewController:self];
         self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
         
-        // use custom controls
-        self.avPlayerController.showsPlaybackControls = NO;
+        if (kCustomPlayerControls){
+            // use custom controls
+            self.avPlayerController.showsPlaybackControls = NO;
+        }
     }
     
-    if (self.playerControlsView == nil) {
-        self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
-        self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addSubview:self.playerControlsView.view];
-        
-        [self configurePlayerControlsState];
-        [self setupPlayerControlsListeners];
-    } else {
-        [self configurePlayerControlsState];
+    if (kCustomPlayerControls){
+        if (self.playerControlsView == nil) {
+            self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
+            self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addSubview:self.playerControlsView.view];
+            
+            [self configurePlayerControlsState];
+            [self setupPlayerControlsListeners];
+        } else {
+            [self configurePlayerControlsState];
+        }
     }
 
     //setup analytics for a player
@@ -994,10 +998,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.avPlayerController.view.transform = CGAffineTransformIdentity;
-    self.playerControlsView.view.transform = CGAffineTransformIdentity;
+    if (kCustomPlayerControls) self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.adsContainerView.transform = CGAffineTransformIdentity;
+    self.avPlayerController.view.transform = CGAffineTransformIdentity;
+    if (kCustomPlayerControls) self.playerControlsView.view.transform = CGAffineTransformIdentity;
     
     UIView* constraintItemView = self.view;
     
@@ -1021,7 +1026,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.avPlayerController.view removeFromSuperview];
     [self.playerControlsView.view removeFromSuperview];
     [self.adsContainerView removeFromSuperview];
-    
+
     [self.view addSubview:self.avPlayerController.view];
     [self.view addSubview:self.playerControlsView.view];
     [self.view addSubview:self.adsContainerView];
@@ -1059,35 +1064,37 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                              multiplier:1
                                                                constant:0]];
         
-        // Player Controls View
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeTop
-                                                             multiplier:1
-                                                               constant:0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeBottom
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1
-                                                               constant:0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeLeft
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeLeft
-                                                             multiplier:1
-                                                               constant:0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeRight
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeRight
-                                                             multiplier:1
-                                                               constant:0]];
+        if (kCustomPlayerControls){
+            // Player Controls View
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeTop
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1
+                                                                   constant:0]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1
+                                                                   constant:0]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1
+                                                                   constant:0]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeRight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeRight
+                                                                 multiplier:1
+                                                                   constant:0]];
+        }
         
         // Ads View
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
@@ -1160,21 +1167,25 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.lblAudioTitle setHidden: NO];
         [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
         
-        [self.view bringSubviewToFront:self.avPlayerController.view];
-        [self.view bringSubviewToFront:self.imageThumbnail];
-        [self.view bringSubviewToFront:self.lblAudioTitle];
-        [self.view bringSubviewToFront:self.adsContainerView];
-        [self.view bringSubviewToFront:self.activityIndicator];
-        [self.view bringSubviewToFront:self.playerControlsView.view];
+        if (kCustomPlayerControls){
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+            [self.view bringSubviewToFront:self.imageThumbnail];
+            [self.view bringSubviewToFront:self.lblAudioTitle];
+            [self.view bringSubviewToFront:self.adsContainerView];
+            [self.view bringSubviewToFront:self.activityIndicator];
+            [self.view bringSubviewToFront:self.playerControlsView.view];
+        }
     } else {
         [self.lblAudioTitle setHidden: YES];
         [self.ivOverlayView setBackgroundColor:UIColor.clearColor];
         
-        [self.view bringSubviewToFront:self.imageThumbnail];
-        [self.view bringSubviewToFront:self.avPlayerController.view];
-        [self.view bringSubviewToFront:self.adsContainerView];
-        [self.view bringSubviewToFront:self.activityIndicator];
-        [self.view bringSubviewToFront:self.playerControlsView.view];
+        if (kCustomPlayerControls){
+            [self.view bringSubviewToFront:self.imageThumbnail];
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+            [self.view bringSubviewToFront:self.adsContainerView];
+            [self.view bringSubviewToFront:self.activityIndicator];
+            [self.view bringSubviewToFront:self.playerControlsView.view];
+        }
     }
 }
 
