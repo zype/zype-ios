@@ -1027,14 +1027,22 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.bFullscreen = NO;
     }
     
-    [self.avPlayerController.view removeFromSuperview];
-    [self.playerControlsView.view removeFromSuperview];
-    [self.adsContainerView removeFromSuperview];
-
-    [self.view addSubview:self.avPlayerController.view];
-    [self.view addSubview:self.playerControlsView.view];
-    [self.view addSubview:self.adsContainerView];
+    if (kCustomPlayerControls){
+        constraintItemView = self.view;
+    } else {
+        constraintItemView = self.imageThumbnail;
+    }
     
+    if (kCustomPlayerControls){
+        [self.avPlayerController.view removeFromSuperview];
+        [self.playerControlsView.view removeFromSuperview];
+        [self.adsContainerView removeFromSuperview];
+
+        [self.view addSubview:self.avPlayerController.view];
+        [self.view addSubview:self.playerControlsView.view];
+        [self.view addSubview:self.adsContainerView];
+    }
+
     // AVPlayerController
     if (self.avPlayerController.view != nil && constraintItemView != nil) {
         BOOL isHidden = self.imageThumbnail.isHidden;
@@ -1135,9 +1143,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     if (self.isAudio) {
         if (self.ivOverlayView == nil) {
-            self.ivOverlayView = [[UIView alloc] init];
+            // self.ivOverlayView = [[UIView alloc] init];
+            self.ivOverlayView = [[UIImageView alloc] initWithImage:self.imageThumbnail.image];
+            self.ivOverlayView.contentMode = UIViewContentModeScaleAspectFit;
+
             [self.avPlayerController.contentOverlayView addSubview:self.ivOverlayView];
             self.ivOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
+            
             [self.avPlayerController.contentOverlayView addConstraint:[NSLayoutConstraint constraintWithItem:self.ivOverlayView
                                                                                                    attribute:NSLayoutAttributeTop
                                                                                                    relatedBy:NSLayoutRelationEqual
@@ -1167,9 +1179,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                                                                   multiplier:1
                                                                                                     constant:0]];
             
+            [self.avPlayerController.contentOverlayView bringSubviewToFront:self.ivOverlayView];
         }
         [self.lblAudioTitle setHidden: NO];
-        [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
+        // [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
+        [self.ivOverlayView setHidden:NO];
         
         if (kCustomPlayerControls){
             [self.view bringSubviewToFront:self.avPlayerController.view];
@@ -1178,10 +1192,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self.view bringSubviewToFront:self.adsContainerView];
             [self.view bringSubviewToFront:self.activityIndicator];
             [self.view bringSubviewToFront:self.playerControlsView.view];
+        } else {
+            [self.view bringSubviewToFront:self.avPlayerController.view];
         }
     } else {
         [self.lblAudioTitle setHidden: YES];
-        [self.ivOverlayView setBackgroundColor:UIColor.clearColor];
+        //[self.ivOverlayView setBackgroundColor:UIColor.clearColor];
+        [self.ivOverlayView setHidden:YES];
         
         if (kCustomPlayerControls){
             [self.view bringSubviewToFront:self.imageThumbnail];
