@@ -1021,19 +1021,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         (orientation == UIDeviceOrientationPortraitUpsideDown && self.bFullscreen)) {
         [[self navigationController] setNavigationBarHidden:YES animated:YES];
         self.bFullscreen = YES;
+        constraintItemView = self.view;
     } else {
         constraintItemView = self.imageThumbnail;
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
         self.bFullscreen = NO;
     }
     
-    if (kCustomPlayerControls){
-        constraintItemView = self.view;
-    } else {
-        constraintItemView = self.imageThumbnail;
-    }
-    
-    if (kCustomPlayerControls){
+    //if (kCustomPlayerControls){
         [self.avPlayerController.view removeFromSuperview];
         [self.playerControlsView.view removeFromSuperview];
         [self.adsContainerView removeFromSuperview];
@@ -1041,7 +1036,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.view addSubview:self.avPlayerController.view];
         [self.view addSubview:self.playerControlsView.view];
         [self.view addSubview:self.adsContainerView];
-    }
+    //}
 
     // AVPlayerController
     if (self.avPlayerController.view != nil && constraintItemView != nil) {
@@ -1206,6 +1201,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self.view bringSubviewToFront:self.adsContainerView];
             [self.view bringSubviewToFront:self.activityIndicator];
             [self.view bringSubviewToFront:self.playerControlsView.view];
+        } else {
+            [self.view bringSubviewToFront:self.avPlayerController.view];
         }
     }
 }
