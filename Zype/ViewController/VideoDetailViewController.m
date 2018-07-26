@@ -166,7 +166,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self checkInternetConnection];
+    NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
+    BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
+    NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:self.video];
+    BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
+    
+    if (!audioFileExists && !videoFileExists) {
+        [self checkInternetConnection];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(liveStreamUpdated:) name:kNotificationNameLiveStreamUpdated object:nil];
     
@@ -680,14 +687,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self checkDownloadVideo];
 
     if (self.isPlayerRequestPending == NO){ // prevent multiple video player requests
+        DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
         if (self.isAudio) {
             
             NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
             BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
             
             NSURL *url;
-            
-            if (audioFileExists == YES) {
+            if (audioFileExists == YES && !downloadInfo.isDownloading) {
                 url = [NSURL fileURLWithPath:localAudioPath];
                 [self setupPlayer:url];
             } else {
@@ -701,7 +708,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             
             NSURL *url;
             
-            if (videoFileExists == YES) {
+            if (videoFileExists == YES && !downloadInfo.isDownloading) {
                 url = [NSURL fileURLWithPath:localVideoPath];
                 [self setupPlayer:url];
             } else {
@@ -871,7 +878,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             } else {
                 NSLog(@"audio session could not be activated");
             }
-        }
+        }        
     }
     
     self.contentPlayhead = [[IMAAVPlayerContentPlayhead alloc] initWithAVPlayer:self.avPlayer];

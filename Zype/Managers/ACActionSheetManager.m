@@ -211,13 +211,13 @@
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedVideo]]) {
         CLS_LOG(@"delete video tapped");
         
-        [ACDownloadManager deleteDownloadedVideo:self.actionVideo];
+        [ACDownloadManager deleteDownloadedOnlyVideo:self.actionVideo];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Delete Audio Tapped" value:nil] build]];
         
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedAudio]]) {
         CLS_LOG(@"delete audio tapped");
         
-        [ACDownloadManager deleteDownloadedVideo:self.actionVideo];
+        [ACDownloadManager deleteDownloadedAudio:self.actionVideo];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Delete Audio Tapped" value:nil] build]];
         
     }
