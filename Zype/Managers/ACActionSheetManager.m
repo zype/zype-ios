@@ -97,6 +97,14 @@
     
 }
 
+- (void)showPlayAsActionSheet {
+    
+    UIActionSheet *actionSheet = [ACActionSheetManager videoDetailPlayAsActionSheet];
+    actionSheet.delegate = self;
+    [self delegateShowActionSheet:actionSheet];
+    
+}
+
 - (void)showDownloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources {
     
     self.actionVideo = video;
@@ -608,6 +616,25 @@
     
     return actionSheet;
     
+}
+
++ (UIActionSheet *)videoDetailPlayAsActionSheet {
+    
+    NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"action button title");
+    
+    //iOS7 iPad interprets cancel button incorrectly
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        cancelButtonTitle = nil;
+    }
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil otherButtonTitles:nil];
+    
+    [actionSheet addButtonWithTitle:[self titleForPlayAsActionSheetButtonWithType:ACActionSheetPlayAsButtonListen]];
+    [actionSheet addButtonWithTitle:[self titleForPlayAsActionSheetButtonWithType:ACActionSheetPlayAsButtonWatch]];
+    
+    actionSheet.tag = ACLatestActionSheetTypePlayAs;
+    
+    return actionSheet;
 }
 
 + (UIActionSheet *)liveStreamActionSheet{

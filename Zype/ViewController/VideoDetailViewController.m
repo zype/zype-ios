@@ -176,6 +176,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(liveStreamUpdated:) name:kNotificationNameLiveStreamUpdated object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     [self trackScreenName:kAnalyticsScreenNameVideoDetail];
     
@@ -371,7 +372,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
     if (self.avPlayer != nil && self.avPlayer.rate > 0.0f) {
-        [self.avPlayer pause];
+        [self playPausePressed:self];
     }
     
     if (self.adsManager != nil) {
@@ -385,6 +386,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self resignFirstResponder];
     }
     [super viewDidDisappear:animated];
+}
+
+- (void)appEnterBackground:(NSNotification *)notification {
+    if (self.avPlayer != nil && self.avPlayer.rate > 0.0f && !self.isAudio) {
+        [self playPausePressed:self];
+    }
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification
@@ -601,6 +608,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 #pragma mark - Remote control events
 
 - (void)remoteControlReceivedWithEvent:(UIEvent *)event {
+    
+    [self setupNowPlayingInfo];
+    
     NSLog(@"Received remote control event!");
     if (event.type == UIEventTypeRemoteControl) {
         switch (event.subtype) {
@@ -666,7 +676,21 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self checkAirStatus:nil];
         }
     } else {
-        [self refreshPlayer];
+        if (self.video.isDownload.boolValue == YES && audioFileExists && videoFileExists){
+            [self.imageThumbnail setHidden:NO];
+            NSURL *thumbnailURL = [NSURL URLWithString:self.video.thumbnailUrl];
+            [self.imageThumbnail sd_setImageWithURL:thumbnailURL placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                [self hideActivityIndicator];
+                if (image) {
+                    self.imageThumbnail.image = image;
+                    [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:self.video.thumbnailBigUrl] placeholderImage:image];
+                }
+            }];
+            
+            [self.actionSheetManager showPlayAsActionSheet];
+        } else {
+            [self refreshPlayer];
+        }
     }
     
 }
@@ -846,6 +870,26 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void) setupNowPlayingInfo {
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSDictionary *info = [bundle infoDictionary];
+    NSString *prodName = [info objectForKey:@"CFBundleDisplayName"];
+    
+    NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+    
+    MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage: [UIImage imageNamed:@"AppIcon"]];
+    
+    [songInfo setObject:self.video.title forKey:MPMediaItemPropertyTitle];
+    [songInfo setObject:prodName forKey:MPMediaItemPropertyArtist];
+    [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
+    [songInfo setValue:self.video.duration forKey:MPMediaItemPropertyPlaybackDuration];
+    
+    [songInfo setValue:[NSNumber numberWithDouble:self.avPlayer.currentItem.currentTime.value / self.avPlayer.currentItem.currentTime.timescale] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+    [songInfo setValue:[NSNumber numberWithDouble:self.avPlayer.rate] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+    
+    [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+}
+
 - (void)setupPlayer:(NSURL *)url {
     //[self removePlayer];
     //[self.avPlayer pause];
@@ -878,7 +922,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             } else {
                 NSLog(@"audio session could not be activated");
             }
-        }        
+        }
+        
+        MPChangePlaybackPositionCommand *changePlaybackPositionCommand = [[MPRemoteCommandCenter sharedCommandCenter] changePlaybackPositionCommand];
+        [changePlaybackPositionCommand addTarget:self action:@selector(progressBarTouchUpInside:)];
+        [[MPRemoteCommandCenter sharedCommandCenter].changePlaybackPositionCommand setEnabled:YES];
     }
     
     self.contentPlayhead = [[IMAAVPlayerContentPlayhead alloc] initWithAVPlayer:self.avPlayer];
@@ -965,8 +1013,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:self.video.thumbnailBigUrl] placeholderImage:image];
         }
     }];
-    [self.view bringSubviewToFront:self.imageThumbnail];
+    [self.imageAudioThumbnail sd_setImageWithURL:thumbnailURL completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (image) {
+            self.imageAudioThumbnail.image = image;
+            [self.imageAudioThumbnail sd_setImageWithURL:[NSURL URLWithString:self.video.thumbnailBigUrl] placeholderImage:image];
+        }
+    }];
     [self.view bringSubviewToFront:self.avPlayerController.view];
+    [self.view bringSubviewToFront:self.imageThumbnail];
     [self.view bringSubviewToFront:self.adsContainerView];
     [self.view bringSubviewToFront:self.activityIndicator];
     [self.view bringSubviewToFront:self.playerControlsView.view];
@@ -1005,6 +1059,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.avPlayerController.view.transform = CGAffineTransformIdentity;
     self.playerControlsView.view.transform = CGAffineTransformIdentity;
     self.adsContainerView.transform = CGAffineTransformIdentity;
+    
+    self.lblAudioTitle.translatesAutoresizingMaskIntoConstraints = NO;
+    self.lblAudioTitle.transform = CGAffineTransformIdentity;
+    self.imageThumbnail.translatesAutoresizingMaskIntoConstraints = NO;
+    self.imageThumbnail.transform = CGAffineTransformIdentity;
     
     UIView* constraintItemView = self.view;
     
@@ -1165,10 +1224,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             
         }
         [self.lblAudioTitle setHidden: NO];
+        if (self.bFullscreen) {
+            [self.imageAudioThumbnail setHidden: NO];
+        } else {
+            [self.imageAudioThumbnail setHidden: YES];
+        }
         [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
         
         [self.view bringSubviewToFront:self.avPlayerController.view];
         [self.view bringSubviewToFront:self.imageThumbnail];
+        [self.view bringSubviewToFront:self.imageAudioThumbnail];
         [self.view bringSubviewToFront:self.lblAudioTitle];
         [self.view bringSubviewToFront:self.adsContainerView];
         [self.view bringSubviewToFront:self.activityIndicator];
@@ -1430,6 +1495,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)updatePlaybackTime:(NSTimer*)theTimer {
     
+    [self setupNowPlayingInfo];
+    
     if ([self checkInternetConnection]){
         int currentTimeline = [self currentTimelineIndex];
         
@@ -1647,7 +1714,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self.avPlayer play];
         }
     }
-    
 }
 - (void)backIconPressed:(id)sender {
     [self.playerControlsView backIconPressed:sender];
@@ -2641,6 +2707,11 @@ NSString* machineName() {
     
     if (self.isAudio) {
         [self changeMediaType];
+    } else {
+        if (!self.isPlaying) {
+            self.isAudio = YES;
+            [self changeMediaType];
+        }
     }
     
 }
