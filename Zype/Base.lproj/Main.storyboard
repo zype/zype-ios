@@ -8,6 +8,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -512,7 +513,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select plan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yfx-PI-Kgw">
-                                        <rect key="frame" x="142.5" y="31.5" width="90" height="21"/>
+                                        <rect key="frame" x="143" y="32" width="90" height="21"/>
                                         <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
                                         <color key="textColor" red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -540,17 +541,46 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xBW-CC-Lq1">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tIx-et-XG7">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </tableView>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ViL-47-vLR">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="392"/>
+                                        <subviews>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tIx-et-XG7">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="392"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="sectionIndexColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </tableView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="tIx-et-XG7" firstAttribute="trailing" secondItem="ViL-47-vLR" secondAttribute="trailing" id="KZR-YC-ciN"/>
+                                            <constraint firstItem="tIx-et-XG7" firstAttribute="top" secondItem="ViL-47-vLR" secondAttribute="top" id="Wyw-ej-3mZ"/>
+                                            <constraint firstItem="tIx-et-XG7" firstAttribute="width" secondItem="ViL-47-vLR" secondAttribute="width" id="bFQ-ZN-fdf"/>
+                                            <constraint firstItem="tIx-et-XG7" firstAttribute="bottom" secondItem="ViL-47-vLR" secondAttribute="bottom" id="nMU-hp-TLW"/>
+                                            <constraint firstItem="tIx-et-XG7" firstAttribute="leading" secondItem="ViL-47-vLR" secondAttribute="leading" id="pMJ-Pc-bd4"/>
+                                            <constraint firstItem="tIx-et-XG7" firstAttribute="height" secondItem="ViL-47-vLR" secondAttribute="height" id="uMG-Sz-jhF"/>
+                                        </constraints>
+                                    </scrollView>
+                                    <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A6U-7E-Wuv">
+                                        <rect key="frame" x="32" y="392" width="311" height="211"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </webView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="tIx-et-XG7" secondAttribute="bottom" id="9b0-Je-TQg"/>
-                                    <constraint firstItem="tIx-et-XG7" firstAttribute="leading" secondItem="xBW-CC-Lq1" secondAttribute="leading" id="dGo-th-OLX"/>
-                                    <constraint firstItem="tIx-et-XG7" firstAttribute="top" secondItem="xBW-CC-Lq1" secondAttribute="top" id="dTd-8M-cCN"/>
-                                    <constraint firstAttribute="trailing" secondItem="tIx-et-XG7" secondAttribute="trailing" id="jo8-Qk-5XL"/>
+                                    <constraint firstItem="ViL-47-vLR" firstAttribute="width" secondItem="xBW-CC-Lq1" secondAttribute="width" multiplier="1:1" id="3NC-l7-aMn"/>
+                                    <constraint firstItem="A6U-7E-Wuv" firstAttribute="height" secondItem="xBW-CC-Lq1" secondAttribute="height" multiplier="35:100" id="41c-DP-SrJ"/>
+                                    <constraint firstItem="A6U-7E-Wuv" firstAttribute="trailing" secondItem="xBW-CC-Lq1" secondAttribute="trailing" constant="-32" id="4X7-Nk-Y80"/>
+                                    <constraint firstItem="A6U-7E-Wuv" firstAttribute="top" secondItem="ViL-47-vLR" secondAttribute="bottom" id="M2p-7i-dqh"/>
+                                    <constraint firstItem="ViL-47-vLR" firstAttribute="bottom" secondItem="xBW-CC-Lq1" secondAttribute="bottom" multiplier="65:100" id="Vlt-4R-WNU"/>
+                                    <constraint firstItem="ViL-47-vLR" firstAttribute="top" secondItem="xBW-CC-Lq1" secondAttribute="top" id="W1w-6p-Umo"/>
+                                    <constraint firstItem="ViL-47-vLR" firstAttribute="leading" secondItem="xBW-CC-Lq1" secondAttribute="leading" id="b5e-AX-fdB"/>
+                                    <constraint firstItem="ViL-47-vLR" firstAttribute="trailing" secondItem="xBW-CC-Lq1" secondAttribute="trailing" id="cpw-eA-tGq"/>
+                                    <constraint firstItem="A6U-7E-Wuv" firstAttribute="leading" secondItem="xBW-CC-Lq1" secondAttribute="leading" constant="32" id="d36-aJ-fKy"/>
+                                    <constraint firstItem="A6U-7E-Wuv" firstAttribute="width" secondItem="ViL-47-vLR" secondAttribute="width" constant="-64" id="qxe-nT-DTV"/>
+                                    <constraint firstItem="ViL-47-vLR" firstAttribute="height" secondItem="xBW-CC-Lq1" secondAttribute="height" multiplier="65:100" id="xVx-64-Ms6"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -566,6 +596,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="disclaimerWebview" destination="A6U-7E-Wuv" id="gy1-zt-Jnk"/>
                         <outlet property="navigationTitle" destination="Yfx-PI-Kgw" id="Wys-RL-Vxh"/>
                         <outlet property="separateNavigationView" destination="MDG-cg-isc" id="D9C-vq-5Hj"/>
                         <outlet property="tableView" destination="tIx-et-XG7" id="00s-O2-4yv"/>
@@ -573,7 +604,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JVc-8f-jL3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4738" y="-2607"/>
+            <point key="canvasLocation" x="4736.8000000000002" y="-2607.3463268365817"/>
         </scene>
         <!--Sign In View Controller-->
         <scene sceneID="S6i-Bt-L0i">
