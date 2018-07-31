@@ -595,13 +595,9 @@
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil otherButtonTitles:nil];
     
-    BOOL isVideo = NO;
     BOOL isAudio = NO;
     for (PlaybackSource *source in sources) {
-        if ([source.fileType isEqualToString:@"mp4"]) {
-            isVideo = YES;
-        }
-        if ([source.fileType isEqualToString:@"m4a"] || [source.fileType isEqualToString:@"mp3"] || [source.fileType isEqualToString:@"hls"]) {
+         if ([source.fileType isEqualToString:@"m4a"] || [source.fileType isEqualToString:@"mp3"] || [source.fileType isEqualToString:@"m3u8"]) {
             isAudio = YES;
         }
     }

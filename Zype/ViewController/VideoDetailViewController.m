@@ -66,6 +66,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 //@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
 //@property (strong, nonatomic) PlaybackSource *audioPlaybackSource;
 @property (strong, nonatomic) NSArray *playbackSources;
+@property (strong, nonatomic) NSArray *audioPlaybackSources;
 
 @property (strong, nonatomic) UIAlertView *alertViewStreaming;
 @property (strong, nonatomic) UIAlertView *alertViewDownload;
@@ -762,7 +763,25 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
             }
         }
-        [self configureDataSource];
+        [[RESTServiceController sharedInstance] getAudioSourceWithVideo:self.video withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            //
+            if (error) {
+                CLS_LOG(@"Failed: %@", error);
+            } else {
+                CLS_LOG(@"Success checkDownloadVideo");
+                NSError *localError = nil;
+                NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+                
+                if (localError != nil) {
+                    CLS_LOG(@"Failed: %@", localError);
+                } else {
+                    self.audioPlaybackSources = [[RESTServiceController sharedInstance] allPlaybackSourcesFromRootDictionary:parsedObject];
+                    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                    CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
+                }
+            }
+            [self configureDataSource];
+        }];
     }];
 }
 
@@ -2646,7 +2665,7 @@ NSString* machineName() {
 #pragma mark - OptionTableViewCellDelegate
 
 - (void)onDidPlayTapped:(OptionTableViewCell *)cell {
-    [self.actionSheetManager showPlayAsActionSheet:self.playbackSources];
+    [self.actionSheetManager showPlayAsActionSheet:self.audioPlaybackSources];
 }
 
 - (void)onDidDownloadTapped:(OptionTableViewCell *)cell {

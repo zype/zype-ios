@@ -720,6 +720,36 @@
     
 }
 
+- (void)getAudioSourceWithVideo:(Video *)video withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
+{
+    
+    [ACSTokenManager accessToken:^(NSString *token, NSError *error){
+        
+        NSString *urlAsString = @"";
+        
+        if ([UIUtil isYes:video.isHighlight]){
+            urlAsString = [NSString stringWithFormat:kGetPlayerForHighlight, kApiPlayerDomain, video.vId, kAppKey];
+        } else {
+            if ([ACStatusManager isUserSignedIn] == YES) {
+                urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrl, kApiPlayerDomain, video.vId, token];
+            } else {
+                urlAsString = [NSString stringWithFormat:kGetPlayerForGuest, kApiPlayerDomain, video.vId, kAppKey];
+            }
+            
+        }
+        
+        NSURL *url = [NSURL withString:urlAsString];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (completionHandler) completionHandler(data, response, error);
+        }];
+        [dataTask resume];
+        
+    }];
+    
+}
+
 - (void)getAudioPlayerWithVideo:(Video *)video WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler{
     
     [ACSTokenManager accessToken:^(NSString *token, NSError *error){
@@ -800,6 +830,11 @@
     }
     
     return needSources;
+}
+
+- (NSArray *)allPlaybackSourcesFromRootDictionary:(NSDictionary *)dictionary {
+    NSArray *results = [self filesArrayFromParsedDictionary:dictionary];
+    return [self playbackSourcesFromFilesArray:results];
 }
 
 - (PlaybackSource *)videoStreamPlaybackSourceFromFilesArray:(NSArray *)files{
