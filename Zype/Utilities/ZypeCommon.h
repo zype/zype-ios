@@ -226,6 +226,12 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kSettingKey_DownloadsFeature @"downloadFeature"
 #define kSettingKey_Subscriptions @"subscriptionNames"
 
+// Used for Marketplace Connect - Required for iTunes Connect Paid Applications Guideline 3.1.2
+// Note: If you modify the disclaimer language, make sure it complies with iTunes requirements and provides the appropriate info to the user
+#define kString_SubscriptionDisclaimer @"Payment will be charged to your iTunes Account after confirming your purchase. Your subscription will renew automatically unless it is turned off at least 24 hours before the end of the period. <br><br> Your subscription can be managed in the Account Settings of the App Store. For more info, please check our %@ and %@" // %@ include privacy and terms links
+#define kPrivacyPolicyUrl @"privacy_policy_url"
+#define kTermsOfServiceUrl @"terms_of_service_url"
+
 #pragma mark - Strings
 #define kString_SigningIn @"Signing In..."
 #define kString_ErrorUsername @"Your email must be provided."
