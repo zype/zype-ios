@@ -181,7 +181,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.actionSheetManager.delegate = self;
     
     // Restrict rotation
-    [AppDelegate appDelegate].restrictRotation = YES;
+    [AppDelegate appDelegate].restrictRotation = NO;
     self.isReturnFullScreenIfNeeded = NO;
     
     self.indexPathController = [self indexPathController];
@@ -945,8 +945,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.adsContainerView setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
 
     self.avPlayerController.view.backgroundColor = [UIColor clearColor];
-    
-    //[AppDelegate appDelegate].restrictRotation = YES;
     
     [self hideActivityIndicator];
     [self.labelPlayAs setText:@"Audio"];
