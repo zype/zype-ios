@@ -28,6 +28,7 @@
 @property (assign, nonatomic) NSInteger selectedIndex;
 @property (strong, nonatomic) IBOutlet UILabel *navigationTitle;
 @property (strong, nonatomic) IBOutlet UIView *separateNavigationView;
+@property (weak, nonatomic) IBOutlet UIWebView *disclaimerWebview;
 
 
 @end
@@ -64,7 +65,47 @@
     UIColor * separateColor = (kAppColorLight) ? [UIColor whiteColor] : kDarkThemeBackgroundColor;
     self.separateNavigationView.backgroundColor = separateColor;
     
+    [self setupDisclaimer];
     [self requestProducts];
+}
+
+- (void)setupDisclaimer {
+    // Setup Disclaimers - REQUIRED for IAP subscriptions
+    //  - if you want to modify the text, make sure it complies with Apple's Paid Application agreement (needs to state subscription terms, how to manage and how to link to a privacy policy and terms of service)
+    
+    self.disclaimerWebview.delegate = self;
+    
+    self.disclaimerWebview.scrollView.showsHorizontalScrollIndicator = NO;
+    self.disclaimerWebview.scrollView.showsVerticalScrollIndicator = NO;
+    
+    NSString *htmlFile;
+    
+    if (kAppColorLight){
+        htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLight" ofType:@"html"];
+    } else {
+        htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
+    }
+    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+    
+    NSString *privacyLink = [NSString stringWithFormat:@"<a href=\"%@\">Privacy Policy</a>", [[NSUserDefaults standardUserDefaults] stringForKey:kPrivacyPolicyUrl] ];
+    NSString *termsLink = [NSString stringWithFormat:@"<a href=\"%@\">Terms of Service</a>", [[NSUserDefaults standardUserDefaults] stringForKey:kTermsOfServiceUrl] ];
+    NSString *disclaimerText = [NSString stringWithFormat:kString_SubscriptionDisclaimer, privacyLink, termsLink];
+    
+    UIColor *brandColor = kClientColor;
+    NSString *styledDisclaimer = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;} body p {font-size: 13px;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], disclaimerText];
+    
+    htmlString = [NSString stringWithFormat:htmlString, @"", styledDisclaimer, nil];
+    [self.disclaimerWebview loadHTMLString:htmlString baseURL:nil];
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    // Open links in Safari
+    if (navigationType == UIWebViewNavigationTypeLinkClicked ) {
+        [[UIApplication sharedApplication] openURL:[request URL]];
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - Subscription plan
@@ -178,9 +219,9 @@
     return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.tableView.frame.size.height / self.products.count;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return self.tableView.frame.size.height / self.products.count;
+//}
 
 #pragma mark - Actions
 

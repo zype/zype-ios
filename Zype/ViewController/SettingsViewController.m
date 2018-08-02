@@ -72,10 +72,12 @@
     
     // Restore Purchase cell
     if (kNativeSubscriptionEnabled) {
-        TableSectionDataSource *restorePurchase = [[TableSectionDataSource alloc] init];
-        restorePurchase.title = @"Restore Purchase";
-        restorePurchase.type = RestorePurchase;
-        [self.settingsDataSource addObject:restorePurchase];
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] > 0) {
+            TableSectionDataSource *restorePurchase = [[TableSectionDataSource alloc] init];
+            restorePurchase.title = @"Restore Purchase";
+            restorePurchase.type = RestorePurchase;
+            [self.settingsDataSource addObject:restorePurchase];
+        }
     }
     
     // Version cell

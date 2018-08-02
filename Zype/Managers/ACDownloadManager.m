@@ -24,7 +24,7 @@
       
     Video *latestVideo = [ACSPersistenceManager mostRecentDownloadableVideo];
     
-    if (latestVideo == nil) {
+    if (latestVideo == nil || [ACDownloadManager getDownloadCount] < 10) {
         return;
     }
     
@@ -159,6 +159,76 @@
     
 }
 
++ (void)deleteDownloadedAudio:(Video *)video
+{
+    
+    NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:video];
+    NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:video];
+    
+    BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
+    BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
+    
+    if (audioFileExists) {
+        
+        NSURL *urlAudio = [NSURL URLWithString:localAudioPath];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error = nil;
+        [fileManager removeItemAtPath:[urlAudio path] error:&error];
+        if (error){
+            CLS_LOG(@"Unable to remove audio file. %@, %@", error, error.userInfo);
+        }else{
+            CLS_LOG(@"Deleted downloaded audio file of video: %@", video.title);
+        }
+        
+    }
+    
+    if (!videoFileExists) {
+        video.downloadAudioLocalPath = nil;
+        video.downloadVideoLocalPath = nil;
+        video.isDownload = [NSNumber numberWithBool:NO];
+        video.isPlaying = [NSNumber numberWithBool:NO];
+        video.isPlayed = [NSNumber numberWithBool:NO];
+    } else {
+        video.downloadAudioLocalPath = nil;
+    }
+    [[ACSPersistenceManager sharedInstance] saveContext];
+}
+
++ (void)deleteDownloadedOnlyVideo:(Video *)video
+{
+    
+    NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:video];
+    NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:video];
+    
+    BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
+    BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
+    
+    if (videoFileExists) {
+        
+        NSURL *urlVideo = [NSURL URLWithString:localVideoPath];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error = nil;
+        [fileManager removeItemAtPath:[urlVideo path] error:&error];
+        if (error){
+            CLS_LOG(@"Unable to remove video file. %@, %@", error, error.userInfo);
+        }else{
+            CLS_LOG(@"Deleted downloaded video file of video: %@", video.title);
+        }
+        
+    }
+    
+    if (!audioFileExists) {
+        video.downloadAudioLocalPath = nil;
+        video.downloadVideoLocalPath = nil;
+        video.isDownload = [NSNumber numberWithBool:NO];
+        video.isPlaying = [NSNumber numberWithBool:NO];
+        video.isPlayed = [NSNumber numberWithBool:NO];
+    } else {
+        video.downloadVideoLocalPath = nil;
+    }
+    [[ACSPersistenceManager sharedInstance] saveContext];
+}
+
 + (void)resetDownloads{
     
     [self cancelDownloadsInProgress];
@@ -180,6 +250,27 @@
         [info cancelDownload];
         
     }
+    
+}
+
++ (int)getDownloadCount{
+    
+    int downloadCount = 0;
+    NSArray *downloadedVideos = [ACDownloadManager videosWithDownloads];
+    
+    if (downloadedVideos != nil) {
+        for (Video *video in downloadedVideos) {
+            NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:video];
+            NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:video];
+            
+            BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
+            BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
+            if (videoFileExists) downloadCount++;
+            if (audioFileExists) downloadCount++;
+        }
+    }
+    
+    return downloadCount;
     
 }
 

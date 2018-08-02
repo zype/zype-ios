@@ -9,8 +9,6 @@ In order to use Fastlane, you need to first install Fastlane along with it's dep
 1. Open __Terminal__ and navigate to the app folder with the following command: `cd <PATH TO APP FOLDER>`
 2. Enter the following command to download Fastlane: `bundle install`
 
-## Automating the with Fastlane
-
 ### Setup
 
 Before you can build your iOS app, some Developer Account setup and build configuration is required.
