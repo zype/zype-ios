@@ -1091,6 +1091,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.imageThumbnail.translatesAutoresizingMaskIntoConstraints = NO;
     self.imageThumbnail.transform = CGAffineTransformIdentity;
     
+    self.lblAudioTitle.translatesAutoresizingMaskIntoConstraints = NO;
+    self.lblAudioTitle.transform = CGAffineTransformIdentity;
+    self.imageThumbnail.translatesAutoresizingMaskIntoConstraints = NO;
+    self.imageThumbnail.transform = CGAffineTransformIdentity;
+    
     UIView* constraintItemView = self.view;
     
     CGSize screenSize = UIScreen.mainScreen.bounds.size;
