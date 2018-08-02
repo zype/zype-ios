@@ -33,6 +33,10 @@
 
 #define kAutoplay YES
 
+// Customizable Player Controls <BETA> (not recommended for use)
+//  Feature still under development. Player may behave unexpectedly when enabled
+#define kCustomPlayerControls NO
+
 //Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
 #define kAppColorLight NO
 
@@ -60,7 +64,7 @@
 // If the Video is a ZypeLive video enable status polling
 #define kLiveEventPolling NO
 
-// Enable Video Sharing <BETA> (not recommended fo ruse)
+// Enable Video Sharing <BETA> (not recommended for use)
 #define kShareVideoEnabled NO
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
