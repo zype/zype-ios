@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -1286,6 +1286,10 @@
                                     </mask>
                                 </variation>
                             </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f0a-bE-7ap">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playing Audio Only" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Zh-th-isR">
                                 <rect key="frame" x="123.5" y="91.5" width="129.5" height="17"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
@@ -1463,15 +1467,18 @@
                             <constraint firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="AA8-zL-iAQ"/>
                             <constraint firstItem="9KN-jf-j1V" firstAttribute="top" secondItem="hkC-ag-CoJ" secondAttribute="bottom" id="Ab4-al-ym5"/>
                             <constraint firstItem="fTa-SE-w5e" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="DQm-ts-0Nx"/>
+                            <constraint firstAttribute="trailing" secondItem="f0a-bE-7ap" secondAttribute="trailing" id="FR5-qb-JuA"/>
                             <constraint firstItem="ZN8-RW-Jnh" firstAttribute="top" secondItem="hkC-ag-CoJ" secondAttribute="bottom" id="GDz-PY-vHf"/>
                             <constraint firstAttribute="trailing" secondItem="Qjb-Ka-fqE" secondAttribute="trailing" constant="10" id="HHS-0I-Hhf"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Qjb-Ka-fqE" secondAttribute="trailing" constant="8" id="HIB-nY-j1R"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="fTa-SE-w5e" secondAttribute="bottom" id="HWF-dj-zEh"/>
                             <constraint firstItem="fTa-SE-w5e" firstAttribute="top" secondItem="hkC-ag-CoJ" secondAttribute="bottom" id="Hak-kw-YuL"/>
                             <constraint firstItem="hkC-ag-CoJ" firstAttribute="top" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="4" id="KPK-xg-Vi6"/>
+                            <constraint firstItem="f0a-bE-7ap" firstAttribute="top" secondItem="ewh-xg-vbD" secondAttribute="top" id="Kq1-gj-md5"/>
                             <constraint firstItem="HYN-AC-QLQ" firstAttribute="top" secondItem="hkC-ag-CoJ" secondAttribute="bottom" id="MLh-IJ-jTt"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="9KN-jf-j1V" secondAttribute="bottom" priority="999" id="NFQ-rz-aeS"/>
                             <constraint firstAttribute="trailing" secondItem="hkC-ag-CoJ" secondAttribute="trailing" constant="10" id="U5k-F3-ZUu"/>
+                            <constraint firstAttribute="bottom" secondItem="f0a-bE-7ap" secondAttribute="bottom" id="X7P-EQ-iZ3"/>
                             <constraint firstItem="HYN-AC-QLQ" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="XAs-wD-uPL"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ewh-xg-vbD" secondAttribute="leading" constant="8" id="ZJB-8Q-a6R"/>
                             <constraint firstItem="ZN8-RW-Jnh" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="dIV-ka-qPn"/>
@@ -1486,6 +1493,7 @@
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="HYN-AC-QLQ" secondAttribute="bottom" id="r6B-aI-F3u"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="A0e-5B-SaA" secondAttribute="bottom" id="rcn-a7-Kmn"/>
                             <constraint firstItem="6Zh-th-isR" firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="t4t-65-Dpn"/>
+                            <constraint firstItem="f0a-bE-7ap" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="tPW-Rf-SdD"/>
                             <constraint firstItem="hkC-ag-CoJ" firstAttribute="top" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" priority="750" constant="4" id="tRy-SK-Jk4"/>
                             <constraint firstAttribute="trailing" secondItem="fTa-SE-w5e" secondAttribute="trailing" id="wSz-TX-czv"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="yEB-Z0-q69"/>
@@ -1517,6 +1525,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="NJf-g7-cd5" id="qG9-3q-Xr6"/>
+                        <outlet property="imageAudioThumbnail" destination="f0a-bE-7ap" id="M1B-Mw-YV3"/>
                         <outlet property="imageThumbnail" destination="Qjb-Ka-fqE" id="kyL-BH-OjF"/>
                         <outlet property="lblAudioTitle" destination="6Zh-th-isR" id="k3T-KZ-J11"/>
                         <outlet property="segmenedControl" destination="hkC-ag-CoJ" id="Qvf-GN-ppZ"/>
@@ -1532,7 +1541,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HIZ-6n-TIQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2993.6619718309857" y="-500.625"/>
+            <point key="canvasLocation" x="2992.8000000000002" y="-501.49925037481262"/>
         </scene>
         <!--Downloads-->
         <scene sceneID="6iX-Ls-Kn1">

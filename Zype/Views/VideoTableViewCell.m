@@ -78,7 +78,7 @@
     [self.progressView setHidden:YES];
     [self.labelProgress setHidden:YES];
     [self.labelSubtitle setHidden:NO];
-    [self.imagePlay setHidden:NO];
+    [self.imagePlay setHidden:YES];
     [self.imagePlay setImage:[UIImage imageNamed:@"IconPlayFull"]];
     
     if ([mediaType isEqualToString:kMediaType_Audio])
@@ -94,7 +94,7 @@
     [self.progressView setHidden:YES];
     [self.labelProgress setHidden:YES];
     [self.labelSubtitle setHidden:NO];
-    [self.imagePlay setHidden:NO];
+    [self.imagePlay setHidden:YES];
     [self.imagePlay setImage:[UIImage imageNamed:@"IconPlayHalf"]];
     [self setNeedsDisplay];
 }

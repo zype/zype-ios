@@ -62,6 +62,11 @@
 
 - (void)startDownload:(Video *)video WithMediaType:(NSString *)mediaType {
     
+    if ([ACDownloadManager getDownloadCount] >= 10) {
+        [ACSAlertViewManager showAlertWithTitle:@"Download" WithMessage:@"You may store up to 10 downloaded videos at once. In order to proceed with this download please delete a downloaded video and try again."];
+        return;
+    }
+    
     if (!mediaType) {
         
         if ([[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_DownloadPreferences] isEqualToString:kSettingKey_DownloadAudio]) {
