@@ -228,7 +228,6 @@ platform :ios do
     deliver(
       username: apple_dev_id,
       app_identifier: app_id,
-      team_id: dev_team_id,
       dev_portal_team_id: dev_team_id,
       screenshots_path: "./screenshots"
     )
