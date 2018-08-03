@@ -190,7 +190,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.actionSheetManager.delegate = self;
     
     // Restrict rotation
-    [AppDelegate appDelegate].restrictRotation = YES;
+    [AppDelegate appDelegate].restrictRotation = NO;
     self.isReturnFullScreenIfNeeded = NO;
     
     self.indexPathController = [self indexPathController];
@@ -959,19 +959,27 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.avPlayerController didMoveToParentViewController:self];
         self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
         
-        // use custom controls
-        self.avPlayerController.showsPlaybackControls = NO;
+        if (kCustomPlayerControls){
+            // use custom controls
+            self.avPlayerController.showsPlaybackControls = NO;
+        }
     }
     
-    if (self.playerControlsView == nil) {
-        self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
-        self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addSubview:self.playerControlsView.view];
-        
-        [self configurePlayerControlsState];
-        [self setupPlayerControlsListeners];
+    if (kCustomPlayerControls){
+        if (self.playerControlsView == nil) {
+            self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
+            self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addSubview:self.playerControlsView.view];
+            
+            [self configurePlayerControlsState];
+            [self setupPlayerControlsListeners];
+        } else {
+            [self configurePlayerControlsState];
+        }
     } else {
-        [self configurePlayerControlsState];
+        self.playerControlsView = [[PlayerControlsOverlay alloc] initWithFrame:self.imageThumbnail.bounds];
+        self.playerControlsView.alpha = 0.0; // setting alpha to 0.0 is equivalent to setHidden:YES
+        self.playerControlsView.view.alpha = 0.0;
     }
 
     //setup analytics for a player
@@ -1011,8 +1019,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.adsContainerView setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
 
     self.avPlayerController.view.backgroundColor = [UIColor clearColor];
-    
-    [AppDelegate appDelegate].restrictRotation = NO;
     
     [self hideActivityIndicator];
     [self.labelPlayAs setText:@"Audio"];
@@ -1074,10 +1080,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     self.adsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.avPlayerController.view.transform = CGAffineTransformIdentity;
-    self.playerControlsView.view.transform = CGAffineTransformIdentity;
+    if (kCustomPlayerControls) self.playerControlsView.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.adsContainerView.transform = CGAffineTransformIdentity;
+    self.avPlayerController.view.transform = CGAffineTransformIdentity;
+    if (kCustomPlayerControls) self.playerControlsView.view.transform = CGAffineTransformIdentity;
+    
+    self.lblAudioTitle.translatesAutoresizingMaskIntoConstraints = NO;
+    self.lblAudioTitle.transform = CGAffineTransformIdentity;
+    self.imageThumbnail.translatesAutoresizingMaskIntoConstraints = NO;
+    self.imageThumbnail.transform = CGAffineTransformIdentity;
     
     self.lblAudioTitle.translatesAutoresizingMaskIntoConstraints = NO;
     self.lblAudioTitle.transform = CGAffineTransformIdentity;
@@ -1097,20 +1109,23 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         (orientation == UIDeviceOrientationPortraitUpsideDown && self.bFullscreen)) {
         [[self navigationController] setNavigationBarHidden:YES animated:YES];
         self.bFullscreen = YES;
+        constraintItemView = self.view;
     } else {
         constraintItemView = self.imageThumbnail;
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
         self.bFullscreen = NO;
     }
     
-    [self.avPlayerController.view removeFromSuperview];
-    [self.playerControlsView.view removeFromSuperview];
-    [self.adsContainerView removeFromSuperview];
-    
-    [self.view addSubview:self.avPlayerController.view];
-    [self.view addSubview:self.playerControlsView.view];
-    [self.view addSubview:self.adsContainerView];
-    
+    //if (kCustomPlayerControls){
+        [self.avPlayerController.view removeFromSuperview];
+        [self.playerControlsView.view removeFromSuperview];
+        [self.adsContainerView removeFromSuperview];
+
+        [self.view addSubview:self.avPlayerController.view];
+        [self.view addSubview:self.playerControlsView.view];
+        [self.view addSubview:self.adsContainerView];
+    //}
+
     // AVPlayerController
     if (self.avPlayerController.view != nil && constraintItemView != nil) {
         BOOL isHidden = self.imageThumbnail.isHidden;
@@ -1144,35 +1159,37 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                              multiplier:1
                                                                constant:0]];
         
-        // Player Controls View
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeTop
-                                                             multiplier:1
-                                                               constant:0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeBottom
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1
-                                                               constant:0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeLeft
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeLeft
-                                                             multiplier:1
-                                                               constant:0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
-                                                              attribute:NSLayoutAttributeRight
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:constraintItemView
-                                                              attribute:NSLayoutAttributeRight
-                                                             multiplier:1
-                                                               constant:0]];
+        if (kCustomPlayerControls){
+            // Player Controls View
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeTop
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1
+                                                                   constant:0]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1
+                                                                   constant:0]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1
+                                                                   constant:0]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.playerControlsView.view
+                                                                  attribute:NSLayoutAttributeRight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:constraintItemView
+                                                                  attribute:NSLayoutAttributeRight
+                                                                 multiplier:1
+                                                                   constant:0]];
+        }
         
         // Ads View
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.adsContainerView
@@ -1209,9 +1226,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     if (self.isAudio) {
         if (self.ivOverlayView == nil) {
-            self.ivOverlayView = [[UIView alloc] init];
+            // self.ivOverlayView = [[UIView alloc] init];
+            self.ivOverlayView = [[UIImageView alloc] initWithImage:self.imageThumbnail.image];
+            self.ivOverlayView.contentMode = UIViewContentModeScaleAspectFit;
+
             [self.avPlayerController.contentOverlayView addSubview:self.ivOverlayView];
             self.ivOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
+            
             [self.avPlayerController.contentOverlayView addConstraint:[NSLayoutConstraint constraintWithItem:self.ivOverlayView
                                                                                                    attribute:NSLayoutAttributeTop
                                                                                                    relatedBy:NSLayoutRelationEqual
@@ -1241,6 +1262,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                                                                   multiplier:1
                                                                                                     constant:0]];
             
+            [self.avPlayerController.contentOverlayView bringSubviewToFront:self.ivOverlayView];
         }
         [self.lblAudioTitle setHidden: NO];
         if (self.bFullscreen) {
@@ -1248,24 +1270,35 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         } else {
             [self.imageAudioThumbnail setHidden: YES];
         }
-        [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
+        // [self.ivOverlayView setBackgroundColor:UIColor.blackColor];
+        [self.ivOverlayView setHidden:NO];
         
-        [self.view bringSubviewToFront:self.avPlayerController.view];
-        [self.view bringSubviewToFront:self.imageThumbnail];
-        [self.view bringSubviewToFront:self.imageAudioThumbnail];
-        [self.view bringSubviewToFront:self.lblAudioTitle];
-        [self.view bringSubviewToFront:self.adsContainerView];
-        [self.view bringSubviewToFront:self.activityIndicator];
-        [self.view bringSubviewToFront:self.playerControlsView.view];
+        if (kCustomPlayerControls){
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+            [self.view bringSubviewToFront:self.imageThumbnail];
+            [self.view bringSubviewToFront:self.imageAudioThumbnail];
+            [self.view bringSubviewToFront:self.lblAudioTitle];
+            [self.view bringSubviewToFront:self.adsContainerView];
+            [self.view bringSubviewToFront:self.activityIndicator];
+            [self.view bringSubviewToFront:self.playerControlsView.view];
+        } else {
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+        }
+
     } else {
         [self.lblAudioTitle setHidden: YES];
-        [self.ivOverlayView setBackgroundColor:UIColor.clearColor];
+        //[self.ivOverlayView setBackgroundColor:UIColor.clearColor];
+        [self.ivOverlayView setHidden:YES];
         
-        [self.view bringSubviewToFront:self.imageThumbnail];
-        [self.view bringSubviewToFront:self.avPlayerController.view];
-        [self.view bringSubviewToFront:self.adsContainerView];
-        [self.view bringSubviewToFront:self.activityIndicator];
-        [self.view bringSubviewToFront:self.playerControlsView.view];
+        if (kCustomPlayerControls){
+            [self.view bringSubviewToFront:self.imageThumbnail];
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+            [self.view bringSubviewToFront:self.adsContainerView];
+            [self.view bringSubviewToFront:self.activityIndicator];
+            [self.view bringSubviewToFront:self.playerControlsView.view];
+        } else {
+            [self.view bringSubviewToFront:self.avPlayerController.view];
+        }
     }
 }
 
@@ -1516,20 +1549,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [self setupNowPlayingInfo];
     
-    if ([self checkInternetConnection]){
-        int currentTimeline = [self currentTimelineIndex];
-        
-        // Update timeline cell
-        if (currentTimeline > self.selectedTimeline) {
-            self.selectedTimeline = currentTimeline;
-            [self.tableViewTimeline reloadData];
-            TimelineTableViewCell *cell = (TimelineTableViewCell *)[self.tableViewTimeline cellForRowAtIndexPath:[NSIndexPath indexPathForRow:currentTimeline inSection:0]];
-            cell.labelTime.textColor = kYellowColor;
-            cell.labelDescription.textColor = kYellowColor;
-            cell.imagePlayIndicator.hidden = NO;
-        }
-        
-        //    CLS_LOG(@"currentTimeline: %d", currentTimeline);
+    int currentTimeline = [self currentTimelineIndex];
+    
+    // Update timeline cell
+    if (currentTimeline > self.selectedTimeline) {
+        self.selectedTimeline = currentTimeline;
+        [self.tableViewTimeline reloadData];
+        TimelineTableViewCell *cell = (TimelineTableViewCell *)[self.tableViewTimeline cellForRowAtIndexPath:[NSIndexPath indexPathForRow:currentTimeline inSection:0]];
+        cell.labelTime.textColor = kYellowColor;
+        cell.labelDescription.textColor = kYellowColor;
+        cell.imagePlayIndicator.hidden = NO;
     }
     
 }
