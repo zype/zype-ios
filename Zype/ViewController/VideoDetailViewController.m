@@ -1012,7 +1012,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
     self.avPlayerController.view.backgroundColor = [UIColor clearColor];
     
-    [AppDelegate appDelegate].restrictRotation = YES;
+    [AppDelegate appDelegate].restrictRotation = NO;
     
     [self hideActivityIndicator];
     [self.labelPlayAs setText:@"Audio"];

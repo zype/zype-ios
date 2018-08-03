@@ -306,6 +306,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kGetDownloadAudioUrl @"https://%@/embed/%@.json?access_token=%@&download=true"
 #define kGetDownloadAudioUrlForGuest @"https://%@/embed/%@.json?app_key=%@&download=true"
 #define kGetPlayerAudioUrl @"https://%@/embed/%@.json?access_token=%@&audio=true"
+#define kGetPlayerAudioUrlForGuest @"https://%@/embed/%@.json?app_key=%@&audio=true"
 //#define kGetDownloadAudioUrl @"https://%@/embed/%@?audio=true&access_token=%@"
 //
 //#define kGetStreamAudioUrl @"https://%@/livestream/%@?autoplay=true&api_key=%@&audio=true"

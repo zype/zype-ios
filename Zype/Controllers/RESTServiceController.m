@@ -588,6 +588,9 @@
                 [ACSPersistenceManager resetPlaylistChilds:parentId];
                 [ACSPersistenceManager populatePlaylistsFromDictionary:parsedObject];
                 
+                if ([parsedObject[@"response"] count] == 0)
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+                
             }
             
         }
@@ -733,7 +736,7 @@
             if ([ACStatusManager isUserSignedIn] == YES) {
                 urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrl, kApiPlayerDomain, video.vId, token];
             } else {
-                urlAsString = [NSString stringWithFormat:kGetPlayerForGuest, kApiPlayerDomain, video.vId, kAppKey];
+                urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
             }
             
         }
@@ -756,9 +759,9 @@
         
         NSString *urlAsString;
         if ([ACStatusManager isUserSignedIn] == YES) {
-            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrl, kApiPlayerDomain, video.vId, token];
+            urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrl, kApiPlayerDomain, video.vId, token];
         } else {
-            urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
+            urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
         }
         NSURL *url = [NSURL withString:urlAsString];
         
