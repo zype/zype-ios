@@ -250,7 +250,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kString_DownloadingVideo @"Downloading Video..."
 #define kString_AlreadyDownloaded @"Already downloaded"
 #define kString_TitleDownloadFail @"Download Failed"
-#define kString_MessageDownloadFail @"Downloading is set to Wifi only. Please go to settings if you want to change it."
+#define kString_MessageDownloadFail @"Downloading is only supported on wifi. Please connect your device to wifi and try again."
 #define kString_MessageNoDownloadFile @"We were not able to retrieve the file."
 #define kString_TitleStreamFail @"Streaming Failed"
 #define kString_TitleStreamFail @"Streaming Failed"
