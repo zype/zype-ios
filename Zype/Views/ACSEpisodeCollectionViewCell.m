@@ -289,7 +289,7 @@
 
 - (void)hideStatusImage:(BOOL)hide{
     
-    self.statusImage.hidden = hide;
+    self.statusImage.hidden = YES; //hide;
     if (hide == YES) {
         self.statusImageWidthConstraint.constant = 0;
     } else {

@@ -230,6 +230,7 @@
             [self.tableView setHidden:YES];
         }
         
+        [self.loadingIndicator setHidden:NO];
         [self.noResultsLabel setHidden:NO];
         
     } else {
@@ -240,6 +241,7 @@
             [self.tableView setHidden:NO];
         }
         
+        [self.loadingIndicator setHidden:YES];
         [self.noResultsLabel setHidden:YES];
         
     }
@@ -354,6 +356,7 @@
 - (void)episodeControllerDelegateDoneLoading{
     
     self.doneLoadingFromNetwork = YES;
+    [self.loadingIndicator setHidden:YES];
     [self setNoResultsMessage];
     
 }

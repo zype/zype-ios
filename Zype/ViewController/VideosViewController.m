@@ -162,6 +162,8 @@
     
     [self.buttonFilterNext setEnabled:NO];
     
+    self.loadingIndicator.color = kClientColor;
+    
 }
 
 - (void)searchTapped {

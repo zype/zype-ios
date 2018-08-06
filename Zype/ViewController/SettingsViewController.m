@@ -72,7 +72,7 @@
     
     // Restore Purchase cell
     if (kNativeSubscriptionEnabled) {
-        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] > 0) {
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] <= 0) {
             TableSectionDataSource *restorePurchase = [[TableSectionDataSource alloc] init];
             restorePurchase.title = @"Restore Purchase";
             restorePurchase.type = RestorePurchase;

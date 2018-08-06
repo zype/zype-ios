@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *noResultsLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
 
 @property (strong, nonatomic) EpisodeController *episodeController;
 @property (nonatomic, strong) ACActionSheetManager *actionSheetManager;
