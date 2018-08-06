@@ -241,4 +241,15 @@ platform :ios do
     upload
   end
 
+  desc "Update app metadata"
+  lane :update_metadata do
+    upload_to_app_store(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      dev_portal_team_id: dev_team_id,
+      skip_binary_upload: true,
+      skip_screenshots: true
+    )
+  end
+
 end
