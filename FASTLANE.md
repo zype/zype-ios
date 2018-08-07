@@ -1,6 +1,6 @@
 # Fastlane Tutorial
 
-Below are step by step instructions on how to update and upload your app to iTunes Connect using [Fastlane](https://fastlane.tools/). Fastlane is a set of command line tools which automate the app building and deployment process.
+Below are step by step instructions on how to update and upload your app to iTunes Connect using [Fastlane](https://fastlane.tools/). Fastlane is a set of command line tools which automate the app building and deployment process. __Note: Fastlane is only supported on macOS at the moment. There is no current support for Windows or Linux.__
 
 ## Requirements
 
