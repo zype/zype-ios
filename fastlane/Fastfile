@@ -228,7 +228,6 @@ platform :ios do
     deliver(
       username: apple_dev_id,
       app_identifier: app_id,
-      team_id: dev_team_id,
       dev_portal_team_id: dev_team_id,
       screenshots_path: "./screenshots"
     )
@@ -240,6 +239,17 @@ platform :ios do
   lane :build_and_upload do |options|
     build(profile_path: options[:profile_path], profile_name: options[:profile_name])
     upload
+  end
+
+  desc "Update app metadata"
+  lane :update_metadata do
+    upload_to_app_store(
+      username: apple_dev_id,
+      app_identifier: app_id,
+      dev_portal_team_id: dev_team_id,
+      skip_binary_upload: true,
+      skip_screenshots: true
+    )
   end
 
 end
