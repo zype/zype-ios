@@ -8,7 +8,7 @@ This document outlines step-by-step instructions for creating and publishing an 
 IT or developer support strongly recommended. Completing app submission and publishing requires working with app bundles and IDE.
 
 #### Mac with XCode installed
-In order to compile, run, and package an app you need the latest version of XCode to be installed on your Mac computer. XCode can be downloaded from the [App Store](https://developer.apple.com/xcode/).
+In order to compile, run, and package an app you need the latest version of XCode to be installed on your Mac computer. XCode can be downloaded from the [App Store](https://itunes.apple.com/us/app/xcode/id497799835).
 
 #### Mac with Cocoapods installed
 You'll need to have Cocoapods installed in order to perform pod installs. To install them on your Mac, follow the [Cocoapods guide](https://guides.cocoapods.org/using/getting-started.html).
