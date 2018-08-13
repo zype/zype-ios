@@ -2742,6 +2742,7 @@ NSString* machineName() {
 #pragma mark - ACActionSheetManagerDelegate
 
 - (void)acActionSheetManagerDelegatePlayAsAudioTapped{
+    [self saveCurrentPlaybackTime];
     
     if (!self.isAudio) {
         
@@ -2752,6 +2753,7 @@ NSString* machineName() {
 }
 
 - (void)acActionSheetManagerDelegatePlayAsVideoTapped {
+    [self saveCurrentPlaybackTime];
     
     if (self.isAudio) {
         [self changeMediaType];
