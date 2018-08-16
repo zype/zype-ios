@@ -327,7 +327,7 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kPostFavorite @"https://%@/consumers/%@/video_favorites/?access_token=%@&video_id=%@"
 #define kDeleteFavorite @"https://%@/consumers/%@/video_favorites/%@/?access_token=%@"
-#define kGetSearchedVideos @"https://%@/videos?app_key=%@&q=%@&page=%@"
+#define kGetSearchedVideos @"https://%@/videos?app_key=%@&q=%@&page=%@&playlist_id.inclusive=%@"
 #define kGetAppSetting @"https://%@/zobjects?zobject_type=iphone_settings&app_key=%@"
 #define kGetAppLiveStreamSettings @"https://%@/zobjects?zobject_type=limit_livestream&app_key=%@"
 #define kGetAppContent @"https://%@/zobjects?zobject_type=content&app_key=%@"
