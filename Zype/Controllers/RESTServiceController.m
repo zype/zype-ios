@@ -1327,7 +1327,7 @@
     
     // Search videos
     if (!page) page = [NSNumber numberWithInt:1];
-    NSString *urlAsString = [NSString stringWithFormat:kGetSearchedVideos, kApiDomain, kAppKey, searchString, page];
+    NSString *urlAsString = [NSString stringWithFormat:kGetSearchedVideos, kApiDomain, kAppKey, searchString, page, kRootPlaylistId];
     NSURL *url = [NSURL withString:urlAsString];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
