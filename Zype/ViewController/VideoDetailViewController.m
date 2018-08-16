@@ -9,6 +9,7 @@
 
 #import <CoreData/CoreData.h>
 #import <Crashlytics/Crashlytics.h>
+#import <GoogleCast/GoogleCast.h>
 //#import <PINRemoteImage/UIImageView+PINRemoteImage.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <AdSupport/ASIdentifierManager.h>
@@ -57,13 +58,21 @@ NSString *const kTestAppAdTagUrl =
 @"output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&"
 @"correlator=";
 
+/* The player state. */
+typedef NS_ENUM(NSInteger, PlaybackMode) {
+    PlaybackModeNone = 0,
+    PlaybackModeLocal,
+    PlaybackModeRemote
+};
+
 static NSString *GuestCellIdentifier = @"GuestCell";
 static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
-@interface VideoDetailViewController ()<ACActionSheetManagerDelegate, TLIndexPathControllerDelegate, OptionTableViewCellDelegate>
+@interface VideoDetailViewController ()<ACActionSheetManagerDelegate, TLIndexPathControllerDelegate, OptionTableViewCellDelegate, GCKSessionManagerListener,
+GCKRemoteMediaClientListener, GCKRequestDelegate>
 
 @property (strong, nonatomic) TLIndexPathController *indexPathController;
-//@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
+@property (strong, nonatomic) PlaybackSource *videoPlaybackSource;
 //@property (strong, nonatomic) PlaybackSource *audioPlaybackSource;
 @property (strong, nonatomic) NSArray *playbackSources;
 @property (strong, nonatomic) NSArray *audioPlaybackSources;
@@ -109,6 +118,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (nonatomic) BOOL bFullscreen;
 @property (strong, nonatomic) UIView* ivOverlayView;
 
+@property GCKSessionManager *sessionManager;
+@property GCKCastSession *castSession;
+@property GCKUIMediaController *castMediaController;
+@property GCKUIDeviceVolumeController *volumeController;
+@property PlaybackMode playbackMode;
+@property GCKUICastButton *castButton;
+@property BOOL isMediaInfoSetted;
 @end
 
 
@@ -141,6 +157,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:(NSCoder *)coder];
+    if (self) {
+        _sessionManager = [GCKCastContext sharedInstance].sessionManager;
+        _castMediaController = [[GCKUIMediaController alloc] init];
+        _volumeController = [[GCKUIDeviceVolumeController alloc] init];
+    }
+    return self;
+}
+
 - (void)liveStreamUpdated:(NSNotification *)notification{
     
     UNMutableNotificationContent *content = [UNMutableNotificationContent new];
@@ -161,7 +187,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             NSLog(@"Something went wrong: %@",error);
         }
     }];
-    
 }
 
 - (void)viewDidLoad {
@@ -184,6 +209,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self setupAdsLoader];
     [self setupView];
     [self configureView];
+    [self getStreamingPlaybackForCast];
     
     
     self.actionSheetManager = [ACActionSheetManager new];
@@ -198,6 +224,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayerDidReachedEnd:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     
     self.isPlayerRequestPending = NO;
+    self.isMediaInfoSetted = NO;
     
     if (self.adsContainerView == nil){
         self.adsContainerView = [[UIView alloc] initWithFrame:self.imageThumbnail.frame];
@@ -300,7 +327,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+
     // if request still being made or autoplay triggered
     if (self.isPlayerRequestPending){
         
@@ -379,6 +406,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (self.adsManager != nil) {
         [self.adsManager pause];
     }
+    
+    [_sessionManager removeListener:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -427,6 +456,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.imageThumbnail setHidden:YES];
     [self configureColors];
     
+    // Add a Cast Button
+    CGRect frame = CGRectMake(0, 0, 24, 24);
+    GCKUICastButton *castButton = [[GCKUICastButton alloc] initWithFrame:frame];
+    castButton.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:castButton];
+    self.navigationItem.rightBarButtonItem = item;
+    _playbackMode = PlaybackModeNone;
 }
 
 - (void)setupPlayerControlsListeners {
@@ -561,7 +597,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     // Set Summary
     self.webViewSummary.delegate = self;
     NSString *htmlFile;
-
+    
     if (kAppColorLight){
         htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLight" ofType:@"html"];
     } else {
@@ -710,7 +746,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [self showActivityIndicator];
     [self checkDownloadVideo];
-
+    
     if (self.isPlayerRequestPending == NO){ // prevent multiple video player requests
         DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
         if (self.isAudio) {
@@ -732,7 +768,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
             
             NSURL *url;
-            
             if (videoFileExists == YES && !downloadInfo.isDownloading) {
                 url = [NSURL fileURLWithPath:localVideoPath];
                 [self setupPlayer:url];
@@ -807,7 +842,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                 CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
-
+                
                 //check for status code family
                 if ([response isStatusFamilyError]) {
                     NSMutableString *message = [[NSMutableString alloc] initWithString:@"Something is not right."];
@@ -818,11 +853,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 } else {
                     //check for Ads
                     self.adsArray = [[ACAdManager sharedInstance] adsArrayFromParsedDictionary:parsedObject];
-                   
+                    
                     //check for beacon analytics
                     self.beaconStringUrl = [[ACAnalyticsManager sharedInstance] beaconFromParsedDictionary:parsedObject];
-                  
-                   
+                    
                     //check if view is visible to avoid playing on background
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
@@ -882,6 +916,48 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void) getStreamingPlaybackForCast {
+    [[RESTServiceController sharedInstance] getVideoPlayerWithVideo:self.video downloadInfo: NO withCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+         self.mediaInfo = nil;
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            CLS_LOG(@"Success");
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            
+            if (localError != nil) {
+                CLS_LOG(@"Failed: %@", localError);
+            } else {
+                PlaybackSource *source = [[RESTServiceController sharedInstance] videoStreamPlaybackSourceFromRootDictionary:parsedObject];
+                self.videoPlaybackSource = source;
+                
+                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                CLS_LOG(@"source: %ld", (long)[httpResponse statusCode]);
+                
+                //check for status code family
+                if ([response isStatusFamilyError]) {
+                    BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
+                    if (hasConnectedCastSession){
+                        [_castSession.remoteMediaClient stop];
+                    }
+                }else{
+                    if (kDebugCastEnabled){
+                        //test data
+                        source = [PlaybackSource alloc];
+                        //[source setUrlString:@"https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8"];
+                        [source setUrlString:@"https://player.zype.com/manifest/5744abef9958b70d060008d3.m3u8?app_key=HQokZlmb_bsw1uYYCEVP5UQis08D9tDJgRrCtAStwJ7HmjBovVAMNz1WjpNJE-KU&player_request_id=5b05afbd60caab11e3006cf1"];
+                        [source setFileType:@"m3u8"];
+                        self.videoPlaybackSource = source;
+                    }
+                    
+                    if (source != nil && source.urlString != nil)
+                        [self buildMediaInfo];
+                }
+            }
+        }
+    }];
+}
 - (void)changeMediaType{
     
     self.isAudio = !self.isAudio;
@@ -981,7 +1057,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.playerControlsView.alpha = 0.0; // setting alpha to 0.0 is equivalent to setHidden:YES
         self.playerControlsView.view.alpha = 0.0;
     }
-
+    
     //setup analytics for a player
     if (self.beaconStringUrl && [self.video.duration intValue] > 0)
         [[ACAnalyticsManager sharedInstance] setupAkamaiMediaAnalytics:self.avPlayer withVideo:self.video];
@@ -1017,7 +1093,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     CGRect frame = self.imageThumbnail.frame;
     [self.avPlayerController.view setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
     [self.adsContainerView setFrame:CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - kPlayerControlHeight, frame.size.width, kPlayerControlHeight)];
-
+    
     self.avPlayerController.view.backgroundColor = [UIColor clearColor];
     
     [self hideActivityIndicator];
@@ -1304,24 +1380,24 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)setupSharedPlayerView {
     
-//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
-//                                                          attribute:NSLayoutAttributeTrailing
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:self.imageThumbnail
-//                                                          attribute:NSLayoutAttributeTrailing
-//                                                         multiplier:1
-//                                                           constant:0]];
-//    
-//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
-//                                                          attribute:NSLayoutAttributeLeading
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:self.imageThumbnail
-//                                                          attribute:NSLayoutAttributeLeading
-//                                                         multiplier:1
-//                                                           constant:0]];
-//    
-//    [self.view bringSubviewToFront:self.player.view];
-//    self.player.view.userInteractionEnabled = YES;
+    //    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
+    //                                                          attribute:NSLayoutAttributeTrailing
+    //                                                          relatedBy:NSLayoutRelationEqual
+    //                                                             toItem:self.imageThumbnail
+    //                                                          attribute:NSLayoutAttributeTrailing
+    //                                                         multiplier:1
+    //                                                           constant:0]];
+    //
+    //    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.player.view
+    //                                                          attribute:NSLayoutAttributeLeading
+    //                                                          relatedBy:NSLayoutRelationEqual
+    //                                                             toItem:self.imageThumbnail
+    //                                                          attribute:NSLayoutAttributeLeading
+    //                                                         multiplier:1
+    //                                                           constant:0]];
+    //
+    //    [self.view bringSubviewToFront:self.player.view];
+    //    self.player.view.userInteractionEnabled = YES;
     
 }
 
@@ -1581,6 +1657,75 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)moviePlayBackDidFinish:(NSNotification *)notification{
     if ((int)CMTimeGetSeconds(self.avPlayer.currentItem.currentTime) >=  (int)CMTimeGetSeconds(self.avPlayer.currentItem.duration) && !self.isPlayerRequestPending ){
+        //reset to beginning
+        [self.avPlayer pause];
+      
+        [self.avPlayer seekToTime:kCMTimeZero];
+        NSLog(@"moviePlayBackDidFinish");
+        // Set played
+        if (self.video.isDownload.boolValue == YES && self.video.isPlayed.boolValue == NO) {
+            self.video.isPlayed = @YES;
+            [[ACSPersistenceManager sharedInstance] saveContext];
+        }
+        
+    }
+    
+    // Autoplay
+    if (kAutoplay && [self.videos count] > 1 && self.isPlayerRequestPending == NO){
+        [self saveCurrentPlaybackTime];
+        
+        if ([self.videos count] - 1 > self.currentVideoIndex) {
+            self.currentVideoIndex = self.currentVideoIndex + 1;
+        } else {
+            self.currentVideoIndex = 0;
+        }
+        
+        _detailItem = [self.videos objectAtIndex:(self.currentVideoIndex)];
+        self.video = (Video *)_detailItem; // next video
+        
+        [self configureView];
+        
+        
+        [self getStreamingPlaybackForCast];
+        
+        BOOL requiresUniversalEntitlement = [self videoRequiresUniversalEntitlement:self.video];
+        
+        if (kNativeSubscriptionEnabled &&
+            [self.video.subscription_required intValue] == 1 &&
+            [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showNsvodRequiredAlert];
+            
+        } else if (requiresUniversalEntitlement &&
+                   [ACStatusManager isUserSignedIn] == false){
+            
+            if ([self isFullScreen]) [self.avPlayerController exitFullscreen];
+            
+            [self setThumbnailImage];
+            self.avPlayerController = nil;
+            [self setupPlayer:[NSURL URLWithString:@""]];
+            [self setupPlayerBackground];
+            
+            self.isPlayerRequestPending = YES;
+            [self showSignInRequiredAlert];
+            
+        } else {
+            [self refreshPlayer];
+            self.isPlayerRequestPending = YES;
+        }
+        
+        BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
+        if (hasConnectedCastSession)
+            [self.avPlayer pause];
+    }
         [self resetToBeginning];
     }
 }
@@ -1664,9 +1809,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     // Set download started
     if (self.isDownloadStarted) {
         
-//        UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//        cell.textLabel.text = @"Downloading...";
-//        [self.progressView setHidden:NO];
+        //        UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+        //        cell.textLabel.text = @"Downloading...";
+        //        [self.progressView setHidden:NO];
         [self.tableViewOptions reloadData];
         
     }
@@ -1690,10 +1835,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.timerDownload invalidate];
     self.timerDownload = nil;
     [self.tableViewOptions reloadData];
-//    UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//    cell.textLabel.text = @"Download";
-//    cell.textLabel.textColor = [UIColor whiteColor];
-//    [self.progressView setHidden:YES];
+    //    UITableViewCell *cell = [self.tableViewOptions cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    //    cell.textLabel.text = @"Download";
+    //    cell.textLabel.textColor = [UIColor whiteColor];
+    //    [self.progressView setHidden:YES];
     
 }
 
@@ -2016,7 +2161,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     __block NSMutableDictionary *adsDictionary = [[NSMutableDictionary alloc] init];
     __block NSMutableArray *adsTags = [[NSMutableArray alloc] init];
-
+    
     
     BOOL isPrerollUsed = NO;
     NSMutableArray *adOffsets = [[NSMutableArray alloc] init];
@@ -2050,9 +2195,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     if (adOffsets.count > 0) {
         __weak typeof(self) weakSelf = self;
-        
-        self.playerAdsObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
 
+        self.playerAdsObserver = [self.contentPlayhead.player addBoundaryTimeObserverForTimes:adOffsets queue:NULL usingBlock:^{
             if (adsTags.count > 0) {
                 NSString *tag = adsTags.firstObject;
                 [adsTags removeObjectAtIndex:0];
@@ -2064,14 +2208,14 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             }
         }];
     }
-
+    
     if (!isPrerollUsed) {
         [self.avPlayer play];
         
         [self.playerControlsView setAsPlay];
         [self.playerControlsView showSelf];
     }
-
+    
 }
 
 - (NSMutableString*)replaceAdMacros:(NSString *)string {
@@ -2214,7 +2358,7 @@ NSString* machineName() {
         }
     } else if (event.type == kIMAAdEvent_STARTED){
         NSLog(@"subviews %ld", (long)self.avPlayerController.view.subviews);
-
+        
     } else if (event.type == kIMAAdEvent_ALL_ADS_COMPLETED) {
         self.adsManager = nil;
     } else if (event.type == kIMAAdEvent_COMPLETE) {
@@ -2290,10 +2434,10 @@ NSString* machineName() {
     
     if (!self.alertViewNsvodRequired){
         self.alertViewNsvodRequired = [[UIAlertView alloc] initWithTitle:@"Requires Subscription"
-                                                                  message:@"You do not have access to this video. Please subscribe to watch this video."
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                        otherButtonTitles:@"Subscribe", nil];
+                                                                 message:@"You do not have access to this video. Please subscribe to watch this video."
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Cancel"
+                                                       otherButtonTitles:@"Subscribe", nil];
     }
     self.alertViewNsvodRequired.tag = 996;
     
@@ -2444,7 +2588,7 @@ NSString* machineName() {
     } else if (tableView == self.tableViewOptions){
         return [self.optionsDataSource count];
     }
-     
+    
     return 0;
 }
 
@@ -2514,112 +2658,112 @@ NSString* machineName() {
         
         return cell;
         
-//        if (kDownloadsEnabled){
-//            switch (indexPath.row) {
-//                    
-//                case 0: {
-//                    
-//                    cell.textLabel.text = @"Play as";
-//                    self.labelPlayAs = [[UILabel alloc] init];
-//                    self.labelPlayAs.text = @"Video";
-//                    self.labelPlayAs.textColor = [UIColor whiteColor];
-//                    self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
-//                    [self.labelPlayAs sizeToFit];
-//                    cell.accessoryView = self.labelPlayAs;
-//                    
-//                }
-//                    break;
-//                    
-//                case 1: {
-//                    
-//                    // Add progress view
-//                    float width = self.view.frame.size.width - kProgressViewMarginLeft - (kProgressViewMarginRight * 2);
-//                    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(kProgressViewMarginLeft, kProgressViewMarginRight, width, kProgressViewHeight)];
-//                    [self.progressView setTintColor:kSystemBlue];
-//                    [self.progressView setHidden:YES];
-//                    [cell addSubview:self.progressView];
-//                    
-//                    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
-//                    if (downloadInfo.isDownloading) {
-//                        
-//                        cell.textLabel.text = @"Downloading...";
-//                        //cell.textLabel.textColor = [UIColor whiteColor];
-//                        [self.progressView setHidden:NO];
-//                        self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f
-//                                                                              target:self
-//                                                                            selector:@selector(showDownloadProgress:)
-//                                                                            userInfo:nil
-//                                                                             repeats:YES];
-//                        
-//                    } else {
-//                        cell.textLabel.text = @"Download";
-//                    }
-//                    
-//                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconDownloadsW"]];
-//                    
-//                }
-//                    break;
-//                    
-//                case 2: {
-//                    
-//                    if ([UIUtil isYes:self.video.isFavorite]) {
-//                        
-//                        cell.textLabel.text = @"Unfavorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-//                        
-//                    } else {
-//                        
-//                        cell.textLabel.text = @"Favorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
-//                        
-//                    }
-//                    
-//                }
-//                    break;
-//                    
-//                case 3: {
-//                    
-//                    cell.textLabel.text = @"Share";
-//                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
-//                    
-//                }
-//                    break;
-//                    
-//            }
-//        } else {
-//            
-//            switch (indexPath.row) {
-//                    
-//                case 0: {
-//                    
-//                    if ([UIUtil isYes:self.video.isFavorite]) {
-//                        
-//                        cell.textLabel.text = @"Unfavorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-//                        
-//                    } else {
-//                        
-//                        cell.textLabel.text = @"Favorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
-//                        
-//                    }
-//                    
-//                }
-//                    break;
-//                    
-//                case 1: {
-//                    
-//                    cell.textLabel.text = @"Share";
-//                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
-//                    
-//                }
-//                    break;
-//                    
-//            }
-//        }
-//        
-//        return cell;
-//        
+        //        if (kDownloadsEnabled){
+        //            switch (indexPath.row) {
+        //
+        //                case 0: {
+        //
+        //                    cell.textLabel.text = @"Play as";
+        //                    self.labelPlayAs = [[UILabel alloc] init];
+        //                    self.labelPlayAs.text = @"Video";
+        //                    self.labelPlayAs.textColor = [UIColor whiteColor];
+        //                    self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
+        //                    [self.labelPlayAs sizeToFit];
+        //                    cell.accessoryView = self.labelPlayAs;
+        //
+        //                }
+        //                    break;
+        //
+        //                case 1: {
+        //
+        //                    // Add progress view
+        //                    float width = self.view.frame.size.width - kProgressViewMarginLeft - (kProgressViewMarginRight * 2);
+        //                    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(kProgressViewMarginLeft, kProgressViewMarginRight, width, kProgressViewHeight)];
+        //                    [self.progressView setTintColor:kSystemBlue];
+        //                    [self.progressView setHidden:YES];
+        //                    [cell addSubview:self.progressView];
+        //
+        //                    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
+        //                    if (downloadInfo.isDownloading) {
+        //
+        //                        cell.textLabel.text = @"Downloading...";
+        //                        //cell.textLabel.textColor = [UIColor whiteColor];
+        //                        [self.progressView setHidden:NO];
+        //                        self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f
+        //                                                                              target:self
+        //                                                                            selector:@selector(showDownloadProgress:)
+        //                                                                            userInfo:nil
+        //                                                                             repeats:YES];
+        //
+        //                    } else {
+        //                        cell.textLabel.text = @"Download";
+        //                    }
+        //
+        //                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconDownloadsW"]];
+        //
+        //                }
+        //                    break;
+        //
+        //                case 2: {
+        //
+        //                    if ([UIUtil isYes:self.video.isFavorite]) {
+        //
+        //                        cell.textLabel.text = @"Unfavorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        //
+        //                    } else {
+        //
+        //                        cell.textLabel.text = @"Favorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        //
+        //                    }
+        //
+        //                }
+        //                    break;
+        //
+        //                case 3: {
+        //
+        //                    cell.textLabel.text = @"Share";
+        //                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
+        //
+        //                }
+        //                    break;
+        //
+        //            }
+        //        } else {
+        //
+        //            switch (indexPath.row) {
+        //
+        //                case 0: {
+        //
+        //                    if ([UIUtil isYes:self.video.isFavorite]) {
+        //
+        //                        cell.textLabel.text = @"Unfavorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        //
+        //                    } else {
+        //
+        //                        cell.textLabel.text = @"Favorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        //
+        //                    }
+        //
+        //                }
+        //                    break;
+        //
+        //                case 1: {
+        //
+        //                    cell.textLabel.text = @"Share";
+        //                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
+        //
+        //                }
+        //                    break;
+        //
+        //            }
+        //        }
+        //
+        //        return cell;
+        //
     }else {
         
         static NSString *CellIdentifier = @"Cell";
@@ -2795,5 +2939,184 @@ NSString* machineName() {
     
 }
 
+- (void)setMediaInfo:(GCKMediaInformation *)mediaInfo {
+    NSLog(@"setMediaInfo");
+    if (mediaInfo) {
+        _mediaInfo = mediaInfo;
+    }
+}
 
+- (void) buildMediaInfo {
+    NSURL *videourl = [[NSURL alloc] initWithString:self.videoPlaybackSource.urlString];
+    NSURL *newURL = [[NSURL alloc] initWithScheme:[videourl scheme]
+                                             host:[videourl host]
+                                             path:[videourl path]];
+    NSString *urlString = [NSString stringWithFormat:@"%@?", [newURL absoluteString]];
+    NSArray *urlComponents = [[videourl query] componentsSeparatedByString:@"&"];
+    
+    for (NSString *keyValuePair in urlComponents)
+    {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
+        NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
+        
+        if([key isEqualToString:@"player_request_id"] || [key isEqualToString:@"app_key"])
+        {
+            urlString = [NSString stringWithFormat:@"%@%@=%@&",urlString, key, value];
+        }
+    }
+    
+    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] initWithMetadataType:GCKMediaMetadataTypeMovie];
+    [metadata setString:self.video.title forKey:kGCKMetadataKeyTitle];
+    [metadata setString:self.video.short_description forKey:kGCKMetadataKeySubtitle];
+    
+    /* self.video.thumbnailUrl is too large to use for Cast device.
+     prefer to provide 480x270 & 480X720 */
+    NSURL *imageURL = [[NSURL alloc] initWithString:self.video.thumbnailUrl];
+    [metadata addImage:[[GCKImage alloc] initWithURL:imageURL
+                                               width:480
+                                              height:270]];
+    
+    NSString *mineType = @"video/mp4";
+    if ([self.videoPlaybackSource.fileType stringContains:@"m3u8"]){
+        mineType = @"application/x-mpegurl";
+    }else if ([self.videoPlaybackSource.fileType stringContains:@"mpd"]){
+        mineType = @"application/dash+xml";
+    }
+    
+    GCKMediaInformation *mediaInfo = [[GCKMediaInformation alloc]
+                                      initWithContentID:  [urlString substringToIndex:[urlString length]-1]
+                                      streamType:GCKMediaStreamTypeBuffered
+                                      contentType:mineType
+                                      metadata:metadata
+                                      streamDuration: [self.video.duration doubleValue]
+                                      mediaTracks:nil
+                                      textTrackStyle:nil
+                                      customData:nil];
+    
+    self.mediaInfo = mediaInfo;
+    self.isMediaInfoSetted = YES;
+    
+    BOOL hasConnectedCastSession = [GCKCastContext sharedInstance].sessionManager.hasConnectedCastSession;
+    if (hasConnectedCastSession)
+        [self switchToRemotePlayback];
+}
+
+- (void)switchToRemotePlayback {
+    NSLog(@"switchToRemotePlayback; mediaInfo is %@", self.mediaInfo);
+    if (_playbackMode == PlaybackModeRemote) {
+        [self.avPlayer pause];
+        return;
+    }
+    
+    //[[GCKCastContext sharedInstance] presentDefaultExpandedMediaControls];
+    
+    if ([_sessionManager.currentSession isKindOfClass:[GCKCastSession class]]) {
+        _castSession = (GCKCastSession *)_sessionManager.currentSession;
+    }
+    
+    // If we were playing locally, load the local media on the remote player
+    if ((_playbackMode != PlaybackModeRemote) && self.mediaInfo) {
+        NSLog(@"loading media: %@", self.mediaInfo);
+        GCKMediaQueueItemBuilder *builder = [[GCKMediaQueueItemBuilder alloc] init];
+        builder.mediaInformation = self.mediaInfo;
+        builder.autoplay = YES;
+        builder.preloadTime = 0;
+        builder.startTime = [[NSNumber numberWithDouble:CMTimeGetSeconds([self.avPlayer.currentItem currentTime])] doubleValue]; //[self.video.playTime doubleValue];
+        GCKMediaQueueItem *item = [builder build];
+        
+        GCKRequest *request = [_castSession.remoteMediaClient queueLoadItems:@[ item ]
+                                                                  startIndex:0
+                                                                  repeatMode:GCKMediaRepeatModeOff
+                                                                  customData:nil];
+        request.delegate = self;
+        
+        [self.avPlayer pause];
+        
+        [_castSession.remoteMediaClient addListener:self];
+        _playbackMode = PlaybackModeRemote;
+    }
+}
+
+- (void) switchToLocalPlayback {
+    
+}
+
+- (void)saveCurrentPlaybackTimeFromCast:(NSNumber*) time{
+    
+    if (self.video == nil) {
+        return;
+    }
+    Video *video = self.video;
+    if (video != nil) {
+        video.playTime = time;
+        [[ACSPersistenceManager sharedInstance] saveContext];
+    }
+}
+#pragma mark - GCKSessionManagerListener
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager
+       didStartSession:(GCKSession *)session {
+    NSLog(@"MediaViewController: sessionManager didStartSession %@", session);
+    
+    [self switchToRemotePlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager
+      didResumeSession:(GCKSession *)session {
+    NSLog(@"MediaViewController: sessionManager didResumeSession %@", session);
+    
+    [self switchToRemotePlayback];
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager
+         didEndSession:(GCKSession *)session
+             withError:(NSError *)error {
+    NSLog(@"session ended with error: %@", error);
+
+    //switch to local
+    NSNumber *time = [NSNumber numberWithDouble:_castMediaController.lastKnownStreamPosition];
+    CMTime ctime = CMTimeMakeWithSeconds([time doubleValue], 1);
+    [self saveCurrentPlaybackTimeFromCast:time];
+    [self.avPlayer seekToTime:ctime];
+    [self.avPlayer play];
+    
+    [_castSession.remoteMediaClient removeListener:self];
+    _playbackMode = PlaybackModeLocal;
+    
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager
+didFailToStartSessionWithError:(NSError *)error {
+    
+}
+
+- (void)sessionManager:(GCKSessionManager *)sessionManager
+didFailToResumeSession:(GCKSession *)session
+             withError:(NSError *)error {
+    
+}
+
+#pragma mark - GCKRemoteMediaClientListener
+
+- (void)remoteMediaClient:(GCKRemoteMediaClient *)player
+     didUpdateMediaStatus:(GCKMediaStatus *)mediaStatus {
+    self.mediaInfo = mediaStatus.mediaInformation;
+    if((mediaStatus.playerState == GCKMediaPlayerStateIdle) && (mediaStatus.idleReason == GCKMediaPlayerIdleReasonFinished)){
+        _playbackMode = PlaybackModeLocal;
+        [self moviePlayBackDidFinish:nil];
+    }
+}
+
+
+#pragma mark - GCKRequestDelegate
+
+- (void)requestDidComplete:(GCKRequest *)request {
+    NSLog(@"request %ld completed", (long)request.requestID);
+}
+
+- (void)request:(GCKRequest *)request didFailWithError:(GCKError *)error {
+    NSLog(@"request %ld failed with error %@", (long)request.requestID, error);
+}
 @end
+
