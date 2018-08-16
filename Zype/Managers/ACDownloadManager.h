@@ -17,7 +17,10 @@
 + (void)backgroundDownloadVideo:(Video *)video atIndex:(NSIndexPath *)indexPath;
 + (void)stopDownloadingVideo:(Video *)video;
 + (void)deleteDownloadedVideo:(Video *)video;
++ (void)deleteDownloadedAudio:(Video *)video;
++ (void)deleteDownloadedOnlyVideo:(Video *)video;
 + (void)resetDownloads;
++ (int)getDownloadCount;
 
 //Video Downloads
 

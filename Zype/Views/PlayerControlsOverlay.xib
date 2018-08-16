@@ -29,14 +29,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32W-Ox-7Zw">
-                    <rect key="frame" x="20" y="270" width="96" height="36"/>
+                    <rect key="frame" x="20" y="288" width="62" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </label>
                 <slider opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="AWI-Sv-jDn">
-                    <rect key="frame" x="18" y="314" width="538" height="30"/>
+                    <rect key="frame" x="18" y="317" width="511" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="maximumTrackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -47,32 +47,16 @@
                         <action selector="progressBarValueChanged:" destination="-1" eventType="valueChanged" id="BcC-hX-7xz"/>
                     </connections>
                 </slider>
-                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconFullscreenW" translatesAutoresizingMaskIntoConstraints="NO" id="65r-If-JmO">
-                    <rect key="frame" x="576" y="280" width="44" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="2G5-W0-nod" appends="YES" id="Ui0-FG-gQu"/>
-                    </connections>
-                </imageView>
                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconPlayW" translatesAutoresizingMaskIntoConstraints="NO" id="p64-28-KAO">
-                    <rect key="frame" x="287" y="148" width="64" height="64"/>
+                    <rect key="frame" x="295" y="155" width="50" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <gestureRecognizers/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="Hc6-W9-ZZX" appends="YES" id="z78-tR-nb7"/>
                     </connections>
                 </imageView>
-                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconBackW" translatesAutoresizingMaskIntoConstraints="NO" id="wGG-lY-W3x">
-                    <rect key="frame" x="192" y="148" width="64" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="XVh-sS-rEm" appends="YES" id="v34-XW-Nm4"/>
-                    </connections>
-                </imageView>
-                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconNextW" translatesAutoresizingMaskIntoConstraints="NO" id="Cm8-ms-zyt">
-                    <rect key="frame" x="387" y="148" width="64" height="64"/>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconNextW" translatesAutoresizingMaskIntoConstraints="NO" id="Cm8-ms-zyt">
+                    <rect key="frame" x="375" y="155" width="50" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <gestureRecognizers/>
                     <connections>
@@ -85,12 +69,28 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iu-CP-EkD">
-                    <rect key="frame" x="446" y="270" width="96" height="36"/>
+                    <rect key="frame" x="465" y="288" width="62" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </label>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconFullscreenW" translatesAutoresizingMaskIntoConstraints="NO" id="65r-If-JmO">
+                    <rect key="frame" x="540" y="264" width="96" height="96"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="2G5-W0-nod" appends="YES" id="Ui0-FG-gQu"/>
+                    </connections>
+                </imageView>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IconBackW" translatesAutoresizingMaskIntoConstraints="NO" id="wGG-lY-W3x">
+                    <rect key="frame" x="215" y="155" width="50" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="XVh-sS-rEm" appends="YES" id="v34-XW-Nm4"/>
+                    </connections>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
@@ -136,7 +136,7 @@
     </objects>
     <resources>
         <image name="IconBackW" width="64" height="64"/>
-        <image name="IconFullscreenW" width="32" height="32"/>
+        <image name="IconFullscreenW" width="64" height="64"/>
         <image name="IconNextW" width="64" height="64"/>
         <image name="IconPlayW" width="64" height="64"/>
     </resources>

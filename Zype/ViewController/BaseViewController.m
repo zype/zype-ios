@@ -230,6 +230,7 @@
             [self.tableView setHidden:YES];
         }
         
+        [self.loadingIndicator setHidden:NO];
         [self.noResultsLabel setHidden:NO];
         
     } else {
@@ -240,6 +241,7 @@
             [self.tableView setHidden:NO];
         }
         
+        [self.loadingIndicator setHidden:YES];
         [self.noResultsLabel setHidden:YES];
         
     }
@@ -328,9 +330,11 @@
                 [UIUtil showIntroViewFromViewController:self];
                 return;
             } else {
-                if ([self.selectedVideo.subscription_required intValue] == 1 && [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
-                    [UIUtil showSubscriptionViewFromViewController:self];
-                    return;
+                if ([self.selectedVideo.subscription_required intValue] == 1) {
+                    if ([[ACPurchaseManager sharedInstance] isActiveSubscription] == false && [[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
+                        [UIUtil showSubscriptionViewFromViewController:self];
+                        return;
+                    }
                 }
             }
         }
@@ -352,6 +356,7 @@
 - (void)episodeControllerDelegateDoneLoading{
     
     self.doneLoadingFromNetwork = YES;
+    [self.loadingIndicator setHidden:YES];
     [self setNoResultsMessage];
     
 }

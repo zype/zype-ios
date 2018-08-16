@@ -51,12 +51,23 @@
                                           if (error) {
                                               [self.imageThumbnail setImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
                                               CLS_LOG(@"Placeholder thumbnail couldn't be loaded: %@", error);
+                                          } else {
+                                              [self.imageThumbnail setImage:image];
+                                              [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                                                  if (image) {
+                                                      [self.imageThumbnail setImage:image];
+                                                  }
+                                              }];
                                           }
                                       }];
         
         // [self.imageThumbnail sd_setImageWithURL:[NSURL URLWithString:playlist.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaylistPlaceholder"]];
         
-        self.textTitle.text = playlist.title;
+        if (kHidePlaylistTitles){
+            self.textTitle.text = @"";
+        } else {
+            self.textTitle.text = playlist.title;
+        }
     });
 }
 

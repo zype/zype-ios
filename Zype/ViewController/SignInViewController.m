@@ -93,6 +93,7 @@
     
     void (^animations)(void) = ^() {
         [self.view layoutIfNeeded];
+        self.view.frame = CGRectMake(self.view.frame.origin.x, -100, self.view.frame.size.width, self.view.frame.size.height);
     };
     
     //
@@ -112,6 +113,7 @@
     self.centerCredentialsConstraintY.constant = 0.0f;
     [UIView animateWithDuration:0.2 animations:^{
         [self.view layoutIfNeeded];
+        self.view.frame = CGRectMake(self.view.frame.origin.x, 0, self.view.frame.size.width, self.view.frame.size.height);
     }];
 }
 
@@ -294,6 +296,9 @@
             
             if (self != nil) {
                 [self dismissController];
+                if (self.planDelegate != nil) {
+                    [self.planDelegate subscriptionSignInDone];
+                }
 //                if (self.presentingViewController.presentingViewController != nil) {
 //                    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 //                } else {

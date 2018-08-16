@@ -242,9 +242,14 @@
 //                    }
 //                    
 //                }];
-                
-                if (successBlock) {
-                    successBlock(YES, nil);
+                if (parsedObject[@"message"] != nil) {
+                    if (successBlock) {
+                        successBlock(NO, localError);
+                    }
+                } else {
+                    if (successBlock) {
+                        successBlock(YES, nil);
+                    }
                 }
                 
             }else if (parsedObject != nil && parsedObject[@"error"] != nil) {
@@ -265,6 +270,16 @@
             
         }
         
+    }];
+    
+}
+
++ (void)resetPasswordWithUsername:(NSString *)username WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler{
+    
+    __block NSString *blockUsername = username;
+    
+    [[RESTServiceController sharedInstance] resetPasswordWithUsername:blockUsername WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        completionHandler(data, response, error);
     }];
     
 }

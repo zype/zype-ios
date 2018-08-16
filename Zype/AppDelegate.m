@@ -165,6 +165,9 @@
     if (![[NSUserDefaults standardUserDefaults] objectForKey:kSettingKey_DownloadPreferences])
         [[NSUserDefaults standardUserDefaults] setObject:kSettingKey_DownloadAudio forKey:kSettingKey_DownloadPreferences];
     
+    // Sync Subscription Plans
+    [[RESTServiceController sharedInstance] syncSubscriptionPlan];
+    
     // Sync App settings
     [[RESTServiceController sharedInstance] syncAppSetting];
     [[RESTServiceController sharedInstance] syncAppContent];

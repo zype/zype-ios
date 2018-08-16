@@ -17,6 +17,7 @@
 
 + (UIColor *)colorWithHex:(int)rgbValue;
 + (UIColor *)colorWithHex:(int)rgbValue alpha:(float)a;
++ (NSString *)hexStringWithUicolor:(UIColor*)color;
 + (void)addActions:(NSArray *)actions IntoContainerView:(UIView *)containerView Width:(float)width Height:(float)height;
 + (UIButton *)buttonNowPlayingInViewController:(UIViewController *)viewController;
 + (void)showNowPlayingFromViewController:(UIViewController *)viewController;
@@ -39,6 +40,7 @@
 
 + (NSString *)tagsWithKeywords:(NSArray *)keywords;
 + (NSString *)thumbnailUrlFromArray:(NSArray *)array;
++ (NSString *)thumbnailBigUrlFromArray:(NSArray *)array;
 + (NSString *)thumbnailUrlFromImageArray:(NSArray *)array;
 + (NSString *)thumbnailUrlFromImageArray:(NSArray *)array withLayout:(NSString *)layout;
 + (NSString *)stringDownloadProgressWithBytes:(double)totalBytesWritten WithTotalBytes:(double)totalBytesExpectedToWrite;

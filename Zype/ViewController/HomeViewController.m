@@ -26,7 +26,10 @@
 #import "Playlist.h"
 #import "ACSPersistenceManager.h"//remove this after test
 
-@interface HomeViewController ()<UIActionSheetDelegate, WKNavigationDelegate, ACActionSheetManagerDelegate>
+#import "SubscriptionPlanDelegate.h"
+#import "ACPurchaseManager.h"
+
+@interface HomeViewController ()<UIActionSheetDelegate, WKNavigationDelegate, ACActionSheetManagerDelegate, SubscriptionPlanDelegate>
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIImageView *imagePlaceholder;
@@ -40,6 +43,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerTopLayoutConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarWidthLayoutConstraint;
+
+@property (weak, nonatomic) id<SubscriptionPlanDelegate> planDelegate;
 
 @property (strong, nonatomic) UIView *viewDateFilter;
 @property (strong, nonatomic) UIDatePicker *pickerDateFilter;
@@ -62,6 +67,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.planDelegate = self;
     
     // Init controller depending on view type
     if (kAppAppleTVLayout) {
@@ -93,7 +100,7 @@
     
     [ACSDataManager checkForLiveStream];
     [self getPlaylistData];
-    
+    [self loadData];
     //[self customizeSearchBar];
     
     //[self performSegueWithIdentifier:@"toIntro" sender:nil];
@@ -176,7 +183,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self loadData];
+    [self.episodeController reloadData];
 }
 
 - (void)loadData {
@@ -232,6 +239,8 @@
     [self initDismissSearchButton];
     
     [self.buttonFilterNext setEnabled:NO];
+    
+    self.loadingIndicator.color = kClientColor;
     
 }
 
@@ -302,7 +311,13 @@
         
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsCategoryButtonPressed label:@"Show Latest Detail" value:nil] build]];
         
-        [[segue destinationViewController] setDetailItem:self.selectedVideo];
+        if (kAppAppleTVLayout){
+            PlaylistCollectionCell *selectedCell = [(BaseTVLayoutController *) self.episodeController playlistCellSelected];
+            NSMutableArray *videos = [NSMutableArray arrayWithArray:selectedCell.items];
+            [[segue destinationViewController] setVideos:videos withIndex:selectedCell.selectedPath];
+        } else {
+            [[segue destinationViewController] setDetailItem:self.selectedVideo];
+        }
         
     }else if ([[segue identifier] isEqualToString:@"showSearchResult"]) {
         
@@ -323,11 +338,11 @@
     
     if (self.doneLoadingFromNetwork == YES) {
         
-        self.noResultsLabel.text = NSLocalizedString(@"There are no shows yet this week.  Keep an eye out here or check out the archives.", @"no results message");
+        self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
         
     }else{
         
-        self.noResultsLabel.text = NSLocalizedString(@"Checking for shows...", @"no results message");
+        self.noResultsLabel.text = NSLocalizedString(@"Loading videos", @"no results message");
         
     }
     
@@ -683,7 +698,22 @@
     
 }
 
+#pragma mark - SubscriptionPlanDelegate
+- (void) subscriptionSignInDone {
+    if (kNativeSubscriptionEnabled == NO) {
+        [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+    } else {
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] > 0) {
+            [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+        } else {
+            [UIUtil showSubscriptionViewFromViewController:self];
+        }
+    }
+}
 
+- (void) subscriptionPlanDone {
+    [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+}
 
 
 

@@ -89,7 +89,15 @@
     
 }
 
-- (void)showPlayAsActionSheet{
+- (void)showPlayAsActionSheet:(NSArray *) sources{
+    
+    UIActionSheet *actionSheet = [ACActionSheetManager videoDetailPlayAsActionSheet:sources];
+    actionSheet.delegate = self;
+    [self delegateShowActionSheet:actionSheet];
+    
+}
+
+- (void)showPlayAsActionSheet {
     
     UIActionSheet *actionSheet = [ACActionSheetManager videoDetailPlayAsActionSheet];
     actionSheet.delegate = self;
@@ -211,13 +219,13 @@
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedVideo]]) {
         CLS_LOG(@"delete video tapped");
         
-        [ACDownloadManager deleteDownloadedVideo:self.actionVideo];
+        [ACDownloadManager deleteDownloadedOnlyVideo:self.actionVideo];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Delete Audio Tapped" value:nil] build]];
         
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedAudio]]) {
         CLS_LOG(@"delete audio tapped");
         
-        [ACDownloadManager deleteDownloadedVideo:self.actionVideo];
+        [ACDownloadManager deleteDownloadedAudio:self.actionVideo];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Delete Audio Tapped" value:nil] build]];
         
     }
@@ -576,7 +584,37 @@
     
 }
 
-+ (UIActionSheet *)videoDetailPlayAsActionSheet{
++ (UIActionSheet *)videoDetailPlayAsActionSheet:(NSArray *) sources{
+    
+    NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"action button title");
+    
+    //iOS7 iPad interprets cancel button incorrectly
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        cancelButtonTitle = nil;
+    }
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil otherButtonTitles:nil];
+    
+    BOOL isAudio = NO;
+    for (PlaybackSource *source in sources) {
+         if ([source.fileType isEqualToString:@"m4a"] || [source.fileType isEqualToString:@"mp3"] || [source.fileType isEqualToString:@"m3u8"]) {
+            isAudio = YES;
+        }
+    }
+    
+    if (isAudio) {
+        [actionSheet addButtonWithTitle:[self titleForPlayAsActionSheetButtonWithType:ACActionSheetPlayAsButtonListen]];
+    }
+    
+    [actionSheet addButtonWithTitle:[self titleForPlayAsActionSheetButtonWithType:ACActionSheetPlayAsButtonWatch]];
+    
+    actionSheet.tag = ACLatestActionSheetTypePlayAs;
+    
+    return actionSheet;
+    
+}
+
++ (UIActionSheet *)videoDetailPlayAsActionSheet {
     
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"action button title");
     
@@ -593,7 +631,6 @@
     actionSheet.tag = ACLatestActionSheetTypePlayAs;
     
     return actionSheet;
-    
 }
 
 + (UIActionSheet *)liveStreamActionSheet{

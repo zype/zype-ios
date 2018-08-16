@@ -24,6 +24,7 @@
 #import "Playlist.h"
 
 #import "ACSPersistenceManager.h"
+#import "ACPurchaseManager.h"
 
 
 @interface VideosViewController ()<UIActionSheetDelegate, WKNavigationDelegate, ACActionSheetManagerDelegate>
@@ -87,7 +88,7 @@
         self.title = currentPlaylist.title;
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadVideos) name:@"ResultsFromPlaylistReturned" object:nil];
-    
+    self.planDelegate = self;
     //[self customizeSearchBar];
 }
 
@@ -119,7 +120,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    //[self loadVideos];
+    [self loadVideos];
     
     [self setupHeader];
     
@@ -161,6 +162,8 @@
     
     [self.buttonFilterNext setEnabled:NO];
     
+    self.loadingIndicator.color = kClientColor;
+    
 }
 
 - (void)searchTapped {
@@ -189,7 +192,7 @@
 
 - (void)episodeControllerDidSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.indexPathInAction = indexPath;
-
+    
     [super episodeControllerDidSelectItemAtIndexPath:indexPath];
 }
 
@@ -240,7 +243,7 @@
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsScreenNameLatest action:kAnalyticsCategoryButtonPressed label:@"Show Latest Detail" value:nil] build]];
         
         // [[segue destinationViewController] setDetailItem:self.selectedVideo]; // old segue
-
+        
         NSMutableArray *videos = self.episodeController.indexPathController.dataModel.items;
         [[segue destinationViewController] setVideos:videos withIndex:self.indexPathInAction];
         
@@ -263,11 +266,11 @@
     
     if (self.doneLoadingFromNetwork == YES) {
         
-        self.noResultsLabel.text = NSLocalizedString(@"There are no shows yet this week.  Keep an eye out here or check out the archives.", @"no results message");
+        self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
         
     }else{
         
-        self.noResultsLabel.text = NSLocalizedString(@"Checking for shows...", @"no results message");
+        self.noResultsLabel.text = NSLocalizedString(@"Loading videos", @"no results message");
         
     }
     
@@ -452,5 +455,23 @@
     
 }
 
+#pragma mark - SubscriptionPlanDelegate
+- (void) subscriptionSignInDone {
+    
+    if (kNativeSubscriptionEnabled == NO) {
+        [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+    } else {
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] > 0) {
+            [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+        } else {
+            [UIUtil showSubscriptionViewFromViewController:self];
+        }
+    }
+}
+
+- (void) subscriptionPlanDone {
+    [self performSegueWithIdentifier:@"showEpisodeDetail" sender:self];
+}
 
 @end
+

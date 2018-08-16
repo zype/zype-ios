@@ -15,6 +15,7 @@
 
 - (void)getTokenWithUsername:(NSString *)username WithPassword:(NSString *)password WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)registerWithUsername:(NSString *)username WithPassword:(NSString *)password WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
+- (void)resetPasswordWithUsername:(NSString *)username WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)saveConsumerIdWithToken:(NSString *)accessToken WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)getConsumerInformationWithID:(NSString *)consumerId withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
 - (void)refreshAccessTokenWithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
@@ -26,12 +27,14 @@
 - (void)syncHighlightsInPage:(NSNumber *)page WithVideosInDB:(NSMutableArray *)highlightsInDB WithExistingVideos:(NSMutableArray *)existingVideos;
 - (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos;
 - (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos withCompletionHandler:(void (^)(void))complete;
+- (void)loadVideoWithId:(NSString *)videoId withCompletionHandler:(void(^)(NSData *data, NSError *error))success;
 
 - (void)getDownloadVideoUrlWithVideoId:(NSString *)vId WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)getDownloadAudioUrlWithVideoId:(NSString *)vId WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
 - (void)getVideoPlayerWithVideo:(Video *)video downloadInfo:(BOOL)isDownloaded withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 - (void)getAudioPlayerWithVideo:(Video *)video WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
+- (void)getAudioSourceWithVideo:(Video *)video withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
 - (void)syncPlaylistWithId:(NSString *)playlistId withCompletionHandler:(void (^)(NSString *))errorString;
 - (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)(void))complete;
@@ -39,6 +42,7 @@
 - (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
 - (PlaybackSource *)audioStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
 - (NSArray *)streamPlaybackSourcesFromRootDictionary:(NSDictionary *)dictionary;
+- (NSArray *)allPlaybackSourcesFromRootDictionary:(NSDictionary *)dictionary;
 
 - (NSString *)videoPlayerUrlFromJSON:(NSDictionary *)parsedObject;
 - (NSString *)videoPlayerNameFromJSON:(NSDictionary *)parsedObject;
@@ -67,7 +71,12 @@
 
 - (void)syncNotificationsInPage:(NSNumber *)page WithNotificationsInDB:(NSMutableArray *)notificationsInDB WithExistingNotifications:(NSMutableArray *)existingNotifications;
 
+- (void)syncSubscriptionPlan;
+- (void)getSubscriptionPlan:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
+- (void)createMarketplace:(NSData*)receipt planId:(NSString*)planId completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
+
 //Singleton
 + (instancetype)sharedInstance;
 
 @end
+

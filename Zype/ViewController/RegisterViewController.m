@@ -68,7 +68,7 @@
     UIColor * termsTextColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
     NSDictionary * attributes = @{NSForegroundColorAttributeName: termsTextColor,
                                   NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
-    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Create my login, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Create Account, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
                                                                                                                                                 NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
     NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Terms of Service and Privacy" attributes:attributes];
     [attrstring appendAttributedString:signupText];
@@ -194,11 +194,11 @@
     NSString *errorString;
     
     if ([self.emailField.text  isEqual: @""] || [self.passwordField.text  isEqual: @""]) {
-        return @"Не все поля заполнены";
+        return @"Please fill out the missing fields and try again.";
     }
     
     if (![self.emailField.text validateEmail]) {
-        return @"Email не корректен";
+        return @"Please enter a valid email address and try again.";
     }
     
     return errorString;
@@ -230,16 +230,11 @@
                     [SVProgressHUD dismiss];
                     if (self != nil) {
                         
-                        if ([self isFromMoreControllerPresented]) {
-                            [self dismissControllers];
-                        } else {
-                            if ([[ACPurchaseManager sharedInstance] isActiveSubscription]) {
-                                [self dismissControllers];
-                            } else {
-                                [UIUtil showSubscriptionViewFromViewController:self];
-                            }
+                        [self dismissControllers];
+                        if (self.planDelegate != nil) {
+                            [self.planDelegate subscriptionSignInDone];
                         }
-
+                        
                     }
                 } else {
                     [SVProgressHUD showErrorWithStatus:error.localizedDescription];
@@ -247,7 +242,7 @@
             }];
         } else {
             [SVProgressHUD dismiss];
-            [ACSAlertViewManager showAlertWithTitle:kString_TitleSignInFail WithMessage:kString_MessageSignInFail];
+            [ACSAlertViewManager showAlertWithTitle:kString_TitleSignInFail WithMessage:kString_MessageRegisterFail];
         }
         
     }];

@@ -11,6 +11,7 @@
 #import "ACDownloadManager.h"
 #import "DownloadOperationController.h"
 #import "ACStatusManager.h"
+#import "ACPurchaseManager.h"
 
 @interface ACSEpisodeCollectionViewCell ()
 
@@ -46,10 +47,17 @@
     self.subtitleLabel.text = [UIUtil subtitleOfVideo:video];
     
     if ([video.subscription_required intValue] == 1){
-        if ([ACStatusManager isUserSignedIn] == YES){
-            self.iconLock.image = [UIImage imageNamed:@"iconUnlocked"];
+        NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
+        if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]){
+            self.iconLock.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            if (kUnlockTransparentEnabled == YES) {
+                [self.iconLock setTintColor:UIColor.clearColor];
+            } else {
+                [self.iconLock setTintColor:kUnlockColor];
+            }
         } else {
-            self.iconLock.image = [UIImage imageNamed:@"iconLocked"];
+            self.iconLock.image = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.iconLock setTintColor:kLockColor];
         }
     } else {
         [self.iconLock setHidden:YES];
@@ -121,6 +129,13 @@
                                       if (error) {
                                           [self.thumbnailImage setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
                                           CLS_LOG(@"Video thumbnail couldn't be loaded: %@", error);
+                                      } else {
+                                          [self.thumbnailImage setImage:image];
+                                          [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                                              if (image) {
+                                                  [self.thumbnailImage setImage:image];
+                                              }
+                                          }];
                                       }
                                   }];
     
@@ -274,7 +289,7 @@
 
 - (void)hideStatusImage:(BOOL)hide{
     
-    self.statusImage.hidden = hide;
+    self.statusImage.hidden = YES; //hide;
     if (hide == YES) {
         self.statusImageWidthConstraint.constant = 0;
     } else {

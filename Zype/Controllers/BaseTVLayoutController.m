@@ -270,6 +270,7 @@
 #pragma mark - PlaylistCollectionCell
 
 - (void)onDidSelectItem:(PlaylistCollectionCell *)cell item:(NSObject *)item {
+    self.playlistCellSelected = cell;
     [self.delegate episodeControllerDidSelectItem:item];
 }
 

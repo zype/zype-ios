@@ -26,7 +26,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -41,9 +41,36 @@
     [self.continueButton setTitle:[NSString stringWithFormat:@"Continue with %@", self.titleLabel.text] forState:UIControlStateNormal];
 }
 
+- (void)configCell:(SKProduct *)product {
+    self.mkProduct = product;
+    self.descriptionLabel.text = product.localizedDescription;
+    self.titleLabel.text = product.localizedTitle;
+    if (@available(iOS 11.2, *)) {
+        NSString *strSubType = (product.subscriptionPeriod.unit == SKProductPeriodUnitMonth)?@"/mo":@"/ye";
+        self.priceLabel.text = [NSString stringWithFormat:@"$%@%@", product.price, strSubType];
+    } else {
+        self.priceLabel.text = [NSString stringWithFormat:@"$%@", product.price];
+    }
+    if (@available(iOS 11.2, *)) {
+        if (product.introductoryPrice.paymentMode == SKProductDiscountPaymentModeFreeTrial) {
+            [self.trialLabel setHidden:NO];
+        } else {
+            [self.trialLabel setHidden:YES];
+        }
+    } else {
+        [self.trialLabel setHidden:NO];
+    }
+//    self.descriptionLabel.text = product[@"description"];
+//    self.titleLabel.text = product[@"name"];
+//    NSString *strSubType = [product[@"interval"] isEqualToString:@"monthly"]?@"/mo":@"/ye";
+//    self.priceLabel.text = [NSString stringWithFormat:@"$%@%@", product[@"amount"], strSubType];
+    [self.continueButton setTitle:[NSString stringWithFormat:@"Continue with %@", self.titleLabel.text] forState:UIControlStateNormal];
+}
+
 - (IBAction)acceptSubscriptButtonTapped:(id)sender {
-    [self.delegate onDidTapSubsciptCell:self productID:self.payment.productIdentifier];
+    [self.delegate onDidTapSubsciptCell:self product:self.mkProduct];
 }
 
 
 @end
+

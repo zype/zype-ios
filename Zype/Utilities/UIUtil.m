@@ -19,6 +19,8 @@
 #import "IntroViewController.h"
 #import "SubsciptionViewController.h"
 #import "RegisterViewController.h"
+#import "SettingsViewController.h"
+#import "PrivacyViewController.h"
 
 @implementation UIUtil
 
@@ -31,6 +33,17 @@
 + (UIColor *)colorWithHex:(int)rgbValue alpha:(float)a
 {
     return [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a];
+}
+
+// Usage: [UIUtil hexStringWithUicolor:color] returns @"xxxxxx"
++ (NSString *)hexStringWithUicolor:(UIColor*)color
+{
+    const CGFloat *components = CGColorGetComponents(color.CGColor);
+    CGFloat r = components[0];
+    CGFloat g = components[1];
+    CGFloat b = components[2];
+    NSString *hexString=[NSString stringWithFormat:@"%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255)];
+    return hexString;
 }
 
 + (void)addActions:(NSArray *)actions IntoContainerView:(UIView *)containerView Width:(float)width Height:(float)height
@@ -144,41 +157,47 @@
 + (void)showSignInViewFromViewController:(UIViewController *)viewController
 {
     SignInViewController *signInViewController = (SignInViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"signInViewController"];
+    if ([viewController isKindOfClass:[BaseViewController class]]) {
+        signInViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    }
     [viewController presentViewController:signInViewController animated:YES completion:nil];
 }
 
 + (void)showSignUpViewFromViewController:(UIViewController *)viewController
 {
     RegisterViewController *regViewController = (RegisterViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"RegisterViewController"];
+    if ([viewController isKindOfClass:[SignInViewController class]]) {
+        regViewController.planDelegate = ((SignInViewController*)viewController).planDelegate;
+    }
     [viewController presentViewController:regViewController animated:YES completion:nil];
 }
 
 + (void)showIntroViewFromViewController:(UIViewController *)viewController
 {
     IntroViewController *introViewController = (IntroViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"IntroViewController"];
+    if ([viewController isKindOfClass:[BaseViewController class]]) {
+        introViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    } else if ([viewController isKindOfClass:[SettingsViewController class]]) {
+        introViewController.planDelegate = (SettingsViewController*)viewController;
+    } else if ([viewController isKindOfClass:[HomeViewController class]]) {
+        introViewController.planDelegate = (HomeViewController*)viewController;
+    }
     [viewController presentViewController:introViewController animated:YES completion:nil];
 }
 
 + (void)showSubscriptionViewFromViewController:(UIViewController *)viewController
 {
     SubsciptionViewController *subscriptionViewController = (SubsciptionViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"SubscriptionViewController"];
+    if ([viewController isKindOfClass:[VideosViewController class]]) {
+        subscriptionViewController.planDelegate = (VideosViewController*)viewController;
+    }
     [viewController presentViewController:subscriptionViewController animated:YES completion:nil];
 }
 
 + (void)showTermOfServicesFromViewController:(UIViewController *)viewController
 {
-    NSString *htmlString = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_Terms];
-    
-    UIViewController *vController = [UIViewController new];
-    vController.view.frame = viewController.view.bounds;
-    
-    UIWebView *webview = [UIWebView new];
-    webview.frame = vController.view.bounds;
-    
-    [vController.view addSubview:webview];
-    
-    [webview loadHTMLString:htmlString baseURL:nil];
-    [viewController presentViewController:vController animated:YES completion:nil];
+    PrivacyViewController *privacyViewController = (PrivacyViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"PrivacyViewController"];
+    [viewController presentViewController:privacyViewController animated:YES completion:nil];
 }
 
 + (NSString *)subtitleOfVideo:(Video *)video
@@ -323,6 +342,28 @@
 }
 
 + (NSString *)thumbnailUrlFromArray:(NSArray *)array
+{
+    NSString *url = @"";
+    float width = 0;
+    
+    for (NSDictionary *dict in array) {
+        if (width > 0) {
+            if (width > [[dict valueForKey:kAppKey_Width] floatValue]) {
+                width = [[dict valueForKey:kAppKey_Width] floatValue];
+                url = [dict valueForKey:kAppKey_Url];
+            }
+        } else {
+            if (width < [[dict valueForKey:kAppKey_Width] floatValue]) {
+                width = [[dict valueForKey:kAppKey_Width] floatValue];
+                url = [dict valueForKey:kAppKey_Url];
+            }
+        }
+    }
+  
+    return url;
+}
+
++ (NSString *)thumbnailBigUrlFromArray:(NSArray *)array
 {
     NSString *url = @"";
     float width = 0;

@@ -19,7 +19,9 @@
 #import "Timing.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"
+#import "ACStatusManager.h"
 #import "TableSectionDataSource.h"
+#import "UIView+UIView_CustomizeTheme.h"
 
 
 @interface SettingsViewController ()
@@ -52,8 +54,9 @@
     }
     
     // Set sign-out button
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) [self.buttonSignOut setHidden:NO];
-    else [self.buttonSignOut setHidden:YES];
+    //if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) [self.buttonSignOut setHidden:NO];
+    //else
+    [self.buttonSignOut setHidden:YES];
     [self customizeAppearance];
 }
 
@@ -69,10 +72,12 @@
     
     // Restore Purchase cell
     if (kNativeSubscriptionEnabled) {
-        TableSectionDataSource *restorePurchase = [[TableSectionDataSource alloc] init];
-        restorePurchase.title = @"Restore Purchase";
-        restorePurchase.type = RestorePurchase;
-        [self.settingsDataSource addObject:restorePurchase];
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] <= 0) {
+            TableSectionDataSource *restorePurchase = [[TableSectionDataSource alloc] init];
+            restorePurchase.title = @"Restore Purchase";
+            restorePurchase.type = RestorePurchase;
+            [self.settingsDataSource addObject:restorePurchase];
+        }
     }
     
     // Version cell
@@ -159,7 +164,10 @@
 
 - (void)configureView
 {
-    self.buttonSignOut.backgroundColor = kClientColor;
+    //self.buttonSignOut.backgroundColor = kClientColor;
+    [self.buttonSignOut tintCustomizeTheme];
+    [self customizeAppearance];
+    [self.buttonSignOut round:kViewCornerRounded];
     switch (self.pageIndex.row) {
         case 0: {
             self.title = @"Settings";
@@ -423,7 +431,11 @@
             }
 
             case RestorePurchase: {
-                [self restorePurchases];
+                if ([ACStatusManager isUserSignedIn] == false) {
+                    [UIUtil showIntroViewFromViewController:self];
+                } else {
+                    [self restorePurchases];
+                }
                 break;
             }
             
@@ -462,6 +474,7 @@
 }
 
 - (void)restorePurchases {
+
     [SVProgressHUD show];
     [[ACPurchaseManager sharedInstance] restorePurchases:^{
         [SVProgressHUD showSuccessWithStatus:@"Success"];
@@ -470,6 +483,9 @@
     }];
 }
 
-
+#pragma mark - SubscriptionPlanDelegate
+- (void) subscriptionSignInDone {
+    [self restorePurchases];
+}
 
 @end
