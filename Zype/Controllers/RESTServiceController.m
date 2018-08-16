@@ -36,7 +36,6 @@
                                  kOAuthProperty_Username : username,
                                  kOAuthProperty_Password : encodedPassword,
                                  kOAuthProperty_ClientId : kOAuth_ClientId,
-                                 kOAuthProperty_ClientSecret : kOAuth_ClientSecret,
                                  kOAuthProperty_GrantType : kOAuth_GrantType,
                                  };
     NSError *error = nil;
@@ -180,7 +179,6 @@
     NSDictionary *parameters = @{
                                  kOAuthProperty_RefreshToken : refreshToken,
                                  kOAuthProperty_ClientId : kOAuth_ClientId,
-                                 kOAuthProperty_ClientSecret : kOAuth_ClientSecret,
                                  kOAuthProperty_GrantType : kOAuth_GrantTypeRefresh
                                  };
     NSMutableString *parameterString = [NSMutableString string];
