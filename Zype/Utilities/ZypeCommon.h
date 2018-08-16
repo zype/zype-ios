@@ -13,7 +13,6 @@
 //Main app configuration for connecting to Zype property
 
 #define kOAuth_ClientId @"<Client ID>"
-#define kOAuth_ClientSecret @"<Client Secret>"
 #define kAppKey @"<Zype App Key>"
 #define kRootPlaylistId @"<Root Playlist ID>"
 
@@ -278,7 +277,6 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kOAuthProperty_Email @"email"
 #define kOAuthProperty_Consumer @"consumer"
 #define kOAuthProperty_ClientId @"client_id"
-#define kOAuthProperty_ClientSecret @"client_secret"
 #define kOAuthProperty_GrantType @"grant_type"
 #define kOAuthProperty_RefreshToken @"refresh_token"
 #define kOAuthProperty_Subscription @"subscription_count"
