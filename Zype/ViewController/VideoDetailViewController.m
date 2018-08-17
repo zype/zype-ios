@@ -1952,12 +1952,20 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         // Favorite
         [[RESTServiceController sharedInstance] favoriteVideo:self.video];
         favoriteSource.title = @"Unfavorite";
-        favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        if (kAppColorLight == YES) {
+            favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesBFull"]];
+        } else {
+            favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        }
     } else {
         // Unfavorite
         [[RESTServiceController sharedInstance] unfavoriteVideo:self.video];
         favoriteSource.title = @"Favorite";
-        favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        if (kAppColorLight == YES) {
+            favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesB"]];
+        } else {
+            favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        }
     }
     [self.tableViewOptions reloadData];
 }
