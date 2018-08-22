@@ -90,7 +90,7 @@ NS_ENUM(NSInteger, ACDownloadsActionSheetButton){
 - (void)showActionSheetWithVideo:(Video *)video sources:(NSArray *)sources;
 - (void)showLiveStreamActionSheet;
 - (void)showPlayAsActionSheet;
-- (void)showPlayAsActionSheet:(NSArray *)sources;
+- (void)showPlayAsActionSheet:(NSArray *)sources playMode:(NSInteger) playMode;
 - (void)showShareActionSheetWithVideo:(Video *)video;
 - (void)showDownloadActionSheetWithVideo:(Video *)video withPlaybackSources:(NSArray *)sources;
 
