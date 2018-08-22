@@ -74,6 +74,7 @@
 - (void)syncSubscriptionPlan;
 - (void)getSubscriptionPlan:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
 - (void)createMarketplace:(NSData*)receipt planId:(NSString*)planId completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
+- (void)getManifestWithId:(NSString *)vId WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
 //Singleton
 + (instancetype)sharedInstance;

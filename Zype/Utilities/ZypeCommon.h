@@ -12,12 +12,13 @@
 
 //Main app configuration for connecting to Zype property
 
-#define kOAuth_ClientId @"<Client ID>"
-#define kAppKey @"<Zype App Key>"
-#define kRootPlaylistId @"<Root Playlist ID>"
+#define kOAuth_ClientId @"96ac73001eb2d45fbea3d1269af43b6cfacf4efa99122d63197878d13609aa94"
+#define kOAuth_ClientSecret @"5c923d380f4a860c8b1b753e2412a1b7c6a3271feff86887d7bbc30fed6983a2"
+#define kAppKey @"UxlADHfgBagOySYtTYWSbyBBGkvgf7gXyVa90wDmowe4apTkD1FD4TPwYynYOSvU"
+#define kRootPlaylistId @"5807ccdc849e2d0d11000146"
 
-#define kZypeAppId @"<Zype App ID>"
-#define kZypeSiteId @"<Zype Site ID>"
+#define kZypeAppId @"5b21713a73c3f912c60006c6"
+#define kZypeSiteId @"57c0bdb26b7f0f0d14000f38"
 
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @""
@@ -324,7 +325,8 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kConsumerByIdURL @"https://%@/consumer/%@/?acccess_token=%@"
 
-
+#define kGetManifest @"https://%@/manifest/%@?access_token=%@"
+#define kGetManifestForGuest @"https://%@/manifest/%@?app_key=%@"
 #define kPostFavorite @"https://%@/consumers/%@/video_favorites/?access_token=%@&video_id=%@"
 #define kDeleteFavorite @"https://%@/consumers/%@/video_favorites/%@/?access_token=%@"
 #define kGetSearchedVideos @"https://%@/videos?app_key=%@&q=%@&page=%@&playlist_id.inclusive=%@"

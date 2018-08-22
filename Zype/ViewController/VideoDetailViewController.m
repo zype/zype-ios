@@ -108,6 +108,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (nonatomic) BOOL bFullscreen;
 @property (strong, nonatomic) UIView* ivOverlayView;
+@property (nonatomic) NSInteger playMode;
 
 @end
 
@@ -166,6 +167,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.playMode = 2;      // both player
     
     NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
     BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
@@ -570,7 +573,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
     UIColor *brandColor = kClientColor;
-    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], self.video.short_description];
+    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], [self.video.full_description isEqualToString:@""]?self.video.short_description:self.video.full_description];
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.webViewSummary loadHTMLString:htmlString baseURL:nil];
@@ -709,40 +712,74 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)refreshPlayer{
     
     [self showActivityIndicator];
-    [self checkDownloadVideo];
-
-    if (self.isPlayerRequestPending == NO){ // prevent multiple video player requests
-        DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
-        if (self.isAudio) {
-            
-            NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
-            BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
-            
-            NSURL *url;
-            if (audioFileExists == YES && !downloadInfo.isDownloading) {
-                url = [NSURL fileURLWithPath:localAudioPath];
-                [self setupPlayer:url];
-            } else {
-                [self playStreamingAudio];
-            }
-            
-        } else {
-            
-            NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:self.video];
-            BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
-            
-            NSURL *url;
-            
-            if (videoFileExists == YES && !downloadInfo.isDownloading) {
-                url = [NSURL fileURLWithPath:localVideoPath];
-                [self setupPlayer:url];
-            } else {
-                [self playStreamingVideo];
-            }
-            
-        }
-    }
     
+    [[RESTServiceController sharedInstance] getManifestWithId:self.video.vId WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+        } else {
+            NSString* dataStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+            NSArray *responseArr = [dataStr componentsSeparatedByString:@"\n"];
+            
+            NSString *strCodec = @"";
+            if (responseArr != NULL && responseArr.count > 1) {
+                NSRange codecPos = [[responseArr objectAtIndex:1] rangeOfString:@"CODECS=\""];
+                if (codecPos.location != NSNotFound) {
+                    NSString *subStr = [[responseArr objectAtIndex:1] substringFromIndex:codecPos.location + codecPos.length];
+                    responseArr = [subStr componentsSeparatedByString:@"\""];
+                    if (responseArr != NULL && responseArr.count > 0) {
+                        strCodec = responseArr[0];
+                    }
+                }
+            }
+            
+            self.playMode = 2;
+            if ([strCodec containsString:@"avc1"]) {
+                if ([strCodec containsString:@"mp4a"]) {
+                    self.playMode = 2;
+                } else {
+                    self.playMode = 1;      // video player
+                }
+            } else {
+                if ([strCodec containsString:@"mp4a"]) {
+                    self.isAudio = YES;
+                    self.playMode = 0;      // audio player
+                }
+            }
+        }
+        
+        [self checkDownloadVideo];
+        if (self.isPlayerRequestPending == NO){ // prevent multiple video player requests
+            DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
+            if (self.isAudio) {
+                
+                NSString *localAudioPath = [ACDownloadManager localAudioPathForDownloadForVideo:self.video];
+                BOOL audioFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localAudioPath];
+                
+                NSURL *url;
+                if (audioFileExists == YES && !downloadInfo.isDownloading) {
+                    url = [NSURL fileURLWithPath:localAudioPath];
+                    [self setupPlayer:url];
+                } else {
+                    [self playStreamingAudio];
+                }
+                
+            } else {
+                
+                NSString *localVideoPath = [ACDownloadManager localPathForDownloadedVideo:self.video];
+                BOOL videoFileExists = [[NSFileManager defaultManager] fileExistsAtPath:localVideoPath];
+                
+                NSURL *url;
+                
+                if (videoFileExists == YES && !downloadInfo.isDownloading) {
+                    url = [NSURL fileURLWithPath:localVideoPath];
+                    [self setupPlayer:url];
+                } else {
+                    [self playStreamingVideo];
+                }
+                
+            }
+        }
+    }];
 }
 
 - (void)checkDownloadVideo {
@@ -943,9 +980,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             }
         }
         
-        MPChangePlaybackPositionCommand *changePlaybackPositionCommand = [[MPRemoteCommandCenter sharedCommandCenter] changePlaybackPositionCommand];
-        [changePlaybackPositionCommand addTarget:self action:@selector(progressBarTouchUpInside:)];
-        [[MPRemoteCommandCenter sharedCommandCenter].changePlaybackPositionCommand setEnabled:YES];
+        if (kCustomPlayerControls) {
+            MPChangePlaybackPositionCommand *changePlaybackPositionCommand = [[MPRemoteCommandCenter sharedCommandCenter] changePlaybackPositionCommand];
+            [changePlaybackPositionCommand addTarget:self action:@selector(progressBarTouchUpInside:)];
+            [[MPRemoteCommandCenter sharedCommandCenter].changePlaybackPositionCommand setEnabled:YES];
+        }
     }
     
     self.contentPlayhead = [[IMAAVPlayerContentPlayhead alloc] initWithAVPlayer:self.avPlayer];
@@ -1048,7 +1087,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [self.view bringSubviewToFront:self.imageThumbnail];
     [self.view bringSubviewToFront:self.adsContainerView];
     [self.view bringSubviewToFront:self.activityIndicator];
-    [self.view bringSubviewToFront:self.playerControlsView.view];
+    if (kCustomPlayerControls) [self.view bringSubviewToFront:self.playerControlsView.view];
 }
 
 - (void)setupVideoPlayerView {
@@ -1118,11 +1157,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     //if (kCustomPlayerControls){
         [self.avPlayerController.view removeFromSuperview];
-        [self.playerControlsView.view removeFromSuperview];
+        if (kCustomPlayerControls) [self.playerControlsView.view removeFromSuperview];
         [self.adsContainerView removeFromSuperview];
 
         [self.view addSubview:self.avPlayerController.view];
-        [self.view addSubview:self.playerControlsView.view];
+        if (kCustomPlayerControls) [self.view addSubview:self.playerControlsView.view];
         [self.view addSubview:self.adsContainerView];
     //}
 
@@ -2702,7 +2741,7 @@ NSString* machineName() {
 #pragma mark - OptionTableViewCellDelegate
 
 - (void)onDidPlayTapped:(OptionTableViewCell *)cell {
-    [self.actionSheetManager showPlayAsActionSheet:self.audioPlaybackSources];
+    [self.actionSheetManager showPlayAsActionSheet:self.audioPlaybackSources playMode: self.playMode];
 }
 
 - (void)onDidDownloadTapped:(OptionTableViewCell *)cell {
