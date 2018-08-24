@@ -18,6 +18,7 @@
 #import "GuestTableViewCell.h"
 #import "TimelineTableViewCell.h"
 #import "AppDelegate.h"
+#import "ACSDataManager.h"
 #import "ACDownloadManager.h"
 #import "ACSPersistenceManager.h"
 #import "ACSTokenManager.h"
@@ -76,6 +77,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (strong, nonatomic) NSTimer *timerPlayback;
 @property (strong, nonatomic) NSTimer *timerDownload;
 @property (strong, nonatomic) NSTimer *timerPolling;
+@property (strong, nonatomic) NSTimer *timerLiveEvent;
 
 @property (nonatomic) NSInteger selectedTimeline;
 @property (nonatomic) BOOL isPlaying;
@@ -140,6 +142,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         self.avPlayerController = nil;
     }
     
+}
+
+- (void)checkLiveEvents:(NSTimer*)theTimer {
+    [ACSDataManager checkForLiveStream];
 }
 
 - (void)liveStreamUpdated:(NSNotification *)notification{
@@ -208,6 +214,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.view addSubview:self.adsContainerView];
     }
     [self setupNotifications];
+    
+    // checking the state of live events
+    self.timerLiveEvent = [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(checkLiveEvents:) userInfo:nil repeats:YES];
 }
 
 - (void)configureDataSource {
