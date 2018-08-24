@@ -181,6 +181,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(liveStreamUpdated:) name:kNotificationNameLiveStreamUpdated object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     [self trackScreenName:kAnalyticsScreenNameVideoDetail];
     
@@ -395,6 +396,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)appEnterBackground:(NSNotification *)notification {
     if (self.avPlayer != nil && self.avPlayer.rate > 0.0f && !self.isAudio) {
         [self playPausePressed:self];
+    }
+    
+    if (self.isAudio) {
+        self.avPlayerController.player = nil;
+    }
+}
+
+- (void)appEnterForeground:(NSNotification *)notification {
+    if (self.isAudio) {
+        self.avPlayerController.player = self.avPlayer;
     }
 }
 
@@ -998,7 +1009,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.avPlayerController didMoveToParentViewController:self];
         self.avPlayerController.view.translatesAutoresizingMaskIntoConstraints = NO;
         
-        if (kCustomPlayerControls){
+        if (kCustomPlayerControls)
+        {
             // use custom controls
             self.avPlayerController.showsPlaybackControls = NO;
         }
