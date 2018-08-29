@@ -967,8 +967,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)setupPlayer:(NSURL *)url {
-    self.avPlayer = [[AVPlayer alloc] initWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
-
+    if (self.avPlayer == nil) {
+        self.avPlayer = [[AVPlayer alloc] initWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
+    } else {
+        [self.avPlayer replaceCurrentItemWithPlayerItem:[[AVPlayerItem alloc] initWithURL:url]];
+    }
+    
     if (self.isAudio) {
         
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
@@ -1015,8 +1019,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             // use custom controls
             self.avPlayerController.showsPlaybackControls = NO;
         }
-    } else {
-        [self.avPlayerController setPlayer:self.avPlayer];
+        
+        self.avPlayerController.updatesNowPlayingInfoCenter = NO;
     }
     
     if (kCustomPlayerControls){
