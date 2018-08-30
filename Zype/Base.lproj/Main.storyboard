@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -101,7 +101,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="kyR-fu-dV8" userLabel="No Results Label">
                                 <rect key="frame" x="187.5" y="333.5" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -292,25 +292,25 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NYr-hQ-KJJ">
                                         <rect key="frame" x="30" y="0.0" width="315" height="281.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nlp-ax-l6t">
-                                                <rect key="frame" x="0.0" y="184.5" width="315" height="26"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Create your account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nlp-ax-l6t">
+                                                <rect key="frame" x="0.0" y="154.5" width="315" height="26"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="22"/>
                                                 <color key="textColor" red="0.15294117647058825" green="0.15294117647058825" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter a valid email and password. Your account will allow access on all devices." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alc-qb-cFy">
-                                                <rect key="frame" x="0.0" y="226.5" width="315" height="55"/>
-                                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="13"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alc-qb-cFy">
+                                                <rect key="frame" x="0.0" y="196.5" width="315" height="55"/>
+                                                <string key="text">Please enter a valid email and password to create an account in order to watch subscription videos on any device. You can continue to stream free content without an account.</string>
+                                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="15"/>
                                                 <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="alc-qb-cFy" secondAttribute="bottom" id="42q-Nu-e3e"/>
                                             <constraint firstAttribute="trailing" secondItem="Nlp-ax-l6t" secondAttribute="trailing" id="5b4-TD-gFe"/>
                                             <constraint firstItem="alc-qb-cFy" firstAttribute="top" secondItem="Nlp-ax-l6t" secondAttribute="bottom" constant="16" id="5mk-5D-ye2"/>
-                                            <constraint firstAttribute="bottom" secondItem="Nlp-ax-l6t" secondAttribute="bottom" constant="71" id="7FB-uW-cF0"/>
+                                            <constraint firstAttribute="bottom" secondItem="Nlp-ax-l6t" secondAttribute="bottom" constant="131" id="7FB-uW-cF0"/>
                                             <constraint firstItem="Nlp-ax-l6t" firstAttribute="trailing" secondItem="alc-qb-cFy" secondAttribute="trailing" id="9Qe-V0-FHG"/>
                                             <constraint firstItem="Nlp-ax-l6t" firstAttribute="leading" secondItem="NYr-hQ-KJJ" secondAttribute="leading" id="fsi-3F-ci2"/>
                                             <constraint firstItem="Nlp-ax-l6t" firstAttribute="leading" secondItem="alc-qb-cFy" secondAttribute="leading" id="vBY-O3-suV"/>
@@ -474,6 +474,7 @@
                         <outlet property="credentialContainerView" destination="nQQ-2R-uKM" id="Jcr-RC-WlP"/>
                         <outlet property="emailField" destination="ML3-9Y-g9l" id="ZpS-sF-dsk"/>
                         <outlet property="fieldViewBottomConstraintY" destination="gL9-cr-Clg" id="oPm-OA-lwz"/>
+                        <outlet property="infoLabel" destination="alc-qb-cFy" id="BGm-7v-m8c"/>
                         <outlet property="passwordField" destination="qfH-Ad-GWr" id="ykv-au-hhf"/>
                         <outlet property="separateLineView" destination="V3c-lG-l2E" id="trl-30-jBy"/>
                         <outlet property="signinButton" destination="dFB-qI-ZeC" id="1p5-72-hbp"/>
@@ -2083,10 +2084,10 @@
                                 <exclude reference="CBF-QH-Vgf"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Wmz-L3-aIu"/>
                                 <exclude reference="5cf-Fw-Rmf"/>
                                 <exclude reference="05M-Ce-IVK"/>
                                 <exclude reference="RK3-Av-ZOL"/>
+                                <exclude reference="Wmz-L3-aIu"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -2095,8 +2096,8 @@
                                 <include reference="CBF-QH-Vgf"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Wmz-L3-aIu"/>
                                 <include reference="5cf-Fw-Rmf"/>
+                                <include reference="Wmz-L3-aIu"/>
                             </mask>
                         </variation>
                     </view>
