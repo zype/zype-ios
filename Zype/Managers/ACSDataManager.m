@@ -185,7 +185,7 @@
                 CLS_LOG(@"Login Parsed Object: %@", parsedObject);
                 
                 //allow notification sent directly to user
-//                [[AppDelegate appDelegate].oneSignal setSubscription:true];
+                [OneSignal setSubscription:true];
                 
                 [ACSTokenManager saveLoginAccessTokenData:data block:^(BOOL success, NSError *error) {
                     
@@ -233,7 +233,7 @@
 //                CLS_LOG(@"Login Parsed Object: %@", parsedObject);
 //                
 //                //allow notification sent directly to user
-//                //                [[AppDelegate appDelegate].oneSignal setSubscription:true];
+                [OneSignal setSubscription:true];
 //                
 //                [ACSTokenManager saveLoginAccessTokenData:data block:^(BOOL success, NSError *error) {
 //                    
@@ -310,7 +310,7 @@
     }
     [ACSPersistenceManager resetUserSettings];
     [ACDownloadManager resetDownloads];
-//    [[AppDelegate appDelegate].oneSignal setSubscription:false];
+    [OneSignal setSubscription:false];
     
 }
 
