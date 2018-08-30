@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString * full_description;
 @property (nonatomic, retain) NSString * friendly_title;
 @property (nonatomic, retain) NSString * playlistid;
+@property (nonatomic, retain) NSString * videoid;
 @property (nonatomic, retain) NSNumber * priority;
 @property (nonatomic, retain) NSString * site_id;
 @property (nonatomic, retain) NSString * title;
