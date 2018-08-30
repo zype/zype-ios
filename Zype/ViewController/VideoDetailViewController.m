@@ -407,15 +407,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self playPausePressed:self];
     }
     
-    if (self.isAudio) {
-        self.avPlayerController.player = nil;
-    }
+//    if (self.isAudio) {
+//        self.avPlayerController.player = nil;
+//    }
 }
 
 - (void)appEnterForeground:(NSNotification *)notification {
-    if (self.isAudio) {
-        self.avPlayerController.player = self.avPlayer;
-    }
+//    if (self.isAudio) {
+//        self.avPlayerController.player = self.avPlayer;
+//    }
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification
@@ -1020,7 +1020,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             self.avPlayerController.showsPlaybackControls = NO;
         }
         
-        self.avPlayerController.updatesNowPlayingInfoCenter = NO;
+    } else {
+        [self.avPlayerController setPlayer:self.avPlayer];
     }
     
     if (kCustomPlayerControls){
