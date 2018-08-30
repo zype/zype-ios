@@ -46,9 +46,9 @@
     
     //Ask users to recieve push notifications.
     //You can place this in another part of your app.
-//    if (![kOneSignalNotificationsKey isEqualToString:@""]){
-//        self.oneSignal = [[OneSignal alloc] initWithLaunchOptions:launchOptions appId:kOneSignalNotificationsKey handleNotification:nil];
-//    }
+    if (![kOneSignalNotificationsKey isEqualToString:@""]){
+        self.oneSignal = [OneSignal initWithLaunchOptions:launchOptions appId:kOneSignalNotificationsKey];
+    }
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
