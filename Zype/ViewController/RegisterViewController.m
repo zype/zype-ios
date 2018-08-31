@@ -30,6 +30,7 @@
 @property (strong, nonatomic) IBOutlet UIView *separateLineView;
 @property (strong, nonatomic) IBOutlet UIButton *termsOfUseButton;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *infoLabel;
 @property (strong, nonatomic) IBOutlet UIButton *signinButton;
 @property (strong, nonatomic) IBOutlet UIImageView *arrowImageView;
 @property (strong, nonatomic) IBOutlet UIButton *closeButton;
@@ -64,6 +65,9 @@
     [self.passwordField setAttributePlaceholder:@"Password"];
     UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
     self.titleLabel.textColor = titleColor;
+    
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
+    self.infoLabel.text = [NSString stringWithFormat:@"Please enter a valid email and password to create an account in order to watch %@ subscription videos on any device. You can continue to stream free content without an account.", appName];
     
     UIColor * termsTextColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
     NSDictionary * attributes = @{NSForegroundColorAttributeName: termsTextColor,
