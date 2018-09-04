@@ -17,6 +17,7 @@
 @dynamic full_description;
 @dynamic friendly_title;
 @dynamic playlistid;
+@dynamic videoid;
 @dynamic priority;
 @dynamic site_id;
 @dynamic title;

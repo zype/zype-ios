@@ -313,8 +313,12 @@
         
         if (kAppAppleTVLayout){
             PlaylistCollectionCell *selectedCell = [(BaseTVLayoutController *) self.episodeController playlistCellSelected];
-            NSMutableArray *videos = [NSMutableArray arrayWithArray:selectedCell.items];
-            [[segue destinationViewController] setVideos:videos withIndex:selectedCell.selectedPath];
+            if (selectedCell != nil){
+                NSMutableArray *videos = [NSMutableArray arrayWithArray:selectedCell.items];
+                [[segue destinationViewController] setVideos:videos withIndex:selectedCell.selectedPath];
+            } else {
+                [[segue destinationViewController] setDetailItem:self.selectedVideo];
+            }
         } else {
             [[segue destinationViewController] setDetailItem:self.selectedVideo];
         }

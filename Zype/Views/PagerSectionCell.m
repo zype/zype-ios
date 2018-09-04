@@ -84,7 +84,7 @@
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     ZObject *zObject = self.zObjects[index];
-    if (self.didSelectBlock) self.didSelectBlock(zObject.playlistid);
+    if (self.didSelectBlock) self.didSelectBlock(zObject);
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZObject.h"
 #import <iCarousel/iCarousel.h>
 
-typedef void (^DidSelectItemBlock)(NSString *playlist_id);
+typedef void (^DidSelectItemBlock)(ZObject *zobject);
 
 @interface PagerSectionCell : UITableViewCell<iCarouselDataSource, iCarouselDelegate>
 

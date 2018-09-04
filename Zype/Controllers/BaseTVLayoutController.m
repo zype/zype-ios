@@ -79,6 +79,7 @@
 //    NSLog(@"%ld", self.indexPathController.dataModel.numberOfSections);
     
     [self.tableView reloadData];
+    self.playlistCellSelected = nil; // reset when reloading table. should be empty
 }
 
 
@@ -161,16 +162,23 @@
         Pager *pager = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
         NSArray *zObjects = [pager zObjectsFromPager];
         [cell setPager:zObjects];
-        cell.didSelectBlock = ^(NSString *playlist_id) {
-            if (playlist_id == nil) {
-                return;
-            }
-            
-            Playlist *playlist = [ACSPersistenceManager playlistWithID:playlist_id];
-            if (playlist != nil) {
-                [self.delegate episodeControllerDidSelectItem:playlist];
+        cell.didSelectBlock = ^(ZObject *zobject) {
+            if (zobject.videoid){
+                Video *video = [ACSPersistenceManager videoWithID:zobject.videoid];
+                if (video != nil) {
+                    [self.delegate episodeControllerDidSelectItem:video];
+                } else {
+                    [self getVideo:zobject.videoid];
+                }
+            } else if (zobject.playlistid) {
+                Playlist *playlist = [ACSPersistenceManager playlistWithID:zobject.playlistid];
+                if (playlist != nil) {
+                    [self.delegate episodeControllerDidSelectItem:playlist];
+                } else {
+                    [self getPlaylist:zobject.playlistid];
+                }
             } else {
-                [self getPlaylist:playlist_id];
+                return;
             }
         };
         
@@ -265,6 +273,32 @@
     if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
         [cell setLayoutMargins:UIEdgeInsetsZero];
     }
+}
+
+#pragma mark - Video
+
+- (void)getVideo:(NSString *)videoID {
+    [SVProgressHUD show];
+    [[RESTServiceController sharedInstance] loadVideoWithId:videoID withCompletionHandler:^(NSData *data, NSError *error) {
+        [SVProgressHUD dismiss];
+        if (error == nil){
+            Video *videoInDB = [ACSPersistenceManager videoWithID:videoID];
+            NSError *localError = nil;
+            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+            
+            if (videoInDB != nil) {
+                [self.delegate episodeControllerDidSelectItem:videoInDB];
+            } else {
+                if (localError == nil){
+                    NSDictionary *videoData = [parsedObject objectForKey:@"response"][0];
+                    
+                    Video *newVideo = [ACSPersistenceManager newVideo];
+                    [ACSPersistenceManager saveVideoInDB:newVideo WithData:videoData];
+                    [self.delegate episodeControllerDidSelectItem:newVideo];
+                }
+            }
+        }
+    }];
 }
 
 #pragma mark - PlaylistCollectionCell
