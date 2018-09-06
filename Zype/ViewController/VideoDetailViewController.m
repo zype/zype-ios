@@ -161,6 +161,7 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
     self = [super initWithCoder:(NSCoder *)coder];
     if (self) {
         _sessionManager = [GCKCastContext sharedInstance].sessionManager;
+        [_sessionManager addListener:self];
         _castMediaController = [[GCKUIMediaController alloc] init];
         _volumeController = [[GCKUIDeviceVolumeController alloc] init];
     }
@@ -1726,8 +1727,7 @@ GCKRemoteMediaClientListener, GCKRequestDelegate>
         if (hasConnectedCastSession)
             [self.avPlayer pause];
     }
-        [self resetToBeginning];
-    }
+    [self resetToBeginning];
 }
 
 - (void)resetToBeginning {
