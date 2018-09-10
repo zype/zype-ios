@@ -138,7 +138,7 @@ Enable native subscription: `#define kNativeSubscriptionEnabled YES` Not recomme
 
 Disable native subscription: `#define kNativeSubscriptionEnabled NO`
 
-(Optional)Setting up OneSignal Push Notification
+__(Optional)Setting up OneSignal Push Notification__
 
 1. Create account and follow OneSignal setup for iOS https://documentation.onesignal.com/docs/setup
 2. You would need a key which you would insert in kOneSignalNotificationsKey
@@ -147,7 +147,13 @@ Disable native subscription: `#define kNativeSubscriptionEnabled NO`
 
 By linking your app with OneSignal you would be able to sent Push notifcations to your users via OneSignal portal.
 
-(Optional)Setting up Google Analytics
+__(Optional)Setting up AWS Pinpoint Push Notification__
+
+You can configure your app to use AWS Pinpoint for push notifications. You can enable AWS Pinpoint by changing `#define kEnableAwsPinpoint NO` to `#define kEnableAwsPinpoint YES`
+
+ For more information, [see the documentation here](https://docs.google.com/document/d/1DUrNVUXZo-a3pmeAymEuIoTrw3ZsdJoi4GfQ1QHY4So/edit?usp=sharing).
+
+__(Optional)Setting up Google Analytics__
 1. Create new property in https://analytics.google.com/analytics/web
 2. Insert key from Google Analytics in kGoogleAnalyticsTracker
 
