@@ -49,6 +49,12 @@
     if (![kOneSignalNotificationsKey isEqualToString:@""]){
         self.oneSignal = [OneSignal initWithLaunchOptions:launchOptions appId:kOneSignalNotificationsKey];
     }
+    
+    if (kEnableAwsPinpoint){
+        AWSPinpointConfiguration *pinpointConfig = [AWSPinpointConfiguration defaultPinpointConfigurationWithLaunchOptions:launchOptions];
+        self.pinpoint = [AWSPinpoint pinpointWithConfiguration:pinpointConfig];
+    }
+    
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
@@ -214,6 +220,8 @@
     UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeBadge | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+    
+    if (kEnableAwsPinpoint) [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 #ifdef __IPHONE_8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
@@ -227,11 +235,15 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)tokenData
 {
-    
-    
-    
+    if (self.pinpoint != nil) [self.pinpoint.notificationManager interceptDidRegisterForRemoteNotificationsWithDeviceToken:tokenData];
 }
 
+- (void)application:(UIApplication *)application
+    didReceiveRemoteNotification:(NSDictionary *)userInfo
+    fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
+    if (self.pinpoint != nil) [self.pinpoint.notificationManager interceptDidReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
 
 #pragma mark - Tab Bar Delegate
 
