@@ -134,6 +134,7 @@
 		A1B3C4172032268300784F64 /* ACAnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B3C4162032268300784F64 /* ACAnalyticsManager.m */; };
 		A1B3C41E203227E100784F64 /* libAKAMMediaExtensions-AV.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B3C41B203227E100784F64 /* libAKAMMediaExtensions-AV.a */; };
 		A1B3C420203227E100784F64 /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = A1B3C41D203227E100784F64 /* ReadMe */; };
+		E13015D9214713740066BEAA /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = E13015D8214713740066BEAA /* awsconfiguration.json */; };
 		E131B8EE20BE12C60074ACF5 /* PlayerControlsOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */; };
 		E131B8F020BE132B0074ACF5 /* PlayerControlsOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */; };
 		E14EABA520DD78B600625E8C /* ZypeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14EABA420DD78B600625E8C /* ZypeUITests.swift */; };
@@ -373,6 +374,7 @@
 		B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EpisodeControllerDelegate.h; path = Protocols/EpisodeControllerDelegate.h; sourceTree = "<group>"; };
 		B96FF88A1B17B535007CA447 /* ZypeDBMappingModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ZypeDBMappingModel.xcmappingmodel; sourceTree = "<group>"; };
 		B9C5863E1B1CC60A00647936 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E13015D8214713740066BEAA /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 		E131B8EC20BE12C60074ACF5 /* PlayerControlsOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PlayerControlsOverlay.h; path = Views/PlayerControlsOverlay.h; sourceTree = "<group>"; };
 		E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PlayerControlsOverlay.m; path = Views/PlayerControlsOverlay.m; sourceTree = "<group>"; };
 		E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlayerControlsOverlay.xib; path = Views/PlayerControlsOverlay.xib; sourceTree = "<group>"; };
@@ -729,6 +731,7 @@
 		F1BB52831A76D7D100E901F1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E13015D8214713740066BEAA /* awsconfiguration.json */,
 				F1BB52C21A7819A300E901F1 /* Fonts */,
 				F1BB52841A76D7D100E901F1 /* Info.plist */,
 				F1BB52851A76D7D100E901F1 /* main.m */,
@@ -1062,6 +1065,7 @@
 				FA1940361FCC75AF005CE292 /* PlaylistCollectionCell.xib in Resources */,
 				A13AF3951D36D3B700DDA006 /* Oswald-Bold.ttf in Resources */,
 				A13AF39D1D36D3B700DDA006 /* Oswald-Light.ttf in Resources */,
+				E13015D9214713740066BEAA /* awsconfiguration.json in Resources */,
 				A1B3C420203227E100784F64 /* ReadMe in Resources */,
 				A13AF2ED1D36995000DDA006 /* VideoTableViewCell.xib in Resources */,
 				A13AF2E71D36995000DDA006 /* GuestTableViewCell.xib in Resources */,

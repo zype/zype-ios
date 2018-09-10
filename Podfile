@@ -1,5 +1,7 @@
 platform :ios, '9.0'
 
+use_modular_headers!
+
 target "Zype" do
 pod 'SVProgressHUD' #progress indicator
 pod 'SDWebImage' #image downloading/caching
@@ -18,4 +20,5 @@ pod 'Fabric'
 pod 'Crashlytics'
 pod 'GoogleAds-IMA-iOS-SDK', '~> 3.2'
 
+pod 'AWSPinpoint', '~> 2.6.6'
 end

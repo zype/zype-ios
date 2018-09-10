@@ -10,11 +10,14 @@
 #import "Video.h"
 #import "KeychainItemWrapper.h"
 #import <OneSignal/OneSignal.h>
+#import <AWSCore/AWSCore.h>
+#import <AWSPinpoint/AWSPinpoint.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) OneSignal *oneSignal;
+@property (strong, nonatomic) AWSPinpoint *pinpoint;
 
 @property (strong, nonatomic) KeychainItemWrapper *keychainItem;
 @property (copy, nonatomic) void (^backgroundSessionCompletionHandler)(void);

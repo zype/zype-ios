@@ -20,9 +20,13 @@
 #define kZypeSiteId @"<Zype Site ID>"
 
 //OneSignal configuration for Push notifications
-#define kOneSignalNotificationsKey @""
+#define kOneSignalNotificationsKey @"" // Leave empty to not use One Signal
 //Google Analytics configuration
 #define kGoogleAnalyticsTracker @""
+// AWS Pinpoint (Push Notifications)
+//     Replace Zype/awsconfiguration.json before enabling.
+//     App crashes when not configuration file is not valid
+#define kEnableAwsPinpoint NO
 
 //Social links on settings screen
 #define kACFacebook @"https://www.facebook.com/<your_branch>"
@@ -84,7 +88,7 @@
 
 #define kViewCornerRounded 2.0f
 
-#define kZypeTemplateVersion @"1.6.2"
+#define kZypeTemplateVersion @"1.6.3"
 
 #pragma mark - Base settings
 
