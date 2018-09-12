@@ -201,6 +201,11 @@
         return @"Please fill out the missing fields and try again.";
     }
     
+    NSString *trimmedPassword = [self.passwordField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (![self.passwordField.text isEqualToString:trimmedPassword]) {
+        return @"Password cannot include spaces.";
+    }
+    
     if (![self.emailField.text validateEmail]) {
         return @"Please enter a valid email address and try again.";
     }
