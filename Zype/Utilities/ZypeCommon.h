@@ -88,7 +88,7 @@
 
 #define kViewCornerRounded 2.0f
 
-#define kZypeTemplateVersion @"1.6.3"
+#define kZypeTemplateVersion @"1.6.4"
 
 #pragma mark - Base settings
 

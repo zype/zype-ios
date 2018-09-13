@@ -32,7 +32,7 @@
             
         } else {
             
-            [output appendFormat:@"%%%02X", thisChar];
+            [output appendFormat:@"%c", thisChar];
             
         }
         
