@@ -51,6 +51,7 @@
 @property (nonatomic, retain) id zobject_ids;
 @property (nonatomic, retain) id segments;
 @property (nonatomic, retain) id keywords;
+@property (nonatomic, retain) id images;
 @property (nonatomic, retain) NSString * keywordsString;
 @property (nonatomic, retain) NSString * zobjectString;
 @property (nonatomic, retain) NSNumber * playTime;
@@ -79,6 +80,10 @@
 @end
 
 @interface keywords : NSValueTransformer
+
+@end
+
+@interface images: NSValueTransformer
 
 @end
 
