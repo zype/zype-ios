@@ -117,7 +117,8 @@
         [madiaItemCell setPlaylist:playlist];
     } else if ([self.items[indexPath.row] isKindOfClass:[Video class]]) {
         Video *video = self.items[indexPath.row];
-        [madiaItemCell setVideo:video];
+        Boolean *usePoster = [self.currentPlaylist.thumbnail_layout isEqualToString:@"poster"];
+        [madiaItemCell setVideo:video withPoster:usePoster];
     }
 }
 

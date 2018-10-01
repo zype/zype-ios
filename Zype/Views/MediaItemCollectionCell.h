@@ -16,6 +16,7 @@
 
 - (void)setPlaylist:(Playlist *)playlist;
 - (void)setVideo:(Video *)video;
+- (void)setVideo:(Video *)video withPoster:(Boolean *)usePoster;
 - (void)setZObject:(ZObject *)zObject;
 
 @end

@@ -64,11 +64,50 @@
     [self.placeholderView setImage:[UIImage imageNamed:@"play-placeholder"]];
     [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
     
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (image) {
+            [self.placeholderView setHidden:YES];
+            [self.coverImageView setImage:image];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image];
+        } else {
+            [self.placeholderView setHidden:NO];
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (image) {
+                    [self.placeholderView setHidden:YES];
+                } else {
+                    [self.placeholderView setHidden:NO];
+                }
+            }];
+        }
+    }];
+    
+    if ([video.subscription_required intValue] == 1) {
+        [self.iconLockedView setHidden:NO];
+        NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
+        if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
+            self.iconLockedView.image = [[UIImage imageNamed:@"icon-unlock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            if (kUnlockTransparentEnabled == YES) {
+                [self.iconLockedView setTintColor:UIColor.clearColor];
+            } else {
+                [self.iconLockedView setTintColor:kUnlockColor];
+            }
+        } else {
+            self.iconLockedView.image = [[UIImage imageNamed:@"icon-lock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.iconLockedView setTintColor:kLockColor];
+        }
+    } else {
+        [self.iconLockedView setHidden:YES];
+    }
+}
+
+- (void)setVideo:(Video *)video withPoster:(Boolean)usePoster {
+    self.titleLabel.text = video.title;
+    [self.placeholderView setImage:[UIImage imageNamed:@"play-placeholder"]];
+    [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
+    
     NSString *thumbnailUrl;
     if (kAppAppleTVLayout) {
-        Playlist *playlist = video.playlistFromVideo;
-        
-        if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
+        if (usePoster) {
             for (id image in video.images){
                 NSString *imageLayout = image[@"layout"];
                 if (imageLayout != nil && [imageLayout isEqualToString: @"poster"]) {
