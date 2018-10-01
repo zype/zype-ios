@@ -63,7 +63,27 @@
     self.titleLabel.text = video.title;
     [self.placeholderView setImage:[UIImage imageNamed:@"play-placeholder"]];
     [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    
+    NSString *thumbnailUrl;
+    if (kAppAppleTVLayout) {
+        Playlist *playlist = video.playlistFromVideo;
+        
+        if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
+            for (id image in video.images){
+                NSString *imageLayout = image[@"layout"];
+                if (imageLayout != nil && [imageLayout isEqualToString: @"poster"]) {
+                    thumbnailUrl = image[@"url"];
+                    break;
+                }
+            }
+            
+            if (thumbnailUrl == nil) thumbnailUrl = video.thumbnailUrl;
+        } else {
+            thumbnailUrl = video.thumbnailUrl;
+        }
+    }
+    
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:thumbnailUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             [self.placeholderView setHidden:YES];
             [self.coverImageView setImage:image];

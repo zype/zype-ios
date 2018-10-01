@@ -49,6 +49,7 @@
 @dynamic zobject_ids;
 @dynamic segments;
 @dynamic keywords;
+@dynamic images;
 @dynamic keywordsString;
 @dynamic zobjectString;
 @dynamic playTime;
@@ -166,6 +167,30 @@
 @end
 
 @implementation keywords
+
++ (Class)transformedValueClass
+{
+    return [NSArray class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue:(id)value
+{
+    return [NSKeyedArchiver archivedDataWithRootObject:value];
+}
+
+- (id)reverseTransformedValue:(id)value
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+}
+
+@end
+
+@implementation images
 
 + (Class)transformedValueClass
 {
