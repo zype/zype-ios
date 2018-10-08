@@ -165,6 +165,26 @@
     [dataTask resume];
 }
 
+- (void)getTokenInfo:(NSString *)accessToken WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
+{
+    NSString *urlAsString = [NSString stringWithFormat:kOAuth_GetTokenInfo, KOAuth_GetTokenDomain, accessToken];
+    
+    CLS_LOG(@"URL AS STRING: %@", urlAsString);
+    
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+                                      {
+                                          if (completionHandler)
+                                          {
+                                              completionHandler(data, response, error);
+                                              CLS_LOG(@"SAVE CONSUMER ID RESPONSE: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
+                                          }
+                                      }];
+    [dataTask resume];
+}
+
 - (void)refreshAccessTokenWithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler
 {
     // Prepare parameters

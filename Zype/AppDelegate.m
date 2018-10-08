@@ -22,6 +22,7 @@
 #import "GAI.h"
 #import "ACPurchaseManager.h"
 #import "ACAnalyticsManager.h"
+#import "ACSTokenManager.h"
 
 #import "UIColor+AC.h"
 
@@ -99,6 +100,21 @@
     //[ACSDataManager checkForLiveStream];
     
     if ([ACStatusManager isUserSignedIn] == YES) {
+        // check if token is still valid
+        [ACSTokenManager accessToken:^(NSString *token, NSError *error) {
+            // token auto-refreshes if expired
+            if (token){
+                [[RESTServiceController sharedInstance] getTokenInfo:token WithCompletionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    if (response){
+                        long statusCode = [((NSHTTPURLResponse *)response) statusCode];
+                        if (statusCode == 401) {
+                            [ACSDataManager logout]; // invalid access token
+                        }
+                    }
+                }];
+            }
+        }];
+        
         [ACSDataManager loadUserInfo];
     }
     
