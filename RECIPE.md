@@ -118,9 +118,7 @@ setting to yes will synchronize favorites with users Zype account, so it is avai
 
 `define kSubscribeToWatchAdFree YES` not recommended
 
-seetting to yes will show an extra button where users would be able to login. If users are logged in and have subscription the ads will not be shown. Please consult with
-
-Zype support on how to properly configure this feature in your property.
+setting to yes will show an extra button where users would be able to login. If users are logged in and have subscription the ads will not be shown. Please consult with Zype support on how to properly configure this feature in your property.
 
 5. Downloads functionality for offline video playback
 
