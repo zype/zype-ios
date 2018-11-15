@@ -328,7 +328,8 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 
 #define kConsumerByIdURL @"https://%@/consumer/%@/?acccess_token=%@"
 
-
+#define kGetManifest @"https://%@/manifest/%@?access_token=%@"
+#define kGetManifestForGuest @"https://%@/manifest/%@?app_key=%@"
 #define kPostFavorite @"https://%@/consumers/%@/video_favorites/?access_token=%@&video_id=%@"
 #define kDeleteFavorite @"https://%@/consumers/%@/video_favorites/%@/?access_token=%@"
 #define kGetSearchedVideos @"https://%@/videos?app_key=%@&q=%@&page=%@&playlist_id.inclusive=%@"

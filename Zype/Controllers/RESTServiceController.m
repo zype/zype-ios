@@ -817,6 +817,27 @@
     
 }
 
+- (void)getManifestWithId:(NSString *)vId WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler{
+    
+    [ACSTokenManager accessToken:^(NSString *token, NSError *error){
+        NSString *urlAsString;
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            urlAsString = [NSString stringWithFormat:kGetManifest, kApiPlayerDomain, vId, token];
+        } else {
+            urlAsString = [NSString stringWithFormat:kGetManifestForGuest, kApiPlayerDomain, vId, kAppKey];
+        }
+        
+        NSURL *url = [NSURL withString:urlAsString];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (completionHandler) completionHandler(data, response, error);
+        }];
+        [dataTask resume];
+        
+    }];
+    
+}
 
 #pragma mark - Playback Source
 

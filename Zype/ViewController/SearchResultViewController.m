@@ -112,6 +112,12 @@
     
     self.tableView.tableFooterView = [UIView new];
     
+    if (kAppColorLight == YES) {
+        [self.noResultsLabel setTextColor: UIColor.blackColor];
+    } else {
+        [self.noResultsLabel setTextColor: UIColor.whiteColor];
+    }
+    
 }
 
 #pragma mark - UITextField Delegate Methods
