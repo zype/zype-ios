@@ -60,8 +60,9 @@
 #define kDownloadsForAllUsersEnabled YES
 
 // Enable Zype Marketplace Connect
+// NOTE: This is a beta feature that REQUIRES Zype to configure. Please reach out to Zype Support for help on setting up this feature.
 #define kNativeSubscriptionEnabled NO
-// Provide the Zype Plan IDs linked ot native purchases
+// Provide the Zype Plan IDs linked to native purchases
 #define kZypeSubscriptionIds [NSArray arrayWithObjects: @"monthly_plan_id", @"yearly_plan_id", nil]
 
 // If the Video is a ZypeLive video enable status polling
