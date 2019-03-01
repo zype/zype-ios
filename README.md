@@ -35,13 +35,12 @@ A detailed installation guide can be found in our [iOS app publishing recipe](ht
 
 ## Unsupported Features
 
-- Midroll ads
 - Closed Caption Support
 - Native SVOD via In App Purchases
 
 ## Monetizations Supported
 
-- Pre-roll Ads (VAST)
+- Pre-roll and midroll Ads (VAST)
 - Universal SVOD via login
 
 ## Creating a new iOS app based on the Zype Template
