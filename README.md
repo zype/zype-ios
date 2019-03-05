@@ -26,22 +26,10 @@ A detailed installation guide can be found in our [iOS app publishing recipe](ht
 
 ## Supported Features
 
-- Populates your app with content from enhanced playlists
-- Video Search
-- Live Streaming videos
-- Video Favorites 
-- Dynamic theme colors
-- Resume watch functionality
+You can review supported monetization and features by visiting Zype's help center:
 
-## Unsupported Features
-
-- Closed Caption Support
-- Native SVOD via In App Purchases
-
-## Monetizations Supported
-
-- Pre-roll and midroll Ads (VAST)
-- Universal SVOD via login
+- [Supported Monetization per App Template](https://support.zype.com/hc/en-us/articles/115013246287)
+- [Supported Major Feature per App Template](https://support.zype.com/hc/en-us/articles/115013381648)
 
 ## Creating a new iOS app based on the Zype Template
 
