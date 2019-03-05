@@ -403,6 +403,8 @@
         // only select "mobile" image if device is not iPad
         if ([[dict valueForKey:kAppKey_Layout] isEqualToString:layout] && [[dict valueForKey:kAppKey_Title] isEqualToString:@"mobile"] && UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
             url = [dict valueForKey:kAppKey_Url];
+        } else if ([[dict valueForKey:kAppKey_Layout] isEqualToString:layout] && kAppAppleTVLayout) { // if poster
+            url = [dict valueForKey:kAppKey_Url];
         }
 
     }
