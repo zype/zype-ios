@@ -39,6 +39,7 @@
 @property (nonatomic, retain) NSNumber * featured;
 @property (nonatomic, retain) NSNumber * mature_content;
 @property (nonatomic, retain) NSNumber * subscription_required;
+@property (nonatomic, retain) NSNumber * registration_required;
 @property (nonatomic, retain) NSNumber * downloadTaskId;
 @property (nonatomic, retain) NSNumber * isDownload;
 @property (nonatomic, retain) NSNumber * isFavorite;
