@@ -1,9 +1,8 @@
 //
-//  SignInViewController.m
+//  WatcherSignInViewController.m
 //  Zype
 //
-//  Created by ZypeTech on 3/2/15.
-//  Copyright (c) 2015 Zype. All rights reserved.
+//  Created by Christian on 26.03.19.
 //
 
 #import <Crashlytics/Crashlytics.h>
@@ -17,7 +16,7 @@
 #import "UIView+UIView_CustomizeTheme.h"
 #import "UIViewController+AC.h"
 #import "WatcherSignUpViewController.h"
-#import "IntroViewController.h"
+#import "WatcherIntroViewController.h"
 
 @interface WatcherSignInViewController ()
 
@@ -318,7 +317,7 @@
 }
 
 - (void)dismissController {
-    if ([self.presentingViewController isKindOfClass:[IntroViewController class]]) {
+    if ([self.presentingViewController isKindOfClass:[WatcherIntroViewController class]]) {
         [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     } else if ([self.presentingViewController isKindOfClass:[WatcherSignUpViewController class]]) {
         [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];

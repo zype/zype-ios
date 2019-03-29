@@ -3,7 +3,6 @@
 //  Zype
 //
 //  Created by Christian on 26.03.19.
-//  Copyright © 2017 Zype. All rights reserved.
 //
 
 #import "WatcherIntroViewController.h"

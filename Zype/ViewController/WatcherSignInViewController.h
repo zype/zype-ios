@@ -1,9 +1,8 @@
 //
-//  SignInViewController.h
+//  WatcherSignInViewController.h
 //  Zype
 //
-//  Created by ZypeTech on 3/2/15.
-//  Copyright (c) 2015 Zype. All rights reserved.
+//  Created by Christian on 26.03.19.
 //
 
 #import <UIKit/UIKit.h>

@@ -1,9 +1,8 @@
 //
-//  RegisterViewController.m
+//  WatcherSignUpViewController.m
 //  Zype
 //
-//  Created by Александр on 11.04.17.
-//  Copyright © 2017 Zype. All rights reserved.
+//  Created by Christian on 26.03.19.
 //
 
 #import "WatcherSignUpViewController.h"
@@ -17,8 +16,6 @@
 #import "UIView+UIView_CustomizeTheme.h"
 #import "CustomizeThemeTextField.h"
 #import "WatcherSignInViewController.h"
-#import "TabBarViewController.h"
-#import "MoreViewController.h"
 
 @interface WatcherSignUpViewController ()
 
@@ -206,21 +203,6 @@
     }
     
     return errorString;
-}
-
-#pragma mark - Other methods
-
-- (BOOL)isFromMoreControllerPresented {
-    if ([[UIApplication sharedApplication].keyWindow.rootViewController isKindOfClass:[TabBarViewController class]]) {
-        TabBarViewController *tabController = (TabBarViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-        UINavigationController *navController = (UINavigationController *)tabController.selectedViewController;
-        if ([navController.topViewController isKindOfClass:[MoreViewController class]]) {
-            return YES;
-        }
-        
-    }
-    
-    return NO;
 }
 
 #pragma mark - Register
