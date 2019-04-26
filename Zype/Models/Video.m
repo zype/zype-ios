@@ -37,6 +37,7 @@
 @dynamic featured;
 @dynamic mature_content;
 @dynamic subscription_required;
+@dynamic registration_required;
 @dynamic downloadTaskId;
 @dynamic isDownload;
 @dynamic isFavorite;

@@ -36,6 +36,9 @@
 		780AC6FE1BDFD284007F1119 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52C81A7819BC00E901F1 /* OpenSans-Light.ttf */; };
 		780AC6FF1BDFD284007F1119 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52C41A7819BC00E901F1 /* OpenSans-BoldItalic.ttf */; };
 		780AC7021BDFD284007F1119 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52C51A7819BC00E901F1 /* OpenSans-ExtraBold.ttf */; };
+		7D385286224AB38600A22BFC /* WatcherIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D385284224AB38600A22BFC /* WatcherIntroViewController.m */; };
+		7D38528B224AB54300A22BFC /* WatcherSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D385288224AB54200A22BFC /* WatcherSignInViewController.m */; };
+		7D38528C224AB54300A22BFC /* WatcherSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D38528A224AB54300A22BFC /* WatcherSignUpViewController.m */; };
 		A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A10797481D4015F700F84B61 /* PlaylistCollectionViewCell.m */; };
 		A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10797491D4015F700F84B61 /* PlaylistCollectionViewCell.xib */; };
 		A1149D851D89AB200021646B /* ACAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1149D841D89AB200021646B /* ACAdManager.m */; };
@@ -191,6 +194,12 @@
 		0DD0AEA7B5AE6D1C598FD3F3 /* Pods-Zype.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zype.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Zype/Pods-Zype.debug.xcconfig"; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D385284224AB38600A22BFC /* WatcherIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherIntroViewController.m; path = ViewController/WatcherIntroViewController.m; sourceTree = "<group>"; };
+		7D385285224AB38600A22BFC /* WatcherIntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WatcherIntroViewController.h; path = ViewController/WatcherIntroViewController.h; sourceTree = "<group>"; };
+		7D385287224AB54200A22BFC /* WatcherSignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WatcherSignInViewController.h; path = ViewController/WatcherSignInViewController.h; sourceTree = "<group>"; };
+		7D385288224AB54200A22BFC /* WatcherSignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherSignInViewController.m; path = ViewController/WatcherSignInViewController.m; sourceTree = "<group>"; };
+		7D385289224AB54300A22BFC /* WatcherSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WatcherSignUpViewController.h; path = ViewController/WatcherSignUpViewController.h; sourceTree = "<group>"; };
+		7D38528A224AB54300A22BFC /* WatcherSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherSignUpViewController.m; path = ViewController/WatcherSignUpViewController.m; sourceTree = "<group>"; };
 		963FC4151AC9C54700CD2C19 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		963FC41B1AC9C56600CD2C19 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9677B76A1ACB11FC0043515D /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
@@ -847,6 +856,12 @@
 		F1BB52AE1A76D9B800E901F1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7D385287224AB54200A22BFC /* WatcherSignInViewController.h */,
+				7D385288224AB54200A22BFC /* WatcherSignInViewController.m */,
+				7D385289224AB54300A22BFC /* WatcherSignUpViewController.h */,
+				7D38528A224AB54300A22BFC /* WatcherSignUpViewController.m */,
+				7D385285224AB38600A22BFC /* WatcherIntroViewController.h */,
+				7D385284224AB38600A22BFC /* WatcherIntroViewController.m */,
 				E1C884B120B49718008D9184 /* UserPreferencesViewController.h */,
 				E1C884B220B49718008D9184 /* UserPreferencesViewController.m */,
 				A11CBA4C1E78B5FD0006FC40 /* TabBarViewController.h */,
@@ -1014,6 +1029,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1100,8 +1116,8 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-frameworks.sh",
-				"${PODS_ROOT}/GoogleAds-IMA-iOS-SDK/GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-Zype/Pods-Zype-frameworks.sh",
+				"${PODS_ROOT}/GoogleAds-IMA-iOS-SDK/GoogleInteractiveMediaAds.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1109,7 +1125,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Zype/Pods-Zype-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2BF6A0A518748AED5DDC619B /* [CP] Copy Pods Resources */ = {
@@ -1118,7 +1134,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Zype/Pods-Zype-resources.sh",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -1127,7 +1143,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Zype/Pods-Zype-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Zype/Pods-Zype-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		675B4C01D45986A8FD14DF51 /* [CP] Check Pods Manifest.lock */ = {
@@ -1169,6 +1185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */,
+				7D385286224AB38600A22BFC /* WatcherIntroViewController.m in Sources */,
 				780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */,
 				FA5029041FDE8FB0003A1AB1 /* BaseTVLayoutController.m in Sources */,
 				A13AF2BF1D36985A00DDA006 /* Favorite.m in Sources */,
@@ -1185,6 +1202,7 @@
 				A13AF3201D369AB300DDA006 /* BaseCollectionController.m in Sources */,
 				A13AF3221D369AB300DDA006 /* EpisodeController.m in Sources */,
 				A13AF36A1D369D1F00DDA006 /* NSString+AC.m in Sources */,
+				7D38528C224AB54300A22BFC /* WatcherSignUpViewController.m in Sources */,
 				A13AF3541D369CC600DDA006 /* ACSAlertViewManager.m in Sources */,
 				A13AF3171D369A2C00DDA006 /* VideoDetailViewController.m in Sources */,
 				A1149D851D89AB200021646B /* ACAdManager.m in Sources */,
@@ -1256,6 +1274,7 @@
 				E1C884AD20B4969F008D9184 /* UserPreferenceCellDataSource.m in Sources */,
 				A13AF2C61D36985A00DDA006 /* Video.m in Sources */,
 				FA4BA32C1EF075B9004985F6 /* SubscriptActiveCell.m in Sources */,
+				7D38528B224AB54300A22BFC /* WatcherSignInViewController.m in Sources */,
 				E131B8EE20BE12C60074ACF5 /* PlayerControlsOverlay.m in Sources */,
 				A13AF2E51D36995000DDA006 /* FavoriteTableViewCell.m in Sources */,
 				FAA90E051F7479D000C247D3 /* AVPlayerViewController+AVPlayerViewController_Transition.m in Sources */,

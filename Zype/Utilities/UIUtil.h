@@ -24,6 +24,8 @@
 + (void)showSignInViewFromViewController:(UIViewController *)viewController;
 + (void)showSignUpViewFromViewController:(UIViewController *)viewController;
 + (void)showIntroViewFromViewController:(UIViewController *)viewController;
++ (void)showWatcherSignInViewFromViewController:(UIViewController *)viewController;
++ (void)showWatcherIntroViewFromViewController:(UIViewController *)viewController;
 + (void)showSubscriptionViewFromViewController:(UIViewController *)viewController;
 + (void)showTermOfServicesFromViewController:(UIViewController *)viewController;
 + (void)loadVideosFromPlaylist:(NSString *)playlistId fromViewController:(UIViewController *)viewController;

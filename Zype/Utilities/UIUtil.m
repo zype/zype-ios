@@ -17,6 +17,8 @@
 #import "HomeViewController.h"
 #import "VideosViewController.h"
 #import "IntroViewController.h"
+#import "WatcherIntroViewController.h"
+#import "WatcherSignInViewController.h"
 #import "SubsciptionViewController.h"
 #import "RegisterViewController.h"
 #import "SettingsViewController.h"
@@ -183,6 +185,26 @@
         introViewController.planDelegate = (HomeViewController*)viewController;
     }
     [viewController presentViewController:introViewController animated:YES completion:nil];
+}
+
++ (void)showWatcherIntroViewFromViewController:(UIViewController *)viewController
+{
+    WatcherIntroViewController *watcherIntroViewController = (WatcherIntroViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"WatcherIntroViewController"];
+    if ([viewController isKindOfClass:[BaseViewController class]]) {
+        watcherIntroViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    } else if ([viewController isKindOfClass:[HomeViewController class]]) {
+        watcherIntroViewController.planDelegate = (HomeViewController*)viewController;
+    }
+    [viewController presentViewController:watcherIntroViewController animated:YES completion:nil];
+}
+
++ (void)showWatcherSignInViewFromViewController:(UIViewController *)viewController
+{
+    WatcherSignInViewController *signInViewController = (WatcherSignInViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"WatcherSignInViewController"];
+    if ([viewController isKindOfClass:[BaseViewController class]]) {
+        signInViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    }
+    [viewController presentViewController:signInViewController animated:YES completion:nil];
 }
 
 + (void)showSubscriptionViewFromViewController:(UIViewController *)viewController

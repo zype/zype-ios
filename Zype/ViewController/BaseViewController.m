@@ -319,6 +319,11 @@
             //logic for livestream can be inserted here
         }
         
+        //check for video for registration
+        if ([ACStatusManager isUserSignedIn] == NO && self.selectedVideo.registration_required.intValue == 1){
+            [UIUtil showWatcherIntroViewFromViewController:self];
+            return;
+        }
         //check for video with subscription
         if (kNativeSubscriptionEnabled == NO) {
             if ([ACStatusManager isUserSignedIn] == false && self.selectedVideo.subscription_required.intValue == 1) {
