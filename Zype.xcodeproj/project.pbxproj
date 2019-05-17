@@ -9,6 +9,18 @@
 /* Begin PBXBuildFile section */
 		05CEB5BC20F4CD2A005F1FAB /* PrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CEB5BB20F4CD2A005F1FAB /* PrivacyViewController.m */; };
 		05CEB5BF20F4E975005F1FAB /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CEB5BE20F4E975005F1FAB /* ForgotPasswordViewController.m */; };
+		2B11201922833CB7001A9386 /* EPGDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B11201722833CB7001A9386 /* EPGDateView.m */; };
+		2B11201A22833CB7001A9386 /* EPGDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B11201822833CB7001A9386 /* EPGDateView.xib */; };
+		2B11201E22833CC7001A9386 /* EPGTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B11201C22833CC7001A9386 /* EPGTimeView.m */; };
+		2B11201F22833CC7001A9386 /* EPGTimeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B11201D22833CC7001A9386 /* EPGTimeView.xib */; };
+		2B2690C22285CDA100B218A6 /* EPGProgramLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2690C12285CDA100B218A6 /* EPGProgramLabel.m */; };
+		2B910906228368BA00074255 /* GuideModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B910905228368BA00074255 /* GuideModel.m */; };
+		2B91090922836AB500074255 /* GuideProgramModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B91090822836AB500074255 /* GuideProgramModel.m */; };
+		2BA53E862283369600494A0F /* EPGChannelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA53E842283369600494A0F /* EPGChannelView.m */; };
+		2BA53E872283369600494A0F /* EPGChannelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BA53E852283369600494A0F /* EPGChannelView.xib */; };
+		2BFAE0EE2281E5E3006523B1 /* EPGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0ED2281E5E3006523B1 /* EPGViewController.m */; };
+		2BFAE0F12281FF90006523B1 /* EPGCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */; };
+		2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
 		780AC6B41BDFD284007F1119 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52851A76D7D100E901F1 /* main.m */; };
@@ -192,6 +204,27 @@
 		05CEB5BD20F4E975005F1FAB /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ForgotPasswordViewController.h; path = ViewController/ForgotPasswordViewController.h; sourceTree = "<group>"; };
 		05CEB5BE20F4E975005F1FAB /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ForgotPasswordViewController.m; path = ViewController/ForgotPasswordViewController.m; sourceTree = "<group>"; };
 		0DD0AEA7B5AE6D1C598FD3F3 /* Pods-Zype.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zype.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Zype/Pods-Zype.debug.xcconfig"; sourceTree = "<group>"; };
+		2B11201622833CB7001A9386 /* EPGDateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGDateView.h; path = Views/EPGDateView.h; sourceTree = "<group>"; };
+		2B11201722833CB7001A9386 /* EPGDateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGDateView.m; path = Views/EPGDateView.m; sourceTree = "<group>"; };
+		2B11201822833CB7001A9386 /* EPGDateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EPGDateView.xib; path = Views/EPGDateView.xib; sourceTree = "<group>"; };
+		2B11201B22833CC7001A9386 /* EPGTimeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGTimeView.h; path = Views/EPGTimeView.h; sourceTree = "<group>"; };
+		2B11201C22833CC7001A9386 /* EPGTimeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGTimeView.m; path = Views/EPGTimeView.m; sourceTree = "<group>"; };
+		2B11201D22833CC7001A9386 /* EPGTimeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EPGTimeView.xib; path = Views/EPGTimeView.xib; sourceTree = "<group>"; };
+		2B2690C02285CDA100B218A6 /* EPGProgramLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGProgramLabel.h; path = Views/EPGProgramLabel.h; sourceTree = "<group>"; };
+		2B2690C12285CDA100B218A6 /* EPGProgramLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGProgramLabel.m; path = Views/EPGProgramLabel.m; sourceTree = "<group>"; };
+		2B910904228368BA00074255 /* GuideModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GuideModel.h; path = Models/GuideModel.h; sourceTree = "<group>"; };
+		2B910905228368BA00074255 /* GuideModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GuideModel.m; path = Models/GuideModel.m; sourceTree = "<group>"; };
+		2B91090722836AB500074255 /* GuideProgramModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GuideProgramModel.h; path = Models/GuideProgramModel.h; sourceTree = "<group>"; };
+		2B91090822836AB500074255 /* GuideProgramModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GuideProgramModel.m; path = Models/GuideProgramModel.m; sourceTree = "<group>"; };
+		2BA53E832283369600494A0F /* EPGChannelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGChannelView.h; path = Views/EPGChannelView.h; sourceTree = "<group>"; };
+		2BA53E842283369600494A0F /* EPGChannelView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGChannelView.m; path = Views/EPGChannelView.m; sourceTree = "<group>"; };
+		2BA53E852283369600494A0F /* EPGChannelView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EPGChannelView.xib; path = Views/EPGChannelView.xib; sourceTree = "<group>"; };
+		2BFAE0EC2281E5E3006523B1 /* EPGViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGViewController.h; path = ViewController/EPGViewController.h; sourceTree = "<group>"; };
+		2BFAE0ED2281E5E3006523B1 /* EPGViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGViewController.m; path = ViewController/EPGViewController.m; sourceTree = "<group>"; };
+		2BFAE0EF2281FF90006523B1 /* EPGCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGCollectionViewCell.h; path = Views/EPGCollectionViewCell.h; sourceTree = "<group>"; };
+		2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewCell.m; path = Views/EPGCollectionViewCell.m; sourceTree = "<group>"; };
+		2BFAE0F222820018006523B1 /* EPGCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGCollectionViewLayout.h; path = Views/EPGCollectionViewLayout.h; sourceTree = "<group>"; };
+		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D385284224AB38600A22BFC /* WatcherIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherIntroViewController.m; path = ViewController/WatcherIntroViewController.m; sourceTree = "<group>"; };
@@ -788,6 +821,10 @@
 				A15D10CC1DE4CF3C00BAB958 /* PlaylistVideo.m */,
 				FAC7B3DD1EFC496200C787E4 /* AdObject.h */,
 				FAC7B3DE1EFC496200C787E4 /* AdObject.m */,
+				2B910904228368BA00074255 /* GuideModel.h */,
+				2B910905228368BA00074255 /* GuideModel.m */,
+				2B91090722836AB500074255 /* GuideProgramModel.h */,
+				2B91090822836AB500074255 /* GuideProgramModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -849,6 +886,21 @@
 				E131B8EC20BE12C60074ACF5 /* PlayerControlsOverlay.h */,
 				E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */,
 				E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */,
+				2BFAE0EF2281FF90006523B1 /* EPGCollectionViewCell.h */,
+				2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */,
+				2BFAE0F222820018006523B1 /* EPGCollectionViewLayout.h */,
+				2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */,
+				2BA53E832283369600494A0F /* EPGChannelView.h */,
+				2BA53E842283369600494A0F /* EPGChannelView.m */,
+				2BA53E852283369600494A0F /* EPGChannelView.xib */,
+				2B11201622833CB7001A9386 /* EPGDateView.h */,
+				2B11201722833CB7001A9386 /* EPGDateView.m */,
+				2B11201822833CB7001A9386 /* EPGDateView.xib */,
+				2B11201B22833CC7001A9386 /* EPGTimeView.h */,
+				2B11201C22833CC7001A9386 /* EPGTimeView.m */,
+				2B11201D22833CC7001A9386 /* EPGTimeView.xib */,
+				2B2690C02285CDA100B218A6 /* EPGProgramLabel.h */,
+				2B2690C12285CDA100B218A6 /* EPGProgramLabel.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -906,6 +958,8 @@
 				A13AF3AC1D37D90D00DDA006 /* VideosViewController.m */,
 				05CEB5BA20F4CD2A005F1FAB /* PrivacyViewController.h */,
 				05CEB5BB20F4CD2A005F1FAB /* PrivacyViewController.m */,
+				2BFAE0EC2281E5E3006523B1 /* EPGViewController.h */,
+				2BFAE0ED2281E5E3006523B1 /* EPGViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1002,7 +1056,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Zype;
 				TargetAttributes = {
 					780AC69F1BDFD284007F1119 = {
@@ -1054,6 +1108,7 @@
 				A13AF3991D36D3B700DDA006 /* Oswald-Extra-LightItalic.ttf in Resources */,
 				780AC6F01BDFD284007F1119 /* OpenSans-Semibold.ttf in Resources */,
 				A13AF39B1D36D3B700DDA006 /* Oswald-Heavy.ttf in Resources */,
+				2B11201F22833CC7001A9386 /* EPGTimeView.xib in Resources */,
 				A13AF3A11D36D3B700DDA006 /* Oswald-Regular.ttf in Resources */,
 				A13AF39F1D36D3B700DDA006 /* Oswald-Medium.ttf in Resources */,
 				780AC6F11BDFD284007F1119 /* OpenSans-SemiboldItalic.ttf in Resources */,
@@ -1070,6 +1125,7 @@
 				780AC6F31BDFD284007F1119 /* OpenSans-Regular.ttf in Resources */,
 				780AC6F51BDFD284007F1119 /* OpenSans-Italic.ttf in Resources */,
 				A13AF3A31D36D3B700DDA006 /* Oswald-Stencil.ttf in Resources */,
+				2B11201A22833CB7001A9386 /* EPGDateView.xib in Resources */,
 				780AC6F61BDFD284007F1119 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				780AC6F71BDFD284007F1119 /* LaunchScreen.xib in Resources */,
 				A13AF3981D36D3B700DDA006 /* Oswald-DemiBold.ttf in Resources */,
@@ -1093,6 +1149,7 @@
 				A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */,
 				780AC6FF1BDFD284007F1119 /* OpenSans-BoldItalic.ttf in Resources */,
 				FA3C18F52020D4330087AA38 /* PagerSectionCell.xib in Resources */,
+				2BA53E872283369600494A0F /* EPGChannelView.xib in Resources */,
 				FA4BA32D1EF075B9004985F6 /* SubscriptActiveCell.xib in Resources */,
 				E131B8F020BE132B0074ACF5 /* PlayerControlsOverlay.xib in Resources */,
 				780AC7021BDFD284007F1119 /* OpenSans-ExtraBold.ttf in Resources */,
@@ -1184,8 +1241,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B2690C22285CDA100B218A6 /* EPGProgramLabel.m in Sources */,
 				FAC7B3DF1EFC496200C787E4 /* AdObject.m in Sources */,
 				7D385286224AB38600A22BFC /* WatcherIntroViewController.m in Sources */,
+				2BFAE0F12281FF90006523B1 /* EPGCollectionViewCell.m in Sources */,
 				780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */,
 				FA5029041FDE8FB0003A1AB1 /* BaseTVLayoutController.m in Sources */,
 				A13AF2BF1D36985A00DDA006 /* Favorite.m in Sources */,
@@ -1224,10 +1283,12 @@
 				A13AF30E1D369A2C00DDA006 /* HighlightsViewController.m in Sources */,
 				A13AF3231D369AB300DDA006 /* RESTServiceController.m in Sources */,
 				A13AF35B1D369CC600DDA006 /* MediaPlayerManager.m in Sources */,
+				2BA53E862283369600494A0F /* EPGChannelView.m in Sources */,
 				FA793E1020250D88005DFDB7 /* PresentableObject.m in Sources */,
 				A13AF2C41D36985A00DDA006 /* Timeline.m in Sources */,
 				A13AF3101D369A2C00DDA006 /* LatestViewController.m in Sources */,
 				FA09369920238B88009E14E3 /* MediaItemView.m in Sources */,
+				2B11201E22833CC7001A9386 /* EPGTimeView.m in Sources */,
 				A13AF3581D369CC600DDA006 /* ACSPersistenceManager.m in Sources */,
 				A13AF3161D369A2C00DDA006 /* SignInViewController.m in Sources */,
 				A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */,
@@ -1240,6 +1301,7 @@
 				A13AF2C21D36985A00DDA006 /* PlaybackSource.m in Sources */,
 				A13AF3521D369CC600DDA006 /* ACActionSheetManager.m in Sources */,
 				A13AF30D1D369A2C00DDA006 /* FavoritesViewController.m in Sources */,
+				2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */,
 				A13AF3561D369CC600DDA006 /* ACShareManager.m in Sources */,
 				A13AF3131D369A2C00DDA006 /* SearchResultViewController.m in Sources */,
 				A13AF30F1D369A2C00DDA006 /* HomeViewController.m in Sources */,
@@ -1257,6 +1319,8 @@
 				FA4BA3301EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m in Sources */,
 				A13AF3691D369D1F00DDA006 /* NSMutableArray+LimitedStack.m in Sources */,
 				A13AF35C1D369CC600DDA006 /* ViewManager.m in Sources */,
+				2B91090922836AB500074255 /* GuideProgramModel.m in Sources */,
+				2BFAE0EE2281E5E3006523B1 /* EPGViewController.m in Sources */,
 				E1C884B020B496EF008D9184 /* UserPreferences.m in Sources */,
 				A13AF36D1D369D1F00DDA006 /* UIStoryboard+NamedStoryboards.m in Sources */,
 				A13AF2E61D36995000DDA006 /* GuestTableViewCell.m in Sources */,
@@ -1269,11 +1333,13 @@
 				FA4BA3361EF0764B004985F6 /* RegisterViewController.m in Sources */,
 				A13AF2E01D36995000DDA006 /* ACSEpisodeCollectionViewCell.m in Sources */,
 				A13AF3381D369B9A00DDA006 /* Reachability.m in Sources */,
+				2B11201922833CB7001A9386 /* EPGDateView.m in Sources */,
 				FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */,
 				A13AF2BE1D36985A00DDA006 /* DownloadInfo.m in Sources */,
 				E1C884AD20B4969F008D9184 /* UserPreferenceCellDataSource.m in Sources */,
 				A13AF2C61D36985A00DDA006 /* Video.m in Sources */,
 				FA4BA32C1EF075B9004985F6 /* SubscriptActiveCell.m in Sources */,
+				2B910906228368BA00074255 /* GuideModel.m in Sources */,
 				7D38528B224AB54300A22BFC /* WatcherSignInViewController.m in Sources */,
 				E131B8EE20BE12C60074ACF5 /* PlayerControlsOverlay.m in Sources */,
 				A13AF2E51D36995000DDA006 /* FavoriteTableViewCell.m in Sources */,
@@ -1353,6 +1419,7 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1388,6 +1455,7 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1458,6 +1526,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1466,12 +1535,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -1514,6 +1585,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1522,12 +1594,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

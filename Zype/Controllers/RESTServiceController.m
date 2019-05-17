@@ -1772,6 +1772,45 @@
     }];
 }
 
+#pragma mark - EPG Data
+- (void)getGuides:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler {
+    NSString *urlAsString = [NSString stringWithFormat:kGetGuides, kApiDomain, kAppKey, 50];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+            completionHandler(data, response, error);
+        } else {
+            CLS_LOG(@"Success %@", urlAsString);
+            completionHandler(data, response, error);
+        }        
+    }];
+    
+    [dataTask resume];
+}
+
+- (void)getGuidePrograms:(NSString*)channelId sort:(NSString*)sort order:(NSString*)order greaterThan:(NSString*)gte lessThan:(NSString*)lte completion:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler {
+    NSString *urlAsString = [NSString stringWithFormat:kGetGuidePrograms, kApiDomain, channelId, kAppKey, sort, order, gte, lte];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (error) {
+            CLS_LOG(@"Failed: %@", error);
+            completionHandler(data, response, error);
+        } else {
+            CLS_LOG(@"Success %@", urlAsString);
+            completionHandler(data, response, error);
+        }
+    }];
+    
+    [dataTask resume];
+}
+
 #pragma mark - Singleton
 
 + (instancetype)sharedInstance {

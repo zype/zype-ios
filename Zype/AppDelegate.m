@@ -81,6 +81,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadGuideScreen" object:nil];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -289,7 +290,8 @@
          DownloadsViewController *downloadsViewController = (DownloadsViewController *)[[navigationController viewControllers] objectAtIndex:0];
          downloadsViewController.tableView.contentOffset = CGPointMake(0, 0 - downloadsViewController.tableView.contentInset.top);
          }*/
-        else if (tabBarController.selectedIndex == 1) {
+        else if ((!kEPGEnabled && tabBarController.selectedIndex == 1) ||
+                 (kEPGEnabled && tabBarController.selectedIndex == 2)) {
             UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:1];
             FavoritesViewController *favoritesViewController = (FavoritesViewController *)[[navigationController viewControllers] objectAtIndex:0];
             favoritesViewController.tableView.contentOffset = CGPointMake(0, 0 - favoritesViewController.tableView.contentInset.top);
@@ -299,6 +301,10 @@
         //            HighlightsViewController *highlightsViewController = (HighlightsViewController *)[[navigationController viewControllers] objectAtIndex:0];
         //            highlightsViewController.tableView.contentOffset = CGPointMake(0, 0 - highlightsViewController.tableView.contentInset.top);
         //        }
+    }
+    
+    if (self.tabIndex == 1 && (kEPGEnabled)) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadGuideScreen" object:nil];
     }
     
     self.tabIndex = tabBarController.selectedIndex;

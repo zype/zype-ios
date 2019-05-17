@@ -827,6 +827,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                     if (self.navigationController.visibleViewController.class) {
                         // viewController is visible
                         if (source != nil && source.urlString != nil) {
+                            if (self.startTime != nil && self.endTime != nil) {
+                                source.urlString = [NSString stringWithFormat:@"%@&start=%@&end=%@", source.urlString, self.startTime, self.endTime];
+                            }
+                            
                             [self playVideoFromSource:source];
                         }else{
                             [self playStreamingAudio];

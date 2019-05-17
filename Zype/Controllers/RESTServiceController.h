@@ -76,6 +76,10 @@
 - (void)getSubscriptionPlan:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
 - (void)createMarketplace:(NSData*)receipt planId:(NSString*)planId completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
 
+// EPG
+- (void)getGuides:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
+- (void)getGuidePrograms:(NSString*)channelId sort:(NSString*)sort order:(NSString*)order greaterThan:(NSString*)gte lessThan:(NSString*)lte completion:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
+
 //Singleton
 + (instancetype)sharedInstance;
 

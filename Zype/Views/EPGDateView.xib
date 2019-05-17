@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EPGDateView" id="U6b-Vx-4bR" customClass="EPGDateView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="89"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iQG-EQ-EPE">
+                    <rect key="frame" x="139" y="34" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ii8-Dd-9li">
+                    <rect key="frame" x="0.0" y="87" width="320" height="2"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="W1U-XI-VyQ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.17254901960784313" green="0.17254901960784313" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="ii8-Dd-9li" firstAttribute="leading" secondItem="9Gg-ye-v9C" secondAttribute="leading" id="31g-TI-cjx"/>
+                <constraint firstItem="9Gg-ye-v9C" firstAttribute="trailing" secondItem="ii8-Dd-9li" secondAttribute="trailing" id="3Jh-0m-YbF"/>
+                <constraint firstAttribute="bottom" secondItem="ii8-Dd-9li" secondAttribute="bottom" id="GVm-FA-eeR"/>
+                <constraint firstItem="iQG-EQ-EPE" firstAttribute="centerX" secondItem="U6b-Vx-4bR" secondAttribute="centerX" id="IUq-0T-lkr"/>
+                <constraint firstItem="iQG-EQ-EPE" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="Xw6-Zr-fTu"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="9Gg-ye-v9C"/>
+            <connections>
+                <outlet property="lblDate" destination="iQG-EQ-EPE" id="br7-XZ-VgD"/>
+                <outlet property="viewHeightConstraint" destination="W1U-XI-VyQ" id="hbE-8Z-NIP"/>
+                <outlet property="viewSeperator" destination="ii8-Dd-9li" id="dce-pw-uTx"/>
+            </connections>
+            <point key="canvasLocation" x="-294" y="142"/>
+        </collectionReusableView>
+    </objects>
+</document>
