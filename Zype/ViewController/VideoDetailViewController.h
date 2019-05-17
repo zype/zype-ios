@@ -36,6 +36,9 @@
 @property (strong, nonatomic) Video *video;
 @property (strong, nonatomic) NSMutableArray *arrayTimeline;
 
+@property (strong, nonatomic) NSString * startTime;
+@property (strong, nonatomic) NSString * endTime;
+
 @property (strong, nonatomic) NSMutableArray<Video *> *videos;
 
 @property (nonatomic) BOOL isLive;

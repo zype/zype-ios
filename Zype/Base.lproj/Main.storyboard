@@ -2123,6 +2123,110 @@
             </objects>
             <point key="canvasLocation" x="1769" y="-1878"/>
         </scene>
+                <!--Guide-->
+        <scene sceneID="fgr-ZN-HoF">
+            <objects>
+                <navigationController storyboardIdentifier="NavigationEPGViewController" automaticallyAdjustsScrollViewInsets="NO" id="0tj-oe-qnN" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Guide" image="IconCalendarT" id="rvE-P8-Xrw"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="F72-lr-Q2e">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="1aK-n1-jha" kind="relationship" relationship="rootViewController" id="dY3-Ys-TZR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lvj-k7-nNC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="801" y="801"/>
+        </scene>
+        <!--Guide-->
+        <scene sceneID="KqR-wd-icb">
+            <objects>
+                <viewController storyboardIdentifier="EPGViewController" id="1aK-n1-jha" customClass="EPGViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bIl-zU-w9R"/>
+                        <viewControllerLayoutGuide type="bottom" id="vmV-KA-Xcy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cJW-RS-f9C">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ahr-RU-QXj">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewLayout key="collectionViewLayout" id="GEJ-J7-nkK" customClass="EPGCollectionViewLayout"/>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EPGCollectionViewCell" id="fEX-Ik-kt0" customClass="EPGCollectionViewCell">
+                                        <rect key="frame" x="52.666666666666664" y="0.0" width="309" height="146"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="309" height="146"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKz-xf-bIJ" customClass="EPGProgramLabel">
+                                                    <rect key="frame" x="0.0" y="10" width="309" height="126"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="gKz-xf-bIJ" firstAttribute="top" secondItem="fEX-Ik-kt0" secondAttribute="top" constant="10" id="ARc-CR-CUM"/>
+                                            <constraint firstItem="gKz-xf-bIJ" firstAttribute="leading" secondItem="fEX-Ik-kt0" secondAttribute="leading" id="ISR-sW-lKo"/>
+                                            <constraint firstAttribute="trailing" secondItem="gKz-xf-bIJ" secondAttribute="trailing" id="Qdi-VM-cV1"/>
+                                            <constraint firstAttribute="bottom" secondItem="gKz-xf-bIJ" secondAttribute="bottom" constant="10" id="rGN-G4-QoI"/>
+                                        </constraints>
+                                        <size key="customSize" width="309" height="146"/>
+                                        <connections>
+                                            <outlet property="lblTitle" destination="gKz-xf-bIJ" id="c5m-8x-f33"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="1aK-n1-jha" id="LjC-xP-6iE"/>
+                                    <outlet property="delegate" destination="1aK-n1-jha" id="ths-I3-7YC"/>
+                                </connections>
+                            </collectionView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0hq-pm-Tek">
+                                <rect key="frame" x="192" y="389" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="7Wh-nB-1hm"/>
+                                    <constraint firstAttribute="width" constant="30" id="Vj9-9E-6Yf"/>
+                                </constraints>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="0hq-pm-Tek" firstAttribute="centerX" secondItem="cJW-RS-f9C" secondAttribute="centerX" id="8o9-jE-PdB"/>
+                            <constraint firstItem="vmV-KA-Xcy" firstAttribute="top" secondItem="ahr-RU-QXj" secondAttribute="bottom" id="H4a-T9-Rnt"/>
+                            <constraint firstItem="0hq-pm-Tek" firstAttribute="centerY" secondItem="cJW-RS-f9C" secondAttribute="centerY" id="U9S-WL-bg9"/>
+                            <constraint firstItem="ahr-RU-QXj" firstAttribute="leading" secondItem="cJW-RS-f9C" secondAttribute="leading" id="iBI-eK-Ghb"/>
+                            <constraint firstItem="ahr-RU-QXj" firstAttribute="top" secondItem="bIl-zU-w9R" secondAttribute="bottom" id="t72-Pa-efJ"/>
+                            <constraint firstAttribute="trailing" secondItem="ahr-RU-QXj" secondAttribute="trailing" id="uYk-K1-LzH"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Guide" id="gdC-Mf-SJH">
+                        <barButtonItem key="rightBarButtonItem" image="IconSearch" id="Itl-gA-YBk">
+                            <connections>
+                                <action selector="showSearchResult:" destination="1aK-n1-jha" id="rbd-sn-Q5M"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="collectionView" destination="ahr-RU-QXj" id="jB2-of-nON"/>
+                        <outlet property="loadingIndicator" destination="0hq-pm-Tek" id="goH-Fl-dQ1"/>
+                        <segue destination="t5Y-FU-bx5" kind="show" identifier="showSearchResult" id="iPz-GA-94R"/>
+                        <segue destination="Qfc-ig-Nwb" kind="show" identifier="showEpisodeDetail" id="9eY-dp-mEh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Oq3-qe-X1p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1628.985507246377" y="800.89285714285711"/>
+        </scene>
         <!--Videos-->
         <scene sceneID="l42-ag-iwl">
             <objects>

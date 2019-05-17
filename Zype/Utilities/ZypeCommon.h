@@ -54,10 +54,13 @@
 #define kFavoritesViaAPI NO
 #define kSubscribeToWatchAdFree NO
 
+// For sites that support EPG (Electronic Program Guide)
+#define kEPGEnabled NO
+
 // For downloads to function properly the video has to be transcoded with mp4 preset
-#define kDownloadsEnabled YES
+#define kDownloadsEnabled NO
 // Set to No to enforce downloads for only users that are signed in
-#define kDownloadsForAllUsersEnabled YES
+#define kDownloadsForAllUsersEnabled NO
 
 // Enable Zype Marketplace Connect
 // NOTE: This is a gated feature that REQUIRES Zype to configure. Please reach out to Zype Support for help on setting up this feature.
@@ -80,6 +83,16 @@
 #define kDarkThemeBackgroundColor [UIColor colorWithRed:0.12 green:0.12 blue:0.12 alpha:1.00]
 #define kUniversalGray [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.00]
 #define kCurrentAppColor (kAppColorLight) ? kLightTintColor : kDarkTintColor
+
+// EPG Colors
+#define kEPGDateViewColor (kAppColorLight) ? [UIColor whiteColor] : [UIColor colorWithRed:44/255.0 green:44/255.0 blue:44/255.0 alpha:1.0]
+#define kEPGTimeViewColor (kAppColorLight) ? [UIColor whiteColor] : [UIColor colorWithRed:44/255.0 green:44/255.0 blue:44/255.0 alpha:1.0]
+#define kEPGChannelBackColor (kAppColorLight) ? kLightLineColor : [UIColor colorWithRed:49/255.0 green:49/255.0 blue:49/255.0 alpha:1.0]
+#define kEPGChannelSeperatorColor (kAppColorLight) ? kLightLineColor : [UIColor colorWithRed:17/255.0 green:17/255.0 blue:17/255.0 alpha:1.0]
+#define kEPGCellColor (kAppColorLight) ? [UIColor whiteColor] : [UIColor blackColor]
+
+#define kEPGHighlightColor [UIColor colorWithRed:238/255.0 green:150/255.0 blue:45/255.0 alpha:1.00]
+#define kEPGAiringColor [UIColor colorWithRed:0.04 green:0.23 blue:0.30 alpha:1.00]
 
 // colors of lock & unlock image
 #define kLockColor      [UIUtil colorWithHex:0xFF0000]
@@ -343,6 +356,9 @@ static const CGSize IpadPosterLayoutSize = {120, 180};
 #define kZObjectContent @"https://%@/zobjects/?app_key=%@&zobject_type=%@&page=1&per_page=500&keywords=&sort=priority&order=desc"
 //#define kZObjectContent @"https://api.zype.com/zobjects/?app_key=%@&zobject_type=tvos_settings&page=1&per_page=500&keywords="
 //IKuC8xERY-oYRxQfE6c1HSeRrxKcpCwcsPr614RfaxCkYsJLgwpBkpkEo88EsyWr&zobject_type=top_playlists&page=1&per_page=500&keywords=&sort=priority&order=desc
+
+#define kGetGuides @"https://%@/program_guides?app_key=%@&per_page=%d"
+#define kGetGuidePrograms @"https://%@/program_guides/%@/entries?app_key=%@&per_page=500&sort=%@&order=%@&start_time.gte=%@&end_time.lte=%@"
 
 #define kApiConsumerURL            @"https://api.zype.com/consumers/?app_key=%@&id=%@"
 #define kApiSubscriptionPlanURL    @"https://api.zype.com/plans/"
