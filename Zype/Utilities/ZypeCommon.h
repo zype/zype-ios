@@ -54,12 +54,13 @@
 #define kFavoritesViaAPI NO
 #define kSubscribeToWatchAdFree NO
 
-#define kEPGEnabled YES
+// For sites that support EPG (Electronic Program Guide)
+#define kEPGEnabled NO
 
 // For downloads to function properly the video has to be transcoded with mp4 preset
-#define kDownloadsEnabled YES
+#define kDownloadsEnabled NO
 // Set to No to enforce downloads for only users that are signed in
-#define kDownloadsForAllUsersEnabled YES
+#define kDownloadsForAllUsersEnabled NO
 
 // Enable Zype Marketplace Connect
 // NOTE: This is a gated feature that REQUIRES Zype to configure. Please reach out to Zype Support for help on setting up this feature.
