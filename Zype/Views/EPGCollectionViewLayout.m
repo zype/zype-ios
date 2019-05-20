@@ -40,18 +40,19 @@ static double const kGuideIndicatorHeight = 2.0;
             
             double width = kGuideHourWidth * runtime / 3600.0;
             currentX = kGuidePadding * 0.5 + kGuideHourWidth * startX / 3600.0;
-            
-            double cellWidth = width - kGuidePadding;
-            if (currentX < prevLastX) {
-                currentX = prevLastX;
-                double diff = prevLastX - currentX;
-                cellWidth = cellWidth - diff;
-            }
-            
-            CGRect rect = CGRectMake(currentX + kGuidePadding * 0.5, currentY, MAX(0, cellWidth), kGuideRowHeight);
+            CGRect rect = CGRectMake(currentX + kGuidePadding * 0.5, currentY, MAX(0, width - kGuidePadding), kGuideRowHeight);
             [sectionFrames addObject: [NSValue valueWithCGRect: rect]];
-            
-            prevLastX = currentX + cellWidth + kGuidePadding;
+//            double cellWidth = width - kGuidePadding;
+//            if (currentX < prevLastX) {
+//                currentX = prevLastX;
+//                double diff = prevLastX - currentX;
+//                cellWidth = cellWidth - diff;
+//            }
+//
+//            CGRect rect = CGRectMake(currentX + kGuidePadding * 0.5, currentY, MAX(0, cellWidth), kGuideRowHeight);
+//            [sectionFrames addObject: [NSValue valueWithCGRect: rect]];
+//
+//            prevLastX = currentX + cellWidth + kGuidePadding;
         }
         
         [self.frames addObject:sectionFrames];

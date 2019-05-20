@@ -57,9 +57,12 @@
 }
 
 - (BOOL) containsDate:(NSDate*) date {
-    if (self.startTimeOffset == nil || self.endTimeOffset == nil) {
+    if ([date compare:self.startTimeOffset] == NSOrderedAscending)
         return NO;
-    }
-    return self.startTimeOffset == date || ([self.startTimeOffset earlierDate:date] == self.startTimeOffset && [self.endTimeOffset laterDate:date] == self.endTimeOffset && self.endTimeOffset != date);
+    
+    if ([date compare:self.endTimeOffset] == NSOrderedDescending)
+        return NO;
+    
+    return YES;
 }
 @end
