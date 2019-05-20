@@ -26,6 +26,7 @@
     NSDate *_startDate;
     int _loadingCount;
     NSIndexPath* _selectedIndexPath;
+    NSIndexPath* _closestIndexPath;
     Video* _newVideo;
 }
 @end
@@ -92,7 +93,25 @@
     NSDate* date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay value:-3 toDate:[NSDate date] options: 0];
     NSCalendar* calendar = [NSCalendar currentCalendar];
     
-    return [calendar dateBySettingHour: 0 minute: 0 second: 0 ofDate: date options: 0];
+    date = [calendar dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
+    for (int section=0; section<self.guides.count; section++) {
+        if (self.guides[section].programs.count > 0) {
+            if ([date compare:self.guides[section].programs[0].startTimeOffset] == NSOrderedAscending) {
+                date = self.guides[section].programs[0].startTimeOffset;
+            }
+        }
+    }
+    
+    NSDateComponents *components = [calendar components:NSCalendarUnitHour | NSCalendarUnitMinute fromDate: date];
+    NSInteger hour = [components hour];
+    NSInteger minutes = [components minute];
+    if (minutes >= 30) {
+        minutes = 30;
+    } else {
+        minutes = 0;
+    }
+    
+    return [calendar dateBySettingHour:hour minute:minutes second:0 ofDate:date options:0];
 }
 
 - (void) timeFire {
@@ -102,9 +121,10 @@
 - (void) loadGuides {
     _loadingCount = 0;
     _startDate = [self getStartTime];
+    [self.btnCurrentTime setHidden:YES];
     [self.guides removeAllObjects];
     [self.collectionView reloadData];
-
+    
     NSDateFormatter* dateFormatterGet = [[NSDateFormatter alloc] init];
     [dateFormatterGet setDateFormat:@"yyyy-MM-dd"];
     NSString* fromDate = [dateFormatterGet stringFromDate: _startDate];
@@ -143,7 +163,7 @@
                         if (self->_loadingCount == self.guides.count) {
                             [self didRefreshData];
                         }
-                  }];
+                    }];
                 }
             }
         }
@@ -159,30 +179,51 @@
     }]];
     
     [self focusCurrentTime];
+    [self.btnCurrentTime setHidden:NO];
 }
 
 - (void) focusCurrentTime {
     BOOL isFindFocus = NO;
     
-    if (_selectedIndexPath == nil) {
-        for (int section=0; section<self.guides.count; section++) {
-            if (self.guides[section].programs != nil && self.guides[section].programs.count > 0) {
-                for (int item=0; item<self.guides[section].programs.count; item++) {
-                    if ([self.guides[section].programs[item] containsDate: [NSDate date]]) {
-                        _selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
-                        isFindFocus = true;
-                        break;
-                    }
+    for (int section=0; section<self.guides.count; section++) {
+        if (self.guides[section].programs != nil && self.guides[section].programs.count > 0) {
+            for (int item=0; item<self.guides[section].programs.count; item++) {
+                if ([self.guides[section].programs[item] containsDate: [NSDate date]]) {
+                    _selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
+                    isFindFocus = true;
+                    break;
                 }
             }
-            if (isFindFocus) {
-                break;
-            }
+        }
+        if (isFindFocus) {
+            break;
         }
     }
     
     [self.collectionView reloadData];
-    if (_selectedIndexPath != nil) {
+    if (isFindFocus) {
+        _closestIndexPath = _selectedIndexPath;
+        [self.collectionView scrollToItemAtIndexPath:_selectedIndexPath atScrollPosition:UICollectionViewScrollPositionLeft animated: true];
+    } else {
+        double nowTimeInterval = [NSDate date].timeIntervalSince1970;
+        double minsFromNow = 0.0;
+        _closestIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+        
+        for (int section=0; section<self.guides.count; section++) {
+            if (self.guides[section].programs.count > 0) {
+                for (int item=0; item<self.guides[section].programs.count; item++) {
+                    double tmpMinsFromNow = self.guides[section].programs[item].startTimeOffset.timeIntervalSince1970 - nowTimeInterval;
+                    
+                    if (section == 0 && item == 0) {
+                        minsFromNow = fabs(tmpMinsFromNow);
+                    } else if (minsFromNow > fabs(tmpMinsFromNow)) {
+                        minsFromNow = fabs(tmpMinsFromNow);
+                    }
+                    _closestIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
+                }
+            }
+        }
+        _selectedIndexPath = _closestIndexPath;
         [self.collectionView scrollToItemAtIndexPath:_selectedIndexPath atScrollPosition:UICollectionViewScrollPositionLeft animated: true];
     }
 }
@@ -201,6 +242,10 @@
 
 - (IBAction)showSearchResult:(id)sender {
     [self performSegueWithIdentifier:@"showSearchResult" sender:self];
+}
+
+- (IBAction)moveCurrentTime:(id)sender {
+    [self focusCurrentTime];
 }
 
 #pragma mark - EPGCollectionViewDelegate
@@ -361,6 +406,24 @@
         [dateFormatter setDateFormat:@"MMMM, d"];
         self.dateHeaderView.lblDate.text = [dateFormatter stringFromDate:self.guides[indexPath.section].programs[indexPath.item].startTimeOffset];
     }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (![self.loadingIndicator isHidden]) {
+        [self.btnCurrentTime setHidden: YES];
+        return;
+    }
+    
+    BOOL isShowingClosestCell = NO;
+    for (UICollectionViewCell *cell in [self.collectionView visibleCells]) {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+        
+        if (indexPath == _closestIndexPath) {
+            isShowingClosestCell = YES;
+            break;
+        }
+    }
+    [self.btnCurrentTime setHidden: isShowingClosestCell];
 }
 
 @end
