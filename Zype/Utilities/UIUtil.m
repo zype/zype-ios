@@ -234,9 +234,10 @@
       if (stringPublished.length > 0)
           result = [NSString stringWithFormat:@"%@", stringPublished];
     }
-    else
+    else if (stringPublished.length > 0)
         result = [NSString stringWithFormat:@"%@ | %@", stringPublished, stringEpisode];
-    
+    else
+        result = [NSString stringWithFormat:@"%@", stringEpisode];
     return result;
 }
 
