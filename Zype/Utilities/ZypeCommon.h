@@ -41,7 +41,7 @@
 #define kCustomPlayerControls NO
 
 //Overall look of the app; selecting YES the app will be white, selecting NO the app will be dark
-#define kAppColorLight NO
+#define kAppColorLight YES
 
 //Enable Gallery layout
 #define kAppAppleTVLayout NO
