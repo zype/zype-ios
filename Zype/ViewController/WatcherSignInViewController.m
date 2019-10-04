@@ -43,7 +43,7 @@
     [super viewDidLoad];
     self.screenName = @"Sign In";
     // Do any additional setup after loading the view.
-    [self registerForKeyboardNotifications];
+    
     [self configureView];
 }
 

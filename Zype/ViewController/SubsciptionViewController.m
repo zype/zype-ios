@@ -171,11 +171,20 @@
                 // Update local user info. Should have subscription
                 [ACSDataManager loadUserInfo];
                 
-                [self dismisControllers];
-                if ( self.planDelegate != nil ) {
-                    [self.planDelegate subscriptionPlanDone];
-                }
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Thank you for creating an account!"
+                                                                               message:@"You can now enjoy watching video content."
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
                 
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {
+                                                                          [self dismisControllers];
+                                                                          if ( self.planDelegate != nil ) {
+                                                                              [self.planDelegate subscriptionPlanDone];
+                                                                          }
+                                                                      }];
+                
+                [alert addAction:defaultAction];
+                [self presentViewController:alert animated:YES completion:nil];
             }
         }];
         

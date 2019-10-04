@@ -80,7 +80,7 @@
 #define kLightLineColor [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:1.00]
 #define kDarkTintColor [UIColor colorWithRed:0.20 green:0.43 blue:0.98 alpha:1.00]
 #define kDarkLineColor [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:1.00]
-#define kDarkThemeBackgroundColor [UIColor colorWithRed:0.12 green:0.12 blue:0.12 alpha:1.00]
+#define kDarkThemeBackgroundColor [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.00]
 #define kUniversalGray [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.00]
 #define kCurrentAppColor (kAppColorLight) ? kLightTintColor : kDarkTintColor
 
@@ -164,8 +164,8 @@
 static const CGSize IphoneLayoutSize = {180, 100};
 static const CGSize IpadLayoutSize = {225, 120};
 
-static const CGSize IphonePosterLayoutSize = {100, 150};
-static const CGSize IpadPosterLayoutSize = {120, 180};
+static const CGSize IphonePosterLayoutSize = {90, 160};
+static const CGSize IpadPosterLayoutSize = {126, 208};
 
 #define kYellowColor    [UIUtil colorWithHex:0xEAA824]
 #define kBlueColor      [UIColor colorWithRed:0.02 green:0.32 blue:0.64 alpha:1.0]
