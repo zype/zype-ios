@@ -21,4 +21,5 @@ pod 'Crashlytics'
 pod 'GoogleAds-IMA-iOS-SDK', '~> 3.2'
 
 pod 'AWSPinpoint', '~> 2.6.6'
+pod 'IQKeyboardManager'
 end

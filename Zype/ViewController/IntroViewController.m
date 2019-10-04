@@ -17,6 +17,7 @@
 
 @interface IntroViewController ()
 
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
 @property (strong, nonatomic) IBOutlet UIButton *registerButton;
 @property (strong, nonatomic) IBOutlet UIButton *closeButton;
@@ -44,6 +45,9 @@
     [self.loginButton round:kViewCornerRounded];
     UIColor *textColor = (kAppColorLight) ? [UIColor blackColor] : [UIColor whiteColor];
     [self.loginButton setTitleColor:textColor forState:UIControlStateNormal];
+    
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
+    self.titleLabel.text = [NSString stringWithFormat:@"%@ Now", appName];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

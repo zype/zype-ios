@@ -45,7 +45,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self registerForKeyboardNotifications];
+
     [self setupConfiguration];
     // Do any additional setup after loading the view.
 }
@@ -67,12 +67,13 @@
     self.titleLabel.textColor = titleColor;
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
-    self.infoLabel.text = [NSString stringWithFormat:@"Please enter a valid email and password to create an account in order to watch %@ subscription videos on any device. You can continue to stream free content without an account.", appName];
+    self.titleLabel.text = [NSString stringWithFormat:@"Get all of %@!", appName];
+    self.infoLabel.text = [NSString stringWithFormat:@"Enter your email and password to create an account and get access to %@ on any device. With your account, you can access Premium Content, Favorites and Recommendations across all devices, and download content to watch offline.", appName];
     
     UIColor * termsTextColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
     NSDictionary * attributes = @{NSForegroundColorAttributeName: termsTextColor,
                                   NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
-    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Create Account, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
+    NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Continue, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
                                                                                                                                                 NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
     NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Terms of Service and Privacy" attributes:attributes];
     [attrstring appendAttributedString:signupText];

@@ -41,7 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self registerForKeyboardNotifications];
+    
     [self setupConfiguration];
     // Do any additional setup after loading the view.
 }
