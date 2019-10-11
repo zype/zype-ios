@@ -25,6 +25,7 @@
 #import "ACSTokenManager.h"
 
 #import "UIColor+AC.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @interface AppDelegate ()
 
@@ -42,6 +43,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [[IQKeyboardManager sharedManager].disabledDistanceHandlingClasses addObject:NSClassFromString(@"SearchResultViewController")];
     
     [Fabric with:@[CrashlyticsKit]];
     
