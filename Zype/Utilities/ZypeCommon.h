@@ -74,6 +74,9 @@
 // Enable Video Sharing <BETA> (not recommended for use)
 #define kShareVideoEnabled NO
 
+// Enable to display playlist and video titles underneath each thumbnail image
+#define kInlineTitleTextDisplay NO
+
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
 #define kLightTintColor [UIColor colorWithRed:1.00 green:0.11 blue:0.38 alpha:1.00]
