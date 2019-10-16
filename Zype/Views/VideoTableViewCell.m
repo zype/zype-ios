@@ -175,6 +175,15 @@
 
 //    });
 
+    // Set three dot
+    if (kFavoritesViaAPI) {
+        if ([ACStatusManager isUserSignedIn] == YES) {
+            [self.buttonAction setHidden:NO];
+        } else {
+            [self.buttonAction setHidden:YES];
+        }
+    }
+    
     // Set download progress
     if (kDownloadsEnabled){
         DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];

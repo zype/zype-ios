@@ -525,6 +525,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         _videoShareTitleString = self.video.title;
         
+        if (kFavoritesViaAPI) {
+            if ([ACStatusManager isUserSignedIn] == NO) {
+                [self.segmenedControl setHidden:YES];
+                [self.segmenedControl addConstraint:[NSLayoutConstraint constraintWithItem:self.segmenedControl attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0]];
+            }
+        }
+        
     }
     
     if (self.playerControlsView){
