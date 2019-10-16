@@ -34,6 +34,12 @@
     self.screenName = @"More";
     self.tableView.tableFooterView = [UIView new];
     
+    if (!kNativeSubscriptionEnabled) {
+        [self.buttonSignIn setHidden: YES];
+        self.buttonSignInHeight.constant = 0;
+        self.buttonSignInBottom.constant = 0;
+    }
+    
     [self customizeAppearance];
 }
 
