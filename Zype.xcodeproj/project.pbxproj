@@ -21,6 +21,7 @@
 		2BFAE0EE2281E5E3006523B1 /* EPGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0ED2281E5E3006523B1 /* EPGViewController.m */; };
 		2BFAE0F12281FF90006523B1 /* EPGCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */; };
 		2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */; };
+		42CD27CE235758FF00069FF8 /* LaunchScreen~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42CD27CC235758FF00069FF8 /* LaunchScreen~ipad.xib */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
 		780AC6B41BDFD284007F1119 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52851A76D7D100E901F1 /* main.m */; };
@@ -41,7 +42,7 @@
 		780AC6F31BDFD284007F1119 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52CA1A7819BC00E901F1 /* OpenSans-Regular.ttf */; };
 		780AC6F51BDFD284007F1119 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52C71A7819BC00E901F1 /* OpenSans-Italic.ttf */; };
 		780AC6F61BDFD284007F1119 /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52C61A7819BC00E901F1 /* OpenSans-ExtraBoldItalic.ttf */; };
-		780AC6F71BDFD284007F1119 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52951A76D7D100E901F1 /* LaunchScreen.xib */; };
+		780AC6F71BDFD284007F1119 /* LaunchScreen~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52951A76D7D100E901F1 /* LaunchScreen~iphone.xib */; };
 		780AC6F91BDFD284007F1119 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52C91A7819BC00E901F1 /* OpenSans-LightItalic.ttf */; };
 		780AC6FA1BDFD284007F1119 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52C31A7819BC00E901F1 /* OpenSans-Bold.ttf */; };
 		780AC6FD1BDFD284007F1119 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1BB52931A76D7D100E901F1 /* Images.xcassets */; };
@@ -225,6 +226,7 @@
 		2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewCell.m; path = Views/EPGCollectionViewCell.m; sourceTree = "<group>"; };
 		2BFAE0F222820018006523B1 /* EPGCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGCollectionViewLayout.h; path = Views/EPGCollectionViewLayout.h; sourceTree = "<group>"; };
 		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
+		42CD27CD235758FF00069FF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/LaunchScreen~ipad.xib"; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D385284224AB38600A22BFC /* WatcherIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherIntroViewController.m; path = ViewController/WatcherIntroViewController.m; sourceTree = "<group>"; };
@@ -440,7 +442,7 @@
 		F1BB52881A76D7D100E901F1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F1BB52911A76D7D100E901F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F1BB52931A76D7D100E901F1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		F1BB52961A76D7D100E901F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		F1BB52961A76D7D100E901F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/LaunchScreen~iphone.xib"; sourceTree = "<group>"; };
 		F1BB52C11A76F44B00E901F1 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		F1BB52C31A7819BC00E901F1 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "Fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		F1BB52C41A7819BC00E901F1 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-BoldItalic.ttf"; path = "Fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -762,7 +764,8 @@
 				F1BB52881A76D7D100E901F1 /* AppDelegate.m */,
 				F1BB52901A76D7D100E901F1 /* Main.storyboard */,
 				F1BB52931A76D7D100E901F1 /* Images.xcassets */,
-				F1BB52951A76D7D100E901F1 /* LaunchScreen.xib */,
+				F1BB52951A76D7D100E901F1 /* LaunchScreen~iphone.xib */,
+				42CD27CC235758FF00069FF8 /* LaunchScreen~ipad.xib */,
 				A139DBE01DFF520800DC731B /* ZypeDB.xcdatamodeld */,
 				B96FF88A1B17B535007CA447 /* ZypeDBMappingModel.xcmappingmodel */,
 				F1BB52831A76D7D100E901F1 /* Supporting Files */,
@@ -1108,6 +1111,7 @@
 				A13AF3991D36D3B700DDA006 /* Oswald-Extra-LightItalic.ttf in Resources */,
 				780AC6F01BDFD284007F1119 /* OpenSans-Semibold.ttf in Resources */,
 				A13AF39B1D36D3B700DDA006 /* Oswald-Heavy.ttf in Resources */,
+				42CD27CE235758FF00069FF8 /* LaunchScreen~ipad.xib in Resources */,
 				2B11201F22833CC7001A9386 /* EPGTimeView.xib in Resources */,
 				A13AF3A11D36D3B700DDA006 /* Oswald-Regular.ttf in Resources */,
 				A13AF39F1D36D3B700DDA006 /* Oswald-Medium.ttf in Resources */,
@@ -1127,7 +1131,7 @@
 				A13AF3A31D36D3B700DDA006 /* Oswald-Stencil.ttf in Resources */,
 				2B11201A22833CB7001A9386 /* EPGDateView.xib in Resources */,
 				780AC6F61BDFD284007F1119 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
-				780AC6F71BDFD284007F1119 /* LaunchScreen.xib in Resources */,
+				780AC6F71BDFD284007F1119 /* LaunchScreen~iphone.xib in Resources */,
 				A13AF3981D36D3B700DDA006 /* Oswald-DemiBold.ttf in Resources */,
 				A13AF37C1D369DB600DDA006 /* VideoSummary.html in Resources */,
 				A17BC02C1E92A8D70000A2FC /* VideoSummaryLight.html in Resources */,
@@ -1378,6 +1382,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		42CD27CC235758FF00069FF8 /* LaunchScreen~ipad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42CD27CD235758FF00069FF8 /* Base */,
+			);
+			name = "LaunchScreen~ipad.xib";
+			sourceTree = "<group>";
+		};
 		F1BB52901A76D7D100E901F1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1386,12 +1398,12 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		F1BB52951A76D7D100E901F1 /* LaunchScreen.xib */ = {
+		F1BB52951A76D7D100E901F1 /* LaunchScreen~iphone.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				F1BB52961A76D7D100E901F1 /* Base */,
 			);
-			name = LaunchScreen.xib;
+			name = "LaunchScreen~iphone.xib";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
