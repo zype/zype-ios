@@ -205,11 +205,46 @@
     NSManagedObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
     if ([dataModel isKindOfClass:[Playlist class]]) {
         Playlist * playlist = (Playlist *)dataModel;
-        if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
-            return [PlaylistCollectionCell rowPosterHeight];
+        CGFloat labelHeight = 0;
+        
+        if (kInlineTitleTextDisplay) {
+            labelHeight = 21.5;
+            if (playlist.playlist_item_count.integerValue > 0) {
+                NSArray<PlaylistVideo *> *playlistVideos = [ACSPersistenceManager playlistVideosFromPlaylistId:playlist.pId];
+                
+                NSMutableArray *filterArray = [[NSMutableArray alloc] init];
+                for (PlaylistVideo *currentPlaylistVideo in playlistVideos) {
+                    Video *currentVideo = currentPlaylistVideo.video;
+                    
+                    if (![filterArray containsObject:currentVideo]){
+                        CGSize labelSize = [currentVideo.title boundingRectWithSize:CGSizeMake([PlaylistCollectionCell cellPosterLayoutSize].width - 10, 0)
+                                                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                                                         attributes:@{NSFontAttributeName : [UIFont fontWithName:@"Roboto-Regular" size:12]}
+                                                                            context:nil].size;
+                        if (labelSize.height > 30) {
+                            labelHeight = 38;
+                        }
+                    }
+                }
+            } else {
+                NSArray<Playlist *> *playlistVideos = [ACSPersistenceManager getPlaylistsWithParentID:playlist.pId];
+                for (Playlist *item in playlistVideos) {
+                    CGSize labelSize = [item.title boundingRectWithSize:CGSizeMake([PlaylistCollectionCell cellPosterLayoutSize].width - 10, 0)
+                                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                                             attributes:@{NSFontAttributeName : [UIFont fontWithName:@"Roboto-Regular" size:12]}
+                                                                context:nil].size;
+                    if (labelSize.height > 30) {
+                        labelHeight = 38;
+                    }
+                }
+            }
         }
         
-        return [PlaylistCollectionCell rowHeight];
+        if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
+            return [PlaylistCollectionCell rowPosterHeight] + labelHeight;
+        }
+        
+        return [PlaylistCollectionCell rowHeight] + labelHeight;
     }
     
     if ([dataModel isKindOfClass:[Pager class]]) {

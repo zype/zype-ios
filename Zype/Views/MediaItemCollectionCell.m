@@ -12,6 +12,7 @@
 #import "ACStatusManager.h"
 #import "ACPurchaseManager.h"
 #import "UIView+UIView_CustomizeTheme.h"
+#import "PlaylistCollectionCell.h"
 
 @interface MediaItemCollectionCell()
 
@@ -22,6 +23,9 @@
 @property (strong, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIImageView *placeholderView;
 @property (weak, nonatomic) IBOutlet UIView *overlayView;
+@property (weak, nonatomic) IBOutlet UILabel *bottomTitleLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomTitleTopLayout;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageContainerHeight;
 
 
 
@@ -37,6 +41,19 @@
 }
 
 - (void)setPlaylist:(Playlist *)playlist {
+    if (kInlineTitleTextDisplay) {
+        self.bottomTitleLabel.text = playlist.title;
+        self.bottomTitleTopLayout.constant = 5;
+    } else {
+        self.bottomTitleLabel.text = @"";
+        self.bottomTitleTopLayout.constant = 0;
+    }
+    if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
+        self.imageContainerHeight.constant = [PlaylistCollectionCell cellPosterLayoutSize].height;
+    } else {
+        self.imageContainerHeight.constant = [PlaylistCollectionCell cellLanscapeLayoutSize].height;
+    }
+    
     self.titleLabel.text = playlist.title;
     [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
     [self.placeholderView setImage:[UIImage imageNamed:@"playlist-placeholder"]];
@@ -60,6 +77,13 @@
 }
 
 - (void)setVideo:(Video *)video {
+    if (kInlineTitleTextDisplay) {
+        self.bottomTitleLabel.text = video.title;
+        self.bottomTitleTopLayout.constant = 5;
+    } else {
+        self.bottomTitleLabel.text = @"";
+        self.bottomTitleTopLayout.constant = 0;
+    }
     self.titleLabel.text = video.title;
     [self.placeholderView setImage:[UIImage imageNamed:@"play-placeholder"]];
     [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
@@ -101,6 +125,18 @@
 }
 
 - (void)setVideo:(Video *)video withPoster:(Boolean)usePoster {
+    if (kInlineTitleTextDisplay) {
+        self.bottomTitleLabel.text = video.title;
+        self.bottomTitleTopLayout.constant = 5;
+    } else {
+        self.bottomTitleLabel.text = @"";
+        self.bottomTitleTopLayout.constant = 0;
+    }
+    if (usePoster) {
+        self.imageContainerHeight.constant = [PlaylistCollectionCell cellPosterLayoutSize].height;
+    } else {
+        self.imageContainerHeight.constant = [PlaylistCollectionCell cellLanscapeLayoutSize].height;
+    }
     self.titleLabel.text = video.title;
     [self.placeholderView setImage:[UIImage imageNamed:@"play-placeholder"]];
     [self.placeholderView setHidden:kAppAppleTVLayoutShowThumbanailTitle];
