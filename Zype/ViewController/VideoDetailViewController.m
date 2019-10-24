@@ -412,6 +412,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)setupView {
     
+    if (self.isLive) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    }
     [self.tableViewGuestList registerNib:[UINib nibWithNibName:@"GuestTableViewCell" bundle:nil] forCellReuseIdentifier:GuestCellIdentifier];
     
     self.arrayViews = @[self.viewSummary, self.viewGuestList, self.viewTimeline, self.viewOptions];
@@ -611,6 +614,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (BOOL)hidesBottomBarWhenPushed {
     return YES;
+}
+
+- (void) backAction {
+    [self dismissViewControllerAnimated:true completion:nil];
 }
 
 #pragma mark - Remote control events
