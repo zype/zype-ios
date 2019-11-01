@@ -78,6 +78,57 @@
 //    NSLog(@"%@", self.indexPathController.dataModel.items.firstObject);
 //    NSLog(@"%ld", self.indexPathController.dataModel.numberOfSections);
     
+    self.sectionLabelHeights = [[NSMutableArray alloc] init];
+    for (int section = 0; section < self.indexPathController.dataModel.numberOfSections; section++) {
+        float labelHeight = 0;
+        NSUInteger number = [self.indexPathController.dataModel numberOfRowsInSection:section];
+        if (kInlineTitleTextDisplay) {
+            for (int row = 0; row < number; row++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                NSManagedObject *dataModel = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
+                if ([dataModel isKindOfClass:[Playlist class]]) {
+                    Playlist* playlist = (Playlist*)dataModel;
+                    CGFloat labelWidth = [PlaylistCollectionCell cellLanscapeLayoutSize].width - 10;
+                    if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
+                        labelWidth = [PlaylistCollectionCell cellPosterLayoutSize].width - 10;
+                    }
+                    
+                    labelHeight = 21.5;
+                    if (playlist.playlist_item_count.integerValue > 0) {
+                        NSArray<PlaylistVideo *> *playlistVideos = [ACSPersistenceManager playlistVideosFromPlaylistId:playlist.pId];
+                        
+                        NSMutableArray *filterArray = [[NSMutableArray alloc] init];
+                        for (PlaylistVideo *currentPlaylistVideo in playlistVideos) {
+                            Video *currentVideo = currentPlaylistVideo.video;
+                            
+                            if (![filterArray containsObject:currentVideo]){
+                                CGSize labelSize = [currentVideo.title boundingRectWithSize:CGSizeMake(labelWidth, 0)
+                                                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                                                 attributes:@{NSFontAttributeName : [UIFont fontWithName:@"Roboto-Regular" size:12]}
+                                                                                    context:nil].size;
+                                if (labelSize.height > 30) {
+                                    labelHeight = 38;
+                                }
+                            }
+                        }
+                    } else {
+                        NSArray<Playlist *> *playlistVideos = [ACSPersistenceManager getPlaylistsWithParentID:playlist.pId];
+                        for (Playlist *item in playlistVideos) {
+                            CGSize labelSize = [item.title boundingRectWithSize:CGSizeMake(labelWidth - 10, 0)
+                                                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                                                     attributes:@{NSFontAttributeName : [UIFont fontWithName:@"Roboto-Regular" size:12]}
+                                                                        context:nil].size;
+                            if (labelSize.height > 30) {
+                                labelHeight = 38;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [self.sectionLabelHeights addObject: [NSNumber numberWithFloat:labelHeight]];
+    }
+    
     [self.tableView reloadData];
     self.playlistCellSelected = nil; // reset when reloading table. should be empty
 }
@@ -206,38 +257,8 @@
     if ([dataModel isKindOfClass:[Playlist class]]) {
         Playlist * playlist = (Playlist *)dataModel;
         CGFloat labelHeight = 0;
-        
-        if (kInlineTitleTextDisplay) {
-            labelHeight = 21.5;
-            if (playlist.playlist_item_count.integerValue > 0) {
-                NSArray<PlaylistVideo *> *playlistVideos = [ACSPersistenceManager playlistVideosFromPlaylistId:playlist.pId];
-                
-                NSMutableArray *filterArray = [[NSMutableArray alloc] init];
-                for (PlaylistVideo *currentPlaylistVideo in playlistVideos) {
-                    Video *currentVideo = currentPlaylistVideo.video;
-                    
-                    if (![filterArray containsObject:currentVideo]){
-                        CGSize labelSize = [currentVideo.title boundingRectWithSize:CGSizeMake([PlaylistCollectionCell cellPosterLayoutSize].width - 10, 0)
-                                                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                                                         attributes:@{NSFontAttributeName : [UIFont fontWithName:@"Roboto-Regular" size:12]}
-                                                                            context:nil].size;
-                        if (labelSize.height > 30) {
-                            labelHeight = 38;
-                        }
-                    }
-                }
-            } else {
-                NSArray<Playlist *> *playlistVideos = [ACSPersistenceManager getPlaylistsWithParentID:playlist.pId];
-                for (Playlist *item in playlistVideos) {
-                    CGSize labelSize = [item.title boundingRectWithSize:CGSizeMake([PlaylistCollectionCell cellPosterLayoutSize].width - 10, 0)
-                                                                options:NSStringDrawingUsesLineFragmentOrigin
-                                                             attributes:@{NSFontAttributeName : [UIFont fontWithName:@"Roboto-Regular" size:12]}
-                                                                context:nil].size;
-                    if (labelSize.height > 30) {
-                        labelHeight = 38;
-                    }
-                }
-            }
+        if (self.sectionLabelHeights != nil) {
+            labelHeight = [[self.sectionLabelHeights objectAtIndex: indexPath.section] floatValue];
         }
         
         if ([playlist.thumbnail_layout isEqualToString:@"poster"]) {
