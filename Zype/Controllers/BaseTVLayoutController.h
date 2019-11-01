@@ -14,6 +14,7 @@
 @property (strong, nonatomic) PlaylistCollectionCell * playlistCellSelected;
 
 @property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray* sectionLabelHeights;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;
 

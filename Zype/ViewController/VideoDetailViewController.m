@@ -580,7 +580,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
     UIColor *brandColor = kClientColor;
-    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], self.video.short_description];
+    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.webViewSummary loadHTMLString:htmlString baseURL:nil];
@@ -1970,12 +1970,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         // Favorite
         [[RESTServiceController sharedInstance] favoriteVideo:self.video];
         favoriteSource.title = @"Unfavorite";
-        favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        favoriteSource.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesBFull"] andDarkImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
     } else {
         // Unfavorite
         [[RESTServiceController sharedInstance] unfavoriteVideo:self.video];
         favoriteSource.title = @"Favorite";
-        favoriteSource.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        favoriteSource.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconFavoritesB"] andDarkImage:[UIImage imageNamed:@"IconFavoritesW"]];
     }
     [self.tableViewOptions reloadData];
 }
