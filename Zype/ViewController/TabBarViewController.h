@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SubscriptionPlanDelegate.h"
 
-@interface TabBarViewController : UITabBarController<UITabBarControllerDelegate>
+@interface TabBarViewController : UITabBarController<UITabBarControllerDelegate, SubscriptionPlanDelegate>
 
 @property (weak, nonatomic) IBOutlet UITabBar *tabBar;
+
+@property (strong, nonatomic) Video *selectedVideo;
 
 @end

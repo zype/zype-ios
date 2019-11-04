@@ -11,6 +11,8 @@
 #import "ACSPersistenceManager.h"
 #import "VideoDetailViewController.h"
 #import "SVProgressHUD.h"
+#import "ACPurchaseManager.h"
+#import "ACStatusManager.h"
 
 @interface TabBarViewController ()
 
@@ -86,15 +88,33 @@
             }
             
             if (videoInDB != nil) {
-                UINavigationController *navigationVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NavigationLiveViewController"];
-                VideoDetailViewController *videoVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"videoDetailViewController"];
-                NSMutableArray *videos = [[NSMutableArray alloc] init];
-                [videos addObject: videoInDB];
-                [videoVC setVideos:videos withIndex: 0];
-                [videoVC setIsLive:YES];
+                self.selectedVideo = videoInDB;
+                //check for video for registration
+                if ([ACStatusManager isUserSignedIn] == NO && videoInDB.registration_required.intValue == 1){
+                    [UIUtil showWatcherIntroViewFromViewController:self];
+                    return;
+                }
+                //check for video with subscription
+                if (kNativeSubscriptionEnabled == NO) {
+                    if ([ACStatusManager isUserSignedIn] == false && videoInDB.subscription_required.intValue == 1) {
+                        [UIUtil showSignInViewFromViewController:self];
+                        return;
+                    }
+                } else {
+                    if ([ACStatusManager isUserSignedIn] == false && videoInDB.subscription_required.intValue == 1) {
+                        [UIUtil showIntroViewFromViewController:self];
+                        return;
+                    } else {
+                        if ([videoInDB.subscription_required intValue] == 1) {
+                            if ([[ACPurchaseManager sharedInstance] isActiveSubscription] == false && [[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]) {
+                                [UIUtil showSubscriptionViewFromViewController:self];
+                                return;
+                            }
+                        }
+                    }
+                }
                 
-                navigationVC = [navigationVC initWithRootViewController:videoVC];
-                [self presentViewController:navigationVC animated:YES completion:nil];
+                [self presentLiveVideo];
             } else {
                 UIAlertController * alert = [UIAlertController alertControllerWithTitle:nil message:@"Can't find video" preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil];
@@ -103,6 +123,20 @@
             }
         }
     }];
+}
+
+- (void) presentLiveVideo {
+    if (self.selectedVideo != nil) {
+        UINavigationController *navigationVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NavigationLiveViewController"];
+        VideoDetailViewController *videoVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"videoDetailViewController"];
+        NSMutableArray *videos = [[NSMutableArray alloc] init];
+        [videos addObject: self.selectedVideo];
+        [videoVC setVideos:videos withIndex: 0];
+        [videoVC setIsLive:YES];
+        
+        navigationVC = [navigationVC initWithRootViewController:videoVC];
+        [self presentViewController:navigationVC animated:YES completion:nil];
+    }
 }
 
 #pragma mark - UITabBarControllerDelegate
@@ -117,6 +151,23 @@
     }
     
     return YES;
+}
+
+#pragma mark - SubscriptionPlanDelegate
+- (void)subscriptionSignInDone {
+    if (kNativeSubscriptionEnabled == NO) {
+        [self presentLiveVideo];
+    } else {
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] > 0) {
+            [self presentLiveVideo];
+        } else {
+            [UIUtil showSubscriptionViewFromViewController:self];
+        }
+    }
+}
+
+- (void)subscriptionPlanDone {
+    [self presentLiveVideo];
 }
 
 @end

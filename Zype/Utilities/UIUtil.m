@@ -23,6 +23,7 @@
 #import "RegisterViewController.h"
 #import "SettingsViewController.h"
 #import "PrivacyViewController.h"
+#import "TabBarViewController.h"
 
 @implementation UIUtil
 
@@ -161,6 +162,8 @@
     SignInViewController *signInViewController = (SignInViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"signInViewController"];
     if ([viewController isKindOfClass:[BaseViewController class]]) {
         signInViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
+    } else if ([viewController isKindOfClass:[TabBarViewController class]]) {
+        signInViewController.planDelegate = (TabBarViewController*)viewController;
     }
     [viewController presentViewController:signInViewController animated:YES completion:nil];
 }
@@ -183,6 +186,8 @@
         introViewController.planDelegate = (SettingsViewController*)viewController;
     } else if ([viewController isKindOfClass:[HomeViewController class]]) {
         introViewController.planDelegate = (HomeViewController*)viewController;
+    } else if ([viewController isKindOfClass:[TabBarViewController class]]) {
+        introViewController.planDelegate = (TabBarViewController*)viewController;
     }
     [viewController presentViewController:introViewController animated:YES completion:nil];
 }
@@ -194,6 +199,8 @@
         watcherIntroViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
     } else if ([viewController isKindOfClass:[HomeViewController class]]) {
         watcherIntroViewController.planDelegate = (HomeViewController*)viewController;
+    } else if ([viewController isKindOfClass:[TabBarViewController class]]) {
+        watcherIntroViewController.planDelegate = (TabBarViewController*)viewController;
     }
     [viewController presentViewController:watcherIntroViewController animated:YES completion:nil];
 }
@@ -212,6 +219,8 @@
     SubsciptionViewController *subscriptionViewController = (SubsciptionViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"SubscriptionViewController"];
     if ([viewController isKindOfClass:[VideosViewController class]]) {
         subscriptionViewController.planDelegate = (VideosViewController*)viewController;
+    } else if ([viewController isKindOfClass:[TabBarViewController class]]) {
+        subscriptionViewController.planDelegate = (TabBarViewController*)viewController;
     }
     [viewController presentViewController:subscriptionViewController animated:YES completion:nil];
 }
