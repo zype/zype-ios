@@ -38,6 +38,10 @@
     [self.titleLabel setHidden:!kAppAppleTVLayoutShowThumbanailTitle];
     [self.overlayView setHidden:!kAppAppleTVLayoutShowThumbanailTitle];
     // Initialization code
+    
+    if (kAppColorLight) {
+        self.bottomTitleLabel.textColor = UIColor.blackColor;
+    }
 }
 
 - (void)setPlaylist:(Playlist *)playlist {

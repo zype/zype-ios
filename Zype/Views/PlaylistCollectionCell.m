@@ -37,6 +37,10 @@
     self.layoutMargins = UIEdgeInsetsZero;
     self.items = @[];
     // Initialization code
+    
+    if (kAppColorLight) {
+        self.titleLabel.textColor = UIColor.blackColor;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

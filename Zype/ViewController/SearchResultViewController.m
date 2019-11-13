@@ -104,7 +104,7 @@
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:nil
                                                                             action:nil];
-    self.title = @"Search Result";
+    self.title = @"Search Results";
     //[self.searchBar setText:self.searchString];
     [self.searchBar becomeFirstResponder];
     [self initDismissSearchButton];
@@ -261,7 +261,7 @@
 
 - (void)setNoResultsMessage{
     
-    if (self.doneLoadingFromNetwork == YES) {
+    if (self.episodeController.doneLoadingFromNetwork == YES) {
         
         self.noResultsLabel.text = NSLocalizedString(@"No Results. Try another search.", @"no results message");
         

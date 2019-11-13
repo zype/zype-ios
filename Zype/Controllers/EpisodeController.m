@@ -222,7 +222,7 @@
     
     self = [super init];
     if (self){
-         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finishedGettingResults) name:@"ResultsFromPlaylistReturned" object:nil];
+//         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finishedGettingResults) name:@"ResultsFromPlaylistReturned" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finishedGettingResults) name:@"ResultsByDateReturned" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finishedGettingSearchResults) name:@"ResultsBySearchReturned" object:nil];
         

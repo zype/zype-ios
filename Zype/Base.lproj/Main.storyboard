@@ -2864,6 +2864,9 @@ Terms of Service and Privacy Policy</string>
                                         <state key="normal" title="Forgot password?">
                                             <color key="titleColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <segue destination="VKi-VC-DLy" kind="presentation" id="ZME-zD-ZIW"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -2971,6 +2974,7 @@ Terms of Service and Privacy Policy</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="9eY-dp-mEh"/>
+        <segue reference="ZME-zD-ZIW"/>
         <segue reference="iPz-GA-94R"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>

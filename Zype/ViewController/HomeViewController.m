@@ -134,7 +134,7 @@
 }
 
 - (void)loadDataWithPlaylistID:(NSString *)playlistID {    
-    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlistID withCompletionHandler:^{
+    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlistID completionDelegate:self.episodeController withCompletionHandler:^{
         
         if (kAppAppleTVLayout) {
             if ([playlistID  isEqualToString: kRootPlaylistId]) {
@@ -146,11 +146,11 @@
             for (Playlist * playlist in playlists) {
                 dispatch_group_enter(group);
                 if (playlist.playlist_item_count.integerValue > 0) {
-                    [[RESTServiceController sharedInstance] syncVideosFromPlaylist:playlist.pId InPage:nil WithVideosInDB:nil WithExistingVideos:nil withCompletionHandler:^{
+                    [[RESTServiceController sharedInstance] syncVideosFromPlaylist:playlist.pId InPage:nil WithVideosInDB:nil WithExistingVideos:nil completionDelegate:NULL withCompletionHandler:^{
                         dispatch_group_leave(group);
                     }];
                 } else {
-                    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlist.pId withCompletionHandler:^{
+                    [[RESTServiceController sharedInstance] syncPlaylistsWithParentId:playlist.pId completionDelegate: NULL withCompletionHandler:^{
                         dispatch_group_leave(group);
                     }];
                 }
@@ -340,7 +340,7 @@
 
 - (void)setNoResultsMessage{
     
-    if (self.doneLoadingFromNetwork == YES) {
+    if (self.episodeController.doneLoadingFromNetwork == YES) {
         
         self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
         

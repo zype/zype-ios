@@ -360,7 +360,6 @@
 
 - (void)episodeControllerDelegateDoneLoading{
     
-    self.doneLoadingFromNetwork = YES;
     [self.loadingIndicator setHidden:YES];
     [self setNoResultsMessage];
     

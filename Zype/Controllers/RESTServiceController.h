@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Video.h"
+#import "EpisodeController.h"
 
 @class PlaybackSource;
 
@@ -23,11 +24,11 @@
 
 - (void)syncZObject;
 
-- (void)syncVideosInPage:(NSNumber *)page WithVideosInDB:(NSMutableArray *)videosInDB WithExistingVideos:(NSMutableArray *)existingVideos;
+- (void)syncVideosInPage:(NSNumber *)page WithVideosInDB:(NSMutableArray *)videosInDB WithExistingVideos:(NSMutableArray *)existingVideos completionDelegate: (EpisodeController*) delegate;
 - (void)syncVideosFromDate:(NSDate *)fromDate ToDate:(NSDate *)toDate InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos;
 - (void)syncHighlightsInPage:(NSNumber *)page WithVideosInDB:(NSMutableArray *)highlightsInDB WithExistingVideos:(NSMutableArray *)existingVideos;
-- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos;
-- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos withCompletionHandler:(void (^)(void))complete;
+- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos completionDelegate: (EpisodeController*) delegate;
+- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos completionDelegate: (EpisodeController*)delegate withCompletionHandler:(void (^)(void))complete;
 - (void)loadVideoWithId:(NSString *)videoId withCompletionHandler:(void(^)(NSData *data, NSError *error))success;
 
 - (void)getDownloadVideoUrlWithVideoId:(NSString *)vId WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
@@ -38,7 +39,7 @@
 - (void)getAudioSourceWithVideo:(Video *)video withCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
 - (void)syncPlaylistWithId:(NSString *)playlistId withCompletionHandler:(void (^)(NSString *))errorString;
-- (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)(void))complete;
+- (void)syncPlaylistsWithParentId:(NSString *)parentId completionDelegate:(EpisodeController*)delegate withCompletionHandler:(void (^)(void))complete;
 
 - (PlaybackSource *)videoStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
 - (PlaybackSource *)audioStreamPlaybackSourceFromRootDictionary:(NSDictionary *)dictionary;
