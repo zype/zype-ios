@@ -269,7 +269,7 @@
     }
     
     if ([dataModel isKindOfClass:[Pager class]]) {
-        return [PagerSectionCell rowHeight];
+        return [PagerSectionCell rowHeight] + 15;
     }
     
     return 90.0f;

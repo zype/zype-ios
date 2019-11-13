@@ -87,7 +87,7 @@
     if (currentPlaylist != nil){
         self.title = currentPlaylist.title;
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadVideos) name:@"ResultsFromPlaylistReturned" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadVideos) name:@"ResultsFromPlaylistReturned" object:nil];
     self.planDelegate = self;
     //[self customizeSearchBar];
 }
@@ -104,7 +104,7 @@
 
 - (void)getNewData {
     if (self.playlistId != nil) {
-        [[RESTServiceController sharedInstance] syncVideosFromPlaylist:self.playlistId InPage:@1 WithVideosInDB:nil WithExistingVideos:nil];
+        [[RESTServiceController sharedInstance] syncVideosFromPlaylist:self.playlistId InPage:@1 WithVideosInDB:nil WithExistingVideos:nil completionDelegate:self.episodeController];
     }
 }
 
@@ -196,6 +196,11 @@
     [super episodeControllerDidSelectItemAtIndexPath:indexPath];
 }
 
+- (void)episodeControllerDelegateDoneLoading {
+    [super episodeControllerDelegateDoneLoading];
+    [self loadVideos];
+}
+
 
 #pragma mark - Video Player Notifications
 
@@ -264,7 +269,7 @@
 
 - (void)setNoResultsMessage{
     
-    if (self.doneLoadingFromNetwork == YES) {
+    if (self.episodeController.doneLoadingFromNetwork == YES) {
         
         self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
         

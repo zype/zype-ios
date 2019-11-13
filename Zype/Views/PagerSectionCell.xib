@@ -19,14 +19,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P9h-IS-lc3" customClass="iCarousel">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="125.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="124.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="P9h-IS-lc3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="09h-aP-UID"/>
-                    <constraint firstAttribute="bottom" secondItem="P9h-IS-lc3" secondAttribute="bottom" constant="14" id="CDV-t0-UAi"/>
+                    <constraint firstAttribute="bottom" secondItem="P9h-IS-lc3" secondAttribute="bottom" constant="15" id="CDV-t0-UAi"/>
                     <constraint firstItem="P9h-IS-lc3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="XDU-eE-G1p"/>
                     <constraint firstAttribute="trailing" secondItem="P9h-IS-lc3" secondAttribute="trailing" id="zDq-bn-nIk"/>
                 </constraints>

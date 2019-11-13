@@ -293,7 +293,7 @@
 
 - (void)setNoResultsMessage{
     
-    if (self.doneLoadingFromNetwork == YES) {
+    if (self.episodeController.doneLoadingFromNetwork == YES) {
         
         self.noResultsLabel.text = NSLocalizedString(@"No videos found. Please check again later.", @"no results message");
         
@@ -376,7 +376,7 @@
 - (void)filterVideosFromDate:(NSDate *)fromDate ToDate:(NSDate *)toDate{
     
     [self.episodeController scrollToTop];
-    self.doneLoadingFromNetwork = NO;
+    self.episodeController.doneLoadingFromNetwork = NO;
     
     self.fromDate = fromDate;
     self.toDate = toDate;

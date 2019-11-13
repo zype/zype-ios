@@ -229,7 +229,7 @@
 
 #pragma mark - Video App
 
-- (void)syncVideosInPage:(NSNumber *)page WithVideosInDB:(NSMutableArray *)videosInDB WithExistingVideos:(NSMutableArray *)existingVideos
+- (void)syncVideosInPage:(NSNumber *)page WithVideosInDB:(NSMutableArray *)videosInDB WithExistingVideos:(NSMutableArray *)existingVideos completionDelegate: (EpisodeController*) delegate
 {
     // Prepare videos in core data
     if (!videosInDB) {
@@ -264,7 +264,7 @@
                 NSNumber *pages = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_Pages];
                 NSNumber *nextPage = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_NextPage];
                 if ([UIUtil hasNextPage:nextPage InPages:pages WithData:parsedObject]){
-                    [self syncVideosInPage:nextPage WithVideosInDB:videosInDB WithExistingVideos:existingVideos];
+                    [self syncVideosInPage:nextPage WithVideosInDB:videosInDB WithExistingVideos:existingVideos completionDelegate:delegate];
                 }
                 // Check if it's the last page or not, then populate videos
                 [ACSPersistenceManager populateVideosFromDict:parsedObject WithVideosInDB:videosInDB WithExistingVideos:existingVideos IsLastPage:[UIUtil isLastPageInPages:pages WithData:parsedObject] addToPlaylist:nil];
@@ -273,7 +273,10 @@
             
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+        if (delegate != NULL) {
+            [delegate finishedGettingResults];
+        }
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
         
     }];
     
@@ -383,7 +386,7 @@
     
 }
 
-- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos
+- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos  completionDelegate: (EpisodeController*) delegate
 {
     if (page == nil) {
         page = @1;
@@ -420,7 +423,7 @@
                 NSNumber *pages = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_Pages];
                 NSNumber *nextPage = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_NextPage];
                 if ([UIUtil hasNextPage:nextPage InPages:pages WithData:parsedObject]){
-                    [self syncVideosFromPlaylist:playlistId InPage:nextPage WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos];
+                    [self syncVideosFromPlaylist:playlistId InPage:nextPage WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos completionDelegate:delegate];
                 }
                 // Check if it's the last page or not, then populate videos
                 [ACSPersistenceManager populateVideosFromDict:parsedObject WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos IsLastPage:[UIUtil isLastPageInPages:pages WithData:parsedObject] addToPlaylist:playlistId];
@@ -429,7 +432,10 @@
             
             /* //auto download latest video after loading results
              [ACDownloadManager autoDownloadLatestVideo];*/
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+            if (delegate != NULL) {
+                [delegate finishedGettingResults];
+            }
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
             
         }
         
@@ -439,7 +445,7 @@
     
 }
 
-- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos withCompletionHandler:(void (^)(void))complete
+- (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos  completionDelegate: (EpisodeController*)delegate withCompletionHandler:(void (^)(void))complete
 {
     if (page == nil) {
         page = @1;
@@ -476,7 +482,7 @@
                 NSNumber *pages = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_Pages];
                 NSNumber *nextPage = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_NextPage];
                 if ([UIUtil hasNextPage:nextPage InPages:pages WithData:parsedObject]){
-                    [self syncVideosFromPlaylist:playlistId InPage:nextPage WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos];
+                    [self syncVideosFromPlaylist:playlistId InPage:nextPage WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos completionDelegate:delegate];
                 }
                 // Check if it's the last page or not, then populate videos
                 [ACSPersistenceManager populateVideosFromDict:parsedObject WithVideosInDB:videosInDBFiltered WithExistingVideos:existingVideos IsLastPage:[UIUtil isLastPageInPages:pages WithData:parsedObject] addToPlaylist:playlistId];
@@ -486,7 +492,10 @@
             /* //auto download latest video after loading results
              [ACDownloadManager autoDownloadLatestVideo];*/
             if (complete) complete();
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+            if (delegate != NULL) {
+                [delegate finishedGettingResults];
+            }
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
             
         }
         
@@ -583,7 +592,7 @@
     
 }
 
-- (void)syncPlaylistsWithParentId:(NSString *)parentId withCompletionHandler:(void (^)(void))complete
+- (void)syncPlaylistsWithParentId:(NSString *)parentId completionDelegate: (EpisodeController*)delegate withCompletionHandler:(void (^)(void))complete
 {
     NSString *urlAsString = [NSString stringWithFormat:kGetPlaylists, kApiDomain, kAppKey, parentId];
     NSURL *url = [NSURL withString:urlAsString];
@@ -606,8 +615,12 @@
                 [ACSPersistenceManager resetPlaylistChilds:parentId];
                 [ACSPersistenceManager populatePlaylistsFromDictionary:parsedObject];
                 
-                if ([parsedObject[@"response"] count] == 0)
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+                if ([parsedObject[@"response"] count] == 0) {
+                    if (delegate != NULL) {
+                        [delegate finishedGettingResults];
+                    }
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ResultsFromPlaylistReturned" object:nil];
+                }
                 
             }
             

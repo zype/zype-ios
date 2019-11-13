@@ -94,7 +94,7 @@
 + (CGFloat)rowHeight {
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     
-    return width * 700 / 1740 + 14;
+    return width * 700 / 1740;
 }
 
 #pragma - mark Timer

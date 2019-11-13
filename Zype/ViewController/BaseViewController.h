@@ -34,7 +34,6 @@
 @property (strong, nonatomic) Video *actionVideo;
 @property (strong, nonatomic) Video *selectedVideo;
 @property (strong, nonatomic) NSIndexPath *indexPathInAction;
-@property (nonatomic) BOOL doneLoadingFromNetwork;
 
 - (void)setDownloadStartedForDownloadTask:(NSURLSessionDownloadTask *)downloadTask;
 - (void)setDownloadProgress:(float)progress downloadTask:(NSURLSessionDownloadTask *)downloadTask;
