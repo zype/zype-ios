@@ -13,6 +13,8 @@
 @interface MoreViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSignIn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonSignInHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonSignInBottom;
 
 @property (nonatomic, retain) NSDate *start;
 

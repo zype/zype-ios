@@ -1764,7 +1764,6 @@
                             <constraint firstItem="H4V-lr-FVR" firstAttribute="leading" secondItem="FPc-mk-ssL" secondAttribute="leading" id="YDE-ad-GkR"/>
                             <constraint firstAttribute="trailing" secondItem="H4V-lr-FVR" secondAttribute="trailing" id="aTn-0F-yRG"/>
                             <constraint firstAttribute="trailing" secondItem="5qa-Lv-zZc" secondAttribute="trailing" constant="12" id="eEQ-qB-xUN"/>
-                            <constraint firstItem="5qa-Lv-zZc" firstAttribute="top" secondItem="pSN-o0-2AR" secondAttribute="bottom" constant="10" id="jtH-O1-oGi"/>
                             <constraint firstItem="pSN-o0-2AR" firstAttribute="leading" secondItem="FPc-mk-ssL" secondAttribute="leading" id="m3I-GA-Dy4"/>
                             <constraint firstItem="5qa-Lv-zZc" firstAttribute="leading" secondItem="FPc-mk-ssL" secondAttribute="leading" constant="12" id="oqW-0A-uWT"/>
                             <constraint firstItem="H4V-lr-FVR" firstAttribute="top" secondItem="Agv-Hq-HyB" secondAttribute="bottom" id="oyL-gR-ubG"/>
@@ -1776,6 +1775,8 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="buttonSignIn" destination="5qa-Lv-zZc" id="EiR-yY-jcQ"/>
+                        <outlet property="buttonSignInBottom" destination="SBU-8z-9uQ" id="BJc-hT-NrB"/>
+                        <outlet property="buttonSignInHeight" destination="cJf-4T-n3k" id="Y7r-rQ-ImS"/>
                         <outlet property="tableView" destination="pSN-o0-2AR" id="hNJ-N5-n6N"/>
                         <segue destination="paU-DV-fbs" kind="show" identifier="showSettings" id="Idj-0E-tmJ"/>
                     </connections>
