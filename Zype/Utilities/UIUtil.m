@@ -24,6 +24,7 @@
 #import "SettingsViewController.h"
 #import "PrivacyViewController.h"
 #import "TabBarViewController.h"
+#import "MoreViewController.h"
 
 @implementation UIUtil
 
@@ -164,6 +165,8 @@
         signInViewController.planDelegate = ((BaseViewController*)viewController).planDelegate;
     } else if ([viewController isKindOfClass:[TabBarViewController class]]) {
         signInViewController.planDelegate = (TabBarViewController*)viewController;
+    } else if ([viewController isKindOfClass:[MoreViewController class]]) {
+        signInViewController.planDelegate = (MoreViewController*)viewController;
     }
     [viewController presentViewController:signInViewController animated:YES completion:nil];
 }

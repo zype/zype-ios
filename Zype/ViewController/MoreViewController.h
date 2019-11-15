@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GAIDictionaryBuilder.h"
 #import "GAI.h"
+#import "SubscriptionPlanDelegate.h"
 
-@interface MoreViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate>
+@interface MoreViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate, SubscriptionPlanDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSignIn;
 
