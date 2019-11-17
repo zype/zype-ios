@@ -81,6 +81,9 @@
 #define kLiveItemEnabled NO
 #define kLiveVideoID @"5c8faa021d1f4314dd006203"
 
+// Enable to show Publish At Date
+#define kShowPublishedAtDate YES
+
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
 #define kLightTintColor [UIColor colorWithRed:1.00 green:0.11 blue:0.38 alpha:1.00]

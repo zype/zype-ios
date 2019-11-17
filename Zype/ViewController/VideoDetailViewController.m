@@ -580,7 +580,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
     UIColor *brandColor = kClientColor;
-    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+    NSString *styledEpisode = [NSString stringWithFormat:@"<p style='padding-bottom: 10px'>Episode %@</p>", self.video.episode];
+    if ([self.video.episode intValue] == 0) {
+        styledEpisode = @"";
+    }
+    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@%@", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.webViewSummary loadHTMLString:htmlString baseURL:nil];

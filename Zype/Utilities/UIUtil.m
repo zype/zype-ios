@@ -242,12 +242,20 @@
     NSString *stringPublished = [formatter stringFromDate:video.published_at];
     NSString *stringEpisode = [NSString stringWithFormat:@"Episode %@", video.episode];
     
-    if ([video.episode isEqualToNumber:[NSNumber numberWithInt:0]] || [self isYes:video.isHighlight]){
-      if (stringPublished.length > 0)
-          result = [NSString stringWithFormat:@"%@", stringPublished];
+    if (kShowPublishedAtDate) {
+        if ([video.episode isEqualToNumber:[NSNumber numberWithInt:0]] || [self isYes:video.isHighlight]){
+            if (stringPublished.length > 0)
+                result = [NSString stringWithFormat:@"%@", stringPublished];
+        }
+        else {
+            if (stringPublished.length > 0)
+                result = [NSString stringWithFormat:@"%@ | %@", stringPublished, stringEpisode];
+            else
+                result = [NSString stringWithFormat:@"%@", stringEpisode];
+        }
+    } else {
+        result = [NSString stringWithFormat:@"%@", stringEpisode];
     }
-    else
-        result = [NSString stringWithFormat:@"%@ | %@", stringPublished, stringEpisode];
     
     return result;
 }
