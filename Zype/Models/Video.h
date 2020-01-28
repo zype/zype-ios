@@ -43,6 +43,7 @@
 @property (nonatomic, retain) NSNumber * downloadTaskId;
 @property (nonatomic, retain) NSNumber * isDownload;
 @property (nonatomic, retain) NSNumber * isFavorite;
+@property (nonatomic, retain) NSNumber * isPurchased;
 @property (nonatomic, retain) NSNumber * isHighlight;
 @property (nonatomic, retain) NSNumber * isPlaying;
 @property (nonatomic, retain) NSNumber * isPlayed;

@@ -14,6 +14,7 @@
 #import "DownloadOperationController.h"
 #import "Playlist.h"
 #import "PlaylistCollectionCell.h"
+#import "LibraryVideo.h"
 
 @implementation BaseTableController
 
@@ -60,6 +61,7 @@
     _tableView = tableView;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [_tableView registerClass:[VideoTableViewCell class] forCellReuseIdentifier:reuseIdentifier];
     [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:reuseIdentifier];
@@ -106,8 +108,7 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Video class]]){
-        
+    if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Video class]]) {
         VideoTableViewCell *cell = (VideoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
         [cell configureCell:[self.indexPathController.dataModel itemAtIndexPath:indexPath] viewController:self];
         return cell;

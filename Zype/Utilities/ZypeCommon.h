@@ -53,6 +53,7 @@
 //Features Configuration
 #define kFavoritesViaAPI NO
 #define kSubscribeToWatchAdFree NO
+#define kLibraryForPurchasesEnabled NO
 
 // For sites that support EPG (Electronic Program Guide)
 #define kEPGEnabled NO
@@ -214,6 +215,7 @@ static const CGSize IpadPosterLayoutSize = {126, 208};
 #define kEntityPlaylistVideo @"PlaylistVideo"
 #define kEntityGuest @"Guest"
 #define kEntityFavorite @"Favorite"
+#define kEntityLibrary @"LibraryVideo"
 #define kEntityNotification @"Notification"
 #define kEntityUserPreferences @"UserPreferences"
 #define kNotificationStatus_New @"new"
@@ -345,10 +347,11 @@ static const CGSize IpadPosterLayoutSize = {126, 208};
 #define kGetGuests @"https://%@/zobjects?zobject_type=guest&app_key=%@&video_id=%@&page=%@"
 #define kGetHighlights @"https://%@/videos?app_key=%@&category[Highlight]=true&page=%@"
 #define kGetVideoById @"https://%@/videos/?app_key=%@&id=%@"
+#define kLibraryGetVideoById @"https://%@/videos/?access_token=%@&id=%@"
 
 
 #define kGetFavorites    @"https://%@/consumers/%@/video_favorites/?access_token=%@&page=%@"
-
+#define kGetLibrary      @"https://%@/consumer/videos?access_token=%@&page=%@"
 
 #define kConsumerByIdURL @"https://%@/consumer/%@/?acccess_token=%@"
 
@@ -379,6 +382,9 @@ static const CGSize IpadPosterLayoutSize = {126, 208};
 #define kAppKey_ConsumerId         @"resource_owner_id"
 #define kAppKey_Id                 @"_id"
 #define kAppKey_VideoId            @"video_id"
+#define kAppKey_VideoTitle         @"video_title"
+#define kAppKey_Video_ConsumerId   @"consumer_id"
+#define kAppKey_TransactionType    @"transaction_type"
 #define kAppKey_SiteId             @"site_id"
 #define kAppKey_Pagination         @"pagination"
 #define kAppKey_Pages              @"pages"

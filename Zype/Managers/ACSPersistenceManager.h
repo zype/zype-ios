@@ -8,13 +8,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Notification, Video, Guest, Favorite, Playlist, PlaylistVideo, Pager, UserPreferences;
+@class Notification, Video, Guest, Favorite, Playlist, PlaylistVideo, Pager, UserPreferences, LibraryVideo;
 
 @interface ACSPersistenceManager : NSObject
 
 + (NSFetchRequest *)videoFetchRequestWithPredicate:(NSPredicate *)predicate;
 + (NSFetchRequest *)guestFetchRequestWithPredicate:(NSPredicate *)predicate;
 + (NSFetchRequest *)playlistFetchRequestWithPredicate:(NSPredicate *)predicate;
++ (NSFetchRequest *)libraryFetchRequestWithPredicate:(NSPredicate *)predicate;
 
 + (NSArray *)allVideos;
 + (NSArray *)allHighlights;
@@ -86,6 +87,12 @@
 - (NSArray *)newNotifications;
 - (void)setScheduledNotification:(Notification *)notification;
 + (void)populateNotificationsFromDict:(NSDictionary *)parsedObject WithNotificationsInDB:(NSMutableArray *)notificationsInDB WithExistingNotifications:(NSMutableArray *)existingNotifications IsLastPage:(BOOL)isLastPage;
+
++ (void)populateLibraryFromDictionary:(NSDictionary *)dictionary IsLastPage:(BOOL)isLastPage;
++ (void)populateVideoInLibraryFromJSON:(NSData *)data error:(NSError **)error;
++ (NSArray *)libraryList:(NSString *)consumer;
++ (void)resetLibrary:(NSString *)consumer;
++ (LibraryVideo *)libraryVideoWithID:(NSString *)videoId;
 
 + (UserPreferences *)getUserPreferences; // gets preferences. create defaults if necessary
 

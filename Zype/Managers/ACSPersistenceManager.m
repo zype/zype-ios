@@ -21,6 +21,7 @@
 #import "ZObject.h"
 #import "Pager.h"
 #import "UserPreferences.h"
+#import "LibraryVideo.h"
 
 @interface ACSPersistenceManager ()
 
@@ -1270,6 +1271,9 @@
 + (void)resetUserSettings{
     
     // Reset settings
+    if (kLibraryForPurchasesEnabled){
+        [ACSPersistenceManager resetLibrary:[[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId]];
+    }
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:kSettingKey_ConsumerId];
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSettingKey_VideoIdNowPlaying];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSettingKey_SignInStatus];
@@ -1515,6 +1519,196 @@
     
     return userPreferences;
 }
+
+
+#pragma mark - Library
+
++ (NSFetchRequest *)libraryFetchRequestWithPredicate:(NSPredicate *)predicate{
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kEntityLibrary inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:predicate];
+    return fetchRequest;
+    
+}
+
++ (NSArray *)libraryList:(NSString *)consumer {
+    
+    NSError *LocalError = nil;
+    NSFetchRequest *requestEntitlement = [NSFetchRequest fetchRequestWithEntityName:kEntityLibrary];
+    requestEntitlement.predicate = [NSPredicate predicateWithFormat:@"consumer_id = %@", consumer];
+    NSArray *videos = [[ACSPersistenceManager sharedInstance].managedObjectContext executeFetchRequest:requestEntitlement error:&LocalError];
+    
+    return videos;
+}
+
++ (void)resetLibrary:(NSString *)consumer {
+    
+    // Reset Library
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSError *vError = nil;
+    NSFetchRequest *requestVideo = [NSFetchRequest fetchRequestWithEntityName:kEntityVideo];
+    requestVideo.predicate = [NSPredicate predicateWithFormat:@"isPurchased == %@", [NSNumber numberWithBool:YES]];
+    NSArray *fetchedVideos = [context executeFetchRequest:requestVideo error:&vError];
+    for (Video *video in fetchedVideos) {
+        [context deleteObject:video];
+    }
+    
+    // Delete Library video
+    NSError *fError = nil;
+    NSFetchRequest *requestLibrary = [NSFetchRequest fetchRequestWithEntityName:kEntityLibrary];
+    requestLibrary.predicate = [NSPredicate predicateWithFormat:@"consumer_id = %@", consumer];
+    NSArray *library = [context executeFetchRequest:requestLibrary error:&fError];
+    for (LibraryVideo *video in library) {
+        [context deleteObject:video];
+    }
+    [[ACSPersistenceManager sharedInstance] saveContext];
+    
+}
+
++ (LibraryVideo *)newLibraryVideo{
+    
+    LibraryVideo *video = (LibraryVideo *)[NSEntityDescription insertNewObjectForEntityForName:kEntityLibrary inManagedObjectContext:[ACSPersistenceManager sharedInstance].managedObjectContext];
+    
+    return video;
+    
+}
+
++ (LibraryVideo *)libraryVideoWithID:(NSString *)videoId{
+    
+    // Check if the guest exists in Core Data
+    NSError *cdError = nil;
+    NSManagedObjectContext *context = [ACSPersistenceManager sharedInstance].managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityLibrary];
+    request.predicate = [NSPredicate predicateWithFormat:@"video_id = %@", videoId];
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&cdError];
+    
+    LibraryVideo *video;
+    
+    if (fetchedObjects.count > 0) {
+        // If it's been updated, update the Entitlement in Core Data
+        video = [fetchedObjects objectAtIndex:0];
+    }
+    
+    return video;
+}
+
++ (void)populateLibraryFromDictionary:(NSDictionary *)dictionary IsLastPage:(BOOL)isLastPage{
+    
+    NSArray *results = [dictionary valueForKey:kAppKey_Response];
+    CLS_LOG(@"LibraryVideo Count %lu", (unsigned long)results.count);
+    
+    for (NSDictionary *entitlementDictionary in results) {
+        [ACSPersistenceManager saveLibraryWithDictionary:entitlementDictionary];
+    }
+    
+    if (isLastPage) {
+        [[ACSPersistenceManager sharedInstance] saveContext];
+    }
+}
+
++ (void)populateVideoInLibraryFromJSON:(NSData *)data error:(NSError **)error{
+    
+    NSError *localError = nil;
+    NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+    if (localError != nil) {
+        *error = localError;
+        return;
+    }
+    
+    NSArray *results = [parsedObject valueForKey:kAppKey_Response];
+    CLS_LOG(@"Count %lu", (unsigned long)results.count);
+    
+    for (NSDictionary *groupDic in results) {
+        
+        Video *newVideo = [ACSPersistenceManager newVideo];
+        newVideo.isPurchased = [NSNumber numberWithBool:YES];
+        
+        [ACSPersistenceManager saveVideoInDB:newVideo WithData:groupDic];
+        
+        // get library video and udate created_at timestamp
+        LibraryVideo *video = [ACSPersistenceManager libraryVideoWithID:[groupDic valueForKey:kAppKey_Id]];
+        [newVideo setValue:video.created_at forKey:kAppKey_CreatedAt];
+
+        // Save context
+        [[ACSPersistenceManager sharedInstance] saveContext];
+        
+        CLS_LOG(@"Added new library video (Video Entity): %@, created_at %@", newVideo.title, newVideo.created_at);
+    }
+    
+}
+
++ (void)purchasedVideo:(Video *)video{
+
+    if (video.isPurchased.boolValue == NO) {
+
+        video.isPurchased = @YES;
+        CLS_LOG(@"Purchased video: %@", video.title);
+        
+    }
+
+}
+
++ (void)saveLibraryWithDictionary:(NSDictionary *)dictionary{
+    NSString *gId = [dictionary valueForKey:kAppKey_VideoId];
+    LibraryVideo *video = [ACSPersistenceManager libraryVideoWithID:gId];
+    
+    if (video != nil) {
+        // If it's been updated, update the guest in Core Data
+        NSDate *dateUpdated = [[UIUtil dateFormatter] dateFromString:[dictionary valueForKey:kAppKey_UpdatedAt]];
+        if ([video.updated_at compare:dateUpdated] != NSOrderedSame) {
+            [ACSPersistenceManager updateLibraryVideo:video withDictionary:dictionary];
+            CLS_LOG(@"Updated library video (Library Entity): %@, created_at %@", video.title, video.created_at);
+        }
+    }
+    else {
+        // If it's new, insert it into Core Data
+        video = [ACSPersistenceManager newLibraryVideo];
+        [ACSPersistenceManager updateLibraryVideo:video withDictionary:dictionary];
+        CLS_LOG(@"Added library video (Library Entity): %@, created_at %@", video.title, video.created_at);
+    }
+    
+    // Check if the video exists in Core Data
+    Video *localVideo = [ACSPersistenceManager videoWithID:gId];
+    if (localVideo != nil) {
+        [ACSPersistenceManager purchasedVideo:localVideo];
+    }
+    else {
+        // Load a new library video
+        [[RESTServiceController sharedInstance] loadVideoInLibraryWithId:gId];
+    }
+}
+
++ (void)updateLibraryVideo:(LibraryVideo *)video withDictionary:(NSDictionary *)dictionary{
+    
+    // Set values
+    for (NSString *key in dictionary) {
+        if ([dictionary valueForKey:key] != nil &&
+            ![[dictionary valueForKey:key] isKindOfClass:[NSNull class]]) {
+            
+            if ([key isEqualToString:kAppKey_Id])
+            video.gId = [dictionary valueForKey:key];
+            else if ([key isEqualToString:kAppKey_VideoId])
+            video.video_id = [dictionary valueForKey:key];
+            else if ([key isEqualToString:kAppKey_Video_ConsumerId]) {
+                video.consumer_id = [dictionary valueForKey:key];
+            } else if ([key isEqualToString:kAppKey_VideoTitle]) {
+                video.title = [dictionary valueForKey:key];
+            } else if ([key isEqualToString:kAppKey_TransactionType]) {
+                video.transaction_type = [dictionary valueForKey:key];
+            } else if ([key isEqualToString:kAppKey_UpdatedAt]) {
+                NSDate *dateUpdated = [[UIUtil dateFormatter] dateFromString:[dictionary valueForKey:kAppKey_UpdatedAt]];
+                video.updated_at = dateUpdated;
+            } else if ([key isEqualToString:kAppKey_CreatedAt]) {
+                NSDate *dateCreated = [[UIUtil dateFormatter] dateFromString:[dictionary valueForKey:kAppKey_CreatedAt]];
+                video.created_at = dateCreated;
+            }
+        }
+    }
+    
+}
+
 
 #pragma mark - Core Data stack
 

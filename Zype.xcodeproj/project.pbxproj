@@ -150,6 +150,8 @@
 		A1B3C4172032268300784F64 /* ACAnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B3C4162032268300784F64 /* ACAnalyticsManager.m */; };
 		A1B3C41E203227E100784F64 /* libAKAMMediaExtensions-AV.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B3C41B203227E100784F64 /* libAKAMMediaExtensions-AV.a */; };
 		A1B3C420203227E100784F64 /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = A1B3C41D203227E100784F64 /* ReadMe */; };
+		D708D71523D8611B00779D89 /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D708D71423D8611B00779D89 /* LibraryViewController.m */; };
+		D708D71823D9F4A500779D89 /* LibraryVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = D708D71723D9F4A500779D89 /* LibraryVideo.m */; };
 		E13015D9214713740066BEAA /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = E13015D8214713740066BEAA /* awsconfiguration.json */; };
 		E131B8EE20BE12C60074ACF5 /* PlayerControlsOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */; };
 		E131B8F020BE132B0074ACF5 /* PlayerControlsOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = E131B8EF20BE132B0074ACF5 /* PlayerControlsOverlay.xib */; };
@@ -418,6 +420,10 @@
 		B96C78BD1B40E85000B56C6B /* EpisodeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EpisodeControllerDelegate.h; path = Protocols/EpisodeControllerDelegate.h; sourceTree = "<group>"; };
 		B96FF88A1B17B535007CA447 /* ZypeDBMappingModel.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ZypeDBMappingModel.xcmappingmodel; sourceTree = "<group>"; };
 		B9C5863E1B1CC60A00647936 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		D708D71323D8611A00779D89 /* LibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LibraryViewController.h; path = ViewController/LibraryViewController.h; sourceTree = "<group>"; };
+		D708D71423D8611B00779D89 /* LibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LibraryViewController.m; path = ViewController/LibraryViewController.m; sourceTree = "<group>"; };
+		D708D71623D9F4A500779D89 /* LibraryVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LibraryVideo.h; path = Models/LibraryVideo.h; sourceTree = "<group>"; };
+		D708D71723D9F4A500779D89 /* LibraryVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LibraryVideo.m; path = Models/LibraryVideo.m; sourceTree = "<group>"; };
 		E13015D8214713740066BEAA /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 		E131B8EC20BE12C60074ACF5 /* PlayerControlsOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PlayerControlsOverlay.h; path = Views/PlayerControlsOverlay.h; sourceTree = "<group>"; };
 		E131B8ED20BE12C60074ACF5 /* PlayerControlsOverlay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PlayerControlsOverlay.m; path = Views/PlayerControlsOverlay.m; sourceTree = "<group>"; };
@@ -788,6 +794,8 @@
 		F1BB52AC1A76D99D00E901F1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D708D71623D9F4A500779D89 /* LibraryVideo.h */,
+				D708D71723D9F4A500779D89 /* LibraryVideo.m */,
 				E1C884AE20B496EF008D9184 /* UserPreferences.h */,
 				E1C884AF20B496EF008D9184 /* UserPreferences.m */,
 				E1C884AB20B4969F008D9184 /* UserPreferenceCellDataSource.h */,
@@ -911,6 +919,8 @@
 		F1BB52AE1A76D9B800E901F1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D708D71323D8611A00779D89 /* LibraryViewController.h */,
+				D708D71423D8611B00779D89 /* LibraryViewController.m */,
 				7D385287224AB54200A22BFC /* WatcherSignInViewController.h */,
 				7D385288224AB54200A22BFC /* WatcherSignInViewController.m */,
 				7D385289224AB54300A22BFC /* WatcherSignUpViewController.h */,
@@ -1254,6 +1264,7 @@
 				780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */,
 				FA5029041FDE8FB0003A1AB1 /* BaseTVLayoutController.m in Sources */,
 				A13AF2BF1D36985A00DDA006 /* Favorite.m in Sources */,
+				D708D71523D8611B00779D89 /* LibraryViewController.m in Sources */,
 				FA4BA3331EF07629004985F6 /* IntroViewController.m in Sources */,
 				A13AF3151D369A2C00DDA006 /* SettingsViewController.m in Sources */,
 				A139DBE21DFF520800DC731B /* ZypeDB.xcdatamodeld in Sources */,
@@ -1315,6 +1326,7 @@
 				A13AF2E81D36995000DDA006 /* HighlightTableViewCell.m in Sources */,
 				A13AF2EC1D36995000DDA006 /* VideoTableViewCell.m in Sources */,
 				A13AF2C11D36985A00DDA006 /* Notification.m in Sources */,
+				D708D71823D9F4A500779D89 /* LibraryVideo.m in Sources */,
 				A13AF3AD1D37D90D00DDA006 /* VideosViewController.m in Sources */,
 				FAAB4FBB201FA1C300451D80 /* ZObject.m in Sources */,
 				A13AF2E31D36995000DDA006 /* BottomBorderTextField.swift in Sources */,
