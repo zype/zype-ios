@@ -1197,6 +1197,28 @@
     [dataTask resume];
 }
 
+- (void)loadVideoInLibraryWithId:(NSString *)videoId {
+    
+    [ACSTokenManager accessToken:^(NSString *token, NSError *error){
+        NSString *urlAsString = [NSString stringWithFormat:kLibraryGetVideoById, kApiDomain, token, videoId];
+        NSURL *url = [NSURL withString:urlAsString];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                CLS_LOG(@"Failed: %@", error);
+            } else {
+                CLS_LOG(@"Success: %@", urlAsString);
+                NSError *localError = nil;
+                [ACSPersistenceManager populateVideoInLibraryFromJSON:data error:&localError];
+            }
+        }];
+        [dataTask resume];
+    }];
+    
+
+}
+
 - (void)syncUpdatedFavoritesInOffline{
     
     NSArray *addedFavorites = [ACSPersistenceManager addedFavorites];
@@ -1673,6 +1695,75 @@
     }];
     
     [dataTask resume];
+    
+}
+
+#pragma mark - Library
+
+- (void)syncLibraryAfterRefreshed:(BOOL)isRefreshed InPage:(NSNumber *)page WithLibraryInDB:(NSMutableArray *)libraryInDB WithExistingLibrary:(NSMutableArray *)existingLibrary{
+    
+    // Prepare favorites in core data
+    if (!libraryInDB) {
+        
+        NSArray *fetchedObjects = [ACSPersistenceManager allFavorites];
+        libraryInDB = [[NSMutableArray alloc] initWithArray:fetchedObjects];
+        
+    }
+    
+    if (!page && !existingLibrary) {
+        page = [NSNumber numberWithInt:1];
+        existingLibrary = [[NSMutableArray alloc] init];
+    }
+    
+    [ACSTokenManager accessToken:^(NSString *token, NSError *error){
+        
+        NSString *urlAsString = [NSString stringWithFormat:kGetLibrary, kApiDomain, token, page];
+        NSURL *url = [NSURL withString:urlAsString];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                CLS_LOG(@"Failed: %@", error);
+            }
+            else {
+                long statusCode = [((NSHTTPURLResponse *)response) statusCode];
+                if (statusCode == 401 && !isRefreshed) {
+                    
+                    [ACSTokenManager refreshAccessToken:^(BOOL success, NSError *error) {
+                        [self syncLibraryAfterRefreshed:YES InPage:page WithLibraryInDB:libraryInDB WithExistingLibrary:existingLibrary];
+                        if (success == YES) {
+                            [self syncLibraryAfterRefreshed:YES InPage:page WithLibraryInDB:libraryInDB WithExistingLibrary:existingLibrary];
+                        } else if (error != nil) {
+                            CLS_LOG(@"Access Token Refresh Failed: %@", error);
+                        }
+                        
+                    }];
+                    
+                }
+                else {
+                    CLS_LOG(@"Success: %@", urlAsString);
+                    NSError *localError = nil;
+                    NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+                    if (localError != nil) {
+                        CLS_LOG(@"Failed: %@", localError);
+                    }
+                    else {
+                        
+                        // Check if there's any next pages and continue to sync next one
+                        NSNumber *pages = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_Pages];
+                        NSNumber *nextPage = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_NextPage];
+                        if ([UIUtil hasNextPage:nextPage InPages:pages WithData:parsedObject])
+                        [self syncLibraryAfterRefreshed:isRefreshed InPage:page WithLibraryInDB:libraryInDB WithExistingLibrary:existingLibrary];
+
+                        // Check if it's the last page or not, then populate videos
+                        [ACSPersistenceManager populateLibraryFromDictionary:parsedObject IsLastPage:[UIUtil isLastPageInPages:pages WithData:parsedObject]];
+                    }
+                }
+            }
+        }];
+        [dataTask resume];
+        
+    }];
     
 }
 

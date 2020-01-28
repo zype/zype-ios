@@ -38,7 +38,7 @@
     self.toDate = toDate;
     
     self.filterPredicate = [ACSPredicates fetchPredicateFromDate:self.fromDate toDate:self.toDate];
-    [self performFetch];
+    [self performFetch: nil];
     
 }
 
@@ -67,7 +67,7 @@
     
     self.filterPredicate = [ACSPredicates fetchDownloadsPredicate];
     
-    [self performFetch];
+    [self performFetch: nil];
     
 }
 
@@ -75,29 +75,42 @@
     
     self.filterPredicate = [ACSPredicates fetchFavoritesPredicate];
     
-    [self performFetch];
+    [self performFetch:nil];
     
 }
+
+- (void)loadLibraryVideos{
+    self.filterPredicate = [ACSPredicates fetchLibraryPredicate];
+    
+    // Specify how the fetched objects should be sorted
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kAppKey_CreatedAt ascending:NO];
+    [self performFetch: sortDescriptor];
+}
+
 
 - (void)loadHiglightsVideos{
     
     self.filterPredicate = [ACSPredicates fetchHighlightsPredicate];
     
-    [self performFetch];
+    [self performFetch: nil];
     
 }
 
 - (void)loadSearch:(NSString *)search searchMode:(enum ACSSearchMode)mode{
     
     self.filterPredicate = [ACSPredicates predicateWithSearchString:search searchMode:mode];
-    [self performFetch];
+    [self performFetch: nil];
     
 }
 
-- (void)performFetch {
+- (void)performFetch:(NSSortDescriptor*)sortDescriptor{
     
     // Fetch data from core data and reload table
     self.indexPathController.fetchRequest = [self fetchRequest];
+    if (sortDescriptor) {
+        [self.indexPathController.fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+        self.indexPathController.inMemorySortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
+    }
     self.currentFetchRequest = self.indexPathController.fetchRequest;
     
     NSError *error = nil;

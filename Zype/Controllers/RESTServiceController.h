@@ -57,7 +57,9 @@
 - (void)loadGuests:(NSString *)videoId InPage:(NSNumber *)page;
 
 - (void)syncFavoritesAfterRefreshed:(BOOL)isRefreshed InPage:(NSNumber *)page WithFavoritesInDB:(NSMutableArray *)favoritesInDB WithExistingFavorites:(NSMutableArray *)existingFavorites;
+- (void)syncLibraryAfterRefreshed:(BOOL)isRefreshed InPage:(NSNumber *)page WithLibraryInDB:(NSMutableArray *)libraryInDB WithExistingLibrary:(NSMutableArray *)existingLibrary;
 - (void)loadVideoInFavoritesWithId:(NSString *)videoId;
+- (void)loadVideoInLibraryWithId:(NSString *)videoId;
 - (void)favoriteVideo:(Video *)video;
 - (void)unfavoriteVideo:(Video *)video;
 

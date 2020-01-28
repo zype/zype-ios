@@ -35,6 +35,10 @@
         [self addLiveViewController];
     }
     
+    if (kLibraryForPurchasesEnabled) {
+        [self addLibraryViewController];
+    }
+    
     // Do any additional setup after loading the view.
 }
 
@@ -64,6 +68,14 @@
     UIViewController *epgViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NavigationEPGViewController"];
     
     [tabViewControllers insertObject:epgViewController atIndex: 1];
+    [self setViewControllers:tabViewControllers];
+}
+
+- (void)addLibraryViewController {
+    NSMutableArray *tabViewControllers = [[NSMutableArray alloc] initWithArray:self.viewControllers];
+    UIViewController *libraryViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NavigationLibraryViewController"];
+    //insert downloads at position before last one
+    [tabViewControllers insertObject:libraryViewController atIndex:[self.viewControllers count] - 1];
     [self setViewControllers:tabViewControllers];
 }
 

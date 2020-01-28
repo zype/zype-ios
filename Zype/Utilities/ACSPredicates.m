@@ -65,6 +65,14 @@
     
 }
 
++ (NSPredicate *)fetchLibraryPredicate{
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isPurchased == %@", [NSNumber numberWithBool:YES]];
+    
+    return predicate;
+    
+}
+
 + (NSPredicate *)fetchHighlightsPredicate{
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isHighlight == %@", [NSNumber numberWithBool:YES]];
