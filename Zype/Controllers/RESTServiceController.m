@@ -1753,7 +1753,7 @@
                         NSNumber *pages = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_Pages];
                         NSNumber *nextPage = (NSNumber *)[UIUtil dict:[UIUtil dict:parsedObject valueForKey:kAppKey_Pagination] valueForKey:kAppKey_NextPage];
                         if ([UIUtil hasNextPage:nextPage InPages:pages WithData:parsedObject])
-                        [self syncLibraryAfterRefreshed:isRefreshed InPage:page WithLibraryInDB:libraryInDB WithExistingLibrary:existingLibrary];
+                        [self syncLibraryAfterRefreshed:isRefreshed InPage:nextPage WithLibraryInDB:libraryInDB WithExistingLibrary:existingLibrary];
 
                         // Check if it's the last page or not, then populate videos
                         [ACSPersistenceManager populateLibraryFromDictionary:parsedObject IsLastPage:[UIUtil isLastPageInPages:pages WithData:parsedObject]];
