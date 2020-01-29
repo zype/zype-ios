@@ -235,10 +235,6 @@
         }
     }
     
-    if (kLibraryForPurchasesEnabled) {
-        [self.buttonAction setHidden:YES];
-    }
-    
     //need to check if this action is working
     //possibly implement protocol
     [self.buttonAction addTarget:vc action:@selector(buttonActionTapped:) forControlEvents:UIControlEventTouchUpInside];
