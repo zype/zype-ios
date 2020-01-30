@@ -95,7 +95,7 @@
         <attribute name="isHighlight" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isPlayed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isPlaying" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="isPurchased" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPurchased" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="keywords" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="keywordsString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mature_content" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -141,6 +141,7 @@
     <elements>
         <element name="Favorite" positionX="26.26953125" positionY="137.8984375" width="128" height="30"/>
         <element name="Guest" positionX="-336.96484375" positionY="-15.50390625" width="128" height="253"/>
+        <element name="LibraryVideo" positionX="-477" positionY="108" width="128" height="150"/>
         <element name="Notification" positionX="-177.046875" positionY="-46.88671875" width="128" height="193"/>
         <element name="Pager" positionX="124.36328125" positionY="21.453125" width="128" height="60"/>
         <element name="Playlist" positionX="-204.8359375" positionY="261.87109375" width="128" height="195"/>
@@ -149,6 +150,5 @@
         <element name="UserPreferences" positionX="148.08984375" positionY="335.8984375" width="128" height="60"/>
         <element name="Video" positionX="-684.63671875" positionY="-18" width="128" height="720"/>
         <element name="ZObject" positionX="-49.96484375" positionY="379.06640625" width="128" height="300"/>
-        <element name="LibraryVideo" positionX="-477" positionY="108" width="128" height="150"/>
     </elements>
 </model>
