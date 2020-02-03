@@ -1552,7 +1552,7 @@
     requestVideo.predicate = [NSPredicate predicateWithFormat:@"isPurchased == %@", [NSNumber numberWithBool:YES]];
     NSArray *fetchedVideos = [context executeFetchRequest:requestVideo error:&vError];
     for (Video *video in fetchedVideos) {
-        [context deleteObject:video];
+        video.isPurchased = [NSNumber numberWithBool:NO];
     }
     
     // Delete Library video
