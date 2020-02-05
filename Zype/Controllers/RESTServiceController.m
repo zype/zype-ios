@@ -681,7 +681,8 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrlForGuest, kApiPlayerDomain, vId, kAppKey];
         }
-        
+        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
+
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -706,6 +707,8 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, vId, kAppKey];
         }
+        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
+
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -735,8 +738,8 @@
             } else {
                 urlAsString = [NSString stringWithFormat:kGetPlayerForGuest, kApiPlayerDomain, video.vId, kAppKey];
             }
-            
         }
+        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
         
         if (isDownloaded) {
             urlAsString = [NSString stringWithFormat:@"%@&download=true", urlAsString];
@@ -769,8 +772,8 @@
             } else {
                 urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
             }
-            
         }
+        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
         
         NSURL *url = [NSURL withString:urlAsString];
         
@@ -794,6 +797,8 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
         }
+        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
+
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
@@ -816,6 +821,8 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, vId, kAppKey];
         }
+        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
+
         NSURL *url = [NSURL withString:urlAsString];
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
