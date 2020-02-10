@@ -27,6 +27,7 @@
 #import "PrivacyViewController.h"
 #import "TabBarViewController.h"
 #import "MoreViewController.h"
+#import "AppDelegate.h"
 
 @implementation UIUtil
 
@@ -528,9 +529,11 @@ NSString* machineName() {
 }
 
 NSString* systemUserAgent() {
-    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-    NSString* sysUserAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSString* sysUserAgent = [[AppDelegate appDelegate] userAgent];
     if (!sysUserAgent) {
+        // This is most likely not happen, stil added safer side handling to retrieve agent info againif it's nil, user agent is 100% populated during app launch, verified.
+        // Becaue of the async nature of WKWebView API we can not wait as this flow is already being executed in main thread context, otherwise deadlock. Also WKWebView can not used inside bg threads.
+        [[AppDelegate appDelegate] retrieveUserAgent];
         return NULL;
     }
     return sysUserAgent;

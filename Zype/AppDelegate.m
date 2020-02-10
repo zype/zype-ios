@@ -8,6 +8,7 @@
 
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import <WebKit/WebKit.h>
 
 #import "AppDelegate.h"
 #import "RESTServiceController.h"
@@ -30,6 +31,7 @@
 @interface AppDelegate ()
 
 @property (nonatomic) unsigned long tabIndex;
+@property (nonatomic, retain) WKWebView* webView;
 
 @end
 
@@ -61,6 +63,7 @@
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
+    [self retrieveUserAgent];
     
     return YES;
 }
@@ -133,6 +136,20 @@
 
 #pragma mark - Init App
 
+- (void) retrieveUserAgent{
+    // In order to avoid The WKWebView was invalidated" error message, WKWebView instance must not be local
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectZero];
+    [self.webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id result, NSError *error) {
+        if (error == nil) {
+            if (result != nil) {
+                self.userAgent = [NSString stringWithFormat:@"%@", result];
+            }
+        } else {
+            NSLog(@"evaluateJavaScript error : %@", error.localizedDescription);
+        }
+        self.webView = nil; // destory the instance after use
+    }];
+}
 
 - (void)setupGoogleAnalytics{
     
