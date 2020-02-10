@@ -137,7 +137,7 @@
 #pragma mark - Init App
 
 - (void) retrieveUserAgent{
-    // In order to avoid The WKWebView was invalidated" error message, WKWebView instance must not be local
+    // In order to avoid "The WKWebView was invalidated" error message, WKWebView instance must not be local
     self.webView = [[WKWebView alloc] initWithFrame:CGRectZero];
     [self.webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id result, NSError *error) {
         if (error == nil) {
