@@ -2048,7 +2048,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     for (AdObject *adObject in requests) {
         
-        NSString *newTag = [self replaceAdMacros:adObject.tag];
+        NSString *newTag = [UIUtil replaceDeviceParameters:adObject.tag];
         
         // only listen for ads at or after video start point
         if ([NSNumber numberWithDouble:adObject.offset] >= self.video.playTime){
@@ -2094,98 +2094,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.playerControlsView showSelf];
     }
 
-}
-
-- (NSMutableString*)replaceAdMacros:(NSString *)string {
-    
-    NSMutableString *tag = [NSMutableString stringWithString: string];
-    
-    NSUUID *realUuid = [[UIDevice currentDevice] identifierForVendor];
-    unsigned char uuidBytes[16];
-    [realUuid getUUIDBytes:uuidBytes];
-    NSString *uuid = [NSString stringWithFormat: @"%@", realUuid];
-    
-    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-    NSString *bundleName = [NSString stringWithFormat:@"%@", [info objectForKey:@"CFBundleDisplayName"]];
-    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    
-    NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    NSString *appId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
-    
-    [tag replaceOccurrencesOfString:@"[uuid]"
-                         withString: uuid
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_name]"
-                         withString: bundleName
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_bundle]"
-                         withString: bundleIdentifier
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_domain]"
-                         withString: bundleIdentifier
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_type]"
-                         withString: @"7"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_make]"
-                         withString: @"Apple"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_model]"
-                         withString: machineName()
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_ifa]"
-                         withString: idfa
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[vpi]"
-                         withString: @"mp4"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_id]"
-                         withString: appId
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_ua]"
-                         withString: @"zype_ios"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[ip_address]"
-                         withString: @"168.0.0.1"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@" "
-                         withString: @"-"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    return tag;
-}
-
-NSString* machineName() {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    
-    return [NSString stringWithCString:systemInfo.machine
-                              encoding:NSUTF8StringEncoding];
 }
 
 - (void)contentDidFinishPlaying:(NSNotification *)notification {

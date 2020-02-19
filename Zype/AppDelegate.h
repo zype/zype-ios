@@ -18,12 +18,13 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) OneSignal *oneSignal;
 @property (strong, nonatomic) AWSPinpoint *pinpoint;
+@property (strong, nonatomic) NSString *userAgent;
 
 @property (strong, nonatomic) KeychainItemWrapper *keychainItem;
 @property (copy, nonatomic) void (^backgroundSessionCompletionHandler)(void);
 @property () BOOL restrictRotation;
 
 + (AppDelegate *)appDelegate;
-
+- (void) retrieveUserAgent;
 @end
 

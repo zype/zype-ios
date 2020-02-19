@@ -7,6 +7,8 @@
 //
 
 #import <Crashlytics/Crashlytics.h>
+#import <AdSupport/ASIdentifierManager.h>
+#import <sys/utsname.h>
 #import "UIUtil.h"
 #import "ACSPersistenceManager.h"
 #import "ViewManager.h"
@@ -25,6 +27,7 @@
 #import "PrivacyViewController.h"
 #import "TabBarViewController.h"
 #import "MoreViewController.h"
+#import "AppDelegate.h"
 
 @implementation UIUtil
 
@@ -516,6 +519,128 @@
     
     return isLastPage;
 }
+
+NSString* machineName() {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    
+    return [NSString stringWithCString:systemInfo.machine
+                              encoding:NSUTF8StringEncoding];
+}
+
+NSString* systemUserAgent() {
+    NSString* sysUserAgent = [[AppDelegate appDelegate] userAgent];
+    if (!sysUserAgent) {
+        // This is most likely not happen, stil added safer side handling to retrieve agent info again if it's nil, user agent is 100% populated during app launch, verified.
+        // Becaue of the async nature of WKWebView API we can not wait as this flow is already being executed in main thread context, otherwise deadlock. Also WKWebView can not be used inside bg threads.
+        [[AppDelegate appDelegate] retrieveUserAgent];
+        return NULL;
+    }
+    return sysUserAgent;
+}
+
+NSString* userAgent() {
+    NSString *machine = machineName();
+    NSString *appName = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]];
+    NSString *sysAgent = systemUserAgent();
+    NSMutableString *sysUA = sysAgent ? [NSMutableString stringWithString: sysAgent] : NULL;
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    if (machine && appName && sysUA && version) {
+        [sysUA replaceOccurrencesOfString:@"(iPhone;"
+                               withString: [NSString stringWithFormat:@"(%@;", machine]
+                                  options:NSLiteralSearch
+                                    range:NSMakeRange(0, sysUA.length)];
+        [sysUA appendString:[NSString stringWithFormat:@" %@/%@", appName, version]];
+        return sysUA;
+    }
+    
+    return @"zype_ios";
+}
+
++ (NSMutableString*)replaceDeviceParameters:(NSString *)string {
+    
+    NSMutableString *tag = [NSMutableString stringWithString: string];
+    
+    NSUUID *realUuid = [[UIDevice currentDevice] identifierForVendor];
+    unsigned char uuidBytes[16];
+    [realUuid getUUIDBytes:uuidBytes];
+    NSString *uuid = [NSString stringWithFormat: @"%@", realUuid];
+    
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    NSString *bundleName = [NSString stringWithFormat:@"%@", [info objectForKey:@"CFBundleDisplayName"]];
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    
+    NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    NSString *appId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+    
+    [tag replaceOccurrencesOfString:@"[uuid]"
+                         withString: uuid
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_name]"
+                         withString: bundleName
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_bundle]"
+                         withString: bundleIdentifier
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_domain]"
+                         withString: bundleIdentifier
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_type]"
+                         withString: @"7"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_make]"
+                         withString: @"Apple"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_model]"
+                         withString: machineName()
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_ifa]"
+                         withString: idfa
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[vpi]"
+                         withString: @"mp4"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[app_id]"
+                         withString: appId
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[device_ua]"
+                         withString: userAgent()
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@"[ip_address]"
+                         withString: @"168.0.0.1"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    [tag replaceOccurrencesOfString:@" "
+                         withString: @"-"
+                            options:NSLiteralSearch
+                              range:NSMakeRange(0, tag.length)];
+    
+    return tag;
+}
+
 
 
 @end
