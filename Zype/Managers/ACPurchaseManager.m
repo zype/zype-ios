@@ -59,13 +59,17 @@
 
 - (void)requestSubscriptions:(void(^)(NSArray *))success failure:(void(^)(NSString *))failure {
     [[RMStore defaultStore] requestProducts:self.subscriptions success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
-        if (products != nil) {
-            success(products);
-        } else {
-            failure(@"Not products");
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (products != nil) {
+                success(products);
+            } else {
+                failure(@"Not products");
+            }
+        });
     } failure:^(NSError *error) {
-        failure(error.localizedDescription);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            failure(error.localizedDescription);
+        });
     }];
 }
 
