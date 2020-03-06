@@ -24,9 +24,11 @@
 #import "ACPurchaseManager.h"
 #import "ACAnalyticsManager.h"
 #import "ACSTokenManager.h"
+#import "Zype_TV-Swift.h"
 
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
+#import <Analytics/SEGAnalytics.h>
 
 @interface AppDelegate ()
 
@@ -58,6 +60,16 @@
     if (kEnableAwsPinpoint){
         AWSPinpointConfiguration *pinpointConfig = [AWSPinpointConfiguration defaultPinpointConfigurationWithLaunchOptions:launchOptions];
         self.pinpoint = [AWSPinpoint pinpointWithConfiguration:pinpointConfig];
+    }
+    
+    if (kSegmentAnalyticsEnabled && ![kSegmentAccountID isEqualToString:@""]) {
+        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:kSegmentAnalyticsWriteKey];
+        configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
+        configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
+        [SEGAnalytics setupWithConfiguration:configuration];
+        
+        // Set Segent Analytics enabled to SegmentAnalyticsManager
+        SegmentAnalyticsManager.segmentAnalyticsEnabled = true;
     }
     
     [self setupGoogleAnalytics];

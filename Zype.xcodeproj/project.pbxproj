@@ -22,6 +22,7 @@
 		2BFAE0F12281FF90006523B1 /* EPGCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */; };
 		2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */; };
 		42CD27CE235758FF00069FF8 /* LaunchScreen~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42CD27CC235758FF00069FF8 /* LaunchScreen~ipad.xib */; };
+		4F43E4FC240EC8CC00FF64EA /* SegmentAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
 		780AC6B41BDFD284007F1119 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52851A76D7D100E901F1 /* main.m */; };
@@ -229,6 +230,7 @@
 		2BFAE0F222820018006523B1 /* EPGCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGCollectionViewLayout.h; path = Views/EPGCollectionViewLayout.h; sourceTree = "<group>"; };
 		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
 		42CD27CD235758FF00069FF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/LaunchScreen~ipad.xib"; sourceTree = "<group>"; };
+		4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentAnalyticsManager.swift; path = Managers/SegmentAnalyticsManager.swift; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D385284224AB38600A22BFC /* WatcherIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherIntroViewController.m; path = ViewController/WatcherIntroViewController.m; sourceTree = "<group>"; };
@@ -659,6 +661,7 @@
 				A1149D841D89AB200021646B /* ACAdManager.m */,
 				A1B3C4152032268300784F64 /* ACAnalyticsManager.h */,
 				A1B3C4162032268300784F64 /* ACAnalyticsManager.m */,
+				4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -1073,6 +1076,7 @@
 				ORGANIZATIONNAME = Zype;
 				TargetAttributes = {
 					780AC69F1BDFD284007F1119 = {
+						DevelopmentTeam = 66JU87JGLE;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -1206,7 +1210,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Zype/Pods-Zype-resources.sh",
-				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManager/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -1350,6 +1354,7 @@
 				A13AF3211D369AB300DDA006 /* BaseTableController.m in Sources */,
 				FA4BA3361EF0764B004985F6 /* RegisterViewController.m in Sources */,
 				A13AF2E01D36995000DDA006 /* ACSEpisodeCollectionViewCell.m in Sources */,
+				4F43E4FC240EC8CC00FF64EA /* SegmentAnalyticsManager.swift in Sources */,
 				A13AF3381D369B9A00DDA006 /* Reachability.m in Sources */,
 				2B11201922833CB7001A9386 /* EPGDateView.m in Sources */,
 				FA4BA31D1EF07472004985F6 /* ACPurchaseManager.m in Sources */,
@@ -1430,7 +1435,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 66JU87JGLE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1445,10 +1450,10 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.anishtest;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Anish's Provisioning Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -1463,10 +1468,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 66JU87JGLE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1481,10 +1486,10 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.anishtest;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Anish's Provisioning Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;

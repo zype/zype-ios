@@ -12,12 +12,11 @@
 
 //Main app configuration for connecting to Zype property
 
-#define kOAuth_ClientId @"<Client ID>"
-#define kAppKey @"<Zype App Key>"
-#define kRootPlaylistId @"<Root Playlist ID>"
-
-#define kZypeAppId @"<Zype App ID>"
-#define kZypeSiteId @"<Zype Site ID>"
+#define kOAuth_ClientId @"0abb1362496c02161c538bcb00d1759a7dd62e72682fbc02c1dbdd7b67b89f68"
+#define kAppKey @"1Z97ps2R0GRR20nEAUcup_QodI6dlLVGwRuoC3OVmS2kS1qFgap7E3uOkHBJWHft"
+#define kRootPlaylistId @"5bb26bf5849e2d10af00d2ac"
+#define kZypeAppId @"5bb79ff7676a1f143700034b"
+#define kZypeSiteId @"5bace0565d3c1916b9000c45"
 
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @"" // Leave empty to not use One Signal
@@ -84,6 +83,12 @@
 
 // Enable to show Publish At Date
 #define kShowPublishedAtDate YES
+
+// if enabled,make sure kSegmentAccountID is having correct value
+#define kSegmentAnalyticsEnabled YES
+#define kSegmentAnalyticsWriteKey @"N1ybwfgbQz2nSTPhVfKPAS8Py4jV6Agd"
+// must have some value if kSegmentAnalytics is enabled
+#define kSegmentAccountID @"test"
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
