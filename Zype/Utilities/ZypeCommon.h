@@ -84,11 +84,11 @@
 // Enable to show Publish At Date
 #define kShowPublishedAtDate YES
 
-// if enabled,make sure kSegmentAccountID is having correct value
-#define kSegmentAnalyticsEnabled YES
+// Enable segment analytics for video
+#define kSegmentAnalyticsEnabled YES // if enabled,make sure kSegmentAccountID is having correct value
 #define kSegmentAnalyticsWriteKey @"N1ybwfgbQz2nSTPhVfKPAS8Py4jV6Agd"
-// must have some value if kSegmentAnalytics is enabled
-#define kSegmentAccountID @"test"
+#define kSegmentAccountID @"416418724" // must have some value if kSegmentAnalytics is enabled
+#define kSegmentAccountName @"People"
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]

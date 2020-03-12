@@ -21,7 +21,7 @@ enum SegmentAnalyticsEventType: String {
     public static let adType = "Ad Type" //a value of “pre-roll” “mid-roll” or “post-roll” if known
     public static let contentShownOnPlatform = "contentShownOnPlatform" //"ott" (this is hardcoded)
     public static let streaming_device = "streaming_device" // device make + model (e.g., "Roku 4400X")
-    public static let videoAccountId = "videoAccountId" // 416418724" (this is hardcoded)
+    public static let videoAccountId = "videoAccountId" // this is hardcoded
     public static let videoAccountName = "videoAccountName" // "People" (this is hardcoded)
     public static let videoAdDuration = "videoAdDuration" // the total duration of an ad break, if known
     public static let videoAdVolume = "videoAdVolume" // the volume of an ad playing, if known

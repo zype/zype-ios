@@ -109,6 +109,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 @property (nonatomic) BOOL bFullscreen;
 @property (strong, nonatomic) UIView* ivOverlayView;
+@property (nonatomic) BOOL resumingPlayback;
 
 @end
 
@@ -193,6 +194,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = NO;
     self.isReturnFullScreenIfNeeded = NO;
+    self.resumingPlayback = NO;
     
     self.indexPathController = [self indexPathController];
     
@@ -383,6 +385,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
     [SegmentAnalyticsManager.sharedInstance reset];
+    self.resumingPlayback = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -1441,6 +1444,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)loadSavedPlaybackTime{
     
     CMTime time = CMTimeMakeWithSeconds([self.video.playTime doubleValue], 1);
+    self.resumingPlayback = [self.video.playTime doubleValue] > 0.0;
 
     [self.avPlayer seekToTime:time];//HLS video cut to 10 seconds per segment. Your chapter start postion should fit the value which is multipes of 10. As the segment starts with I frame, on this way, you can get quick seek time and accurate time.
     
@@ -2455,112 +2459,112 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         return cell;
         
-//        if (kDownloadsEnabled){
-//            switch (indexPath.row) {
-//
-//                case 0: {
-//
-//                    cell.textLabel.text = @"Play as";
-//                    self.labelPlayAs = [[UILabel alloc] init];
-//                    self.labelPlayAs.text = @"Video";
-//                    self.labelPlayAs.textColor = [UIColor whiteColor];
-//                    self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
-//                    [self.labelPlayAs sizeToFit];
-//                    cell.accessoryView = self.labelPlayAs;
-//
-//                }
-//                    break;
-//
-//                case 1: {
-//
-//                    // Add progress view
-//                    float width = self.view.frame.size.width - kProgressViewMarginLeft - (kProgressViewMarginRight * 2);
-//                    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(kProgressViewMarginLeft, kProgressViewMarginRight, width, kProgressViewHeight)];
-//                    [self.progressView setTintColor:kSystemBlue];
-//                    [self.progressView setHidden:YES];
-//                    [cell addSubview:self.progressView];
-//
-//                    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
-//                    if (downloadInfo.isDownloading) {
-//
-//                        cell.textLabel.text = @"Downloading...";
-//                        //cell.textLabel.textColor = [UIColor whiteColor];
-//                        [self.progressView setHidden:NO];
-//                        self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f
-//                                                                              target:self
-//                                                                            selector:@selector(showDownloadProgress:)
-//                                                                            userInfo:nil
-//                                                                             repeats:YES];
-//
-//                    } else {
-//                        cell.textLabel.text = @"Download";
-//                    }
-//
-//                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconDownloadsW"]];
-//
-//                }
-//                    break;
-//
-//                case 2: {
-//
-//                    if ([UIUtil isYes:self.video.isFavorite]) {
-//
-//                        cell.textLabel.text = @"Unfavorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-//
-//                    } else {
-//
-//                        cell.textLabel.text = @"Favorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
-//
-//                    }
-//
-//                }
-//                    break;
-//
-//                case 3: {
-//
-//                    cell.textLabel.text = @"Share";
-//                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
-//
-//                }
-//                    break;
-//
-//            }
-//        } else {
-//
-//            switch (indexPath.row) {
-//
-//                case 0: {
-//
-//                    if ([UIUtil isYes:self.video.isFavorite]) {
-//
-//                        cell.textLabel.text = @"Unfavorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
-//
-//                    } else {
-//
-//                        cell.textLabel.text = @"Favorite";
-//                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
-//
-//                    }
-//
-//                }
-//                    break;
-//
-//                case 1: {
-//
-//                    cell.textLabel.text = @"Share";
-//                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
-//
-//                }
-//                    break;
-//
-//            }
-//        }
-//
-//        return cell;
-//
+        //        if (kDownloadsEnabled){
+        //            switch (indexPath.row) {
+        //
+        //                case 0: {
+        //
+        //                    cell.textLabel.text = @"Play as";
+        //                    self.labelPlayAs = [[UILabel alloc] init];
+        //                    self.labelPlayAs.text = @"Video";
+        //                    self.labelPlayAs.textColor = [UIColor whiteColor];
+        //                    self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
+        //                    [self.labelPlayAs sizeToFit];
+        //                    cell.accessoryView = self.labelPlayAs;
+        //
+        //                }
+        //                    break;
+        //
+        //                case 1: {
+        //
+        //                    // Add progress view
+        //                    float width = self.view.frame.size.width - kProgressViewMarginLeft - (kProgressViewMarginRight * 2);
+        //                    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(kProgressViewMarginLeft, kProgressViewMarginRight, width, kProgressViewHeight)];
+        //                    [self.progressView setTintColor:kSystemBlue];
+        //                    [self.progressView setHidden:YES];
+        //                    [cell addSubview:self.progressView];
+        //
+        //                    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:self.video.downloadTaskId];
+        //                    if (downloadInfo.isDownloading) {
+        //
+        //                        cell.textLabel.text = @"Downloading...";
+        //                        //cell.textLabel.textColor = [UIColor whiteColor];
+        //                        [self.progressView setHidden:NO];
+        //                        self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:1.0f
+        //                                                                              target:self
+        //                                                                            selector:@selector(showDownloadProgress:)
+        //                                                                            userInfo:nil
+        //                                                                             repeats:YES];
+        //
+        //                    } else {
+        //                        cell.textLabel.text = @"Download";
+        //                    }
+        //
+        //                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconDownloadsW"]];
+        //
+        //                }
+        //                    break;
+        //
+        //                case 2: {
+        //
+        //                    if ([UIUtil isYes:self.video.isFavorite]) {
+        //
+        //                        cell.textLabel.text = @"Unfavorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        //
+        //                    } else {
+        //
+        //                        cell.textLabel.text = @"Favorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        //
+        //                    }
+        //
+        //                }
+        //                    break;
+        //
+        //                case 3: {
+        //
+        //                    cell.textLabel.text = @"Share";
+        //                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
+        //
+        //                }
+        //                    break;
+        //
+        //            }
+        //        } else {
+        //
+        //            switch (indexPath.row) {
+        //
+        //                case 0: {
+        //
+        //                    if ([UIUtil isYes:self.video.isFavorite]) {
+        //
+        //                        cell.textLabel.text = @"Unfavorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesWFull"]];
+        //
+        //                    } else {
+        //
+        //                        cell.textLabel.text = @"Favorite";
+        //                        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFavoritesW"]];
+        //
+        //                    }
+        //
+        //                }
+        //                    break;
+        //
+        //                case 1: {
+        //
+        //                    cell.textLabel.text = @"Share";
+        //                    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconShareW"]];
+        //
+        //                }
+        //                    break;
+        //
+        //            }
+        //        }
+        //
+        //        return cell;
+        //
     }else {
         
         static NSString *CellIdentifier = @"Cell";
@@ -2741,7 +2745,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (BOOL)isResumingPlayback {
-    return NO;
+    return self.resumingPlayback;
 }
 
 - (NSDictionary<NSString *,id> * _Nonnull)segmentAnalyticsPaylod {
@@ -2755,8 +2759,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [customDimensions setValue:@"null" forKey:SegmentAnalyticsAttributes.adType];
     [customDimensions setValue:@"ott" forKey:SegmentAnalyticsAttributes.contentShownOnPlatform];
     [customDimensions setValue:[NSString stringWithFormat:@"Apple %@", model] forKey:SegmentAnalyticsAttributes.streaming_device];
-    [customDimensions setValue:@"416418724" forKey:SegmentAnalyticsAttributes.videoAccountId];
-    [customDimensions setValue:@"People" forKey:SegmentAnalyticsAttributes.videoAccountName];
+    [customDimensions setValue:kSegmentAccountID forKey:SegmentAnalyticsAttributes.videoAccountId];
+    [customDimensions setValue:kSegmentAccountName forKey:SegmentAnalyticsAttributes.videoAccountName];
     [customDimensions setValue:@"null" forKey:SegmentAnalyticsAttributes.videoAdDuration];
     [customDimensions setValue:@"null" forKey:SegmentAnalyticsAttributes.videoAdVolume];
     [customDimensions setValue:@"null" forKey:SegmentAnalyticsAttributes.videoFranchise];

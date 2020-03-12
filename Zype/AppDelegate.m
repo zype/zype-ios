@@ -68,6 +68,9 @@
         configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
         [SEGAnalytics setupWithConfiguration:configuration];
         
+        //setup identity
+        [[SEGAnalytics sharedAnalytics] identify:kSegmentAccountID];
+        
         // Set Segent Analytics enabled to SegmentAnalyticsManager
         SegmentAnalyticsManager.segmentAnalyticsEnabled = true;
     }
