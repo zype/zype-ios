@@ -14,7 +14,7 @@
 
 #define kOAuth_ClientId @"606eb2fdbefedf7c4831cb8338df66d6e3d467590d8ac5c77cfccbd79e5ecb1f"
 #define kAppKey @"Kdb3gTAKYQymKLo3xku1YRrY1AIZKjYomf1H7eiBcl6nWSHYvur5Flw0KYvjstUV"
-#define kRootPlaylistId @"5d66a68d861c0d58abc018f1"
+#define kRootPlaylistId @"5e458922b1c3870001092d8a"
 
 #define kZypeAppId @"5d72a7a9dacfe75949518146"
 #define kZypeSiteId @"5d5b19dd49ded92480fbf659"
