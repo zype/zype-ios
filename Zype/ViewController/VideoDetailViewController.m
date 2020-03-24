@@ -2050,22 +2050,22 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         NSString *newTag = [UIUtil replaceDeviceParameters:adObject.tag];
         
+        // Fix For APPS-785: Need to comment below check, it's causing issues in Ads playing
         // only listen for ads at or after video start point
-        if ([NSNumber numberWithDouble:adObject.offset] >= self.video.playTime){
-            if (adObject.offset == 0) {
-                isPrerollUsed = YES;
-                IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
-                                                              adDisplayContainer:adDisplayContainer
-                                                                 contentPlayhead:self.contentPlayhead
-                                                                     userContext:nil];
-                
-                if (!isRequestPending) [self.adsLoader requestAdsWithRequest:request];
-            } else {
-                
-                [adOffsets addObject:adObject.offsetValue];
-                [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
-                [adsTags addObject:newTag];
-            }
+        //if ([NSNumber numberWithDouble:adObject.offset] >= self.video.playTime)
+        if (adObject.offset == 0) {
+            isPrerollUsed = YES;
+            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
+                                                          adDisplayContainer:adDisplayContainer
+                                                             contentPlayhead:self.contentPlayhead
+                                                                 userContext:nil];
+            
+            if (!isRequestPending) [self.adsLoader requestAdsWithRequest:request];
+        } else {
+            
+            [adOffsets addObject:adObject.offsetValue];
+            [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
+            [adsTags addObject:newTag];
         }
     }
     
