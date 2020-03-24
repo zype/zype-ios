@@ -2639,7 +2639,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 [UIUtil showIntroViewFromViewController:self];
                 return;
             } else {
-                if ([self.video.subscription_required intValue] == 1 && [[ACPurchaseManager sharedInstance] isActiveSubscription] == false) {
+                if ([self.video.subscription_required intValue] == 1 &&
+                    [ACStatusManager isUserSignedIn] == true &&
+                    [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] <= 0) {
                     [UIUtil showSubscriptionViewFromViewController:self];
                     return;
                 }
