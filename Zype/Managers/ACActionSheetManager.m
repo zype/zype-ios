@@ -120,12 +120,13 @@
 - (void)checkingOnActiveFlags:(void(^)(void))complete failure:(void(^)(void))failure {
     
     if (kDownloadsForAllUsersEnabled == NO) {
-        if (kNativeSubscriptionEnabled == YES) {
-            if (self.actionVideo.subscription_required.integerValue == 1) {
-                [self.delegate acActionSheetManagerDelegatePresentViewController:[ViewManager subscriptionViewController]];
-                if (failure) failure();
-                return;
-            }
+        if (kNativeSubscriptionEnabled &&
+            [self.actionVideo.subscription_required intValue] == 1 &&
+            [ACStatusManager isUserSignedIn] == true &&
+            [[NSUserDefaults standardUserDefaults] integerForKey:kOAuthProperty_Subscription] <= 0){
+            [self.delegate acActionSheetManagerDelegatePresentViewController:[ViewManager subscriptionViewController]];
+            if (failure) failure();
+            return;
         }
         
         if ([ACStatusManager isUserSignedIn] == NO) {
