@@ -13,7 +13,7 @@
 @class PlaybackSource;
 
 
-@interface MediaPlaybackBaseViewController : BaseViewController<UIWebViewDelegate, WKNavigationDelegate>
+@interface MediaPlaybackBaseViewController : BaseViewController<WKNavigationDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -21,8 +21,6 @@
 @property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic) MPMoviePlayerController *player;
 @property (nonatomic) WKWebView *wkWebViewPlayer;
-@property (nonatomic) UIWebView *webViewPlayer;
-
 @property (nonatomic) WKWebViewConfiguration *wkWebConfig;
 
 @property (nonatomic) BOOL isAudio;

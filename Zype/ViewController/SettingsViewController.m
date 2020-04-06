@@ -36,8 +36,51 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.screenName = @"Settings";
+    [self setupWkWebView];
     [self configureView];
     [self configureSettings];
+}
+
+-(void)setupWkWebView {
+    WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+    self.wkWebView = [[WKWebView alloc] initWithFrame:self.tableView.frame configuration:wkWebConfig];
+    self.wkWebView.opaque = NO;
+    self.wkWebView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.wkWebView];
+    
+    self.wkWebView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1
+                                                           constant:0]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -171,32 +214,32 @@
     switch (self.pageIndex.row) {
         case 0: {
             self.title = @"Settings";
-            [self.webView setHidden:YES];
+            [self.wkWebView setHidden:YES];
         }
             break;
         case 2: {
             self.title = @"Facebook";
-            [self.webView setHidden:NO];
-            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACFacebook]]];
+            [self.wkWebView setHidden:NO];
+            [self.wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACFacebook]]];
         }
             break;
         case 3: {
             self.title = @"Twitter";
-            [self.webView setHidden:NO];
-            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACTwitter]]];
+            [self.wkWebView setHidden:NO];
+            [self.wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACTwitter]]];
         }
             break;
         case 4: {
             self.title = @"Instagram";
-            [self.webView setHidden:NO];
-            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACInstagram]]];
+            [self.wkWebView setHidden:NO];
+            [self.wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACInstagram]]];
         }
             break;
             
         case 5: {
             self.title = @"Web";
-            [self.webView setHidden:NO];
-            [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACWeb]]];
+            [self.wkWebView setHidden:NO];
+            [self.wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:kACWeb]]];
         }
             break;
             
@@ -419,9 +462,9 @@
                 UIViewController *viewController = [UIViewController new];
                 viewController.view.frame = self.view.bounds;
                 
-                UIWebView *webview = [UIWebView new];
-                webview.frame = viewController.view.bounds;
-                
+                WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+                WKWebView *webview = [[WKWebView alloc] initWithFrame:viewController.view.bounds configuration:wkWebConfig];
+            
                 [viewController.view addSubview:webview];
                 
                 [webview loadHTMLString:htmlString baseURL:nil];

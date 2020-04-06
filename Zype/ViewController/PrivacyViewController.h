@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@import WebKit;
+
 @interface PrivacyViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (retain, nonatomic) WKWebView *wkWebView;
 
 @end

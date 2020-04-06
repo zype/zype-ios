@@ -472,16 +472,8 @@
 }
 
 - (void)embedWebPlayer:(NSURL *)url frame:(CGRect)frame {
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f) {
-        
-        [self setupWKWebViewPlayerWithURLString:url frame:frame];
-        
-    }else{
-        
-        [self setupUIWebViewPlayerWithURLString:url frame:frame];
-        
-    }
+    // Minimum ios version targetted is iOS 9.0 so we can simply remove UIWebView
+    [self setupWKWebViewPlayerWithURLString:url frame:frame];
     
     if(self.player != nil){
         
@@ -514,32 +506,6 @@
     
     // Load live stream
     [self.wkWebViewPlayer loadRequest:[NSURLRequest requestWithURL:url cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval:1000]];
-    
-}
-
-- (void)setupUIWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame {
-    
-    if (self.webViewPlayer == nil || !self.webViewPlayer.superview) {
-        
-        self.webViewPlayer = [[UIWebView alloc] initWithFrame:frame];
-        self.webViewPlayer.delegate = self;
-        self.webViewPlayer.scrollView.scrollEnabled = NO;
-        self.webViewPlayer.opaque = NO;
-        self.webViewPlayer.backgroundColor = [UIColor blackColor];
-        self.webViewPlayer.scalesPageToFit = YES;
-        [self.webViewPlayer setHidden:NO];
-        
-        [self.view addSubview:self.webViewPlayer];
-        [self setupConstraintsForWebPlayerView:self.webViewPlayer];
-        
-    }
-    
-    // Start activity indicator and disable animations to fix loading issue
-    [self showActivityIndicator];
-    [UIView setAnimationsEnabled:NO];
-    
-    // Load live stream
-    [self.webViewPlayer loadRequest:[NSURLRequest requestWithURL:url cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval:1000]];
     
 }
 
