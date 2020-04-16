@@ -472,7 +472,6 @@
 }
 
 - (void)embedWebPlayer:(NSURL *)url frame:(CGRect)frame {
-    // Minimum ios version targetted is iOS 9.0 so we can simply remove UIWebView
     [self setupWKWebViewPlayerWithURLString:url frame:frame];
     
     if(self.player != nil){
