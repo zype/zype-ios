@@ -522,6 +522,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         [self setThumbnailImage];
         [self hideSectionsForHighlightVideo];
+        [self setupWebSummaryView];
         [self setSummary];
         //[self setGuestList];
         [self setTimeline];
@@ -600,7 +601,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                              toItem:self.viewSummary
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1
-                                                           constant:8]];
+                                                           constant:16]];
     
     [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
                                                           attribute:NSLayoutAttributeBottom
@@ -2663,19 +2664,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
-
-//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-//
-//    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-//
-//        [[UIApplication sharedApplication] openURL:[request URL]];
-//        return NO;
-//
-//    }
-//
-//    return YES;
-//
-//}
 
 #pragma mark - OptionTableViewCellDelegate
 

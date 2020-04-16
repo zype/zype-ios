@@ -467,7 +467,10 @@
             
                 [viewController.view addSubview:webview];
                 
-                [webview loadHTMLString:htmlString baseURL:nil];
+                NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'></header>";
+                [webview loadHTMLString:[headerString stringByAppendingString:htmlString] baseURL:nil];
+
+                //[webview loadHTMLString:htmlString baseURL:nil];
                 [self.navigationController pushViewController:viewController animated:YES];
                 
                 break;
