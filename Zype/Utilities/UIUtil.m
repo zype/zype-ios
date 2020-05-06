@@ -234,6 +234,7 @@
 + (void)showTermOfServicesFromViewController:(UIViewController *)viewController
 {
     PrivacyViewController *privacyViewController = (PrivacyViewController *)[viewController.storyboard instantiateViewControllerWithIdentifier:@"PrivacyViewController"];
+    privacyViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [viewController presentViewController:privacyViewController animated:YES completion:nil];
 }
 
