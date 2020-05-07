@@ -522,6 +522,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         [self setThumbnailImage];
         [self hideSectionsForHighlightVideo];
+        [self setupWebSummaryView];
         [self setSummary];
         //[self setGuestList];
         [self setTimeline];
@@ -566,10 +567,55 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+-(void)setupWebSummaryView {
+    WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+    self.wkWebViewSummary =  [[WKWebView alloc] initWithFrame:self.viewSummary.bounds configuration:wkWebConfig];
+    self.wkWebViewSummary.frame = self.viewSummary.bounds;
+    self.wkWebViewSummary.opaque = false;
+    self.wkWebViewSummary.backgroundColor = [UIColor clearColor];
+    self.wkWebViewSummary.scrollView.showsHorizontalScrollIndicator = NO;
+    self.wkWebViewSummary.scrollView.showsVerticalScrollIndicator = NO;
+    [self.viewSummary addSubview:self.wkWebViewSummary];
+    
+    self.wkWebViewSummary.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeLeading
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeLeading
+                                                         multiplier:1
+                                                           constant:8]];
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeTrailing
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeTrailing
+                                                         multiplier:1
+                                                           constant:8]];
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1
+                                                           constant:16]];
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:0]];
+}
+
 - (void)setSummary{
     
     // Set Summary
-    self.webViewSummary.delegate = self;
+    self.wkWebViewSummary.navigationDelegate = self;
     NSString *htmlFile;
 
     if (kAppColorLight){
@@ -587,7 +633,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@%@", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
-    [self.webViewSummary loadHTMLString:htmlString baseURL:nil];
+    [self.wkWebViewSummary loadHTMLString:htmlString baseURL:nil];
     
 }
 
@@ -2606,19 +2652,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 
-#pragma mark - UIWebView delegate
+#pragma mark - WkWebView delegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+        NSURLRequest *request = navigationAction.request;
         [[UIApplication sharedApplication] openURL:[request URL]];
-        return NO;
-        
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
-    
-    return YES;
-    
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 #pragma mark - OptionTableViewCellDelegate

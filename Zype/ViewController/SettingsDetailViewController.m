@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setupWkWebView];
     [self configureView];
 }
 
@@ -62,6 +62,48 @@
 
 #pragma mark - Init UI
 
+-(void)setupWkWebView {
+    WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+    self.wkWebView = [[WKWebView alloc] initWithFrame:self.tableView.frame configuration:wkWebConfig];
+    self.wkWebView.opaque = NO;
+    self.wkWebView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.wkWebView];
+    
+    self.wkWebView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.tableView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1
+                                                           constant:0]];
+}
+
 - (void)setPageIndex:(NSIndexPath *)pageIndex
 {
     if (_pageIndex != pageIndex) {
@@ -78,7 +120,7 @@
 {
     if (self.pageIndex.section == 0 && self.pageIndex.row == 1) {
         self.title = @"Download Preferences";
-        [self.webView setHidden:YES];
+        [self.wkWebView setHidden:YES];
         [self.tableView setHidden:NO];
     }
 

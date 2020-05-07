@@ -293,38 +293,6 @@
     
 }
 
-
-
-
-
-#pragma mark - Web View Player
-
-- (void)setupWebPlayer:(NSURL *)url{
-    
-}
-
-- (void)embedWebPlayer:(NSURL *)url frame:(CGRect)frame{
-    
-    
-}
-
-- (void)setupWKWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame{
-    
-}
-
-- (void)setupUIWebViewPlayerWithURLString:(NSURL *)url frame:(CGRect)frame{
-    
-}
-
-- (void)setupConstraintsForWebPlayerView:(UIView *)view{
-    
-    
-    
-}
-
-
-
-
 #pragma mark - Stopping Stream
 
 - (void)stopLiveStream{

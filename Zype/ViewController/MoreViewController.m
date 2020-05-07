@@ -239,7 +239,7 @@
 
 #pragma mark - SubscriptionPlanDelegate
 - (void) subscriptionSignInDone {
-    if (kNativeSubscriptionEnabled == YES) {
+    if (TRUE) {
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] intValue] == 0) {
             [UIUtil showSubscriptionViewFromViewController:self];
         }

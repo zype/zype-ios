@@ -11,12 +11,13 @@
 #import "GAITrackedViewController.h"
 #import "SubscriptionPlanDelegate.h"
 
+@import WebKit;
+
 @interface SettingsViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate, SubscriptionPlanDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) NSIndexPath *pageIndex;
 @property (weak, nonatomic) IBOutlet UIButton *buttonSignOut;
-
+@property (retain, nonatomic) WKWebView *wkWebView;
 @property (nonatomic, retain) NSDate *start;
 
 @end

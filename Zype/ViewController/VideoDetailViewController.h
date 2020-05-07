@@ -26,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIView *viewOptions;
 @property (strong, nonatomic) NSArray *arrayViews;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmenedControl;
-@property (weak, nonatomic) IBOutlet UIWebView *webViewSummary;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewGuestList;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewTimeline;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewOptions;
@@ -35,7 +34,7 @@
 @property (strong, nonatomic) NSString *videoShareTitleString;
 @property (strong, nonatomic) Video *video;
 @property (strong, nonatomic) NSMutableArray *arrayTimeline;
-
+@property (strong, nonatomic) WKWebView *wkWebViewSummary;
 @property (strong, nonatomic) NSString * startTime;
 @property (strong, nonatomic) NSString * endTime;
 
