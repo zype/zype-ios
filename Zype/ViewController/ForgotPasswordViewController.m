@@ -63,9 +63,9 @@
     [self.btnSignup setAttributedTitle:attrstringFirstPart forState:UIControlStateNormal];
     
     NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
-    [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
-    [self.arrowImageView setTintColor: signUpColor];
-    
+    [self.arrowImageView setImage:[[UIImage imageNamed:arrowImageString] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    self.arrowImageView.tintColor = kCurrentAppColor;
+
     UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self.view addGestureRecognizer:tapRecognizer];
     
