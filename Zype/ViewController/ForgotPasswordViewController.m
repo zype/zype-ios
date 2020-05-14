@@ -64,7 +64,7 @@
     
     NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
     [self.arrowImageView setImage:[[UIImage imageNamed:arrowImageString] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    self.arrowImageView.tintColor = kCurrentAppColor;
+    self.arrowImageView.tintColor = kClientColor;
 
     UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self.view addGestureRecognizer:tapRecognizer];
