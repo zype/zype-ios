@@ -482,7 +482,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)configureColors{
-    self.segmenedControl.tintColor = kClientColor;
+    if (@available(iOS 13.0, *)) {
+        self.segmenedControl.selectedSegmentTintColor = kClientColor;
+    } else {
+        // Fallback on earlier versions
+        self.segmenedControl.tintColor = kClientColor;
+    }
+    
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : kClientColor} forState:UIControlStateNormal];
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]} forState:UIControlStateSelected];
 }
 
 - (void)setDetailItem:(id)newDetailItem {
