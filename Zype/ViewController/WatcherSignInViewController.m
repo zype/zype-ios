@@ -138,15 +138,14 @@
     self.isEditing = NO;
     self.isSlideUp = NO;
     
-    UIColor * currentColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
-    NSDictionary * attributes = @{NSForegroundColorAttributeName: currentColor,
+    NSDictionary * attributes = @{NSForegroundColorAttributeName: kClientColor,
                                   NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
     NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"Don't have an account? " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
                                                                                                                                        NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
     NSAttributedString * signupText = [[NSAttributedString alloc] initWithString:@"Sign up" attributes:attributes];
     [attrstring appendAttributedString:signupText];
     [self.signupButton setAttributedTitle:attrstring forState:UIControlStateNormal];
-    
+
     NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
     [self.arrowImageView setImage:[[UIImage imageNamed:arrowImageString] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     self.arrowImageView.tintColor = kClientColor;

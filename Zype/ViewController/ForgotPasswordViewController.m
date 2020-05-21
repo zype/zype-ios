@@ -54,8 +54,7 @@
     UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
     self.titleLabel.textColor = titleColor;
     
-    UIColor * signUpColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
-    NSDictionary * signUpAttributes = @{NSForegroundColorAttributeName: signUpColor,
+    NSDictionary * signUpAttributes = @{NSForegroundColorAttributeName: kClientColor,
                                         NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
     NSMutableAttributedString * attrstringFirstPart = [[NSMutableAttributedString alloc] initWithString:@"Don't have an account? " attributes:@{NSForegroundColorAttributeName: kUniversalGray}];
     NSAttributedString * signinText = [[NSAttributedString alloc] initWithString:@"Sign up" attributes:signUpAttributes];

@@ -28,15 +28,17 @@
     UINavigationItem* navItem = [[UINavigationItem alloc] initWithTitle:@""];
     UIBarButtonItem* backBtn = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(onTapBack:)];
     navItem.rightBarButtonItem = backBtn;
-    
     [self.navBar setItems:@[navItem]];
+    
+    [[UINavigationBar appearance] setTranslucent:NO];
     if (kAppColorLight) {
         self.view.backgroundColor = [UIColor whiteColor];
-        [backBtn setTintColor:kLightTintColor];
+        [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+        [backBtn setTintColor:kClientColor];
     } else {
-        [self.navBar setBarStyle:UIBarStyleBlackOpaque];
+        [[UINavigationBar appearance] setBarTintColor:kDarkThemeBackgroundColor];
         self.view.backgroundColor = kDarkThemeBackgroundColor;
-        [backBtn setTintColor:kDarkTintColor];
+        [backBtn setTintColor:kClientColor];
     }
 }
 
@@ -68,7 +70,7 @@
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeHeight
                                                          multiplier:1
-                                                           constant:-(self.navBar.frame.size.height+16)]];
+                                                           constant:-(self.navBar.frame.size.height+10)]];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebView
                                                           attribute:NSLayoutAttributeWidth

@@ -576,6 +576,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 -(void)setupWebSummaryView {
+    [self.wkWebViewSummary  removeFromSuperview];
     WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
     self.wkWebViewSummary =  [[WKWebView alloc] initWithFrame:self.viewSummary.bounds configuration:wkWebConfig];
     self.wkWebViewSummary.frame = self.viewSummary.bounds;
@@ -624,6 +625,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // Set Summary
     self.wkWebViewSummary.navigationDelegate = self;
+
     NSString *htmlFile;
 
     if (kAppColorLight){
