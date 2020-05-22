@@ -1320,7 +1320,7 @@
                                 </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9KN-jf-j1V" userLabel="ViewSummary">
-                                <rect key="frame" x="0.0" y="231.66666666666671" width="375" height="458.33333333333326"/>
+                                <rect key="frame" x="16" y="231.66666666666671" width="335" height="458.33333333333326"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fTa-SE-w5e" userLabel="ViewGuestList">
@@ -1478,7 +1478,7 @@
                             <constraint firstAttribute="trailing" secondItem="HYN-AC-QLQ" secondAttribute="trailing" id="fpG-KE-dwZ"/>
                             <constraint firstItem="NJf-g7-cd5" firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="h5e-dS-1L2"/>
                             <constraint firstItem="6Zh-th-isR" firstAttribute="centerY" secondItem="Qjb-Ka-fqE" secondAttribute="centerY" id="hyQ-vc-cpD"/>
-                            <constraint firstItem="9KN-jf-j1V" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="jCx-Tz-XAB"/>
+                            <constraint firstItem="9KN-jf-j1V" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" constant="16" id="jCx-Tz-XAB"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="mbs-X5-2Xf"/>
                             <constraint firstItem="A0e-5B-SaA" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="nb8-oN-Ht8"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="top" secondItem="P9Z-eA-mdp" secondAttribute="bottom" id="oKQ-Cm-XVN"/>
@@ -1491,7 +1491,7 @@
                             <constraint firstAttribute="trailing" secondItem="fTa-SE-w5e" secondAttribute="trailing" id="wSz-TX-czv"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="yEB-Z0-q69"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="centerX" secondItem="ewh-xg-vbD" secondAttribute="centerX" id="zEI-Ug-rEg"/>
-                            <constraint firstAttribute="trailing" secondItem="9KN-jf-j1V" secondAttribute="trailing" id="zWm-E3-KMd"/>
+                            <constraint firstAttribute="trailing" secondItem="9KN-jf-j1V" secondAttribute="trailing" constant="24" id="zWm-E3-KMd"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

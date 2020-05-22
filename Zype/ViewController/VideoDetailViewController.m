@@ -575,16 +575,27 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self setupWebViewConstraints];
+}
+
 -(void)setupWebSummaryView {
     [self.wkWebViewSummary  removeFromSuperview];
     WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
     self.wkWebViewSummary =  [[WKWebView alloc] initWithFrame:self.viewSummary.bounds configuration:wkWebConfig];
-    self.wkWebViewSummary.frame = self.viewSummary.bounds;
     self.wkWebViewSummary.opaque = false;
     self.wkWebViewSummary.backgroundColor = [UIColor clearColor];
     self.wkWebViewSummary.scrollView.showsHorizontalScrollIndicator = NO;
     self.wkWebViewSummary.scrollView.showsVerticalScrollIndicator = NO;
     [self.viewSummary addSubview:self.wkWebViewSummary];
+    [self setupWebViewConstraints];
+}
+
+- (void)setupWebViewConstraints {
+    if (self.wkWebViewSummary == nil) {
+        return;
+    }
     
     self.wkWebViewSummary.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -594,7 +605,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                              toItem:self.viewSummary
                                                           attribute:NSLayoutAttributeLeading
                                                          multiplier:1
-                                                           constant:8]];
+                                                           constant:0]];
     
     [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
                                                           attribute:NSLayoutAttributeTrailing
@@ -602,7 +613,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                              toItem:self.viewSummary
                                                           attribute:NSLayoutAttributeTrailing
                                                          multiplier:1
-                                                           constant:8]];
+                                                           constant:0]];
     
     [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
                                                           attribute:NSLayoutAttributeTop
