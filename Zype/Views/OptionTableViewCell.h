@@ -17,6 +17,7 @@
 @property (strong, nonatomic) IBOutlet UIProgressView *progressView;
 @property (nonatomic, strong) TableSectionDataSource *optionDataItem;
 @property (nonatomic, weak) id <OptionTableViewCellDelegate> delegate;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLableLeadingConstraint;
 
 - (void)configureCell:(TableSectionDataSource *)dataSource;
 - (void)setProgress:(DownloadInfo *)info;

@@ -1309,7 +1309,7 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hkC-ag-CoJ">
                                 <rect key="frame" x="10" y="203.66666666666669" width="355" height="29"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="28" id="uUe-NB-RPK"/>
+                                    <constraint firstAttribute="height" constant="28" id="uUe-NB-RPK"/>
                                 </constraints>
                                 <segments>
                                     <segment title="Summary"/>
@@ -1338,17 +1338,20 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="AzU-pG-aqb" secondAttribute="trailing" id="ADK-Tg-UkI"/>
-                                    <constraint firstItem="AzU-pG-aqb" firstAttribute="top" secondItem="fTa-SE-w5e" secondAttribute="top" constant="5" id="UHa-H9-nE8"/>
                                     <constraint firstAttribute="bottom" secondItem="AzU-pG-aqb" secondAttribute="bottom" id="pTW-oD-6Ap"/>
                                     <constraint firstItem="AzU-pG-aqb" firstAttribute="leading" secondItem="fTa-SE-w5e" secondAttribute="leading" id="rO5-5D-kb0"/>
+                                    <constraint firstItem="AzU-pG-aqb" firstAttribute="top" secondItem="fTa-SE-w5e" secondAttribute="top" constant="5" id="y1B-s4-2gf"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZN8-RW-Jnh" userLabel="ViewTimeline">
-                                <rect key="frame" x="0.0" y="231.66666666666671" width="375" height="458.33333333333326"/>
+                                <rect key="frame" x="0.0" y="231.66666666666671" width="375" height="455.33333333333326"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="OqP-SD-qB9">
-                                        <rect key="frame" x="0.0" y="5" width="375" height="453.33333333333331"/>
+                                        <rect key="frame" x="0.0" y="5" width="375" height="450.33333333333331"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="450.33333333333331" id="NPy-U2-djw"/>
+                                        </constraints>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimelineCell" rowHeight="50" id="nNE-Mg-lq6" customClass="TimelineTableViewCell">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
@@ -1410,7 +1413,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="OqP-SD-qB9" secondAttribute="bottom" id="4r5-RA-2OS"/>
-                                    <constraint firstItem="OqP-SD-qB9" firstAttribute="top" secondItem="ZN8-RW-Jnh" secondAttribute="top" constant="5" id="6aw-up-5nh"/>
+                                    <constraint firstAttribute="top" secondItem="OqP-SD-qB9" secondAttribute="top" constant="-5" id="Dvx-w6-CCs"/>
                                     <constraint firstAttribute="trailing" secondItem="OqP-SD-qB9" secondAttribute="trailing" id="Zct-Bt-lek"/>
                                     <constraint firstItem="OqP-SD-qB9" firstAttribute="leading" secondItem="ZN8-RW-Jnh" secondAttribute="leading" id="jKq-Nc-4LY"/>
                                 </constraints>
@@ -1443,7 +1446,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="zkm-jS-mss" secondAttribute="bottom" id="4eD-sE-AbM"/>
                                     <constraint firstItem="zkm-jS-mss" firstAttribute="leading" secondItem="HYN-AC-QLQ" secondAttribute="leading" id="Ezv-iN-Who"/>
-                                    <constraint firstItem="zkm-jS-mss" firstAttribute="top" secondItem="HYN-AC-QLQ" secondAttribute="top" constant="5" id="Sut-RF-5ja"/>
+                                    <constraint firstItem="zkm-jS-mss" firstAttribute="top" secondItem="HYN-AC-QLQ" secondAttribute="top" constant="5" id="ZRj-Gg-G3K"/>
                                     <constraint firstAttribute="trailing" secondItem="zkm-jS-mss" secondAttribute="trailing" id="jWV-vH-Axb"/>
                                 </constraints>
                             </view>
@@ -1518,13 +1521,18 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="NJf-g7-cd5" id="qG9-3q-Xr6"/>
+                        <outlet property="guestViewTop" destination="Hak-kw-YuL" id="dv8-IA-OuW"/>
                         <outlet property="imageAudioThumbnail" destination="f0a-bE-7ap" id="M1B-Mw-YV3"/>
                         <outlet property="imageThumbnail" destination="Qjb-Ka-fqE" id="kyL-BH-OjF"/>
                         <outlet property="lblAudioTitle" destination="6Zh-th-isR" id="k3T-KZ-J11"/>
+                        <outlet property="optionsViewTop" destination="MLh-IJ-jTt" id="2re-VQ-v9H"/>
                         <outlet property="segmenedControl" destination="hkC-ag-CoJ" id="Qvf-GN-ppZ"/>
+                        <outlet property="segmentControlHeight" destination="uUe-NB-RPK" id="NdI-N6-HRa"/>
+                        <outlet property="summaryViewTop" destination="Ab4-al-ym5" id="RmS-gw-pjZ"/>
                         <outlet property="tableViewGuestList" destination="AzU-pG-aqb" id="FTg-E3-p7c"/>
                         <outlet property="tableViewOptions" destination="zkm-jS-mss" id="Lev-h1-ij9"/>
                         <outlet property="tableViewTimeline" destination="OqP-SD-qB9" id="v07-KU-g3Z"/>
+                        <outlet property="timelineViewTop" destination="GDz-PY-vHf" id="M7h-xj-dUN"/>
                         <outlet property="viewGuestList" destination="fTa-SE-w5e" id="DEO-kx-T4h"/>
                         <outlet property="viewOptions" destination="HYN-AC-QLQ" id="KwN-zu-QHn"/>
                         <outlet property="viewSummary" destination="9KN-jf-j1V" id="c8X-bY-waf"/>

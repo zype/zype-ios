@@ -577,7 +577,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [self setupWebViewConstraints];
+    [self setupViewConstraints];
 }
 
 -(void)setupWebSummaryView {
@@ -589,10 +589,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.wkWebViewSummary.scrollView.showsHorizontalScrollIndicator = NO;
     self.wkWebViewSummary.scrollView.showsVerticalScrollIndicator = NO;
     [self.viewSummary addSubview:self.wkWebViewSummary];
-    [self setupWebViewConstraints];
+    [self setupViewConstraints];
 }
 
-- (void)setupWebViewConstraints {
+- (void)setupViewConstraints {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.segmentControlHeight.constant = 50.0;
+        
+        [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : kClientColor, NSFontAttributeName: [UIFont fontWithName:@"Helvetica" size:30.0]}forState:UIControlStateNormal];
+    }
+    
     if (self.wkWebViewSummary == nil) {
         return;
     }
