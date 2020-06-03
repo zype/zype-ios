@@ -24,6 +24,11 @@
 @property (weak, nonatomic) IBOutlet UIView *viewGuestList;
 @property (weak, nonatomic) IBOutlet UIView *viewTimeline;
 @property (weak, nonatomic) IBOutlet UIView *viewOptions;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentControlHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *timelineViewTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *guestViewTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *summaryViewTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *optionsViewTop;
 @property (strong, nonatomic) NSArray *arrayViews;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmenedControl;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewGuestList;

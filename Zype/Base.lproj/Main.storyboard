@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZNN-a5-bRb">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -1091,7 +1091,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hbz-So-knE">
+                            <navigationBar contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="hbz-So-knE">
                                 <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1309,7 +1309,7 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hkC-ag-CoJ">
                                 <rect key="frame" x="10" y="203.66666666666669" width="355" height="29"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="28" id="uUe-NB-RPK"/>
+                                    <constraint firstAttribute="height" constant="28" id="uUe-NB-RPK"/>
                                 </constraints>
                                 <segments>
                                     <segment title="Summary"/>
@@ -1320,7 +1320,7 @@
                                 </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9KN-jf-j1V" userLabel="ViewSummary">
-                                <rect key="frame" x="0.0" y="231.66666666666671" width="375" height="458.33333333333326"/>
+                                <rect key="frame" x="16" y="231.66666666666671" width="335" height="458.33333333333326"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fTa-SE-w5e" userLabel="ViewGuestList">
@@ -1338,17 +1338,20 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="AzU-pG-aqb" secondAttribute="trailing" id="ADK-Tg-UkI"/>
-                                    <constraint firstItem="AzU-pG-aqb" firstAttribute="top" secondItem="fTa-SE-w5e" secondAttribute="top" constant="5" id="UHa-H9-nE8"/>
                                     <constraint firstAttribute="bottom" secondItem="AzU-pG-aqb" secondAttribute="bottom" id="pTW-oD-6Ap"/>
                                     <constraint firstItem="AzU-pG-aqb" firstAttribute="leading" secondItem="fTa-SE-w5e" secondAttribute="leading" id="rO5-5D-kb0"/>
+                                    <constraint firstItem="AzU-pG-aqb" firstAttribute="top" secondItem="fTa-SE-w5e" secondAttribute="top" constant="5" id="y1B-s4-2gf"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZN8-RW-Jnh" userLabel="ViewTimeline">
-                                <rect key="frame" x="0.0" y="231.66666666666671" width="375" height="458.33333333333326"/>
+                                <rect key="frame" x="0.0" y="231.66666666666671" width="375" height="455.33333333333326"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="OqP-SD-qB9">
-                                        <rect key="frame" x="0.0" y="5" width="375" height="453.33333333333331"/>
+                                        <rect key="frame" x="0.0" y="5" width="375" height="450.33333333333331"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="450.33333333333331" id="NPy-U2-djw"/>
+                                        </constraints>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimelineCell" rowHeight="50" id="nNE-Mg-lq6" customClass="TimelineTableViewCell">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
@@ -1410,7 +1413,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="OqP-SD-qB9" secondAttribute="bottom" id="4r5-RA-2OS"/>
-                                    <constraint firstItem="OqP-SD-qB9" firstAttribute="top" secondItem="ZN8-RW-Jnh" secondAttribute="top" constant="5" id="6aw-up-5nh"/>
+                                    <constraint firstAttribute="top" secondItem="OqP-SD-qB9" secondAttribute="top" constant="-5" id="Dvx-w6-CCs"/>
                                     <constraint firstAttribute="trailing" secondItem="OqP-SD-qB9" secondAttribute="trailing" id="Zct-Bt-lek"/>
                                     <constraint firstItem="OqP-SD-qB9" firstAttribute="leading" secondItem="ZN8-RW-Jnh" secondAttribute="leading" id="jKq-Nc-4LY"/>
                                 </constraints>
@@ -1443,7 +1446,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="zkm-jS-mss" secondAttribute="bottom" id="4eD-sE-AbM"/>
                                     <constraint firstItem="zkm-jS-mss" firstAttribute="leading" secondItem="HYN-AC-QLQ" secondAttribute="leading" id="Ezv-iN-Who"/>
-                                    <constraint firstItem="zkm-jS-mss" firstAttribute="top" secondItem="HYN-AC-QLQ" secondAttribute="top" constant="5" id="Sut-RF-5ja"/>
+                                    <constraint firstItem="zkm-jS-mss" firstAttribute="top" secondItem="HYN-AC-QLQ" secondAttribute="top" constant="5" id="ZRj-Gg-G3K"/>
                                     <constraint firstAttribute="trailing" secondItem="zkm-jS-mss" secondAttribute="trailing" id="jWV-vH-Axb"/>
                                 </constraints>
                             </view>
@@ -1478,7 +1481,7 @@
                             <constraint firstAttribute="trailing" secondItem="HYN-AC-QLQ" secondAttribute="trailing" id="fpG-KE-dwZ"/>
                             <constraint firstItem="NJf-g7-cd5" firstAttribute="centerX" secondItem="Qjb-Ka-fqE" secondAttribute="centerX" id="h5e-dS-1L2"/>
                             <constraint firstItem="6Zh-th-isR" firstAttribute="centerY" secondItem="Qjb-Ka-fqE" secondAttribute="centerY" id="hyQ-vc-cpD"/>
-                            <constraint firstItem="9KN-jf-j1V" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="jCx-Tz-XAB"/>
+                            <constraint firstItem="9KN-jf-j1V" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" constant="16" id="jCx-Tz-XAB"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="mbs-X5-2Xf"/>
                             <constraint firstItem="A0e-5B-SaA" firstAttribute="leading" secondItem="ewh-xg-vbD" secondAttribute="leading" id="nb8-oN-Ht8"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="top" secondItem="P9Z-eA-mdp" secondAttribute="bottom" id="oKQ-Cm-XVN"/>
@@ -1491,7 +1494,7 @@
                             <constraint firstAttribute="trailing" secondItem="fTa-SE-w5e" secondAttribute="trailing" id="wSz-TX-czv"/>
                             <constraint firstItem="hRs-YQ-GHg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Qjb-Ka-fqE" secondAttribute="bottom" constant="8" id="yEB-Z0-q69"/>
                             <constraint firstItem="Qjb-Ka-fqE" firstAttribute="centerX" secondItem="ewh-xg-vbD" secondAttribute="centerX" id="zEI-Ug-rEg"/>
-                            <constraint firstAttribute="trailing" secondItem="9KN-jf-j1V" secondAttribute="trailing" id="zWm-E3-KMd"/>
+                            <constraint firstAttribute="trailing" secondItem="9KN-jf-j1V" secondAttribute="trailing" constant="24" id="zWm-E3-KMd"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -1518,13 +1521,18 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="NJf-g7-cd5" id="qG9-3q-Xr6"/>
+                        <outlet property="guestViewTop" destination="Hak-kw-YuL" id="dv8-IA-OuW"/>
                         <outlet property="imageAudioThumbnail" destination="f0a-bE-7ap" id="M1B-Mw-YV3"/>
                         <outlet property="imageThumbnail" destination="Qjb-Ka-fqE" id="kyL-BH-OjF"/>
                         <outlet property="lblAudioTitle" destination="6Zh-th-isR" id="k3T-KZ-J11"/>
+                        <outlet property="optionsViewTop" destination="MLh-IJ-jTt" id="2re-VQ-v9H"/>
                         <outlet property="segmenedControl" destination="hkC-ag-CoJ" id="Qvf-GN-ppZ"/>
+                        <outlet property="segmentControlHeight" destination="uUe-NB-RPK" id="NdI-N6-HRa"/>
+                        <outlet property="summaryViewTop" destination="Ab4-al-ym5" id="RmS-gw-pjZ"/>
                         <outlet property="tableViewGuestList" destination="AzU-pG-aqb" id="FTg-E3-p7c"/>
                         <outlet property="tableViewOptions" destination="zkm-jS-mss" id="Lev-h1-ij9"/>
                         <outlet property="tableViewTimeline" destination="OqP-SD-qB9" id="v07-KU-g3Z"/>
+                        <outlet property="timelineViewTop" destination="GDz-PY-vHf" id="M7h-xj-dUN"/>
                         <outlet property="viewGuestList" destination="fTa-SE-w5e" id="DEO-kx-T4h"/>
                         <outlet property="viewOptions" destination="HYN-AC-QLQ" id="KwN-zu-QHn"/>
                         <outlet property="viewSummary" destination="9KN-jf-j1V" id="c8X-bY-waf"/>
@@ -1934,10 +1942,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="PreferenceCell" id="j0G-eY-w3b">
-                                        <rect key="frame" x="0.0" y="28" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="768" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="j0G-eY-w3b" id="2rQ-0x-bzP">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3011,6 +3019,12 @@ Terms of Service and Privacy Policy</string>
             <point key="canvasLocation" x="2441" y="2468"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="P79-1w-RWk"/>
+        <segue reference="6Z6-gt-vZG"/>
+        <segue reference="iPz-GA-94R"/>
+    </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="Background" width="375" height="667"/>
         <image name="IconCalendarT" width="25" height="25"/>
@@ -3030,10 +3044,4 @@ Terms of Service and Privacy Policy</string>
         <image name="universal-color-message" width="26.666666030883789" height="26.666666030883789"/>
         <image name="universal-gray-cancel" width="23.333333969116211" height="23.333333969116211"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="P79-1w-RWk"/>
-        <segue reference="ZME-zD-ZIW"/>
-        <segue reference="iPz-GA-94R"/>
-    </inferredMetricsTieBreakers>
-    <color key="tintColor" red="0.0" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
 </document>

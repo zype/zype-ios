@@ -11,7 +11,7 @@
 @implementation UIView (UIView_CustomizeTheme)
 
 - (void)tintCustomizeTheme {
-    self.backgroundColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
+    self.backgroundColor = kClientColor;
 }
 
 - (void)backgroudCustomizeTheme {

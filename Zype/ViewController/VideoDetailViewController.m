@@ -575,15 +575,33 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self setupViewConstraints];
+}
+
 -(void)setupWebSummaryView {
+    [self.wkWebViewSummary  removeFromSuperview];
     WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
     self.wkWebViewSummary =  [[WKWebView alloc] initWithFrame:self.viewSummary.bounds configuration:wkWebConfig];
-    self.wkWebViewSummary.frame = self.viewSummary.bounds;
     self.wkWebViewSummary.opaque = false;
     self.wkWebViewSummary.backgroundColor = [UIColor clearColor];
     self.wkWebViewSummary.scrollView.showsHorizontalScrollIndicator = NO;
     self.wkWebViewSummary.scrollView.showsVerticalScrollIndicator = NO;
     [self.viewSummary addSubview:self.wkWebViewSummary];
+    [self setupViewConstraints];
+}
+
+- (void)setupViewConstraints {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.segmentControlHeight.constant = 50.0;
+        
+        [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : kClientColor, NSFontAttributeName: [UIFont fontWithName:@"Helvetica" size:30.0]}forState:UIControlStateNormal];
+    }
+    
+    if (self.wkWebViewSummary == nil) {
+        return;
+    }
     
     self.wkWebViewSummary.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -593,7 +611,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                              toItem:self.viewSummary
                                                           attribute:NSLayoutAttributeLeading
                                                          multiplier:1
-                                                           constant:8]];
+                                                           constant:0]];
     
     [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
                                                           attribute:NSLayoutAttributeTrailing
@@ -601,7 +619,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                                                              toItem:self.viewSummary
                                                           attribute:NSLayoutAttributeTrailing
                                                          multiplier:1
-                                                           constant:8]];
+                                                           constant:0]];
     
     [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
                                                           attribute:NSLayoutAttributeTop
@@ -624,6 +642,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
     // Set Summary
     self.wkWebViewSummary.navigationDelegate = self;
+
     NSString *htmlFile;
 
     if (kAppColorLight){
