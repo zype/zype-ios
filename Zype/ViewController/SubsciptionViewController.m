@@ -54,6 +54,9 @@
 - (void)configureController {
     [self customizeAppearance];
     
+    //weird behavior with UITableViewComponent properties on iPad iOS13.x versions if table component is used as child control inside custom Scrollview. Need to explicitly set hidden No otherwise it's hidden automatically on iPad iOS 13.x.
+    [self.tableView setHidden:NO];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"SubscriptActiveCell" bundle:nil] forCellReuseIdentifier:@"SubscriptActiveCell"];
