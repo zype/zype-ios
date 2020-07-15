@@ -664,7 +664,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if ([self.video.episode intValue] == 0) {
         styledEpisode = @"";
     }
-    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@%@", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+
+    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.wkWebViewSummary loadHTMLString:htmlString baseURL:nil];
