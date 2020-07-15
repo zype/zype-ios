@@ -489,7 +489,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 - (void)configureColors{
-    self.segmenedControl.tintColor = kClientColor;
+    if (@available(iOS 13.0, *)) {
+        self.segmenedControl.selectedSegmentTintColor = kClientColor;
+    } else {
+        // Fallback on earlier versions
+        self.segmenedControl.tintColor = kClientColor;
+    }
+    
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : kClientColor} forState:UIControlStateNormal];
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]} forState:UIControlStateSelected];
 }
 
 - (void)setDetailItem:(id)newDetailItem {
@@ -529,6 +537,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         
         [self setThumbnailImage];
         [self hideSectionsForHighlightVideo];
+        [self setupWebSummaryView];
         [self setSummary];
         //[self setGuestList];
         [self setTimeline];
@@ -573,10 +582,74 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self setupViewConstraints];
+}
+
+-(void)setupWebSummaryView {
+    [self.wkWebViewSummary  removeFromSuperview];
+    WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+    self.wkWebViewSummary =  [[WKWebView alloc] initWithFrame:self.viewSummary.bounds configuration:wkWebConfig];
+    self.wkWebViewSummary.opaque = false;
+    self.wkWebViewSummary.backgroundColor = [UIColor clearColor];
+    self.wkWebViewSummary.scrollView.showsHorizontalScrollIndicator = NO;
+    self.wkWebViewSummary.scrollView.showsVerticalScrollIndicator = NO;
+    [self.viewSummary addSubview:self.wkWebViewSummary];
+    [self setupViewConstraints];
+}
+
+- (void)setupViewConstraints {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.segmentControlHeight.constant = 50.0;
+        
+        [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : kClientColor, NSFontAttributeName: [UIFont fontWithName:@"Helvetica" size:30.0]}forState:UIControlStateNormal];
+    }
+    
+    if (self.wkWebViewSummary == nil) {
+        return;
+    }
+    
+    self.wkWebViewSummary.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeLeading
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeLeading
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeTrailing
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeTrailing
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1
+                                                           constant:16]];
+    
+    [self.viewSummary addConstraint:[NSLayoutConstraint constraintWithItem:self.wkWebViewSummary
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.viewSummary
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:0]];
+}
+
 - (void)setSummary{
     
     // Set Summary
-    self.webViewSummary.delegate = self;
+    self.wkWebViewSummary.navigationDelegate = self;
+
     NSString *htmlFile;
 
     if (kAppColorLight){
@@ -594,7 +667,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;}</style>%@%@", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
-    [self.webViewSummary loadHTMLString:htmlString baseURL:nil];
+    [self.wkWebViewSummary loadHTMLString:htmlString baseURL:nil];
     
 }
 
@@ -2621,19 +2694,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 }
 
 
-#pragma mark - UIWebView delegate
+#pragma mark - WkWebView delegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+        NSURLRequest *request = navigationAction.request;
         [[UIApplication sharedApplication] openURL:[request URL]];
-        return NO;
-        
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
-    
-    return YES;
-    
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 #pragma mark - OptionTableViewCellDelegate

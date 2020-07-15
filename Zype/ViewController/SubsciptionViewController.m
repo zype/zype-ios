@@ -19,7 +19,7 @@
 #import "RESTServiceController.h"
 #import "ACSDataManager.h"
 
-@interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate>
+@interface SubsciptionViewController ()<UITableViewDelegate, UITableViewDataSource, SubscriptActiveCellDelegate, WKNavigationDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSSet *subscriptions;
@@ -28,7 +28,8 @@
 @property (assign, nonatomic) NSInteger selectedIndex;
 @property (strong, nonatomic) IBOutlet UILabel *navigationTitle;
 @property (strong, nonatomic) IBOutlet UIView *separateNavigationView;
-@property (weak, nonatomic) IBOutlet UIWebView *disclaimerWebview;
+@property (weak, nonatomic) IBOutlet UIView *disclaimerWebviewParent;
+@property (strong, nonatomic) WKWebView *disclaimerWebview;
 
 
 @end
@@ -53,6 +54,9 @@
 - (void)configureController {
     [self customizeAppearance];
     
+    //weird behavior with UITableViewComponent properties on iPad iOS13.x versions if table component is used as child control inside custom Scrollview. Need to explicitly set hidden No otherwise it's hidden automatically on iPad iOS 13.x.
+    [self.tableView setHidden:NO];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"SubscriptActiveCell" bundle:nil] forCellReuseIdentifier:@"SubscriptActiveCell"];
@@ -72,11 +76,51 @@
 - (void)setupDisclaimer {
     // Setup Disclaimers - REQUIRED for IAP subscriptions
     //  - if you want to modify the text, make sure it complies with Apple's Paid Application agreement (needs to state subscription terms, how to manage and how to link to a privacy policy and terms of service)
-    
-    self.disclaimerWebview.delegate = self;
-    
+    self.disclaimerWebviewParent.backgroundColor = [UIColor clearColor];
+    WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+    self.disclaimerWebview =  [[WKWebView alloc] initWithFrame:self.disclaimerWebviewParent.bounds configuration:wkWebConfig];
+    self.disclaimerWebview.frame = self.disclaimerWebviewParent.bounds;
+    self.disclaimerWebview.opaque = false;
+    self.disclaimerWebview.backgroundColor = [UIColor clearColor];
+    self.disclaimerWebview.navigationDelegate = self;
     self.disclaimerWebview.scrollView.showsHorizontalScrollIndicator = NO;
     self.disclaimerWebview.scrollView.showsVerticalScrollIndicator = NO;
+    [self.disclaimerWebviewParent addSubview:self.disclaimerWebview];
+    
+    self.disclaimerWebview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.disclaimerWebviewParent addConstraint:[NSLayoutConstraint constraintWithItem:self.disclaimerWebview
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.disclaimerWebviewParent
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.disclaimerWebviewParent addConstraint:[NSLayoutConstraint constraintWithItem:self.disclaimerWebview
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.disclaimerWebviewParent
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.disclaimerWebviewParent addConstraint:[NSLayoutConstraint constraintWithItem:self.disclaimerWebview
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.disclaimerWebviewParent
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1
+                                                           constant:0]];
+    
+    [self.disclaimerWebviewParent addConstraint:[NSLayoutConstraint constraintWithItem:self.disclaimerWebview
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.disclaimerWebviewParent
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1
+                                                           constant:0]];
+    
     
     NSString *htmlFile;
     
@@ -94,18 +138,23 @@
     UIColor *brandColor = kClientColor;
     NSString *styledDisclaimer = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@;} body p {font-size: 13px;}</style>%@", [UIUtil hexStringWithUicolor:brandColor], disclaimerText];
     
+    NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'></header>";
     htmlString = [NSString stringWithFormat:htmlString, @"", styledDisclaimer, nil];
-    [self.disclaimerWebview loadHTMLString:htmlString baseURL:nil];
+    htmlString = [headerString stringByAppendingString:htmlString];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.disclaimerWebview loadHTMLString:htmlString baseURL:nil];
+    });
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    // Open links in Safari
-    if (navigationType == UIWebViewNavigationTypeLinkClicked ) {
-        [[UIApplication sharedApplication] openURL:[request URL]];
-        return NO;
-    }
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
-    return YES;
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+        NSURLRequest *request = navigationAction.request;
+        [[UIApplication sharedApplication] openURL:[request URL]];
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 #pragma mark - Subscription plan

@@ -30,6 +30,11 @@
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTapped:)];
     [self addGestureRecognizer:tapRecognizer];
     // Initialization code
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.titleLabel.font = [self.titleLabel.font fontWithSize:32];
+        self.titleLableLeadingConstraint.constant = 28.0;
+    }
 }
 
 - (void)cellTapped:(UITapGestureRecognizer *)recognizer {

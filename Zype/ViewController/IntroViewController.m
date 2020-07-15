@@ -47,7 +47,7 @@
     [self.loginButton setTitleColor:textColor forState:UIControlStateNormal];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
-    self.titleLabel.text = [NSString stringWithFormat:@"%@ Now", appName];
+    self.titleLabel.text = [NSString stringWithFormat:@"%@", appName];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

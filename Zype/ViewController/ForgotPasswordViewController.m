@@ -54,8 +54,7 @@
     UIColor * titleColor = (kAppColorLight) ? kDarkThemeBackgroundColor : [UIColor whiteColor];
     self.titleLabel.textColor = titleColor;
     
-    UIColor * signUpColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
-    NSDictionary * signUpAttributes = @{NSForegroundColorAttributeName: signUpColor,
+    NSDictionary * signUpAttributes = @{NSForegroundColorAttributeName: kClientColor,
                                         NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
     NSMutableAttributedString * attrstringFirstPart = [[NSMutableAttributedString alloc] initWithString:@"Don't have an account? " attributes:@{NSForegroundColorAttributeName: kUniversalGray}];
     NSAttributedString * signinText = [[NSAttributedString alloc] initWithString:@"Sign up" attributes:signUpAttributes];
@@ -63,9 +62,9 @@
     [self.btnSignup setAttributedTitle:attrstringFirstPart forState:UIControlStateNormal];
     
     NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
-    [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
-    [self.arrowImageView setTintColor: signUpColor];
-    
+    [self.arrowImageView setImage:[[UIImage imageNamed:arrowImageString] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    self.arrowImageView.tintColor = kClientColor;
+
     UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self.view addGestureRecognizer:tapRecognizer];
     

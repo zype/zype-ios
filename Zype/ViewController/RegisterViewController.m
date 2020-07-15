@@ -70,8 +70,7 @@
     self.titleLabel.text = [NSString stringWithFormat:@"Get all of %@!", appName];
     self.infoLabel.text = [NSString stringWithFormat:@"Enter your email and password to create an account and get access to %@ on any device. With your account, you can access Premium Content, Favorites and Recommendations across all devices, and download content to watch offline.", appName];
     
-    UIColor * termsTextColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
-    NSDictionary * attributes = @{NSForegroundColorAttributeName: termsTextColor,
+    NSDictionary * attributes = @{NSForegroundColorAttributeName: kClientColor,
                                   NSFontAttributeName: [UIFont fontWithName:@"Roboto-Medium" size:12.0f]};
     NSMutableAttributedString * attrstring = [[NSMutableAttributedString alloc] initWithString:@"By clicking Continue, you agree to our " attributes:@{NSForegroundColorAttributeName: kUniversalGray,
                                                                                                                                                 NSFontAttributeName: [UIFont fontWithName:@"Roboto-Regular" size:12.0f]}];
@@ -81,8 +80,7 @@
     self.termsOfUseButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.termsOfUseButton setAttributedTitle:attrstring forState:UIControlStateNormal];
     
-    UIColor * signInColor = (kAppColorLight) ? kLightTintColor : kDarkTintColor;
-    NSDictionary * signInAttributes = @{NSForegroundColorAttributeName: signInColor,
+    NSDictionary * signInAttributes = @{NSForegroundColorAttributeName: kClientColor,
                                   NSFontAttributeName: [UIFont systemFontOfSize:12.0f weight:UIFontWeightMedium]};
     NSMutableAttributedString * attrstringFirstPart = [[NSMutableAttributedString alloc] initWithString:@"Already have an account? " attributes:@{NSForegroundColorAttributeName: kUniversalGray}];
     NSAttributedString * signinText = [[NSAttributedString alloc] initWithString:@"Sign in" attributes:signInAttributes];
@@ -90,8 +88,9 @@
     [self.signinButton setAttributedTitle:attrstringFirstPart forState:UIControlStateNormal];
     
     NSString *arrowImageString = (kAppColorLight) ? @"arrow-light" : @"arrow-black";
-    [self.arrowImageView setImage:[UIImage imageNamed:arrowImageString]];
-    
+    [self.arrowImageView setImage:[[UIImage imageNamed:arrowImageString] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    self.arrowImageView.tintColor = kClientColor;
+
     UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
     [self.view addGestureRecognizer:tapRecognizer];
 }

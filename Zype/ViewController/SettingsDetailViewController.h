@@ -10,9 +10,11 @@
 #import "GAI.h"
 #import "GAITrackedViewController.h"
 
+@import WebKit;
+
 @interface SettingsDetailViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (retain, nonatomic) WKWebView *wkWebView;
 @property (strong, nonatomic) NSIndexPath *pageIndex;
 
 @property (nonatomic, retain) NSDate *start;
