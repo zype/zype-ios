@@ -1435,7 +1435,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 66JU87JGLE;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1450,10 +1450,10 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.anishtest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Anish's Provisioning Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -1471,7 +1471,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 66JU87JGLE;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1486,10 +1486,10 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.anishtest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Anish's Provisioning Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
