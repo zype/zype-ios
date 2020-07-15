@@ -24,9 +24,11 @@
 #import "ACPurchaseManager.h"
 #import "ACAnalyticsManager.h"
 #import "ACSTokenManager.h"
+#import "Zype_TV-Swift.h"
 
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
+#import <Analytics/SEGAnalytics.h>
 
 @interface AppDelegate ()
 
@@ -60,6 +62,7 @@
         self.pinpoint = [AWSPinpoint pinpointWithConfiguration:pinpointConfig];
     }
     
+    [self setupSegmentAnalytics];
     [self setupGoogleAnalytics];
     [self configureApp];
     [self setDefaultAppearance];
@@ -149,6 +152,23 @@
         }
         self.webView = nil; // destory the instance after use
     }];
+}
+
+- (void)setupSegmentAnalytics{
+    if (kSegmentAnalyticsEnabled &&
+        ![kSegmentAccountID isEqualToString:@"enter_account_id_here"] &&
+        ![kSegmentAnalyticsWriteKey isEqualToString:@"enter_write_key_here"]) {
+        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:kSegmentAnalyticsWriteKey];
+        configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
+        configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
+        [SEGAnalytics setupWithConfiguration:configuration];
+        
+        //setup identity
+        [[SEGAnalytics sharedAnalytics] identify:kSegmentAccountID];
+        
+        // Set Segent Analytics enabled to SegmentAnalyticsManager
+        SegmentAnalyticsManager.segmentAnalyticsEnabled = true;
+    }
 }
 
 - (void)setupGoogleAnalytics{
