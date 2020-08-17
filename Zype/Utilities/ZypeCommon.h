@@ -19,6 +19,9 @@
 #define kZypeAppId @"5d72a7a9dacfe75949518146"
 #define kZypeSiteId @"5d5b19dd49ded92480fbf659"
 
+#define kZypeAppsFlyerDevKey @"bMb2hAHVwSoHxLLMQh6TFk"
+#define kZypeAppleId @"1143086910"
+
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @"" // Leave empty to not use One Signal
 //Google Analytics configuration

@@ -226,6 +226,7 @@
 		2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewCell.m; path = Views/EPGCollectionViewCell.m; sourceTree = "<group>"; };
 		2BFAE0F222820018006523B1 /* EPGCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGCollectionViewLayout.h; path = Views/EPGCollectionViewLayout.h; sourceTree = "<group>"; };
 		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
+		4F271A1F24E7098A000067CC /* Zype-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Zype-Bridging-Header.h"; sourceTree = "<group>"; };
 		4F2F914124E2816E00E752EA /* Zype TV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Zype TV.entitlements"; sourceTree = "<group>"; };
 		4F30EBAE24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZypeAppsFlyerHelper.swift; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -753,6 +754,7 @@
 			isa = PBXGroup;
 			children = (
 				4F2F914124E2816E00E752EA /* Zype TV.entitlements */,
+				4F271A1F24E7098A000067CC /* Zype-Bridging-Header.h */,
 				F1BB52AC1A76D99D00E901F1 /* Models */,
 				F1BB52AD1A76D9A300E901F1 /* Views */,
 				F1BB52AE1A76D9B800E901F1 /* View Controllers */,
@@ -1431,7 +1433,7 @@
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Zype/Zype-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -1468,7 +1470,7 @@
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Zype/Zype-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

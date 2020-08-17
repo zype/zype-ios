@@ -28,6 +28,7 @@
 + (void)showWatcherIntroViewFromViewController:(UIViewController *)viewController;
 + (void)showSubscriptionViewFromViewController:(UIViewController *)viewController;
 + (void)showTermOfServicesFromViewController:(UIViewController *)viewController;
++ (void)loadVideo:(Video *)video fromViewController:(UIViewController *)viewController;
 + (void)loadVideosFromPlaylist:(NSString *)playlistId fromViewController:(UIViewController *)viewController;
 + (void)loadPlaylist:(Playlist *)playlist fromViewController:(UIViewController *)viewController;
 + (NSString *)subtitleOfVideo:(Video *)video;

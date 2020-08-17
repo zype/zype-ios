@@ -154,8 +154,9 @@
 //            return;
 //        }
 //        dispatch_async(dispatch_get_main_queue(), ^{
-            [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"bMb2hAHVwSoHxLLMQh6TFk";
-            [AppsFlyerTracker sharedTracker].appleAppID = @"1143086910";
+            [AppsFlyerTracker sharedTracker].appsFlyerDevKey = kZypeAppsFlyerDevKey;
+            // Need to replace kZypeAppleId by automating the apple id from iTunes
+            [AppsFlyerTracker sharedTracker].appleAppID = kZypeAppleId;
             [AppsFlyerTracker sharedTracker].delegate = self;
             /* Set isDebug to true to see AppsFlyer debug logs */
             [AppsFlyerTracker sharedTracker].isDebug = true;
@@ -166,6 +167,7 @@
                 object:nil];
 //        });
 //    }];
+    
 }
 
 -(void)sendLaunch:(UIApplication *)application {
@@ -422,23 +424,24 @@
     if([status isEqualToString:@"Non-organic"]) {
         id sourceID = [installData objectForKey:@"media_source"];
         id campaign = [installData objectForKey:@"campaign"];
-        NSLog(@"This is a none organic install. Media source: %@  Campaign: %@",sourceID,campaign);
+        CLS_LOG(@"This is a none organic install. Media source: %@  Campaign: %@",sourceID,campaign);
     } else if([status isEqualToString:@"Organic"]) {
-        NSLog(@"This is an organic install.");
+        CLS_LOG(@"This is an organic install.");
     }
 }
 
 -(void)onConversionDataFail:(NSError *) error {
-  NSLog(@"%@",error);
+    CLS_LOG(@"%@",error);
 }
 
 //Handle Direct Deep Link
 - (void) onAppOpenAttribution:(NSDictionary*) attributionData {
-  NSLog(@"%@",attributionData);
+    CLS_LOG(@"%@",attributionData);
+    [ZypeAppsFlyerHelper walkToSceneWithParams:attributionData];
 }
 
 - (void) onAppOpenAttributionFailure:(NSError *)error {
-  NSLog(@"%@",error);
+    CLS_LOG(@"%@",error);
 }
 
 @end
