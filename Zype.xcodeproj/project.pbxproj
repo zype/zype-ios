@@ -21,6 +21,7 @@
 		2BFAE0EE2281E5E3006523B1 /* EPGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0ED2281E5E3006523B1 /* EPGViewController.m */; };
 		2BFAE0F12281FF90006523B1 /* EPGCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */; };
 		2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */; };
+		4F30EBAF24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F30EBAE24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
 		780AC6B41BDFD284007F1119 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52851A76D7D100E901F1 /* main.m */; };
@@ -225,6 +226,9 @@
 		2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewCell.m; path = Views/EPGCollectionViewCell.m; sourceTree = "<group>"; };
 		2BFAE0F222820018006523B1 /* EPGCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGCollectionViewLayout.h; path = Views/EPGCollectionViewLayout.h; sourceTree = "<group>"; };
 		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
+		4F271A1F24E7098A000067CC /* Zype-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Zype-Bridging-Header.h"; sourceTree = "<group>"; };
+		4F2F914124E2816E00E752EA /* Zype TV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Zype TV.entitlements"; sourceTree = "<group>"; };
+		4F30EBAE24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZypeAppsFlyerHelper.swift; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D385284224AB38600A22BFC /* WatcherIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherIntroViewController.m; path = ViewController/WatcherIntroViewController.m; sourceTree = "<group>"; };
@@ -749,6 +753,8 @@
 		F1BB52821A76D7D100E901F1 /* Zype */ = {
 			isa = PBXGroup;
 			children = (
+				4F2F914124E2816E00E752EA /* Zype TV.entitlements */,
+				4F271A1F24E7098A000067CC /* Zype-Bridging-Header.h */,
 				F1BB52AC1A76D99D00E901F1 /* Models */,
 				F1BB52AD1A76D9A300E901F1 /* Views */,
 				F1BB52AE1A76D9B800E901F1 /* View Controllers */,
@@ -994,6 +1000,7 @@
 				A13AF3741D369DB600DDA006 /* HtmlTemplates */,
 				A13AF3781D369DB600DDA006 /* UIUtil.h */,
 				A13AF3791D369DB600DDA006 /* UIUtil.m */,
+				4F30EBAE24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1060,8 +1067,9 @@
 				ORGANIZATIONNAME = Zype;
 				TargetAttributes = {
 					780AC69F1BDFD284007F1119 = {
+						DevelopmentTeam = KQEX3T3BZ7;
 						LastSwiftMigration = 0920;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -1302,6 +1310,7 @@
 				A13AF3521D369CC600DDA006 /* ACActionSheetManager.m in Sources */,
 				A13AF30D1D369A2C00DDA006 /* FavoritesViewController.m in Sources */,
 				2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */,
+				4F30EBAF24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift in Sources */,
 				A13AF3561D369CC600DDA006 /* ACShareManager.m in Sources */,
 				A13AF3131D369A2C00DDA006 /* SearchResultViewController.m in Sources */,
 				A13AF30F1D369A2C00DDA006 /* HomeViewController.m in Sources */,
@@ -1401,10 +1410,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "Zype/Zype TV.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KQEX3T3BZ7;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1419,11 +1429,11 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timeinc.people.peopleewnetwork;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Zype/Zype-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -1437,9 +1447,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = "Zype/Zype TV.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1455,11 +1466,11 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timeinc.people.peopleewnetwork;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Zype/Zype-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
