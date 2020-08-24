@@ -22,8 +22,8 @@
 		2BFAE0F12281FF90006523B1 /* EPGCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F02281FF90006523B1 /* EPGCollectionViewCell.m */; };
 		2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */; };
 		42CD27CE235758FF00069FF8 /* LaunchScreen~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42CD27CC235758FF00069FF8 /* LaunchScreen~ipad.xib */; };
-		4F43E4FC240EC8CC00FF64EA /* SegmentAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */; };
 		4F30EBAF24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F30EBAE24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift */; };
+		4F43E4FC240EC8CC00FF64EA /* SegmentAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
 		780AC6B41BDFD284007F1119 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52851A76D7D100E901F1 /* main.m */; };
@@ -231,10 +231,10 @@
 		2BFAE0F222820018006523B1 /* EPGCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EPGCollectionViewLayout.h; path = Views/EPGCollectionViewLayout.h; sourceTree = "<group>"; };
 		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
 		42CD27CD235758FF00069FF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/LaunchScreen~ipad.xib"; sourceTree = "<group>"; };
-		4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentAnalyticsManager.swift; path = Managers/SegmentAnalyticsManager.swift; sourceTree = "<group>"; };
 		4F271A1F24E7098A000067CC /* Zype-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Zype-Bridging-Header.h"; sourceTree = "<group>"; };
 		4F2F914124E2816E00E752EA /* Zype TV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Zype TV.entitlements"; sourceTree = "<group>"; };
 		4F30EBAE24E4131F00B1CDDA /* ZypeAppsFlyerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZypeAppsFlyerHelper.swift; sourceTree = "<group>"; };
+		4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentAnalyticsManager.swift; path = Managers/SegmentAnalyticsManager.swift; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D385284224AB38600A22BFC /* WatcherIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherIntroViewController.m; path = ViewController/WatcherIntroViewController.m; sourceTree = "<group>"; };
@@ -1217,12 +1217,10 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Zype/Pods-Zype-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManager/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
