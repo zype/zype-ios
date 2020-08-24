@@ -12,8 +12,9 @@
 #import <OneSignal/OneSignal.h>
 #import <AWSCore/AWSCore.h>
 #import <AWSPinpoint/AWSPinpoint.h>
+#import <AppsFlyerLib/AppsFlyerTracker.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AppsFlyerTrackerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) OneSignal *oneSignal;

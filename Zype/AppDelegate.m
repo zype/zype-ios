@@ -29,6 +29,7 @@
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <Analytics/SEGAnalytics.h>
+#import "Zype_TV-Swift.h"
 
 @interface AppDelegate ()
 
@@ -67,6 +68,7 @@
     [self configureApp];
     [self setDefaultAppearance];
     [self retrieveUserAgent];
+    [self setupAppsFlyer];
     
     return YES;
 }
@@ -180,6 +182,35 @@
     }
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelInfo];
     
+}
+
+- (void)setupAppsFlyer {
+    /** APPSFLYER INIT **/
+    
+//    [ZypeAppsFlyerHelper getAppDetailsFromServerWithCompletetion:^(NSString* appId) {
+//        if (appId == nil) {
+//            CLS_LOG(@"ZypeAppsFlyerHelper unable to get AppId");
+//            return;
+//        }
+//        dispatch_async(dispatch_get_main_queue(), ^{
+            [AppsFlyerTracker sharedTracker].appsFlyerDevKey = kZypeAppsFlyerDevKey;
+            // Need to replace kZypeAppleId by automating the apple id from iTunes
+            [AppsFlyerTracker sharedTracker].appleAppID = kZypeAppleId;
+            [AppsFlyerTracker sharedTracker].delegate = self;
+            /* Set isDebug to true to see AppsFlyer debug logs */
+            [AppsFlyerTracker sharedTracker].isDebug = true;
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                selector:@selector(sendLaunch:)
+                name:UIApplicationDidBecomeActiveNotification
+                object:nil];
+//        });
+//    }];
+    
+}
+
+-(void)sendLaunch:(UIApplication *)application {
+    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
 }
 
 - (void)configureApp
@@ -298,6 +329,9 @@
     didReceiveRemoteNotification:(NSDictionary *)userInfo
     fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
 {
+    // Report Push Notification attribution data for re-engagements
+    [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
+
     if (self.pinpoint != nil) [self.pinpoint.notificationManager interceptDidReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
 
@@ -405,6 +439,48 @@
         
         [UITabBar appearance].backgroundColor = [UIColor blackColor];
     }
+}
+
+#pragma mark - AppsFlyer
+
+// Deep linking
+
+// Open URI-scheme for iOS 9 and above
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary *) options {
+  [[AppsFlyerTracker sharedTracker] handleOpenUrl:url options:options];
+  return YES;
+}
+
+// Open Universal Links
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> *restorableObjects))restorationHandler {
+    [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return YES;
+}
+
+//Handle Conversion Data (Deferred Deep Link)
+-(void)onConversionDataSuccess:(NSDictionary*) installData {
+    id status = [installData objectForKey:@"af_status"];
+    if([status isEqualToString:@"Non-organic"]) {
+        id sourceID = [installData objectForKey:@"media_source"];
+        id campaign = [installData objectForKey:@"campaign"];
+        CLS_LOG(@"This is a none organic install. Media source: %@  Campaign: %@",sourceID,campaign);
+    } else if([status isEqualToString:@"Organic"]) {
+        CLS_LOG(@"This is an organic install.");
+    }
+}
+
+-(void)onConversionDataFail:(NSError *) error {
+    CLS_LOG(@"%@",error);
+}
+
+//Handle Direct Deep Link
+- (void) onAppOpenAttribution:(NSDictionary*) attributionData {
+    CLS_LOG(@"%@",attributionData);
+    [ZypeAppsFlyerHelper walkToSceneWithParams:attributionData];
+}
+
+- (void) onAppOpenAttributionFailure:(NSError *)error {
+    CLS_LOG(@"%@",error);
 }
 
 @end

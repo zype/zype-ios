@@ -12,12 +12,15 @@
 
 //Main app configuration for connecting to Zype property
 
-#define kOAuth_ClientId @"<Client ID>"
-#define kAppKey @"<Zype App Key>"
-#define kRootPlaylistId @"<Root Playlist ID>"
+#define kOAuth_ClientId @"606eb2fdbefedf7c4831cb8338df66d6e3d467590d8ac5c77cfccbd79e5ecb1f"
+#define kAppKey @"Kdb3gTAKYQymKLo3xku1YRrY1AIZKjYomf1H7eiBcl6nWSHYvur5Flw0KYvjstUV"
+#define kRootPlaylistId @"5e458922b1c3870001092d8a"
 
-#define kZypeAppId @"<Zype App ID>"
-#define kZypeSiteId @"<Zype Site ID>"
+#define kZypeAppId @"5d72a7a9dacfe75949518146"
+#define kZypeSiteId @"5d5b19dd49ded92480fbf659"
+
+#define kZypeAppsFlyerDevKey @"bMb2hAHVwSoHxLLMQh6TFk"
+#define kZypeAppleId @"1143086910"
 
 //OneSignal configuration for Push notifications
 #define kOneSignalNotificationsKey @"" // Leave empty to not use One Signal
@@ -29,10 +32,10 @@
 #define kEnableAwsPinpoint NO
 
 //Social links on settings screen
-#define kACFacebook @"https://www.facebook.com/<your_branch>"
-#define kACWeb @"http://www.<your_branch>/"
-#define kACInstagram @"http://www.instagram.com/<your_branch>"
-#define kACTwitter @"https://twitter.com/<your_branch>"
+#define kACFacebook @"https://www.facebook.com/PeopleTVNetwork"
+#define kACWeb @"http://www.PeopleTV.com"
+#define kACInstagram @"https://www.instagram.com/peopletv"
+#define kACTwitter @"https://twitter.com/peopletv"
 
 #define kAutoplay YES
 
@@ -44,14 +47,14 @@
 #define kAppColorLight NO
 
 //Enable Gallery layout
-#define kAppAppleTVLayout NO
+#define kAppAppleTVLayout YES
 
 //Show/Hide titles on thumbnails for playlist views on iPhone
 #define kHidePlaylistTitles NO
 #define kAppAppleTVLayoutShowThumbanailTitle NO
 
 //Features Configuration
-#define kFavoritesViaAPI NO
+#define kFavoritesViaAPI YES
 #define kSubscribeToWatchAdFree NO
 #define kLibraryForPurchasesEnabled NO
 
@@ -61,7 +64,7 @@
 // For downloads to function properly the video has to be transcoded with mp4 preset
 #define kDownloadsEnabled NO
 // Set to No to enforce downloads for only users that are signed in
-#define kDownloadsForAllUsersEnabled NO
+#define kDownloadsForAllUsersEnabled YES
 
 // Enable Zype Marketplace Connect
 // NOTE: This is a gated feature that REQUIRES Zype to configure. Please reach out to Zype Support for help on setting up this feature.
@@ -95,8 +98,7 @@
 // must have some value if kSegmentAnalytics is enabled
 #define kSegmentAccountName @"enter_account_name_here"
 
-
-#define kClientColor    [UIUtil colorWithHex:0xF75532];
+#define kClientColor    [UIUtil colorWithHex:0x00a6df];
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]
 #define kLightTintColor [UIColor colorWithRed:1.00 green:0.11 blue:0.38 alpha:1.00]
 #define kLightLineColor [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:1.00]
