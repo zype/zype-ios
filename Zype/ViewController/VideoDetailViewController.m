@@ -49,7 +49,7 @@
 #import "UIUtil.h"
 
 #import "ACAnalyticsManager.h"
-#import "Zype_TV-Swift.h"
+#import "Zype-Swift.h"
 
 // Ad tag for testing
 NSString *const kTestAppAdTagUrl =

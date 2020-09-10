@@ -24,7 +24,7 @@
 #import "ACPurchaseManager.h"
 #import "ACAnalyticsManager.h"
 #import "ACSTokenManager.h"
-#import "Zype_TV-Swift.h"
+#import "Zype-Swift.h"
 
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
