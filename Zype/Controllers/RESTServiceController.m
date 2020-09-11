@@ -156,10 +156,13 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
                                       {
-                                          if (completionHandler)
-                                          {
+                                          if (completionHandler) {
+                                              if (error) {
+                                                  CLS_LOG(@"saveConsumerIdWithToken Failed: %@", error);
+                                              } else if (data) {
+                                                  CLS_LOG(@"saveConsumerIdWithToken response: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
+                                              }
                                               completionHandler(data, response, error);
-                                              CLS_LOG(@"SAVE CONSUMER ID RESPONSE: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
                                           }
                                       }];
     [dataTask resume];
@@ -176,10 +179,13 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
                                       {
-                                          if (completionHandler)
-                                          {
+                                          if (completionHandler) {
+                                              if (error) {
+                                                  CLS_LOG(@"getTokenInfo Failed: %@", error);
+                                              } else if (data) {
+                                                  CLS_LOG(@"getTokenInfo response: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
+                                              }
                                               completionHandler(data, response, error);
-                                              CLS_LOG(@"SAVE CONSUMER ID RESPONSE: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
                                           }
                                       }];
     [dataTask resume];
