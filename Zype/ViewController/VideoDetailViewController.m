@@ -660,9 +660,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
     UIColor *brandColor = kClientColor;
-    NSString *styledEpisode = [NSString stringWithFormat:@"<p style='padding-bottom: 10px'>Episode %@</p>", self.video.episode];
-    if ([self.video.episode intValue] == 0) {
-        styledEpisode = @"";
+    NSString *styledEpisode = @"";
+    
+    if (kShowEpisodeNumbers && ([self.video.episode intValue] != 0)){
+        styledEpisode = [NSString stringWithFormat:@"<p style='padding-bottom: 10px'>Episode %@</p>", self.video.episode];
     }
 
     NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];

@@ -82,8 +82,9 @@
 #define kLiveItemEnabled NO
 #define kLiveVideoID @"5c8faa021d1f4314dd006203"
 
-// Enable to show Publish At Date
+// Enable the display of Episode Numbers and Published At Date metadata on the Video Details view
 #define kShowPublishedAtDate YES
+#define kShowEpisodeNumbers NO
 
 // Enable segment analytics for video
 // if enabled,make sure kSegmentAnalyticsWriteKey, kSegmentAccountID & kSegmentAccountName are having correct value
