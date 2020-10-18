@@ -244,7 +244,11 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"EEEE, MMM. d"];
     NSString *stringPublished = [formatter stringFromDate:video.published_at];
-    NSString *stringEpisode = [NSString stringWithFormat:@"Episode %@", video.episode];
+    NSString *stringEpisode = @"";
+    
+    if (kShowEpisodeNumbers){
+        stringEpisode = [NSString stringWithFormat:@"Episode %@", video.episode];
+    }
     
     if (kShowPublishedAtDate) {
         if ([video.episode isEqualToNumber:[NSNumber numberWithInt:0]] || [self isYes:video.isHighlight]){
