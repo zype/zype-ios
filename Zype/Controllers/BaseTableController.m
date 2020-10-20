@@ -220,7 +220,7 @@
         return 90.0f;
         
     } else if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Playlist class]]){
-        return 140.0f;
+        return 120.0f;
     }
     
     return 90.0f;

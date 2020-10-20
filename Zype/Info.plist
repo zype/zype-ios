@@ -53,6 +53,8 @@
 	<string>Advertisement would like to store a photo.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Oswald-MediumItalic.ttf</string>
+		<string>Oswald-Light.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 		<string>OpenSans-Italic.ttf</string>
 		<string>OpenSans-Light.ttf</string>
@@ -75,9 +77,9 @@
 	<key>UIFileSharingEnabled</key>
 	<false/>
 	<key>UILaunchStoryboardName</key>
-    <string>LaunchScreen~iphone</string>
-    <key>UILaunchStoryboardName~ipad</key>
-    <string>LaunchScreen~ipad</string>
+	<string>LaunchScreen~iphone</string>
+	<key>UILaunchStoryboardName~ipad</key>
+	<string>LaunchScreen~ipad</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
