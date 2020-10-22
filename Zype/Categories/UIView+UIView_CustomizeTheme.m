@@ -26,7 +26,7 @@
 
 - (void)borderColorCustomizeTheme {
     self.layer.borderWidth = 1.0f;
-    self.layer.borderColor = (kAppColorLight) ? kLightTintColor.CGColor : kDarkTintColor.CGColor;
+    self.layer.borderColor = kClientColor.CGColor;
 }
 
 - (void)round:(CGFloat)value {
