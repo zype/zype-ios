@@ -131,6 +131,8 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         [self.avPlayer removeTimeObserver:self.playbackObserver];
     }
     
+    [AVPlayerIntegrationWrapper cleanUp];
+    
     NSLog(@"Destroying");
     //remove the instance that was created in case of going to a full screen mode and back
     if (self.avPlayerController) {
@@ -1092,6 +1094,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (self.beaconStringUrl && [self.video.duration intValue] > 0)
         [[ACAnalyticsManager sharedInstance] setupAkamaiMediaAnalytics:self.avPlayer withVideo:self.video];
     
+    if (Advanced_Analytics_Enabled && url != @""){
+        [self integrateMediaMelonSDKWithAssetURL:url.absoluteString];
+    }
+    
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
     NSError *_error = nil;
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &_error];
@@ -1112,6 +1118,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
     [self setPlayingStatus];
+}
+
+- (void)integrateMediaMelonSDKWithAssetURL:(NSString *)urlString {
+    //Integration Step 1
+    MMAssetInformation * assetInfo = [[MMAssetInformation alloc] initWithAssetURL:urlString assetID:@"" assetName:self.video.title videoId:self.video.vId];
+    [assetInfo addCustomKVP:@"siteid" :kZypeSiteId];
+//    [assetInfo addCustomKVP:@"subscriptionid" :@""];
+    [assetInfo setQBRMode:QBRModeDisabled withMetaURL:nil];
+    MMRegistrationInformation * registrationInfo = [[MMRegistrationInformation alloc] initWithCustomerID:Advanced_Analytics_CustomerID playerName:@"ios_player"];
+    [AVPlayerIntegrationWrapper initializeAssetForPlayerWithAssetInfo:assetInfo registrationInformation:registrationInfo player:self.player];
+        //End of integration Step 1
 }
 
 - (void)setupAudioPlayerView {

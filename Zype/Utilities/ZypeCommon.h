@@ -28,6 +28,9 @@
 //     App crashes when not configuration file is not valid
 #define kEnableAwsPinpoint NO
 
+#define Advanced_Analytics_Enabled YES
+#define Advanced_Analytics_CustomerID @"1432265447"
+
 //Social links on settings screen
 #define kACFacebook @"https://www.facebook.com/<your_branch>"
 #define kACWeb @"http://www.<your_branch>/"

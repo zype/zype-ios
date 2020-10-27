@@ -14,6 +14,7 @@
 @import Social;
 @import MessageUI;
 @import GoogleInteractiveMediaAds;
+@import MMSmartStreaming;
 
 @interface VideoDetailViewController : MediaPlaybackBaseViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, IMAAdsLoaderDelegate, IMAAdsManagerDelegate>
 
