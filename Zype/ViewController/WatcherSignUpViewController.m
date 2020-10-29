@@ -55,6 +55,7 @@
     [self.createButton tintCustomizeTheme];
     [self customizeAppearance];
     [self.createButton round:kViewCornerRounded];
+    [self.createButton borderColorCustomizeTheme];
     [self.credentialContainerView round:kViewCornerRounded];
     [self.credentialContainerView borderCustomizeTheme];
     [self.emailField setAttributePlaceholder:@"Email"];
