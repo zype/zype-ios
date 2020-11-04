@@ -28,7 +28,7 @@
 //     App crashes when not configuration file is not valid
 #define kEnableAwsPinpoint NO
 
-#define Advanced_Analytics_Enabled YES
+#define Advanced_Analytics_Enabled NO
 #define Advanced_Analytics_CustomerID @"<customer_id>"
 
 //Social links on settings screen
