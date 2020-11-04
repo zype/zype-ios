@@ -135,7 +135,11 @@
                 CLS_LOG(@"Success: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
                 
                 [[NSUserDefaults standardUserDefaults] setValue:[[[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:@"response"] valueForKey:@"subscription_count"] forKey:kOAuthProperty_Subscription];
-                completion(data, response, error);
+                
+                if (kNativeSubscriptionEnabled){
+                    [[NSUserDefaults standardUserDefaults] setValue:[[[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:@"response"] valueForKey:@"subscription_ids"] forKey:kOAuthProperty_SubscriptionIds];
+                    completion(data, response, error);
+                }
             }
         }];
         [dataTask resume];

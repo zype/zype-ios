@@ -29,7 +29,7 @@
 #define kEnableAwsPinpoint NO
 
 #define Advanced_Analytics_Enabled YES
-#define Advanced_Analytics_CustomerID @"1432265447"
+#define Advanced_Analytics_CustomerID @"<customer_id>"
 
 //Social links on settings screen
 #define kACFacebook @"https://www.facebook.com/<your_branch>"
@@ -325,6 +325,7 @@ static const CGSize IpadPosterLayoutSize = {126, 208};
 #define kOAuthProperty_GrantType @"grant_type"
 #define kOAuthProperty_RefreshToken @"refresh_token"
 #define kOAuthProperty_Subscription @"subscription_count"
+#define kOAuthProperty_SubscriptionIds @"subscription_ids"
 
 #pragma mark - Zype API
 //#define kApiDomain @"api.uat.zype.com"

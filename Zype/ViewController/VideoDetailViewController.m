@@ -1124,10 +1124,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     //Integration Step 1
     MMAssetInformation * assetInfo = [[MMAssetInformation alloc] initWithAssetURL:urlString assetID:@"" assetName:self.video.title videoId:self.video.vId];
     [assetInfo addCustomKVP:@"siteid" :kZypeSiteId];
-//    [assetInfo addCustomKVP:@"subscriptionid" :@""];
+    
+    NSArray *subIds = [[NSUserDefaults standardUserDefaults] valueForKey:@"subscription_ids"];
+    
+    if (kNativeSubscriptionEnabled && subIds != nil && subIds.count > 0){
+        [assetInfo addCustomKVP:@"subscriptionid" :subIds[0]];
+    }
     [assetInfo setQBRMode:QBRModeDisabled withMetaURL:nil];
     MMRegistrationInformation * registrationInfo = [[MMRegistrationInformation alloc] initWithCustomerID:Advanced_Analytics_CustomerID playerName:@"ios_player"];
-    [AVPlayerIntegrationWrapper initializeAssetForPlayerWithAssetInfo:assetInfo registrationInformation:registrationInfo player:self.player];
+    [AVPlayerIntegrationWrapper initializeAssetForPlayerWithAssetInfo:assetInfo registrationInformation:registrationInfo player:self.avPlayer];
         //End of integration Step 1
 }
 
