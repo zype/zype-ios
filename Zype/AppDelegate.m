@@ -30,6 +30,9 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <Analytics/SEGAnalytics.h>
 
+
+@import Firebase;
+
 @interface AppDelegate ()
 
 @property (nonatomic) unsigned long tabIndex;
@@ -48,6 +51,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [[IQKeyboardManager sharedManager].disabledDistanceHandlingClasses addObject:NSClassFromString(@"SearchResultViewController")];
+    
+    if (Firebase_Enabled){
+        [FIRApp configure];
+    }
     
     [Fabric with:@[CrashlyticsKit]];
     
