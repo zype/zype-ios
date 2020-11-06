@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Zype. All rights reserved.
 //
 
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
 #import <WebKit/WebKit.h>
 
 #import "AppDelegate.h"
@@ -52,11 +50,18 @@
     // Override point for customization after application launch.
     [[IQKeyboardManager sharedManager].disabledDistanceHandlingClasses addObject:NSClassFromString(@"SearchResultViewController")];
     
+    // Firebase Crashlytics setup
     if (Firebase_Enabled){
         [FIRApp configure];
+        [[FIRCrashlytics crashlytics] setCrashlyticsCollectionEnabled:false];
+        [[FIRCrashlytics crashlytics] checkForUnsentReportsWithCompletion:^(BOOL hasUnsentReports) {
+          if (hasUnsentReports) {
+            [[FIRCrashlytics crashlytics] sendUnsentReports];
+          } else {
+            [[FIRCrashlytics crashlytics] deleteUnsentReports];
+          }
+        }];
     }
-    
-    [Fabric with:@[CrashlyticsKit]];
     
     //Ask users to recieve push notifications.
     //You can place this in another part of your app.

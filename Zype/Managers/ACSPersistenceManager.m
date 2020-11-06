@@ -6,7 +6,6 @@
 //
 
 #import <CoreData/CoreData.h>
-#import <Crashlytics/Crashlytics.h>
 
 #import "ACSPersistenceManager.h"
 #import "RESTServiceController.h"

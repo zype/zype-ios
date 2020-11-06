@@ -14,10 +14,15 @@
 #import "UIUtil.h"
 #import "ZypeCommon.h"
 
+@import Firebase;
+
 #define dDeviceOrientation [[UIDevice currentDevice] orientation]
 #define isPortrait  UIDeviceOrientationIsPortrait(dDeviceOrientation)
 #define isLandscape UIDeviceOrientationIsLandscape(dDeviceOrientation)
 #define isFaceUp    dDeviceOrientation == UIDeviceOrientationFaceUp   ? YES : NO
 #define isFaceDown  dDeviceOrientation == UIDeviceOrientationFaceDown ? YES : NO
+
+// ALog always displays output regardless of the DEBUG setting
+#define CLS_LOG(__FORMAT__, ...) [[FIRCrashlytics crashlytics] logWithFormat:@"%s line %d $ " __FORMAT__, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__]
 
 #endif

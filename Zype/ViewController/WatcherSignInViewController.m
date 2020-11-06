@@ -5,7 +5,6 @@
 //  Created by Christian on 26.03.19.
 //
 
-#import <Crashlytics/Crashlytics.h>
 #import "WatcherSignInViewController.h"
 #import "SVProgressHUD.h"
 #import "ACSTokenManager.h"

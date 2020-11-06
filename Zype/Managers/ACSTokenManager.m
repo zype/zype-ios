@@ -5,8 +5,6 @@
 //  Copyright (c) 2015 Zype. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
-
 #import "ACSTokenManager.h"
 #import "ACSDataManager.h"
 #import "AppDelegate.h"
