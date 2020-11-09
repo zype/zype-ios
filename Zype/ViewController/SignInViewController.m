@@ -126,6 +126,7 @@
     [self.buttonSignIn tintCustomizeTheme];
     [self customizeAppearance];
     [self.buttonSignIn round:kViewCornerRounded];
+    [self.buttonSignIn borderColorCustomizeTheme];
     [self.credentialContainerView round:kViewCornerRounded];
     [self.credentialContainerView borderCustomizeTheme];
     self.separateLineView.backgroundColor = kUniversalGray;
