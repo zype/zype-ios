@@ -53,6 +53,7 @@
 		7D385286224AB38600A22BFC /* WatcherIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D385284224AB38600A22BFC /* WatcherIntroViewController.m */; };
 		7D38528B224AB54300A22BFC /* WatcherSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D385288224AB54200A22BFC /* WatcherSignInViewController.m */; };
 		7D38528C224AB54300A22BFC /* WatcherSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D38528A224AB54300A22BFC /* WatcherSignUpViewController.m */; };
+		848F5CC5255E998C00330651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 848F5CC4255E998C00330651 /* GoogleService-Info.plist */; };
 		A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A10797481D4015F700F84B61 /* PlaylistCollectionViewCell.m */; };
 		A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10797491D4015F700F84B61 /* PlaylistCollectionViewCell.xib */; };
 		A1149D851D89AB200021646B /* ACAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1149D841D89AB200021646B /* ACAdManager.m */; };
@@ -239,6 +240,7 @@
 		7D385288224AB54200A22BFC /* WatcherSignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherSignInViewController.m; path = ViewController/WatcherSignInViewController.m; sourceTree = "<group>"; };
 		7D385289224AB54300A22BFC /* WatcherSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WatcherSignUpViewController.h; path = ViewController/WatcherSignUpViewController.h; sourceTree = "<group>"; };
 		7D38528A224AB54300A22BFC /* WatcherSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherSignUpViewController.m; path = ViewController/WatcherSignUpViewController.m; sourceTree = "<group>"; };
+		848F5CC4255E998C00330651 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		963FC4151AC9C54700CD2C19 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		963FC41B1AC9C56600CD2C19 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9677B76A1ACB11FC0043515D /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
@@ -785,6 +787,7 @@
 		F1BB52831A76D7D100E901F1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				848F5CC4255E998C00330651 /* GoogleService-Info.plist */,
 				E13015D8214713740066BEAA /* awsconfiguration.json */,
 				F1BB52C21A7819A300E901F1 /* Fonts */,
 				F1BB52841A76D7D100E901F1 /* Info.plist */,
@@ -1131,6 +1134,7 @@
 				A13AF39F1D36D3B700DDA006 /* Oswald-Medium.ttf in Resources */,
 				780AC6F11BDFD284007F1119 /* OpenSans-SemiboldItalic.ttf in Resources */,
 				780AC6F21BDFD284007F1119 /* Main.storyboard in Resources */,
+				848F5CC5255E998C00330651 /* GoogleService-Info.plist in Resources */,
 				A13AF37B1D369DB600DDA006 /* LiveStream.html in Resources */,
 				A13AF3961D36D3B700DDA006 /* Oswald-BoldItalic.ttf in Resources */,
 				A13AF39A1D36D3B700DDA006 /* Oswald-ExtraLight.ttf in Resources */,

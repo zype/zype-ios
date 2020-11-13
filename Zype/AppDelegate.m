@@ -30,6 +30,8 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <Analytics/SEGAnalytics.h>
 
+@import Firebase;
+
 @interface AppDelegate ()
 
 @property (nonatomic) unsigned long tabIndex;
@@ -64,6 +66,7 @@
     
     [self setupSegmentAnalytics];
     [self setupGoogleAnalytics];
+    [self setupFireBaseServices];
     [self configureApp];
     [self setDefaultAppearance];
     [self retrieveUserAgent];
@@ -152,6 +155,13 @@
         }
         self.webView = nil; // destory the instance after use
     }];
+}
+
+
+- (void)setupFireBaseServices{
+    if (Performance_Monitoring){
+        [FIRApp configure];
+    }
 }
 
 - (void)setupSegmentAnalytics{
