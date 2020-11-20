@@ -386,20 +386,16 @@
     
     //status bar can be configured here or disabled here and configured in info.plist
     if (kAppColorLight){
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-        
         //reset the deselected tab bar item color due to bug when setting UIView tint color
-        [[UIView appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor darkGrayColor]];//color for inactive item
+        [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITabBar class]]] setTintColor:[UIColor darkGrayColor]]; //color for inactive item
         [UITabBar appearance].tintColor = [UIColor darkTextColor];//[UIColor ZypeMainTintColor];//color for active item
         [UITabBar appearance].barTintColor = [UIColor whiteColor];
         
         [UITabBar appearance].backgroundColor = [UIColor whiteColor];
     }
     else {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-        
         //reset the deselected tab bar item color due to bug when setting UIView tint color
-        [[UIView appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor lightGrayColor]];//color for inactive item
+        [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITabBar class]]] setTintColor:[UIColor lightGrayColor]]; //color for inactive item
         [UITabBar appearance].tintColor = [UIColor whiteColor];//[UIColor ZypeMainTintColor];//color for active item
         [UITabBar appearance].barTintColor = [UIColor blackColor];
         
