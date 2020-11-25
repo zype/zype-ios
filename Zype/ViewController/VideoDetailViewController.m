@@ -1126,12 +1126,48 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     [assetInfo addCustomKVP:@"siteid" :kZypeSiteId];
     
     NSArray *subIds = [[NSUserDefaults standardUserDefaults] valueForKey:@"subscription_ids"];
+    NSString *subscriberType = @"";
+    NSString *subscriberId = @"";
     
-    if (kNativeSubscriptionEnabled && subIds != nil && subIds.count > 0){
+    if ([self.video.subscription_required intValue] == 1 && kNativeSubscriptionEnabled && subIds != nil && subIds.count > 0){
         [assetInfo addCustomKVP:@"subscriptionid" :subIds[0]];
+        subscriberType = (subscriberType == @"") ? @"subscription" : @"|subscription";
     }
+    
+    if ([self.video.pass_required intValue] == 1){
+        subscriberType = (subscriberType == @"") ? @"pass" : @"|pass";
+    }
+    
+    if ([self.video.purchase_required intValue] == 1){
+        subscriberType = (subscriberType == @"") ? @"purchase" : @"|purchase";
+    }
+    
+    if ([self.video.redemption_code_required intValue] == 1){
+        subscriberType = (subscriberType == @"") ? @"subscription" : @"|subscription";
+    }
+    
+    if ([self.video.rental_required intValue] == 1){
+        subscriberType = (subscriberType == @"") ? @"rental" : @"|rental";
+    }
+    
+    NSString *consumer_id = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_ConsumerId];
+    if (consumer_id != nil && consumer_id != @""){
+        subscriberId = consumer_id;
+    }
+    
+    if (subscriberType == @""){
+        subscriberType = @"free";
+        subscriberId = @"unknown";
+    }
+    
     [assetInfo setQBRMode:QBRModeDisabled withMetaURL:nil];
     MMRegistrationInformation * registrationInfo = [[MMRegistrationInformation alloc] initWithCustomerID:Advanced_Analytics_CustomerID playerName:@"ios_player"];
+    
+    NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+    [registrationInfo setDomain:bundleId];
+    
+    [registrationInfo setSubscriberInformationWithSubscriberID:subscriberId subscriberType:subscriberType subscriberTag:@""];
+    
     [AVPlayerIntegrationWrapper initializeAssetForPlayerWithAssetInfo:assetInfo registrationInformation:registrationInfo player:self.avPlayer];
         //End of integration Step 1
 }

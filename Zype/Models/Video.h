@@ -40,6 +40,10 @@
 @property (nonatomic, retain) NSNumber * mature_content;
 @property (nonatomic, retain) NSNumber * subscription_required;
 @property (nonatomic, retain) NSNumber * registration_required;
+@property (nonatomic, retain) NSNumber * pass_required;
+@property (nonatomic, retain) NSNumber * purchase_required;
+@property (nonatomic, retain) NSNumber * redemption_code_required;
+@property (nonatomic, retain) NSNumber * rental_required;
 @property (nonatomic, retain) NSNumber * downloadTaskId;
 @property (nonatomic, retain) NSNumber * isDownload;
 @property (nonatomic, retain) NSNumber * isFavorite;

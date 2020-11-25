@@ -38,6 +38,10 @@
 @dynamic mature_content;
 @dynamic subscription_required;
 @dynamic registration_required;
+@dynamic pass_required;
+@dynamic purchase_required;
+@dynamic redemption_code_required;
+@dynamic rental_required;
 @dynamic downloadTaskId;
 @dynamic isDownload;
 @dynamic isFavorite;
