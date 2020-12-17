@@ -262,12 +262,12 @@
 - (void)setNoResultsMessage{
     
     if (self.episodeController.doneLoadingFromNetwork == YES) {
-        
+        self.NoResultsLabelTitle.text = NSLocalizedString(@"", @"search status");
         self.noResultsLabel.text = NSLocalizedString(@"No Results. Try another search.", @"no results message");
         
     }else{
-        
-        self.noResultsLabel.text = NSLocalizedString(@"Please enter search terms in order to begin a new search.", @"search status");
+        self.NoResultsLabelTitle.text = NSLocalizedString(@"What would you like to watch?", @"search status");
+        self.noResultsLabel.text = NSLocalizedString(@"Please enter search terms in order to \nbegin a new search.", @"search status");
         
     }
     

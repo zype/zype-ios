@@ -232,6 +232,9 @@
         
         [self.loadingIndicator setHidden:NO];
         [self.noResultsLabel setHidden:NO];
+        if (self.NoResultsLabelTitle != nil){
+            [self.NoResultsLabelTitle setHidden:NO];
+        }
         
     } else {
         
@@ -243,7 +246,9 @@
         
         [self.loadingIndicator setHidden:YES];
         [self.noResultsLabel setHidden:YES];
-        
+        if (self.NoResultsLabelTitle != nil){
+            [self.NoResultsLabelTitle setHidden:YES];
+        }
     }
     
 }
