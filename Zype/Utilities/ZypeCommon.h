@@ -98,7 +98,7 @@
 
 // if enabled, the crash will be reported in firebase.
 // make sure to include GoogleService-Info.plist file under Utilities for correct account integration.
-#define Firebase_Enabled YES
+#define Firebase_Enabled NO
 
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532]
