@@ -29,6 +29,7 @@
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <Analytics/SEGAnalytics.h>
+#import <FBSDKCoreKit.h>
 
 @interface AppDelegate ()
 
@@ -50,6 +51,11 @@
     [[IQKeyboardManager sharedManager].disabledDistanceHandlingClasses addObject:NSClassFromString(@"SearchResultViewController")];
     
     [Fabric with:@[CrashlyticsKit]];
+    
+    if (Facebook_SDK_Enabled){
+        [[FBSDKApplicationDelegate sharedInstance] application:application
+                               didFinishLaunchingWithOptions:launchOptions];
+    }
     
     //Ask users to recieve push notifications.
     //You can place this in another part of your app.
