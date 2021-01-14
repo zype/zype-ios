@@ -10,10 +10,21 @@ import Foundation
 import Analytics
 import AVKit
 
-enum SegmentAnalyticsEventType: String {
+public enum SegmentAnalyticsEventType: String {
     case PlayerStartEvent    = "Video Content Started"
     case PlayerPlayingEvent  = "Video Content Playing"
     case PlayerCompleteEvent = "Video Content Completed"
+    case PlayerContentCompleted25Percent = "Video Content Completed 25 percent"
+    case PlayerContentCompleted50Percent = "Video Content Completed 50 percent"
+    case PlayerContentCompleted75Percent = "Video Content Completed 75 percent"
+    case InitialHomePageStream = "Exiting Initial Stream to Homepage"
+    case PlayerPlaybackStarted = "Video Playback Started"
+    case PlayerPlaybackCompleted = "Video Playback Completed"
+    case PlayerPlaybackPaused = "Video Playback Paused"
+    case PlayerPlaybackResumed = "Video Playback Resumed"
+    case PlayerPlaybackError = "Video Player Error"
+    case PlayerSeekStarted = "Video Playback Seek Started"
+    case PlayerSeekCompleted = "Video Playback Seek Completed"
 }
 
 @objcMembers public class SegmentAnalyticsAttributes: NSObject {
@@ -84,12 +95,18 @@ enum SegmentAnalyticsEventType: String {
     }
     
     // MARK: - track video playback
-    @objc open func trackStart(resumedByAd: Bool) {
+    open func trackStart(resumedByAd: Bool, isForUserAction:Bool = false) {
         if !isSegmentAnalyticsEnabled() {
             return
         }
         
-        if !isResumingPlayback {
+        if isForUserAction {
+            guard let event = eventData(.PlayerPlaybackStarted) else{
+                print ("SegmentAnalyticsManager.trackStart forUserAction event data is nil")
+                return
+            }
+            SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackStarted.rawValue, properties: event)
+        } else if !isResumingPlayback {
             guard let event = eventData(.PlayerStartEvent) else {
                 print("SegmentAnalyticsManager.trackStart event data is nil")
                 return
@@ -101,11 +118,96 @@ enum SegmentAnalyticsEventType: String {
         trackVideoProgress()
     }
     
+    @objc
     open func trackPause() {
         if !isSegmentAnalyticsEnabled() {
             return
         }
+        
+        guard let event = eventData(.PlayerPlaybackPaused) else{
+            print("SegmentAnalyticsManager.trackPause event data is nil")
+            return
+        }
+        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackPaused.rawValue, properties: event)
+        
         removeTrackingVideoProgress()
+    }
+    
+    @objc
+    open func trackAutoPlay() {
+        if !isSegmentAnalyticsEnabled() {
+            return
+        }
+        
+        guard let event = eventData(.InitialHomePageStream) else{
+            print("SegmentAnalyticsManager.trackAutoPlay event data is nil")
+            return
+        }
+        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.InitialHomePageStream.rawValue, properties: event)
+    }
+    
+    @objc
+    open func trackResume() {
+        if !isSegmentAnalyticsEnabled() {
+            return
+        }
+        
+        guard let event = eventData(.PlayerPlaybackResumed) else{
+            print("SegmentAnalyticsManager.trackResume event data is nil")
+            return
+        }
+        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackResumed.rawValue, properties: event)
+    }
+    
+    @objc open func trackIntermediatePoints(stage:Int){
+        if !isSegmentAnalyticsEnabled(){
+            return
+        }
+        
+        if (stage == 25){
+            guard let event = eventData(SegmentAnalyticsEventType.PlayerContentCompleted25Percent) else {
+               print("SegmentAnalyticsManager.trackIntermediatePoints event data is nil - " + SegmentAnalyticsEventType.PlayerContentCompleted25Percent.rawValue)
+               return
+           }
+           SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerContentCompleted25Percent.rawValue, properties: event)
+        }else if (stage == 50){
+            guard let event = eventData(SegmentAnalyticsEventType.PlayerContentCompleted50Percent) else {
+                print("SegmentAnalyticsManager.trackIntermediatePoints event data is nil - " + SegmentAnalyticsEventType.PlayerContentCompleted50Percent.rawValue)
+                return
+            }
+            SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerContentCompleted50Percent.rawValue, properties: event)
+        }else{
+            guard let event = eventData(SegmentAnalyticsEventType.PlayerContentCompleted75Percent) else {
+                print("SegmentAnalyticsManager.trackIntermediatePoints event data is nil - " + SegmentAnalyticsEventType.PlayerContentCompleted75Percent.rawValue)
+                return
+            }
+            SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerContentCompleted75Percent.rawValue, properties: event)
+        }
+    }
+    
+    open func trackSeek() {
+        if !isSegmentAnalyticsEnabled(){
+            return
+        }
+        
+        guard let event = eventData(.PlayerSeekCompleted) else {
+            print("SegmentAnalyticsManager.trackSeek event data is nil")
+            return
+        }
+        
+        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerSeekCompleted.rawValue, properties: event)
+    }
+    
+    open func trackError() {
+        if !isSegmentAnalyticsEnabled() {
+            return
+        }
+        
+        guard let event = eventData(.PlayerPlaybackError) else {
+            print("SegmentAnalyticsManager.trackError event data is nil")
+            return
+        }
+        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackError.rawValue, properties: event)
     }
     
     @objc open func trackComplete() {
@@ -113,11 +215,17 @@ enum SegmentAnalyticsEventType: String {
             return
         }
         guard let event = eventData(.PlayerCompleteEvent) else {
-            print("SegmentAnalyticsManager.trackComplete event data is nil")
+            print("SegmentAnalyticsManager.trackComplete PlayerCompleteEvent event data is nil")
             return
         }
         SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerCompleteEvent.rawValue, properties: event)
         
+        guard let eventPlayback = eventData(.PlayerPlaybackCompleted) else {
+            print("SegmentAnalyticsManager.trackComplete PlayerPlaybackCompleted event data is nil")
+            return
+        }
+        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackCompleted.rawValue, properties: eventPlayback)
+
         // reset all parameters and remove observer after video playing finished
         reset()
     }
@@ -133,7 +241,8 @@ enum SegmentAnalyticsEventType: String {
     private func eventData(_ event: SegmentAnalyticsEventType) -> [String:Any]? {
         guard var segmentPayload = segmentPayload else { return nil }
         
-        if event == .PlayerCompleteEvent {
+        if event == .PlayerCompleteEvent ||
+            event == .PlayerPlaybackCompleted {
             segmentPayload[SegmentAnalyticsAttributes.videoContentPosition] = Int(self.totalLength)
             segmentPayload["videoContentPercentComplete"] = Int(100)
         } else {
@@ -237,5 +346,35 @@ enum SegmentAnalyticsEventType: String {
     override public func pause() {
         super.pause()
         SegmentAnalyticsManager.sharedInstance.trackPause()
+    }
+    
+    override public func seek(to time: CMTime) {
+        super.seek(to: time)
+        SegmentAnalyticsManager.sharedInstance.trackSeek()
+    }
+    
+    override public func seek(to time: CMTime, toleranceBefore: CMTime, toleranceAfter: CMTime) {
+        super.seek(to: time, toleranceBefore: toleranceBefore, toleranceAfter: toleranceAfter)
+        SegmentAnalyticsManager.sharedInstance.trackSeek()
+    }
+    
+    override public func seek(to date: Date) {
+        super.seek(to: date)
+        SegmentAnalyticsManager.sharedInstance.trackSeek()
+    }
+    
+    override public func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void) {
+        super.seek(to: time, completionHandler: completionHandler)
+        SegmentAnalyticsManager.sharedInstance.trackSeek()
+    }
+    
+    override public func seek(to date: Date, completionHandler: @escaping (Bool) -> Void) {
+        super.seek(to: date, completionHandler: completionHandler)
+        SegmentAnalyticsManager.sharedInstance.trackSeek()
+    }
+    
+    override public func seek(to time: CMTime, toleranceBefore: CMTime, toleranceAfter: CMTime, completionHandler: @escaping (Bool) -> Void) {
+        super.seek(to: time, toleranceBefore: toleranceBefore, toleranceAfter: toleranceAfter, completionHandler: completionHandler)
+        SegmentAnalyticsManager.sharedInstance.trackSeek()
     }
 }

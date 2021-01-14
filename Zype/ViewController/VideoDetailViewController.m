@@ -111,6 +111,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 @property (strong, nonatomic) UIView* ivOverlayView;
 @property (nonatomic) BOOL resumingPlayback;
 
+@property (nonatomic, strong) id playerIntermediateSegmentEventObserver;
+@property (nonatomic) BOOL isPaused;
+
 @end
 
 
@@ -130,6 +133,12 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (self.playbackObserver) {
         [self.avPlayer removeTimeObserver:self.playbackObserver];
     }
+    
+    if (self.playerIntermediateSegmentEventObserver){
+        [self.avPlayer removeTimeObserver:self.playerIntermediateSegmentEventObserver];
+    }
+    [self.avPlayer removeObserver:self forKeyPath:@"timeControlStatus"];
+    self.isPaused = false;
     
     NSLog(@"Destroying");
     //remove the instance that was created in case of going to a full screen mode and back
@@ -1092,6 +1101,39 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if (self.beaconStringUrl && [self.video.duration intValue] > 0)
         [[ACAnalyticsManager sharedInstance] setupAkamaiMediaAnalytics:self.avPlayer withVideo:self.video];
     
+    if (!self.isAudio) {
+        //Adding events observer for PAUSE
+        [self.avPlayer addObserver:self forKeyPath:@"timeControlStatus" options:0 context:nil];
+        
+        //Adding events observers for intermediate progress events
+    
+       NSMutableArray *segmentEventOffsets = [[NSMutableArray alloc] init];
+       NSMutableArray *eventOffsetsTime = [[NSMutableArray alloc] init];
+       CMTime currentTime = kCMTimeZero;
+       CMTime assetDuration = CMTimeMakeWithSeconds([self.video.duration doubleValue], 1);
+       CMTime interval = CMTimeMultiplyByFloat64(assetDuration, 0.25);
+       while (CMTIME_COMPARE_INLINE(currentTime, <, assetDuration)) {
+           currentTime = CMTimeAdd(currentTime, interval);
+           [segmentEventOffsets addObject:[NSValue valueWithCMTime:currentTime]];
+       }
+       self.playerIntermediateSegmentEventObserver = [self.avPlayer addBoundaryTimeObserverForTimes:segmentEventOffsets queue:dispatch_get_main_queue() usingBlock:^{
+           int i = 0;
+               for (i = 0;i < segmentEventOffsets.count; i++ ){
+                   CMTime offsetTime = [[segmentEventOffsets objectAtIndex:i] CMTimeValue];
+                   CMTime currentPlayerTime = [self.avPlayer currentTime];
+                   if ((int)CMTimeGetSeconds(offsetTime) == (int)CMTimeGetSeconds(currentPlayerTime)){
+                       if (i == 0){
+                           [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:25];
+                       }else if (i == 1){
+                           [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:50];
+                       }else if (i == 2){
+                           [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:75];
+                       }
+                   }
+               }
+       }];
+    }
+    
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
     NSError *_error = nil;
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &_error];
@@ -1112,6 +1154,21 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
     
     [self setPlayingStatus];
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  if ([keyPath isEqualToString:@"timeControlStatus"]) {
+      if ([self.avPlayer timeControlStatus] == AVPlayerTimeControlStatusPaused){
+          self.isPaused = true;
+          [SegmentAnalyticsManager.sharedInstance trackPause];
+      }else if([self.avPlayer timeControlStatus] == AVPlayerTimeControlStatusPlaying){
+          if (self.isPaused == true){
+              self.isPaused = false;
+              [SegmentAnalyticsManager.sharedInstance trackResume];
+          }
+      }
+  }
 }
 
 - (void)setupAudioPlayerView {
@@ -1866,8 +1923,10 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     } else {
         if ((self.avPlayer.rate != 0) && (self.avPlayer.error == nil)) {
             [self.avPlayer pause];
+            [SegmentAnalyticsManager.sharedInstance trackPause];
         } else {
             [self.avPlayer play];
+            [SegmentAnalyticsManager.sharedInstance trackResume];
         }
     }
 }
@@ -2677,6 +2736,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         Timeline *timeline = [self.arrayTimeline objectAtIndex:indexPath.row];
         [self.player setCurrentPlaybackTime:[UIUtil secondsWithMilliseconds:timeline.start]];
         [self.player play];
+        [SegmentAnalyticsManager.sharedInstance trackStartWithResumedByAd:false isForUserAction:true];
         [self.playerControlsView setAsPlay];
         [self.playerControlsView showSelf];
         
