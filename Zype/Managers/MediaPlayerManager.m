@@ -5,7 +5,6 @@
 //  Copyright © 2015 Zype. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
 
 #import "MediaPlayerManager.h"
 #import "AppDelegate.h"

@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <Crashlytics/Crashlytics.h>
 
 #import "EpisodeControllerDelegate.h"
 #import "ACSPredicates.h"

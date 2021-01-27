@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Zype. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
 #import "Timing.h"
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"

@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Zype. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
 #import "DownloadOperationController.h"
 #import "ACDownloadManager.h"
 #import "ACSDataManager.h"

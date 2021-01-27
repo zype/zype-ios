@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Zype. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
 #import "RESTServiceController.h"
 #import "ACDownloadManager.h"
 #import "Guest.h"
