@@ -39,6 +39,8 @@
 	<string>Advertisement would like to store a photo.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Oswald-MediumItalic.ttf</string>
+		<string>Oswald-Light.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 		<string>OpenSans-Italic.ttf</string>
 		<string>OpenSans-Light.ttf</string>
