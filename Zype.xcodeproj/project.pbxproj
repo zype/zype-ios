@@ -53,6 +53,7 @@
 		7D385286224AB38600A22BFC /* WatcherIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D385284224AB38600A22BFC /* WatcherIntroViewController.m */; };
 		7D38528B224AB54300A22BFC /* WatcherSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D385288224AB54200A22BFC /* WatcherSignInViewController.m */; };
 		7D38528C224AB54300A22BFC /* WatcherSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D38528A224AB54300A22BFC /* WatcherSignUpViewController.m */; };
+		84B1DB23259494A000F59073 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84B1DB22259494A000F59073 /* GoogleService-Info.plist */; };
 		A107974A1D4015F700F84B61 /* PlaylistCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A10797481D4015F700F84B61 /* PlaylistCollectionViewCell.m */; };
 		A107974B1D4015F700F84B61 /* PlaylistCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10797491D4015F700F84B61 /* PlaylistCollectionViewCell.xib */; };
 		A1149D851D89AB200021646B /* ACAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1149D841D89AB200021646B /* ACAdManager.m */; };
@@ -239,6 +240,7 @@
 		7D385288224AB54200A22BFC /* WatcherSignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherSignInViewController.m; path = ViewController/WatcherSignInViewController.m; sourceTree = "<group>"; };
 		7D385289224AB54300A22BFC /* WatcherSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WatcherSignUpViewController.h; path = ViewController/WatcherSignUpViewController.h; sourceTree = "<group>"; };
 		7D38528A224AB54300A22BFC /* WatcherSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherSignUpViewController.m; path = ViewController/WatcherSignUpViewController.m; sourceTree = "<group>"; };
+		84B1DB22259494A000F59073 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Utilities/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		963FC4151AC9C54700CD2C19 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		963FC41B1AC9C56600CD2C19 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9677B76A1ACB11FC0043515D /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
@@ -1003,6 +1005,7 @@
 		F1BB52D81A78226300E901F1 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				84B1DB22259494A000F59073 /* GoogleService-Info.plist */,
 				A139DBE31DFF53CF00DC731B /* ZypeCommon.h */,
 				A13AF3711D369DB600DDA006 /* ACSPredicates.h */,
 				A13AF3721D369DB600DDA006 /* ACSPredicates.m */,
@@ -1034,7 +1037,6 @@
 				780AC6A11BDFD284007F1119 /* Sources */,
 				780AC6DE1BDFD284007F1119 /* Frameworks */,
 				780AC6EE1BDFD284007F1119 /* Resources */,
-				780AC7031BDFD284007F1119 /* ShellScript */,
 				2BF6A0A518748AED5DDC619B /* [CP] Copy Pods Resources */,
 				1D8691F251863256B8954085 /* [CP] Embed Pods Frameworks */,
 			);
@@ -1076,7 +1078,6 @@
 				ORGANIZATIONNAME = Zype;
 				TargetAttributes = {
 					780AC69F1BDFD284007F1119 = {
-						DevelopmentTeam = 66JU87JGLE;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -1131,6 +1132,7 @@
 				A13AF39F1D36D3B700DDA006 /* Oswald-Medium.ttf in Resources */,
 				780AC6F11BDFD284007F1119 /* OpenSans-SemiboldItalic.ttf in Resources */,
 				780AC6F21BDFD284007F1119 /* Main.storyboard in Resources */,
+				84B1DB23259494A000F59073 /* GoogleService-Info.plist in Resources */,
 				A13AF37B1D369DB600DDA006 /* LiveStream.html in Resources */,
 				A13AF3961D36D3B700DDA006 /* Oswald-BoldItalic.ttf in Resources */,
 				A13AF39A1D36D3B700DDA006 /* Oswald-ExtraLight.ttf in Resources */,
@@ -1210,12 +1212,10 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Zype/Pods-Zype-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManager/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1240,19 +1240,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		780AC7031BDFD284007F1119 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/Fabric/run 83465ef9de45bd3ccc1aeaa066ed7d13dd96a1e4 0b81dd3d4789d7cebb8ee4d77fe25dcaabbf0f8cb55d8c6f7392d4b798e8c57f";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1432,7 +1419,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
@@ -1450,6 +1437,7 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";
@@ -1469,7 +1457,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
@@ -1487,6 +1475,7 @@
 					"$(PROJECT_DIR)/Zype",
 					"$(PROJECT_DIR)/Zype/Libraries/AkamMAlibs",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox;
 				PRODUCT_NAME = "Zype TV";
 				PROVISIONING_PROFILE = "";

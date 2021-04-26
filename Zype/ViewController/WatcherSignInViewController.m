@@ -5,7 +5,6 @@
 //  Created by Christian on 26.03.19.
 //
 
-#import <Crashlytics/Crashlytics.h>
 #import "WatcherSignInViewController.h"
 #import "SVProgressHUD.h"
 #import "ACSTokenManager.h"
@@ -125,6 +124,7 @@
     [self.buttonSignIn tintCustomizeTheme];
     [self customizeAppearance];
     [self.buttonSignIn round:kViewCornerRounded];
+    [self.buttonSignIn borderColorCustomizeTheme];
     [self.credentialContainerView round:kViewCornerRounded];
     [self.credentialContainerView borderCustomizeTheme];
     self.separateLineView.backgroundColor = kUniversalGray;

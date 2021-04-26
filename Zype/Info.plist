@@ -17,25 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>83465ef9de45bd3ccc1aeaa066ed7d13dd96a1e4</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -53,6 +39,8 @@
 	<string>Advertisement would like to store a photo.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Oswald-MediumItalic.ttf</string>
+		<string>Oswald-Light.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 		<string>OpenSans-Italic.ttf</string>
 		<string>OpenSans-Light.ttf</string>
@@ -75,17 +63,15 @@
 	<key>UIFileSharingEnabled</key>
 	<false/>
 	<key>UILaunchStoryboardName</key>
-    <string>LaunchScreen~iphone</string>
-    <key>UILaunchStoryboardName~ipad</key>
-    <string>LaunchScreen~ipad</string>
+	<string>LaunchScreen~iphone</string>
+	<key>UILaunchStoryboardName~ipad</key>
+	<string>LaunchScreen~ipad</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -100,6 +86,10 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>

@@ -8,7 +8,6 @@
 //
 
 #import <CoreData/CoreData.h>
-#import <Crashlytics/Crashlytics.h>
 //#import <PINRemoteImage/UIImageView+PINRemoteImage.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <AdSupport/ASIdentifierManager.h>

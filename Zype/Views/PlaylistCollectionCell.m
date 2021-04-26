@@ -151,7 +151,7 @@
 }
 
 + (CGFloat)rowHeight {
-    return [PlaylistCollectionCell cellLanscapeLayoutSize].height + 40.0;
+    return [PlaylistCollectionCell cellLanscapeLayoutSize].height + 60.0;
 }
 
 @end

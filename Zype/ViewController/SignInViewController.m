@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Zype. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
 #import "SignInViewController.h"
 #import "SVProgressHUD.h"
 #import "ACSTokenManager.h"
@@ -126,6 +125,7 @@
     [self.buttonSignIn tintCustomizeTheme];
     [self customizeAppearance];
     [self.buttonSignIn round:kViewCornerRounded];
+    [self.buttonSignIn borderColorCustomizeTheme];
     [self.credentialContainerView round:kViewCornerRounded];
     [self.credentialContainerView borderCustomizeTheme];
     self.separateLineView.backgroundColor = kUniversalGray;

@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Zype. All rights reserved.
 //
 
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
 #import <WebKit/WebKit.h>
 
 #import "AppDelegate.h"
@@ -30,6 +28,9 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <Analytics/SEGAnalytics.h>
 
+
+@import Firebase;
+
 @interface AppDelegate ()
 
 @property (nonatomic) unsigned long tabIndex;
@@ -49,7 +50,18 @@
     // Override point for customization after application launch.
     [[IQKeyboardManager sharedManager].disabledDistanceHandlingClasses addObject:NSClassFromString(@"SearchResultViewController")];
     
-    [Fabric with:@[CrashlyticsKit]];
+    // Firebase Crashlytics setup
+    if (Firebase_Enabled){
+        [FIRApp configure];
+        [[FIRCrashlytics crashlytics] setCrashlyticsCollectionEnabled:false];
+        [[FIRCrashlytics crashlytics] checkForUnsentReportsWithCompletion:^(BOOL hasUnsentReports) {
+          if (hasUnsentReports) {
+            [[FIRCrashlytics crashlytics] sendUnsentReports];
+          } else {
+            [[FIRCrashlytics crashlytics] deleteUnsentReports];
+          }
+        }];
+    }
     
     //Ask users to recieve push notifications.
     //You can place this in another part of your app.
@@ -386,20 +398,16 @@
     
     //status bar can be configured here or disabled here and configured in info.plist
     if (kAppColorLight){
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-        
         //reset the deselected tab bar item color due to bug when setting UIView tint color
-        [[UIView appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor darkGrayColor]];//color for inactive item
+        [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITabBar class]]] setTintColor:[UIColor darkGrayColor]]; //color for inactive item
         [UITabBar appearance].tintColor = [UIColor darkTextColor];//[UIColor ZypeMainTintColor];//color for active item
         [UITabBar appearance].barTintColor = [UIColor whiteColor];
         
         [UITabBar appearance].backgroundColor = [UIColor whiteColor];
     }
     else {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-        
         //reset the deselected tab bar item color due to bug when setting UIView tint color
-        [[UIView appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor lightGrayColor]];//color for inactive item
+        [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITabBar class]]] setTintColor:[UIColor lightGrayColor]]; //color for inactive item
         [UITabBar appearance].tintColor = [UIColor whiteColor];//[UIColor ZypeMainTintColor];//color for active item
         [UITabBar appearance].barTintColor = [UIColor blackColor];
         

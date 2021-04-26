@@ -16,8 +16,8 @@ pod 'OpenSSL', :path => 'OpenSSL/1.0.208' # download from folder
 pod 'iCarousel', '~> 1.8' #collection
 
 pod 'GoogleAnalytics'
-pod 'Fabric'
-pod 'Crashlytics'
+pod 'Firebase/Core'
+pod 'Firebase/Crashlytics'
 pod 'GoogleAds-IMA-iOS-SDK', '~> 3.11.4'
 
 pod 'AWSPinpoint', '~> 2.6.6'

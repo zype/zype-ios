@@ -96,6 +96,10 @@
 // must have some value if kSegmentAnalytics is enabled
 #define kSegmentAccountName @"enter_account_name_here"
 
+// if enabled, the crash will be reported in firebase.
+// make sure to include GoogleService-Info.plist file under Utilities for correct account integration.
+#define Firebase_Enabled NO
+
 
 #define kClientColor    [UIUtil colorWithHex:0xF75532]
 #define kTextPlaceholderColor [UIColor colorWithRed:0.72 green:0.72 blue:0.75 alpha:1.00]

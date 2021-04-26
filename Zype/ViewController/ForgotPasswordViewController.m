@@ -46,6 +46,7 @@
 
 - (void)setupConfiguration {
     [self.btnResetPassword tintCustomizeTheme];
+    [self.btnResetPassword borderColorCustomizeTheme];
     [self customizeAppearance];
     [self.btnResetPassword round:kViewCornerRounded];
     [self.credentialContainerView round:kViewCornerRounded];

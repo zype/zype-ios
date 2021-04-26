@@ -6,7 +6,6 @@
 //
 
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <Crashlytics/Crashlytics.h>
 
 #import "ACDownloadManager.h"
 #import "ACSDataManager.h"
