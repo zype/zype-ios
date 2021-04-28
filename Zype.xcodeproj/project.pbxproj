@@ -23,6 +23,7 @@
 		2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */; };
 		42CD27CE235758FF00069FF8 /* LaunchScreen~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42CD27CC235758FF00069FF8 /* LaunchScreen~ipad.xib */; };
 		4F43E4FC240EC8CC00FF64EA /* SegmentAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */; };
+		4FDF92282637FE7A0071A604 /* AppTrackingTransparencyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDF92272637FE7A0071A604 /* AppTrackingTransparencyManager.m */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
 		780AC6B41BDFD284007F1119 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52851A76D7D100E901F1 /* main.m */; };
@@ -232,6 +233,8 @@
 		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
 		42CD27CD235758FF00069FF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/LaunchScreen~ipad.xib"; sourceTree = "<group>"; };
 		4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentAnalyticsManager.swift; path = Managers/SegmentAnalyticsManager.swift; sourceTree = "<group>"; };
+		4FDF92262637FE7A0071A604 /* AppTrackingTransparencyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppTrackingTransparencyManager.h; path = Managers/AppTrackingTransparencyManager.h; sourceTree = "<group>"; };
+		4FDF92272637FE7A0071A604 /* AppTrackingTransparencyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppTrackingTransparencyManager.m; path = Managers/AppTrackingTransparencyManager.m; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AC7081BDFD284007F1119 /* Zype TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zype TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D385284224AB38600A22BFC /* WatcherIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatcherIntroViewController.m; path = ViewController/WatcherIntroViewController.m; sourceTree = "<group>"; };
@@ -664,6 +667,8 @@
 				A1B3C4152032268300784F64 /* ACAnalyticsManager.h */,
 				A1B3C4162032268300784F64 /* ACAnalyticsManager.m */,
 				4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */,
+				4FDF92262637FE7A0071A604 /* AppTrackingTransparencyManager.h */,
+				4FDF92272637FE7A0071A604 /* AppTrackingTransparencyManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -1326,6 +1331,7 @@
 				A13AF37E1D369DB600DDA006 /* UIUtil.m in Sources */,
 				FA19403A1FCC78A3005CE292 /* MediaItemCollectionCell.m in Sources */,
 				FA4BA3301EF075F3004985F6 /* UIView+UIView_CustomizeTheme.m in Sources */,
+				4FDF92282637FE7A0071A604 /* AppTrackingTransparencyManager.m in Sources */,
 				A13AF3691D369D1F00DDA006 /* NSMutableArray+LimitedStack.m in Sources */,
 				A13AF35C1D369CC600DDA006 /* ViewManager.m in Sources */,
 				2B91090922836AB500074255 /* GuideProgramModel.m in Sources */,

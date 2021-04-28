@@ -686,15 +686,14 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetDownloadVideoUrlForGuest, kApiPlayerDomain, vId, kAppKey];
         }
-        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
-
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (completionHandler) completionHandler(data, response, error);
+        [UIUtil replaceDeviceParameters:urlAsString completion:^ (NSMutableString* urlAsString) {
+            NSURL *url = [NSURL withString:urlAsString];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (completionHandler) completionHandler(data, response, error);
+            }];
+            [dataTask resume];
         }];
-        [dataTask resume];
         
     }];
     
@@ -712,15 +711,14 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, vId, kAppKey];
         }
-        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
-
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (completionHandler) completionHandler(data, response, error);
+        [UIUtil replaceDeviceParameters:urlAsString completion:^ (NSMutableString* urlAsString) {
+            NSURL *url = [NSURL withString:urlAsString];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (completionHandler) completionHandler(data, response, error);
+            }];
+            [dataTask resume];
         }];
-        [dataTask resume];
         
     }];
     
@@ -744,19 +742,21 @@
                 urlAsString = [NSString stringWithFormat:kGetPlayerForGuest, kApiPlayerDomain, video.vId, kAppKey];
             }
         }
-        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
-        
-        if (isDownloaded) {
-            urlAsString = [NSString stringWithFormat:@"%@&download=true", urlAsString];
-        }
-        
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (completionHandler) completionHandler(data, response, error);
+        [UIUtil replaceDeviceParameters:urlAsString completion:^ (NSMutableString* urlAsString) {
+            NSString *urlStr = urlAsString;
+            if (isDownloaded) {
+                urlStr = [NSString stringWithFormat:@"%@&download=true", urlAsString];
+            }
+            
+            NSURL *url = [NSURL withString:urlStr];
+            
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (completionHandler) completionHandler(data, response, error);
+            }];
+            [dataTask resume];
+            
         }];
-        [dataTask resume];
         
     }];
     
@@ -778,15 +778,14 @@
                 urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
             }
         }
-        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
-        
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (completionHandler) completionHandler(data, response, error);
+        [UIUtil replaceDeviceParameters:urlAsString completion:^ (NSMutableString* urlAsString) {
+            NSURL *url = [NSURL withString:urlAsString];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (completionHandler) completionHandler(data, response, error);
+            }];
+            [dataTask resume];
         }];
-        [dataTask resume];
         
     }];
     
@@ -802,16 +801,14 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetPlayerAudioUrlForGuest, kApiPlayerDomain, video.vId, kAppKey];
         }
-        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
-
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (completionHandler) completionHandler(data, response, error);
+        [UIUtil replaceDeviceParameters:urlAsString completion:^ (NSMutableString* urlAsString) {
+            NSURL *url = [NSURL withString:urlAsString];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (completionHandler) completionHandler(data, response, error);
+            }];
+            [dataTask resume];
         }];
-        [dataTask resume];
-        
     }];
     
 }
@@ -826,18 +823,16 @@
         } else {
             urlAsString = [NSString stringWithFormat:kGetDownloadAudioUrlForGuest, kApiPlayerDomain, vId, kAppKey];
         }
-        urlAsString = [UIUtil replaceDeviceParameters:urlAsString];
-
-        NSURL *url = [NSURL withString:urlAsString];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-        NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (completionHandler) {
-                completionHandler(data, response, error, urlAsString);
-            }
+        [UIUtil replaceDeviceParameters:urlAsString completion:^ (NSMutableString* urlAsString) {
+            NSURL *url = [NSURL withString:urlAsString];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+            NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (completionHandler) {
+                    completionHandler(data, response, error, urlAsString);
+                }
+            }];
+            [dataTask resume];
         }];
-        [dataTask resume];
-        
     }];
     
 }

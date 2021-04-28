@@ -2178,39 +2178,39 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)requestAds {
     
     __block IMAAdDisplayContainer *adDisplayContainer =
-    [[IMAAdDisplayContainer alloc] initWithAdContainer:self.adsContainerView companionSlots:nil];
-    
+    [[IMAAdDisplayContainer alloc] initWithAdContainer:self.adsContainerView viewController:nil];
+        
     __block NSMutableDictionary *adsDictionary = [[NSMutableDictionary alloc] init];
     __block NSMutableArray *adsTags = [[NSMutableArray alloc] init];
     
     
-    BOOL isPrerollUsed = NO;
+    __block BOOL isPrerollUsed = NO;
     NSMutableArray *adOffsets = [[NSMutableArray alloc] init];
     NSArray *requests = [[ACAdManager sharedInstance] adRequstsFromArray:self.adsArray];
     
-    BOOL isRequestPending = self.isPlayerRequestPending;
+    __block BOOL isRequestPending = self.isPlayerRequestPending;
     
     for (AdObject *adObject in requests) {
         
-        NSString *newTag = [UIUtil replaceDeviceParameters:adObject.tag];
-        
-        // Fix For APPS-785: Need to comment below check, it's causing issues in Ads playing
-        // only listen for ads at or after video start point
-        //if ([NSNumber numberWithDouble:adObject.offset] >= self.video.playTime)
-        if (adObject.offset == 0) {
-            isPrerollUsed = YES;
-            IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:newTag
-                                                          adDisplayContainer:adDisplayContainer
-                                                             contentPlayhead:self.contentPlayhead
-                                                                 userContext:nil];
-            
-            if (!isRequestPending) [self.adsLoader requestAdsWithRequest:request];
-        } else {
-            
-            [adOffsets addObject:adObject.offsetValue];
-            [adsDictionary setObject:newTag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
-            [adsTags addObject:newTag];
-        }
+       [UIUtil replaceDeviceParameters:adObject.tag completion:^ (NSMutableString* tag) {
+            // Fix For APPS-785: Need to comment below check, it's causing issues in Ads playing
+            // only listen for ads at or after video start point
+            //if ([NSNumber numberWithDouble:adObject.offset] >= self.video.playTime)
+            if (adObject.offset == 0) {
+                isPrerollUsed = YES;
+                IMAAdsRequest *request = [[IMAAdsRequest alloc] initWithAdTagUrl:tag
+                                                              adDisplayContainer:adDisplayContainer
+                                                                 contentPlayhead:self.contentPlayhead
+                                                                     userContext:nil];
+                
+                if (!isRequestPending) [self.adsLoader requestAdsWithRequest:request];
+            } else {
+                
+                [adOffsets addObject:adObject.offsetValue];
+                [adsDictionary setObject:tag forKey:[NSString stringWithFormat:@"%d", (int)adObject.offset]];
+                [adsTags addObject:tag];
+            }
+        }];
     }
     
     

@@ -18,9 +18,9 @@ pod 'iCarousel', '~> 1.8' #collection
 pod 'GoogleAnalytics'
 pod 'Firebase/Core'
 pod 'Firebase/Crashlytics'
-pod 'GoogleAds-IMA-iOS-SDK', '~> 3.11.4'
+pod 'GoogleAds-IMA-iOS-SDK', '~> 3.12.1'
 
 pod 'AWSPinpoint', '~> 2.6.6'
 pod 'IQKeyboardManager'
-pod 'Analytics',  '~> 3.8.0-beta.1'
+pod 'Analytics',  '~> 4.1.3'
 end

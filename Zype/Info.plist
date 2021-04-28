@@ -91,5 +91,7 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>App would like to access IDFA for tracking purpose</string>
 </dict>
 </plist>

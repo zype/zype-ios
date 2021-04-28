@@ -53,6 +53,6 @@
 + (BOOL)hasNextPage:(NSNumber *)nextPage InPages:(NSNumber *)pages WithData:(NSDictionary *)parsedObject;
 + (BOOL)isLastPageInPages:(NSNumber *)pages WithData:(NSDictionary *)parsedObject;
 
-+ (NSMutableString*)replaceDeviceParameters:(NSString *)string;
++ (void)replaceDeviceParameters:(NSString *)string completion:(void (^)(NSMutableString* tag))completion;
 
 @end

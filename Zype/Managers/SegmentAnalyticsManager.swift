@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Analytics
+import Segment
 import AVKit
 
 public enum SegmentAnalyticsEventType: String {
@@ -105,13 +105,13 @@ public enum SegmentAnalyticsEventType: String {
                 print ("SegmentAnalyticsManager.trackStart forUserAction event data is nil")
                 return
             }
-            SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackStarted.rawValue, properties: event)
+            Analytics.shared().track(SegmentAnalyticsEventType.PlayerPlaybackStarted.rawValue, properties: event)
         } else if !isResumingPlayback {
             guard let event = eventData(.PlayerStartEvent) else {
                 print("SegmentAnalyticsManager.trackStart event data is nil")
                 return
             }
-            SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerStartEvent.rawValue, properties: event)
+            Analytics.shared().track(SegmentAnalyticsEventType.PlayerStartEvent.rawValue, properties: event)
         }
         
         // start tracking video progress
@@ -128,7 +128,7 @@ public enum SegmentAnalyticsEventType: String {
             print("SegmentAnalyticsManager.trackPause event data is nil")
             return
         }
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackPaused.rawValue, properties: event)
+        Analytics.shared().track(SegmentAnalyticsEventType.PlayerPlaybackPaused.rawValue, properties: event)
         
         removeTrackingVideoProgress()
     }
@@ -143,7 +143,7 @@ public enum SegmentAnalyticsEventType: String {
             print("SegmentAnalyticsManager.trackAutoPlay event data is nil")
             return
         }
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.InitialHomePageStream.rawValue, properties: event)
+        Analytics.shared().track(SegmentAnalyticsEventType.InitialHomePageStream.rawValue, properties: event)
     }
     
     @objc
@@ -156,7 +156,7 @@ public enum SegmentAnalyticsEventType: String {
             print("SegmentAnalyticsManager.trackResume event data is nil")
             return
         }
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackResumed.rawValue, properties: event)
+        Analytics.shared().track(SegmentAnalyticsEventType.PlayerPlaybackResumed.rawValue, properties: event)
     }
     
     @objc open func trackIntermediatePoints(stage:Int){
@@ -169,19 +169,19 @@ public enum SegmentAnalyticsEventType: String {
                print("SegmentAnalyticsManager.trackIntermediatePoints event data is nil - " + SegmentAnalyticsEventType.PlayerContentCompleted25Percent.rawValue)
                return
            }
-           SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerContentCompleted25Percent.rawValue, properties: event)
+           Analytics.shared().track(SegmentAnalyticsEventType.PlayerContentCompleted25Percent.rawValue, properties: event)
         }else if (stage == 50){
             guard let event = eventData(SegmentAnalyticsEventType.PlayerContentCompleted50Percent) else {
                 print("SegmentAnalyticsManager.trackIntermediatePoints event data is nil - " + SegmentAnalyticsEventType.PlayerContentCompleted50Percent.rawValue)
                 return
             }
-            SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerContentCompleted50Percent.rawValue, properties: event)
+            Analytics.shared().track(SegmentAnalyticsEventType.PlayerContentCompleted50Percent.rawValue, properties: event)
         }else{
             guard let event = eventData(SegmentAnalyticsEventType.PlayerContentCompleted75Percent) else {
                 print("SegmentAnalyticsManager.trackIntermediatePoints event data is nil - " + SegmentAnalyticsEventType.PlayerContentCompleted75Percent.rawValue)
                 return
             }
-            SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerContentCompleted75Percent.rawValue, properties: event)
+            Analytics.shared().track(SegmentAnalyticsEventType.PlayerContentCompleted75Percent.rawValue, properties: event)
         }
     }
     
@@ -195,7 +195,7 @@ public enum SegmentAnalyticsEventType: String {
             return
         }
         
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerSeekCompleted.rawValue, properties: event)
+        Analytics.shared().track(SegmentAnalyticsEventType.PlayerSeekCompleted.rawValue, properties: event)
     }
     
     open func trackError() {
@@ -207,7 +207,7 @@ public enum SegmentAnalyticsEventType: String {
             print("SegmentAnalyticsManager.trackError event data is nil")
             return
         }
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackError.rawValue, properties: event)
+        Analytics.shared().track(SegmentAnalyticsEventType.PlayerPlaybackError.rawValue, properties: event)
     }
     
     @objc open func trackComplete() {
@@ -218,13 +218,13 @@ public enum SegmentAnalyticsEventType: String {
             print("SegmentAnalyticsManager.trackComplete PlayerCompleteEvent event data is nil")
             return
         }
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerCompleteEvent.rawValue, properties: event)
+        Analytics.shared().track(SegmentAnalyticsEventType.PlayerCompleteEvent.rawValue, properties: event)
         
         guard let eventPlayback = eventData(.PlayerPlaybackCompleted) else {
             print("SegmentAnalyticsManager.trackComplete PlayerPlaybackCompleted event data is nil")
             return
         }
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlaybackCompleted.rawValue, properties: eventPlayback)
+        Analytics.shared().track(SegmentAnalyticsEventType.PlayerPlaybackCompleted.rawValue, properties: eventPlayback)
 
         // reset all parameters and remove observer after video playing finished
         reset()
@@ -235,7 +235,7 @@ public enum SegmentAnalyticsEventType: String {
             print("SegmentAnalyticsManager.trackPlaying event data is nil")
             return
         }
-        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerPlayingEvent.rawValue, properties: event)
+        Analytics.shared().track(SegmentAnalyticsEventType.PlayerPlayingEvent.rawValue, properties: event)
     }
 
     private func eventData(_ event: SegmentAnalyticsEventType) -> [String:Any]? {
@@ -289,7 +289,7 @@ public enum SegmentAnalyticsEventType: String {
                             print("SegmentAnalyticsManager.trackVideoProgress event data is nil")
                             return
                         }
-                        SEGAnalytics.shared()?.track(SegmentAnalyticsEventType.PlayerStartEvent.rawValue, properties: event)
+                        Analytics.shared().track(SegmentAnalyticsEventType.PlayerStartEvent.rawValue, properties: event)
                         self.isResumingPlayback = false
                     } else {
                         self.trackPlaying()
