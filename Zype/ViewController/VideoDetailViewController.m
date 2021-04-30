@@ -1107,7 +1107,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         //Adding events observers for intermediate progress events
     
        NSMutableArray *segmentEventOffsets = [[NSMutableArray alloc] init];
-       NSMutableArray *eventOffsetsTime = [[NSMutableArray alloc] init];
        CMTime currentTime = kCMTimeZero;
        CMTime assetDuration = CMTimeMakeWithSeconds([self.video.duration doubleValue], 1);
        CMTime interval = CMTimeMultiplyByFloat64(assetDuration, 0.25);
@@ -1115,22 +1114,25 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
            currentTime = CMTimeAdd(currentTime, interval);
            [segmentEventOffsets addObject:[NSValue valueWithCMTime:currentTime]];
        }
-       self.playerIntermediateSegmentEventObserver = [self.avPlayer addBoundaryTimeObserverForTimes:segmentEventOffsets queue:dispatch_get_main_queue() usingBlock:^{
-           int i = 0;
-               for (i = 0;i < segmentEventOffsets.count; i++ ){
-                   CMTime offsetTime = [[segmentEventOffsets objectAtIndex:i] CMTimeValue];
-                   CMTime currentPlayerTime = [self.avPlayer currentTime];
-                   if ((int)CMTimeGetSeconds(offsetTime) == (int)CMTimeGetSeconds(currentPlayerTime)){
-                       if (i == 0){
-                           [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:25];
-                       }else if (i == 1){
-                           [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:50];
-                       }else if (i == 2){
-                           [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:75];
+        
+        if (segmentEventOffsets.count > 0) {
+           self.playerIntermediateSegmentEventObserver = [self.avPlayer addBoundaryTimeObserverForTimes:segmentEventOffsets queue:dispatch_get_main_queue() usingBlock:^{
+               int i = 0;
+                   for (i = 0;i < segmentEventOffsets.count; i++ ){
+                       CMTime offsetTime = [[segmentEventOffsets objectAtIndex:i] CMTimeValue];
+                       CMTime currentPlayerTime = [self.avPlayer currentTime];
+                       if ((int)CMTimeGetSeconds(offsetTime) == (int)CMTimeGetSeconds(currentPlayerTime)){
+                           if (i == 0){
+                               [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:25];
+                           }else if (i == 1){
+                               [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:50];
+                           }else if (i == 2){
+                               [SegmentAnalyticsManager.sharedInstance trackIntermediatePointsWithStage:75];
+                           }
                        }
                    }
-               }
-       }];
+           }];
+        }
     }
     
     //check if your ringer is off, you won't hear any sound when it's off. To prevent that, we use
@@ -2178,7 +2180,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
 - (void)requestAds {
     
     __block IMAAdDisplayContainer *adDisplayContainer =
-    [[IMAAdDisplayContainer alloc] initWithAdContainer:self.adsContainerView viewController:nil];
+    [[IMAAdDisplayContainer alloc] initWithAdContainer:self.adsContainerView viewController:self];
         
     __block NSMutableDictionary *adsDictionary = [[NSMutableDictionary alloc] init];
     __block NSMutableArray *adsTags = [[NSMutableArray alloc] init];
@@ -2247,6 +2249,16 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     }
 }
 
+
+#pragma mark Ads WebOpener Delegates
+
+- (void)webOpenerDidCloseInAppBrowser:(NSObject *)webOpener {
+    if (self.adsManager != nil){
+        [self.adsManager resume];
+    }
+}
+
+
 #pragma mark AdsLoader Delegates
 
 - (void)adsLoader:(IMAAdsLoader *)loader adsLoadedWithData:(IMAAdsLoadedData *)adsLoadedData {
@@ -2256,6 +2268,9 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     // Create ads rendering settings to tell the SDK to use the in-app browser.
     IMAAdsRenderingSettings *adsRenderingSettings = [[IMAAdsRenderingSettings alloc] init];
     adsRenderingSettings.webOpenerPresentingController = self;
+    adsRenderingSettings.webOpenerDelegate = self;
+    adsRenderingSettings.webOpenerPresentingController = self;
+    adsRenderingSettings.webOpenerPresentingController.modalPresentationStyle = UIModalPresentationFullScreen;
     // Initialize the ads manager.
     [self.adsManager initializeWithAdsRenderingSettings:adsRenderingSettings];
 }
