@@ -23,6 +23,7 @@
 #import "ACAnalyticsManager.h"
 #import "ACSTokenManager.h"
 #import "Zype-Swift.h"
+#import "AppTrackingTransparencyManager.h"
 
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
@@ -79,6 +80,7 @@
     [self configureApp];
     [self setDefaultAppearance];
     [self retrieveUserAgent];
+    [self requestIDFA];
     
     return YES;
 }
@@ -259,6 +261,15 @@
     }else{
         return UIInterfaceOrientationMaskAll;
     }
+}
+
+- (void)requestIDFA {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [AppTrackingTransparencyManager requestIFDA:^(NSString *idfa) {
+            // don't print sensitive data
+        }];
+    });
+
 }
 
 #pragma mark - Background Fetch

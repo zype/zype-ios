@@ -15,7 +15,7 @@
 @import MessageUI;
 @import GoogleInteractiveMediaAds;
 
-@interface VideoDetailViewController : MediaPlaybackBaseViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, IMAAdsLoaderDelegate, IMAAdsManagerDelegate>
+@interface VideoDetailViewController : MediaPlaybackBaseViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, IMAAdsLoaderDelegate, IMAAdsManagerDelegate, IMAWebOpenerDelegate>
 
 @property (strong, nonatomic) id detailItem;
 

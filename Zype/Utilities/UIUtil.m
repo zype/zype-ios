@@ -27,6 +27,7 @@
 #import "TabBarViewController.h"
 #import "MoreViewController.h"
 #import "AppDelegate.h"
+#import "AppTrackingTransparencyManager.h"
 
 @implementation UIUtil
 
@@ -561,90 +562,90 @@ NSString* userAgent() {
     return @"zype_ios";
 }
 
-+ (NSMutableString*)replaceDeviceParameters:(NSString *)string {
++ (void)replaceDeviceParameters:(NSString *)string completion:(void (^)(NSMutableString* tag))completion {
     
-    NSMutableString *tag = [NSMutableString stringWithString: string];
-    
-    NSUUID *realUuid = [[UIDevice currentDevice] identifierForVendor];
-    unsigned char uuidBytes[16];
-    [realUuid getUUIDBytes:uuidBytes];
-    NSString *uuid = [NSString stringWithFormat: @"%@", realUuid];
-    
-    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-    NSString *bundleName = [NSString stringWithFormat:@"%@", [info objectForKey:@"CFBundleDisplayName"]];
-    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    
-    NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    NSString *appId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
-    
-    [tag replaceOccurrencesOfString:@"[uuid]"
-                         withString: uuid
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_name]"
-                         withString: bundleName
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_bundle]"
-                         withString: bundleIdentifier
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_domain]"
-                         withString: bundleIdentifier
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_type]"
-                         withString: @"7"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_make]"
-                         withString: @"Apple"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_model]"
-                         withString: machineName()
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_ifa]"
-                         withString: idfa
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[vpi]"
-                         withString: @"mp4"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[app_id]"
-                         withString: appId
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[device_ua]"
-                         withString: userAgent()
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@"[ip_address]"
-                         withString: @"168.0.0.1"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    [tag replaceOccurrencesOfString:@" "
-                         withString: @"-"
-                            options:NSLiteralSearch
-                              range:NSMakeRange(0, tag.length)];
-    
-    return tag;
+    [AppTrackingTransparencyManager requestIFDA:^(NSString *idfa) {
+
+        NSMutableString *tag = [NSMutableString stringWithString: string];
+        
+        NSUUID *realUuid = [[UIDevice currentDevice] identifierForVendor];
+        unsigned char uuidBytes[16];
+        [realUuid getUUIDBytes:uuidBytes];
+        NSString *uuid = [NSString stringWithFormat: @"%@", realUuid];
+        
+        NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+        NSString *bundleName = [NSString stringWithFormat:@"%@", [info objectForKey:@"CFBundleDisplayName"]];
+        NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+        
+        NSString *appId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+        
+        [tag replaceOccurrencesOfString:@"[uuid]"
+                             withString: uuid
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[app_name]"
+                             withString: bundleName
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[app_bundle]"
+                             withString: bundleIdentifier
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[app_domain]"
+                             withString: bundleIdentifier
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[device_type]"
+                             withString: @"7"
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[device_make]"
+                             withString: @"Apple"
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[device_model]"
+                             withString: machineName()
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[device_ifa]"
+                             withString: idfa
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[vpi]"
+                             withString: @"mp4"
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[app_id]"
+                             withString: appId
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[device_ua]"
+                             withString: userAgent()
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@"[ip_address]"
+                             withString: @"168.0.0.1"
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        [tag replaceOccurrencesOfString:@" "
+                             withString: @"-"
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, tag.length)];
+        
+        completion(tag);
+    }];
 }
-
-
 
 @end
