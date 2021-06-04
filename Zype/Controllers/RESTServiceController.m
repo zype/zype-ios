@@ -510,6 +510,17 @@
     
 }
 
+- (void)loadVideoObjectWithId:(NSString *)videoId withCompletionHandler:(void(^)(NSData *data, NSError *error))success{
+    NSString *urlAsString = [NSString stringWithFormat:kGetVideoObjectById, kApiDomain, videoId, kAppKey];
+    NSURL *url = [NSURL withString:urlAsString];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        success(data, error);
+    }];
+    [dataTask resume];
+}
+
 - (void)loadVideoWithId:(NSString *)videoId withCompletionHandler:(void(^)(NSData *data, NSError *error))success{
     
     NSString *urlAsString = [NSString stringWithFormat:kGetVideoById, kApiDomain, kAppKey, videoId];
