@@ -34,7 +34,7 @@
                                                                             action:nil];
 
     self.episodeController.episodeControllerMode = ACSEpisodeControllerModeDownloads;
-    [self.episodeController loadDownloadedVideos];
+//    [self.episodeController loadDownloadedVideos];
     self.episodeController.editingEnabled = YES;
     
 }
@@ -42,10 +42,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    [self.loadingIndicator setHidden:YES];
     // Restrict rotation
     [AppDelegate appDelegate].restrictRotation = YES;
-    
+    [self fetchDownloadedVideos];
     // Set now playing bar button
     if (!self.navigationItem.rightBarButtonItem || ![[NSUserDefaults standardUserDefaults] boolForKey:kSettingKey_SignInStatus]) {
         UIButton *button = [UIUtil buttonNowPlayingInViewController:self];
@@ -84,6 +84,35 @@
 }
 
 #pragma mark - Download Cleanup
+
+- (void)fetchDownloadedVideos{
+    NSArray *downloadedVideos = [ACSPersistenceManager videosWithDownloads];
+    dispatch_group_t fetchDownloadedVideosGroup = dispatch_group_create();
+    for (Video *video in downloadedVideos) {
+        dispatch_group_enter(fetchDownloadedVideosGroup);
+        [[RESTServiceController sharedInstance] loadVideoObjectWithId:video.vId withCompletionHandler:^(NSData *data, NSError *error) {
+            if (error == nil){
+                NSError *localError = nil;
+                NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+                if (localError == nil){
+                    NSDictionary *videoData = [parsedObject objectForKey:@"response"];
+                    Video *videoInDB = [ACSPersistenceManager videoWithID:video.vId];
+                    BOOL isVideoActive = [[videoData valueForKey:@"active"] boolValue];
+                    if (isVideoActive == NO){
+                        [ACSPersistenceManager deleteVideo:videoInDB];
+                    }
+                }
+            }
+            dispatch_group_leave(fetchDownloadedVideosGroup);
+        }];
+        
+        dispatch_group_notify(fetchDownloadedVideosGroup, dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.episodeController loadDownloadedVideos];
+//            });
+        });
+    }
+}
 
 - (void)cleanupDownloads{
     

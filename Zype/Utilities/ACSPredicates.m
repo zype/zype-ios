@@ -51,7 +51,7 @@
 
 + (NSPredicate *)fetchDownloadsPredicate{
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isDownload == %@", [NSNumber numberWithBool:YES]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isDownload == %@ && active == %@", [NSNumber numberWithBool:YES], [NSNumber numberWithBool:YES]];
     
     return predicate;
     

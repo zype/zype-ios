@@ -364,6 +364,7 @@ static const CGSize IpadPosterLayoutSize = {126, 208};
 #define kGetGuests @"https://%@/zobjects?zobject_type=guest&app_key=%@&video_id=%@&page=%@"
 #define kGetHighlights @"https://%@/videos?app_key=%@&category[Highlight]=true&page=%@"
 #define kGetVideoById @"https://%@/videos/?app_key=%@&id=%@"
+#define kGetVideoObjectById @"http://%@/videos/%@/?app_key=%@"
 #define kLibraryGetVideoById @"https://%@/videos/?access_token=%@&id=%@"
 
 

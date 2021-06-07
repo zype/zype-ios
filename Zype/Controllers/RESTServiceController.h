@@ -29,6 +29,8 @@
 - (void)syncHighlightsInPage:(NSNumber *)page WithVideosInDB:(NSMutableArray *)highlightsInDB WithExistingVideos:(NSMutableArray *)existingVideos;
 - (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos completionDelegate: (EpisodeController*) delegate;
 - (void)syncVideosFromPlaylist:(NSString *)playlistId InPage:(NSNumber *)page WithVideosInDB:(NSArray *)videosInDBFiltered WithExistingVideos:(NSArray *)existingVideos completionDelegate: (EpisodeController*)delegate withCompletionHandler:(void (^)(void))complete;
+
+- (void)loadVideoObjectWithId:(NSString *)videoId withCompletionHandler:(void(^)(NSData *data, NSError *error))success;
 - (void)loadVideoWithId:(NSString *)videoId withCompletionHandler:(void(^)(NSData *data, NSError *error))success;
 
 - (void)getDownloadVideoUrlWithVideoId:(NSString *)vId WithCompletionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;

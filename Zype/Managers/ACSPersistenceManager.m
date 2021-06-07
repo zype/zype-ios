@@ -780,6 +780,7 @@
         
         NSString *vId = [groupDic valueForKey:kAppKey_Id];
         Video *videoInDB = [ACSPersistenceManager videoWithID:vId];
+        BOOL isVideoActive = [[groupDic valueForKey:@"active"] boolValue];
         
         /*
         //hack - remove video from another playlist to preserve the order
@@ -817,11 +818,20 @@
             
             NSDate *dateUpdated = [[UIUtil dateFormatter] dateFromString:[groupDic valueForKey:kAppKey_UpdatedAt]];
             
-            if ([videoInDB.updated_at compare:dateUpdated] != NSOrderedSame) {
-                
-                [ACSPersistenceManager saveVideoInDB:videoInDB WithData:groupDic];
-                CLS_LOG(@"Updated video: %@", videoInDB.title);
-                
+            if (isVideoActive == YES){
+                if ([videoInDB.updated_at compare:dateUpdated] != NSOrderedSame){
+                    
+                    [ACSPersistenceManager saveVideoInDB:videoInDB WithData:groupDic];
+                    CLS_LOG(@"Updated video: %@", videoInDB.title);
+                    
+                }
+            }else{
+                // If video is inactive but available in DB, delete it
+                if (videoInDB.isDownload.boolValue == YES){
+                    [ACDownloadManager deleteDownloadedVideo:videoInDB];
+                }
+                [ACSPersistenceManager deleteVideo:videoInDB];
+                CLS_LOG(@"Deleted video: %@", videoInDB.title);
             }
             
             // If it exists, add it in existing videos array to get the removed videos in server
@@ -843,19 +853,22 @@
         }else {
             
             // If it's new, insert it into Core Data
-            Video *newVideo = [ACSPersistenceManager newVideo];
-            [ACSPersistenceManager saveVideoInDB:newVideo WithData:groupDic];
-            
-            CLS_LOG(@"Added new video: %@", newVideo.title);
-            //add new video to Playlist
-            if (playlistId){
-                Playlist *vodPlaylist = [ACSPersistenceManager playlistWithID:playlistId];
-                PlaylistVideo *newPlaylistVideo = [ACSPersistenceManager newPlaylistVideo];
-               
-                newPlaylistVideo.playlist = vodPlaylist;
-                newPlaylistVideo.video = newVideo;
+            // Add the video only if it's active
+            if (isVideoActive == YES){
+                Video *newVideo = [ACSPersistenceManager newVideo];
+                [ACSPersistenceManager saveVideoInDB:newVideo WithData:groupDic];
                 
-                newPlaylistVideo.orderingValue = [NSNumber numberWithUnsignedInteger:index];
+                CLS_LOG(@"Added new video: %@", newVideo.title);
+                //add new video to Playlist
+                if (playlistId){
+                    Playlist *vodPlaylist = [ACSPersistenceManager playlistWithID:playlistId];
+                    PlaylistVideo *newPlaylistVideo = [ACSPersistenceManager newPlaylistVideo];
+                   
+                    newPlaylistVideo.playlist = vodPlaylist;
+                    newPlaylistVideo.video = newVideo;
+                    
+                    newPlaylistVideo.orderingValue = [NSNumber numberWithUnsignedInteger:index];
+                }
             }
            
         }
