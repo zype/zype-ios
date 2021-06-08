@@ -54,6 +54,8 @@
 #define kFavoritesViaAPI NO
 #define kSubscribeToWatchAdFree NO
 #define kLibraryForPurchasesEnabled NO
+//When the feature flag is set to NO, the Sign In option will be hidden and not functional from the More screen
+#define kSignInEnabled YES
 
 // For sites that support EPG (Electronic Program Guide)
 #define kEPGEnabled NO
