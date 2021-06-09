@@ -74,6 +74,9 @@
     } else {
         [self.buttonSignIn setTitle: @"Sign In" forState: UIControlStateNormal];
     }
+    
+    // show/hide Sign-In based on feature flag
+    [self.buttonSignIn setHidden:!kSignInEnabled];
 }
 
 - (void)viewDidAppear:(BOOL)animated
