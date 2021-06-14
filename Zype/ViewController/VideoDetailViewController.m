@@ -661,9 +661,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *htmlFile;
 
     if (kAppColorLight){
-        htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLight" ofType:@"html"];
+        if ([self isRegularSizeClass] == NO) {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLight" ofType:@"html"];
+        } else {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLightTablets" ofType:@"html"];
+        }
     } else {
-        htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
+        if ([self isRegularSizeClass] == NO) {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
+        } else {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryTablets" ofType:@"html"];
+        }
     }
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
@@ -674,7 +682,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         styledEpisode = [NSString stringWithFormat:@"<p style='padding-bottom: 10px'>Episode %@</p>", self.video.episode];
     }
 
-    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+    NSString *styledDescription = nil;
+    
+    if ([self isRegularSizeClass] == NO) {
+        styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+    } else {
+        styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+    }
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.wkWebViewSummary loadHTMLString:htmlString baseURL:nil];

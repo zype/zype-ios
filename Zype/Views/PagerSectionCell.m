@@ -75,6 +75,8 @@
     switch (option) {
         case iCarouselOptionWrap:
             return YES;
+        case iCarouselOptionVisibleItems:
+            return 1.0;
         default:
         return value;
     }
