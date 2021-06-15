@@ -687,7 +687,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     if ([self isRegularSizeClass] == NO) {
         styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
     } else {
-        styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+        styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:24px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
     }
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];

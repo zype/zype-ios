@@ -34,11 +34,11 @@
         self.titleLabel.text = nil;
         self.subtitleLabel.text = nil;
         self.actionButton.enabled = NO;
-        
         return;
         
     }
     
+    [self setNoDownload];
     self.actionButton.enabled = YES;
     
     [self setThumbnail:video];
