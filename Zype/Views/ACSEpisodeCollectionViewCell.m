@@ -63,20 +63,14 @@
         [self.iconLock setHidden:YES];
     }
     
-    /*if (video.downloadVideoLocalPath){
-     
-     [self.accessoryImage setImage:[UIImage imageNamed:@"IconVideoW"]];
-     
-     }else if (video.downloadAudioLocalPath){
-     
-     [self.accessoryImage setImage:[UIImage imageNamed:@"IconAudioW"]];
-     
-     }else{
-     
-     [self.accessoryImage setImage:[UIImage imageNamed:@"IconCloud"]];
-     
-     }*/
     self.accessoryImage.hidden = YES;
+    if (video.downloadVideoLocalPath) {
+        [self.accessoryImage setImage:[UIImage imageNamed:@"IconVideoW"]];
+     } else if (video.downloadAudioLocalPath) {
+         [self.accessoryImage setImage:[UIImage imageNamed:@"IconAudioW"]];
+     } else {
+         [self.accessoryImage setImage:[UIImage imageNamed:@"IconCloud"]];
+     }
     
     if (kDownloadsEnabled) {
         // Set download progress

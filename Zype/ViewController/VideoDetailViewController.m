@@ -228,7 +228,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         NSString *mediaType = (self.isAudio == true) ? @"Audio" : @"Video";
         self.labelPlayAs.text = mediaType;
         self.labelPlayAs.textColor = (kAppColorLight) ? [UIColor darkGrayColor] : [UIColor whiteColor];
-        self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:32];
+        } else {
+            self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
+        }
         [self.labelPlayAs sizeToFit];
         playAs.accessoryView = self.labelPlayAs;
         [self.optionsDataSource addObject:playAs];

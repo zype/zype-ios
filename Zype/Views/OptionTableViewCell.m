@@ -74,6 +74,11 @@
     self.optionDataItem = dataSource;
     self.titleLabel.text = dataSource.title;
     self.accessoryView = dataSource.accessoryView;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
+        && (dataSource.type == Download || dataSource.type == Favourite)) {
+        self.accessoryView.frame = CGRectMake(0, 0, 32, 32);
+    }
 }
 
 - (void)setProgress:(DownloadInfo *)info {
