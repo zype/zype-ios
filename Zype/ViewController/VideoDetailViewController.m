@@ -248,7 +248,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 } else {
                     downloadItem.title = @"Download";
                 }
-                downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
+                
+                if (self.video.downloadVideoLocalPath) {
+                    downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconVideoB"] andDarkImage:[UIImage imageNamed:@"IconVideoW"]];
+                 } else if (self.video.downloadAudioLocalPath) {
+                     downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconAudioB"] andDarkImage:[UIImage imageNamed:@"IconAudioW"]];
+                 } else {
+                     downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
+                 }
+                
                 [self.optionsDataSource addObject:downloadItem];
             }
         }
@@ -1861,12 +1869,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     } else {
         self.progressView.progress = 0;
     }
-    
+        
     // Set download finished
     if (self.isDownloadStarted && !downloadInfo.isDownloading) {
         [self clearDownloadProgress];
+        [self configureDataSource];
+        [self.tableViewOptions reloadData];
     }
-    
 }
 
 - (void)clearDownloadProgress{
@@ -2875,7 +2884,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self changeMediaType];
         }
     }
-    
 }
 
 - (void)acActionSheetManagerDelegateDownloadTapped {
@@ -2883,16 +2891,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:0.3f target:self selector:@selector(showDownloadProgress:) userInfo:nil repeats:YES];
 }
 
+- (void)acActionSheetManagerDelegateDownloadDeleteTapped {
+    [self configureDataSource];
+    [self.tableViewOptions reloadData];
+}
+
 - (void)acActionSheetManagerDelegateReloadVideo:(Video *)video{
-    
     [self clearDownloadProgress];
-    
 }
 
 - (void)acActionSheetManagerDelegatePresentViewController:(UIViewController *)viewController {
-    
     [self presentViewController:viewController animated:YES completion:^{ }];
-    
 }
 
 - (void)acActionSheetManagerDelegateShowActionSheet:(UIActionSheet *)actionSheet {

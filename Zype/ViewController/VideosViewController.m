@@ -403,29 +403,21 @@
 #pragma mark - ACActionSheetManagerDelegate
 
 - (void)acActionSheetManagerDelegateWatchLiveStreamWasTapped{
-    
     self.showingLiveStream = YES;
-    
 }
 
 - (void)acActionSheetManagerDelegateReloadVideo:(Video *)video{
-    
     //TODO: just reload the appropriate cell
     [self.episodeController reloadData];
-    
 }
 
-- (void)acActionSheetManagerDelegateListenLiveStreamTapped{
-    
-    
-    
+- (void)acActionSheetManagerDelegateDownloadDeleteTapped {
+    [self.episodeController reloadData];
 }
 
-- (void)acActionSheetManagerDelegateWatchLiveStreamTapped{
-    
-    
-    
-}
+- (void)acActionSheetManagerDelegateListenLiveStreamTapped { }
+
+- (void)acActionSheetManagerDelegateWatchLiveStreamTapped { }
 
 #pragma mark - SubscriptionPlanDelegate
 - (void) subscriptionSignInDone {
