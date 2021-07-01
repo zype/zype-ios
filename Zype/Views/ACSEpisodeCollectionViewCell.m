@@ -46,6 +46,8 @@
     self.titleLabel.text = video.title;
     self.subtitleLabel.text = [UIUtil subtitleOfVideo:video];
     
+    [self.iconLock setHidden:NO];
+
     if ([video.subscription_required intValue] == 1){
         NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
         if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]){
