@@ -79,7 +79,7 @@ NS_ENUM(NSInteger, ACDownloadsActionSheetButton){
 - (void)acActionSheetManagerDelegatePlayAsAudioTapped;
 - (void)acActionSheetManagerDelegatePlayAsVideoTapped;
 - (void)acActionSheetManagerDelegateDownloadTapped;
-
+- (void)acActionSheetManagerDelegateDownloadDeleteTapped;
 @end
 
 @interface ACActionSheetManager : NSObject<UIActionSheetDelegate>

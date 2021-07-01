@@ -222,13 +222,14 @@
         
         [ACDownloadManager deleteDownloadedOnlyVideo:self.actionVideo];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Delete Audio Tapped" value:nil] build]];
+        [self delegateDownloadDeleteTapped];
         
     }else if ([buttonTitle isEqualToString:[ACActionSheetManager titleForShowOptionsActionSheetButtonWithType:ACLatestActionSheetEpisodeOptionsButtonDeleteDownloadedAudio]]) {
         CLS_LOG(@"delete audio tapped");
         
         [ACDownloadManager deleteDownloadedAudio:self.actionVideo];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Latest" action:@"Download" label:@"Delete Audio Tapped" value:nil] build]];
-        
+        [self delegateDownloadDeleteTapped];
     }
     
 }
@@ -901,6 +902,14 @@
     
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(acActionSheetManagerDelegateDownloadTapped)]) {
         [self.delegate acActionSheetManagerDelegateDownloadTapped];
+    }
+    
+}
+
+- (void)delegateDownloadDeleteTapped{
+    
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(acActionSheetManagerDelegateDownloadDeleteTapped)]) {
+        [self.delegate acActionSheetManagerDelegateDownloadDeleteTapped];
     }
     
 }

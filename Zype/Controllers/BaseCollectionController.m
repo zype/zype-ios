@@ -169,7 +169,9 @@
 // MARK: - Notification Center
 
 - (void)orientationDidChange:(NSNotification*)notification {
-    [self reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self reloadData];
+    });
 }
 
 //- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {

@@ -228,7 +228,11 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         NSString *mediaType = (self.isAudio == true) ? @"Audio" : @"Video";
         self.labelPlayAs.text = mediaType;
         self.labelPlayAs.textColor = (kAppColorLight) ? [UIColor darkGrayColor] : [UIColor whiteColor];
-        self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:32];
+        } else {
+            self.labelPlayAs.font = [UIFont fontWithName:kFontSemibold size:14];
+        }
         [self.labelPlayAs sizeToFit];
         playAs.accessoryView = self.labelPlayAs;
         [self.optionsDataSource addObject:playAs];
@@ -244,7 +248,15 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
                 } else {
                     downloadItem.title = @"Download";
                 }
-                downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
+                
+                if (self.video.downloadVideoLocalPath) {
+                    downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconVideoB"] andDarkImage:[UIImage imageNamed:@"IconVideoW"]];
+                 } else if (self.video.downloadAudioLocalPath) {
+                     downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconAudioB"] andDarkImage:[UIImage imageNamed:@"IconAudioW"]];
+                 } else {
+                     downloadItem.accessoryView = [[CustomizeImageView alloc] initLightImage:[UIImage imageNamed:@"IconDownloadsB"] andDarkImage:[UIImage imageNamed:@"IconDownloadsW"]];
+                 }
+                
                 [self.optionsDataSource addObject:downloadItem];
             }
         }
@@ -661,9 +673,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSString *htmlFile;
 
     if (kAppColorLight){
-        htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLight" ofType:@"html"];
+        if ([self isRegularSizeClass] == NO) {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLight" ofType:@"html"];
+        } else {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryLightTablets" ofType:@"html"];
+        }
     } else {
-        htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
+        if ([self isRegularSizeClass] == NO) {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummary" ofType:@"html"];
+        } else {
+            htmlFile = [[NSBundle mainBundle] pathForResource:@"VideoSummaryTablets" ofType:@"html"];
+        }
     }
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
@@ -674,7 +694,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
         styledEpisode = [NSString stringWithFormat:@"<p style='padding-bottom: 10px'>Episode %@</p>", self.video.episode];
     }
 
-    NSString *styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+    NSString *styledDescription = nil;
+    
+    if ([self isRegularSizeClass] == NO) {
+        styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:35px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+    } else {
+        styledDescription = [NSString stringWithFormat:@"<style type=\"text/css\">a {color: #%@; font-size: 40px;}</style>%@<p style='font-size:24px'>%@</p>", [UIUtil hexStringWithUicolor:brandColor], styledEpisode, [self.video.short_description length] == 0 ? self.video.full_description : self.video.short_description ];
+    }
     
     htmlString = [NSString stringWithFormat:htmlString, self.video.title, styledDescription, nil/*[UIUtil tagsWithKeywords:self.video.keywords]*/];
     [self.wkWebViewSummary loadHTMLString:htmlString baseURL:nil];
@@ -1843,12 +1869,13 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     } else {
         self.progressView.progress = 0;
     }
-    
+        
     // Set download finished
     if (self.isDownloadStarted && !downloadInfo.isDownloading) {
         [self clearDownloadProgress];
+        [self configureDataSource];
+        [self.tableViewOptions reloadData];
     }
-    
 }
 
 - (void)clearDownloadProgress{
@@ -2857,7 +2884,6 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
             [self changeMediaType];
         }
     }
-    
 }
 
 - (void)acActionSheetManagerDelegateDownloadTapped {
@@ -2865,16 +2891,17 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     self.timerDownload = [NSTimer scheduledTimerWithTimeInterval:0.3f target:self selector:@selector(showDownloadProgress:) userInfo:nil repeats:YES];
 }
 
+- (void)acActionSheetManagerDelegateDownloadDeleteTapped {
+    [self configureDataSource];
+    [self.tableViewOptions reloadData];
+}
+
 - (void)acActionSheetManagerDelegateReloadVideo:(Video *)video{
-    
     [self clearDownloadProgress];
-    
 }
 
 - (void)acActionSheetManagerDelegatePresentViewController:(UIViewController *)viewController {
-    
     [self presentViewController:viewController animated:YES completion:^{ }];
-    
 }
 
 - (void)acActionSheetManagerDelegateShowActionSheet:(UIActionSheet *)actionSheet {

@@ -26,7 +26,7 @@
 
 - (void)setVideo:(Video *)video{
     
-   _video = video;
+    _video = video;
     
     if (video == nil) {
         
@@ -34,11 +34,11 @@
         self.titleLabel.text = nil;
         self.subtitleLabel.text = nil;
         self.actionButton.enabled = NO;
-        
         return;
         
     }
     
+    [self setNoDownload];
     self.actionButton.enabled = YES;
     
     [self setThumbnail:video];
@@ -46,6 +46,8 @@
     self.titleLabel.text = video.title;
     self.subtitleLabel.text = [UIUtil subtitleOfVideo:video];
     
+    [self.iconLock setHidden:NO];
+
     if ([video.subscription_required intValue] == 1){
         NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription]);
         if ([ACStatusManager isUserSignedIn] == YES && ![[[NSUserDefaults standardUserDefaults] valueForKey:kOAuthProperty_Subscription] isEqualToNumber:[NSNumber numberWithInt:0]]){
@@ -63,40 +65,36 @@
         [self.iconLock setHidden:YES];
     }
     
-    /*if (video.downloadVideoLocalPath){
-        
-        [self.accessoryImage setImage:[UIImage imageNamed:@"IconVideoW"]];
-        
-    }else if (video.downloadAudioLocalPath){
-        
-        [self.accessoryImage setImage:[UIImage imageNamed:@"IconAudioW"]];
-        
-    }else{
-        
-        [self.accessoryImage setImage:[UIImage imageNamed:@"IconCloud"]];
-        
-    }*/
     self.accessoryImage.hidden = YES;
+    if (video.downloadVideoLocalPath) {
+        [self.accessoryImage setImage:[UIImage imageNamed:@"IconVideoW"]];
+     } else if (video.downloadAudioLocalPath) {
+         [self.accessoryImage setImage:[UIImage imageNamed:@"IconAudioW"]];
+     } else {
+         [self.accessoryImage setImage:[UIImage imageNamed:@"IconCloud"]];
+     }
     
-    // Set download progress
-    DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
-    if (downloadInfo && downloadInfo.isDownloading) {
-        if (self != nil) {
-            if (downloadInfo.totalBytesWritten == 0.0) {
-                [self setDownloadStarted];
-            } else {
-                float progress = (double)downloadInfo.totalBytesWritten / (double)downloadInfo.totalBytesExpectedToWrite;
-                [self setDownloadProgress:progress];
+    if (kDownloadsEnabled) {
+        // Set download progress
+        DownloadInfo *downloadInfo = [[DownloadOperationController sharedInstance] downloadInfoWithTaskId:video.downloadTaskId];
+        if (downloadInfo && downloadInfo.isDownloading) {
+            if (self != nil) {
+                if (downloadInfo.totalBytesWritten == 0.0) {
+                    [self setDownloadStarted];
+                } else {
+                    float progress = (double)downloadInfo.totalBytesWritten / (double)downloadInfo.totalBytesExpectedToWrite;
+                    [self setDownloadProgress:progress];
+                }
             }
-        }
-    } else if ([ACDownloadManager fileDownloadedForVideo:video] == YES) {
-        if (self != nil) {
-            if (video.isPlayed.boolValue == YES) {
-                [self setPlayed];
-            } else if (video.isPlaying.boolValue == YES) {
-                [self setPlaying];
-            } else {
-                [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
+        } else if ([ACDownloadManager fileDownloadedForVideo:video] == YES) {
+            if (self != nil) {
+                if (video.isPlayed.boolValue == YES) {
+                    [self setPlayed];
+                } else if (video.isPlaying.boolValue == YES) {
+                    [self setPlaying];
+                } else {
+                    [self setDownloadFinishedWithMediaType:downloadInfo.mediaType];
+                }
             }
         }
     } else {
@@ -104,13 +102,15 @@
     }
     
     //hide cloud if video can't be downloaded
-    if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
-        self.accessoryImage.hidden = NO;
-    }else {
+    if (!kDownloadsEnabled) {
         self.accessoryImage.hidden = YES;
+    } else {
+        if (video.duration.integerValue > 1 && video.isHighlight.boolValue == NO) {
+            self.accessoryImage.hidden = NO;
+        }else {
+            self.accessoryImage.hidden = YES;
+        }
     }
-    
-    //[self setTest];
 }
 
 - (void)setThumbnail:(Video *)video {
@@ -123,21 +123,21 @@
     
     [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl]
                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                      [self.activityIndicator stopAnimating];
-                                      [self.activityIndicator setHidden:YES];
-                                      //check for error and add default placeholder
-                                      if (error) {
-                                          [self.thumbnailImage setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
-                                          CLS_LOG(@"Video thumbnail couldn't be loaded: %@", error);
-                                      } else {
-                                          [self.thumbnailImage setImage:image];
-                                          [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                                              if (image) {
-                                                  [self.thumbnailImage setImage:image];
-                                              }
-                                          }];
-                                      }
-                                  }];
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator setHidden:YES];
+        //check for error and add default placeholder
+        if (error) {
+            [self.thumbnailImage setImage:[UIImage imageNamed:@"ImagePlaceholder"]];
+            CLS_LOG(@"Video thumbnail couldn't be loaded: %@", error);
+        } else {
+            [self.thumbnailImage setImage:image];
+            [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailBigUrl] placeholderImage:image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (image) {
+                    [self.thumbnailImage setImage:image];
+                }
+            }];
+        }
+    }];
     
     // [self.thumbnailImage sd_setImageWithURL:[NSURL URLWithString:video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"ImagePlaceholder"]];
 }
@@ -216,14 +216,14 @@
         [self setNoDownload];
         return;
     }
-
+    
     if (self.progressView.isHidden) {
         [self.progressView setHidden:NO];
         [self.actionCoverView setHidden:YES];
         [self.subtitleLabel setHidden:YES];
         [self hideStatusImage:YES];
     }
-
+    
     self.progressView.progress = progress;
     [self setNeedsDisplay];
     

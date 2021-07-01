@@ -32,6 +32,8 @@
     self.userPreferencesTableView.delegate = self;
     
     [self configureView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotated:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -41,6 +43,10 @@
     [self setupPreferencesTable];
     
     [self.userPreferencesTableView reloadData];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Setup
@@ -54,6 +60,12 @@
     }
     
     [self.userPreferencesTableView setTableFooterView:[[UIView alloc] init]];
+}
+
+- (void)rotated:(NSNotification *)notification {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.userPreferencesTableView reloadData];
+    });
 }
 
 - (void)fetchUserPreferences {

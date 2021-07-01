@@ -23,6 +23,8 @@
 		2BFAE0F422820018006523B1 /* EPGCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */; };
 		42CD27CE235758FF00069FF8 /* LaunchScreen~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42CD27CC235758FF00069FF8 /* LaunchScreen~ipad.xib */; };
 		4F43E4FC240EC8CC00FF64EA /* SegmentAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */; };
+		4F473A1926725DB900944D1D /* VideoSummaryLightTablets.html in Resources */ = {isa = PBXBuildFile; fileRef = 4F473A1726725DB800944D1D /* VideoSummaryLightTablets.html */; };
+		4F473A1A26725DB900944D1D /* VideoSummaryTablets.html in Resources */ = {isa = PBXBuildFile; fileRef = 4F473A1826725DB900944D1D /* VideoSummaryTablets.html */; };
 		4FDF92282637FE7A0071A604 /* AppTrackingTransparencyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDF92272637FE7A0071A604 /* AppTrackingTransparencyManager.m */; };
 		654D88C2798963BB588CD3FB /* libPods-Zype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764C0AB300D78554EAEF60E3 /* libPods-Zype.a */; };
 		780AC6A31BDFD284007F1119 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BB52881A76D7D100E901F1 /* AppDelegate.m */; };
@@ -233,6 +235,8 @@
 		2BFAE0F322820018006523B1 /* EPGCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EPGCollectionViewLayout.m; path = Views/EPGCollectionViewLayout.m; sourceTree = "<group>"; };
 		42CD27CD235758FF00069FF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/LaunchScreen~ipad.xib"; sourceTree = "<group>"; };
 		4F43E4FB240EC8CC00FF64EA /* SegmentAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SegmentAnalyticsManager.swift; path = Managers/SegmentAnalyticsManager.swift; sourceTree = "<group>"; };
+		4F473A1726725DB800944D1D /* VideoSummaryLightTablets.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = VideoSummaryLightTablets.html; sourceTree = "<group>"; };
+		4F473A1826725DB900944D1D /* VideoSummaryTablets.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = VideoSummaryTablets.html; sourceTree = "<group>"; };
 		4FDF92262637FE7A0071A604 /* AppTrackingTransparencyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppTrackingTransparencyManager.h; path = Managers/AppTrackingTransparencyManager.h; sourceTree = "<group>"; };
 		4FDF92272637FE7A0071A604 /* AppTrackingTransparencyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppTrackingTransparencyManager.m; path = Managers/AppTrackingTransparencyManager.m; sourceTree = "<group>"; };
 		764C0AB300D78554EAEF60E3 /* libPods-Zype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -565,6 +569,8 @@
 				A13AF3751D369DB600DDA006 /* LiveStream.html */,
 				A13AF3761D369DB600DDA006 /* VideoSummary.html */,
 				A17BC02B1E92A8D70000A2FC /* VideoSummaryLight.html */,
+				4F473A1726725DB800944D1D /* VideoSummaryLightTablets.html */,
+				4F473A1826725DB900944D1D /* VideoSummaryTablets.html */,
 				A13AF3771D369DB600DDA006 /* YouTubePlayer.html */,
 			);
 			name = HtmlTemplates;
@@ -1131,6 +1137,7 @@
 				A13AF3991D36D3B700DDA006 /* Oswald-Extra-LightItalic.ttf in Resources */,
 				780AC6F01BDFD284007F1119 /* OpenSans-Semibold.ttf in Resources */,
 				A13AF39B1D36D3B700DDA006 /* Oswald-Heavy.ttf in Resources */,
+				4F473A1A26725DB900944D1D /* VideoSummaryTablets.html in Resources */,
 				42CD27CE235758FF00069FF8 /* LaunchScreen~ipad.xib in Resources */,
 				2B11201F22833CC7001A9386 /* EPGTimeView.xib in Resources */,
 				A13AF3A11D36D3B700DDA006 /* Oswald-Regular.ttf in Resources */,
@@ -1168,6 +1175,7 @@
 				A13AF2E71D36995000DDA006 /* GuestTableViewCell.xib in Resources */,
 				780AC6FD1BDFD284007F1119 /* Images.xcassets in Resources */,
 				A13AF3A41D36D3B700DDA006 /* SIL Open Font License.txt in Resources */,
+				4F473A1926725DB900944D1D /* VideoSummaryLightTablets.html in Resources */,
 				780AC6FE1BDFD284007F1119 /* OpenSans-Light.ttf in Resources */,
 				FA4BA33F1EF08290004985F6 /* Roboto-Medium.ttf in Resources */,
 				FA4BA3401EF08294004985F6 /* Roboto-Regular.ttf in Resources */,

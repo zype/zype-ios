@@ -46,11 +46,7 @@
     NSMutableArray *tabViewControllers = [[NSMutableArray alloc] initWithArray:self.viewControllers];
     UIViewController *videoViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NavigationLiveViewController"];
     
-    if (kDownloadsEnabled) {
-        [tabViewControllers insertObject:videoViewController atIndex: [self.viewControllers count] - 3];
-    } else {
-        [tabViewControllers insertObject:videoViewController atIndex: [self.viewControllers count] - 2];
-    }
+    [tabViewControllers insertObject:videoViewController atIndex: 1];
     [self setViewControllers:tabViewControllers];
 }
 
@@ -155,8 +151,9 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     if (kLiveItemEnabled) {
-        int objectIndex = kDownloadsEnabled ? (int)[self.viewControllers count] - 4 : (int)[self.viewControllers count] - 3;
-        if (viewController == [tabBarController.viewControllers objectAtIndex: objectIndex]) {
+        int objectIndex = 1;
+        if ( (objectIndex < tabBarController.viewControllers.count)
+            && viewController == [tabBarController.viewControllers objectAtIndex: objectIndex]) {
             [self loadLiveVideo];
             return NO;
         }
