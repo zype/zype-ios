@@ -28,6 +28,7 @@
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <Analytics/SEGAnalytics.h>
+#import <FBSDKCoreKit.h>
 
 
 @import Firebase;
@@ -62,6 +63,11 @@
             [[FIRCrashlytics crashlytics] deleteUnsentReports];
           }
         }];
+    }
+    
+    if (Facebook_SDK_Enabled){
+        [[FBSDKApplicationDelegate sharedInstance] application:application
+                               didFinishLaunchingWithOptions:launchOptions];
     }
     
     //Ask users to recieve push notifications.

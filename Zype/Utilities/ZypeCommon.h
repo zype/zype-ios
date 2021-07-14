@@ -28,6 +28,9 @@
 //     App crashes when not configuration file is not valid
 #define kEnableAwsPinpoint NO
 
+//Facebook SDK integration
+#define Facebook_SDK_Enabled NO
+
 //Social links on settings screen
 #define kACFacebook @"https://www.facebook.com/<your_branch>"
 #define kACWeb @"http://www.<your_branch>/"

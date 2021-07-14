@@ -3,12 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		05CEB5BC20F4CD2A005F1FAB /* PrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CEB5BB20F4CD2A005F1FAB /* PrivacyViewController.m */; };
 		05CEB5BF20F4E975005F1FAB /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CEB5BE20F4E975005F1FAB /* ForgotPasswordViewController.m */; };
+		1826659625AF144A00C669D9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1826659525AF144A00C669D9 /* SwiftPackageProductDependency */; };
+		1826659825AF144A00C669D9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1826659725AF144A00C669D9 /* SwiftPackageProductDependency */; };
+		1826659A25AF144A00C669D9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1826659925AF144A00C669D9 /* SwiftPackageProductDependency */; };
+		1826659C25AF144A00C669D9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 1826659B25AF144A00C669D9 /* SwiftPackageProductDependency */; };
 		2B11201922833CB7001A9386 /* EPGDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B11201722833CB7001A9386 /* EPGDateView.m */; };
 		2B11201A22833CB7001A9386 /* EPGDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B11201822833CB7001A9386 /* EPGDateView.xib */; };
 		2B11201E22833CC7001A9386 /* EPGTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B11201C22833CC7001A9386 /* EPGTimeView.m */; };
@@ -528,11 +532,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				780AC6DF1BDFD284007F1119 /* ImageIO.framework in Frameworks */,
+				1826659C25AF144A00C669D9 /* BuildFile in Frameworks */,
+				1826659825AF144A00C669D9 /* BuildFile in Frameworks */,
 				780AC6E01BDFD284007F1119 /* QuickLook.framework in Frameworks */,
 				780AC6E11BDFD284007F1119 /* MobileCoreServices.framework in Frameworks */,
 				FAE69B781EA7C9D60081A064 /* StoreKit.framework in Frameworks */,
 				780AC6E21BDFD284007F1119 /* AssetsLibrary.framework in Frameworks */,
 				780AC6E41BDFD284007F1119 /* CoreText.framework in Frameworks */,
+				1826659A25AF144A00C669D9 /* BuildFile in Frameworks */,
+				1826659625AF144A00C669D9 /* BuildFile in Frameworks */,
 				780AC6E51BDFD284007F1119 /* SystemConfiguration.framework in Frameworks */,
 				780AC6E91BDFD284007F1119 /* CoreData.framework in Frameworks */,
 				780AC6EA1BDFD284007F1119 /* WebKit.framework in Frameworks */,
@@ -1056,6 +1064,12 @@
 			dependencies = (
 			);
 			name = Zype;
+			packageProductDependencies = (
+				1826659525AF144A00C669D9 /* SwiftPackageProductDependency */,
+				1826659725AF144A00C669D9 /* SwiftPackageProductDependency */,
+				1826659925AF144A00C669D9 /* SwiftPackageProductDependency */,
+				1826659B25AF144A00C669D9 /* SwiftPackageProductDependency */,
+			);
 			productName = ACShow;
 			productReference = 780AC7081BDFD284007F1119 /* Zype TV.app */;
 			productType = "com.apple.product-type.application";
@@ -1117,6 +1131,9 @@
 				Base,
 			);
 			mainGroup = F1BB52771A76D7D100E901F1;
+			packageReferences = (
+				1826659425AF144A00C669D9 /* RemoteSwiftPackageReference */,
+			);
 			productRefGroup = F1BB52811A76D7D100E901F1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1445,7 +1462,10 @@
 				GCC_PREFIX_HEADER = Zype/Prefixheader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/Zype/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Zype",
@@ -1483,7 +1503,10 @@
 				GCC_PREFIX_HEADER = Zype/Prefixheader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/Zype/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Zype",
@@ -1519,7 +1542,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = ZypeUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox.ZypeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1549,7 +1576,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = ZypeUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zype.sandbox.ZypeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1664,7 +1695,8 @@
 				PRODUCT_NAME = "";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1701,6 +1733,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1826659425AF144A00C669D9 /* RemoteSwiftPackageReference */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1826659525AF144A00C669D9 /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1826659425AF144A00C669D9 /* RemoteSwiftPackageReference */;
+			productName = FacebookShare;
+		};
+		1826659725AF144A00C669D9 /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1826659425AF144A00C669D9 /* RemoteSwiftPackageReference */;
+			productName = FacebookCore;
+		};
+		1826659925AF144A00C669D9 /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1826659425AF144A00C669D9 /* RemoteSwiftPackageReference */;
+			productName = FacebookGamingServices;
+		};
+		1826659B25AF144A00C669D9 /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1826659425AF144A00C669D9 /* RemoteSwiftPackageReference */;
+			productName = FacebookLogin;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		A139DBE01DFF520800DC731B /* ZypeDB.xcdatamodeld */ = {
