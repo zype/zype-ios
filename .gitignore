@@ -22,5 +22,4 @@ DerivedData/
 .DS_Store
 
 # CocoaPods
-Podfile.lock
 Pods

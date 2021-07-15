@@ -6,7 +6,7 @@ target "Zype" do
 pod 'SVProgressHUD' #progress indicator
 pod 'SDWebImage' #image downloading/caching
 pod 'Valet', '2.4.2' #keychain wrapper
-pod 'OneSignal', '>= 2.11.2', '< 3.0' #push notification SDK
+pod 'OneSignal', '>= 2.16.5', '< 3.0' #push notification SDK
 pod 'TLIndexPathTools' #table/collection management with coredata support
 pod 'RMStore', '~> 0.7' #in app purchases framework
 pod 'RMStore/AppReceiptVerificator' #verify receipt

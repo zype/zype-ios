@@ -1,0 +1,200 @@
+PODS:
+  - Analytics (4.1.4)
+  - AWSCore (2.6.35)
+  - AWSPinpoint (2.6.35):
+    - AWSCore (= 2.6.35)
+  - Firebase/Core (8.1.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (~> 8.1.0)
+  - Firebase/CoreOnly (8.1.0):
+    - FirebaseCore (= 8.1.0)
+  - Firebase/Crashlytics (8.1.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 8.1.0)
+  - FirebaseAnalytics (8.1.0):
+    - FirebaseAnalytics/AdIdSupport (= 8.1.0)
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - FirebaseAnalytics/AdIdSupport (8.1.0):
+    - FirebaseAnalytics/Base (= 8.1.0)
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleAppMeasurement (= 8.1.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - FirebaseAnalytics/Base (8.1.0):
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - FirebaseCore (8.1.0):
+    - FirebaseCoreDiagnostics (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+  - FirebaseCoreDiagnostics (8.1.0):
+    - GoogleDataTransport (~> 9.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+    - nanopb (~> 2.30908.0)
+  - FirebaseCrashlytics (8.1.0):
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleDataTransport (~> 9.0)
+    - nanopb (~> 2.30908.0)
+    - PromisesObjC (~> 1.2)
+  - FirebaseInstallations (8.1.0):
+    - FirebaseCore (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/UserDefaults (~> 7.4)
+    - PromisesObjC (~> 1.2)
+  - GoogleAds-IMA-iOS-SDK (3.12.1)
+  - GoogleAnalytics (3.17.0)
+  - GoogleAppMeasurement (8.1.0):
+    - GoogleAppMeasurement/AdIdSupport (= 8.1.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - GoogleAppMeasurement/AdIdSupport (8.1.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - GoogleDataTransport (9.0.0):
+    - GoogleUtilities/Environment (~> 7.2)
+    - nanopb (~> 2.30908.0)
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/AppDelegateSwizzler (7.4.1):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (7.4.1):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/Logger (7.4.1):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (7.4.1):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (7.4.1):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (7.4.1)"
+  - GoogleUtilities/Reachability (7.4.1):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (7.4.1):
+    - GoogleUtilities/Logger
+  - iCarousel (1.8.3)
+  - IQKeyboardManager (6.5.6)
+  - nanopb (2.30908.0):
+    - nanopb/decode (= 2.30908.0)
+    - nanopb/encode (= 2.30908.0)
+  - nanopb/decode (2.30908.0)
+  - nanopb/encode (2.30908.0)
+  - OneSignal (2.16.5)
+  - OpenSSL (1.0.208)
+  - PromisesObjC (1.2.12)
+  - RMStore (0.7.1):
+    - RMStore/Core (= 0.7.1)
+  - RMStore/AppReceiptVerificator (0.7.1):
+    - OpenSSL (~> 1.0.1)
+    - RMStore/Core
+  - RMStore/Core (0.7.1)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SVProgressHUD (2.2.5)
+  - TLIndexPathTools (0.4.5)
+  - Valet (2.4.2)
+
+DEPENDENCIES:
+  - Analytics (~> 4.1.3)
+  - AWSPinpoint (~> 2.6.6)
+  - Firebase/Core
+  - Firebase/Crashlytics
+  - GoogleAds-IMA-iOS-SDK (~> 3.12.1)
+  - GoogleAnalytics
+  - iCarousel (~> 1.8)
+  - IQKeyboardManager
+  - OneSignal (< 3.0, >= 2.16.5)
+  - OpenSSL (from `OpenSSL/1.0.208`)
+  - RMStore (~> 0.7)
+  - RMStore/AppReceiptVerificator
+  - SDWebImage
+  - SVProgressHUD
+  - TLIndexPathTools
+  - Valet (= 2.4.2)
+
+SPEC REPOS:
+  trunk:
+    - Analytics
+    - AWSCore
+    - AWSPinpoint
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - FirebaseCrashlytics
+    - FirebaseInstallations
+    - GoogleAds-IMA-iOS-SDK
+    - GoogleAnalytics
+    - GoogleAppMeasurement
+    - GoogleDataTransport
+    - GoogleUtilities
+    - iCarousel
+    - IQKeyboardManager
+    - nanopb
+    - OneSignal
+    - PromisesObjC
+    - RMStore
+    - SDWebImage
+    - SVProgressHUD
+    - TLIndexPathTools
+    - Valet
+
+EXTERNAL SOURCES:
+  OpenSSL:
+    :path: OpenSSL/1.0.208
+
+SPEC CHECKSUMS:
+  Analytics: 7bdc735c456434b4eaa2eacdcf122bb03d51ede7
+  AWSCore: 2dab62ef2e5ca5d8c72c6cbdb3a6ea1532c27c2b
+  AWSPinpoint: 269c600f74368deb045854f28aa45bce20820baa
+  Firebase: b5956acddaaa53a6c292bec00649fadd18367344
+  FirebaseAnalytics: e812eaae316ba8914b1ef06bef18f11efc1f56c6
+  FirebaseCore: 389c4ce9a7cce4a7e25eb22326b4bee0050557b2
+  FirebaseCoreDiagnostics: 3e249cee3de5c5f9cfd6cc2a19997231286fec11
+  FirebaseCrashlytics: 1b55b3a718f9e20d59d96db46a4652d95a8ba1d2
+  FirebaseInstallations: 7f31798a8198c354eadcb87176d2090b62edc187
+  GoogleAds-IMA-iOS-SDK: 3c01b8db7d01de6b4a3b1d58744d4bc426a2d821
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  GoogleAppMeasurement: 9ff7b9e23cced93a5a41736c09bdeb5b5b7fb111
+  GoogleDataTransport: 11e3a5f2c190327df1a4a5d7e7ae3d4d5b9c9e4c
+  GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
+  iCarousel: d782f635afac190c49bb8ee455882284cff8b85f
+  IQKeyboardManager: 2a6e97afdafc7becf0cb17a9a8d795e3a980717f
+  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  OneSignal: b72068b06b359f22e27404edee87338f4b68e783
+  OpenSSL: 915acc0968190a9bab956112a04b4f9dd174b225
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  RMStore: 64ba13a9c040e3b7572765d169f77175cd3243e5
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  TLIndexPathTools: 343680de1c1942c4591b33c612dfbda86b35b3f1
+  Valet: 14463ef24fab8fd5809044ecedb61484b799fdd6
+
+PODFILE CHECKSUM: 8000c4ca14db729c628453083021b970accadaee
+
+COCOAPODS: 1.10.1
