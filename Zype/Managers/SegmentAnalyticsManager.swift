@@ -83,6 +83,7 @@ public enum SegmentAnalyticsEventType: String {
         isResumingPlayback = false
     }
     
+    @objc
     open func setConfigurations(_ player: ZypeAVPlayer, _ payload: [String: Any], _ isLive: Bool, _ resume: Bool) {
         if !isSegmentAnalyticsEnabled() {
             return
@@ -95,6 +96,7 @@ public enum SegmentAnalyticsEventType: String {
     }
     
     // MARK: - track video playback
+    @objc
     open func trackStart(resumedByAd: Bool, isForUserAction:Bool = false) {
         if !isSegmentAnalyticsEnabled() {
             return
@@ -185,6 +187,7 @@ public enum SegmentAnalyticsEventType: String {
         }
     }
     
+    @objc
     open func trackSeek() {
         if !isSegmentAnalyticsEnabled(){
             return
@@ -198,6 +201,7 @@ public enum SegmentAnalyticsEventType: String {
         Analytics.shared().track(SegmentAnalyticsEventType.PlayerSeekCompleted.rawValue, properties: event)
     }
     
+    @objc
     open func trackError() {
         if !isSegmentAnalyticsEnabled() {
             return
