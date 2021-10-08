@@ -21,5 +21,7 @@ typedef void (^DidSelectItemBlock)(ZObject *zobject);
 + (CGFloat)rowHeight;
 
 - (void)setPager:(NSArray *)objects;
+- (void)timerInvalidate;
+
 
 @end
