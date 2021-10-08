@@ -19,6 +19,13 @@
 #import "PagerSectionCell.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
+@interface BaseTVLayoutController()
+{
+    PagerSectionCell *pagerCell;
+}
+
+@end
+
 @implementation BaseTVLayoutController
 
 - (id<DownloadStatusCell>)cellForDownloadTaskID:(NSNumber *)downloadTaskID{
@@ -220,11 +227,11 @@
         return cell;
 
     } else if ([[self.indexPathController.dataModel itemAtIndexPath:indexPath] isKindOfClass:[Pager class]]) {
-        PagerSectionCell *cell = (PagerSectionCell *)[tableView dequeueReusableCellWithIdentifier:@"PagerSectionCell"];
+        pagerCell = (PagerSectionCell *)[tableView dequeueReusableCellWithIdentifier:@"PagerSectionCell"];
         Pager *pager = [self.indexPathController.dataModel itemAtIndexPath:indexPath];
         NSArray *zObjects = [pager zObjectsFromPager];
-        [cell setPager:zObjects];
-        cell.didSelectBlock = ^(ZObject *zobject) {
+        [pagerCell setPager:zObjects];
+        pagerCell.didSelectBlock = ^(ZObject *zobject) {
             if (zobject.videoid){
                 Video *video = [ACSPersistenceManager videoWithID:zobject.videoid];
                 if (video != nil) {
@@ -244,7 +251,7 @@
             }
         };
         
-        return cell;
+        return pagerCell;
     } else {
         return [UITableViewCell new];//app will crash if it reaches this point
     }
@@ -390,5 +397,8 @@
     }];
 }
 
+- (void) iCarouselTimerInvalidate {
+    [pagerCell timerInvalidate];
+}
 
 @end

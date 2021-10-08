@@ -17,5 +17,6 @@
 @property (strong, nonatomic) NSMutableArray* sectionLabelHeights;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;
+- (void) iCarouselTimerInvalidate;
 
 @end

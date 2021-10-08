@@ -115,4 +115,9 @@
     [self startTimer];
 }
 
+- (void)timerInvalidate {
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
 @end

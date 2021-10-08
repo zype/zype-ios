@@ -185,6 +185,15 @@
     [self.episodeController reloadData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+    if (self.episodeController != nil && [self.episodeController isKindOfClass:[BaseTVLayoutController class]]) {
+        BaseTVLayoutController *tvLayoutController = (BaseTVLayoutController *)self.episodeController;
+        [tvLayoutController iCarouselTimerInvalidate];
+    }
+}
+
 - (void)loadData {
     if (self.playlistItem != nil){
         [self.episodeController loadPlaylist:self.playlistItem.pId];
