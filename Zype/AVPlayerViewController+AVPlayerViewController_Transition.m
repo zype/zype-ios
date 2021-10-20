@@ -30,7 +30,7 @@
     }
 }
 
-- (void)exitFullscreen:(void (^)(void))complete {
+- (void)exitFullscreenWithCompletion:(void (^)(void))complete {
     [self exitFullscreen];
     if (complete) {
         complete();

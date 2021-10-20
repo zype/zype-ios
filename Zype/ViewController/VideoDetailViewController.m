@@ -2320,7 +2320,7 @@ static NSString *kOptionTableViewCell = @"OptionTableViewCell";
     NSLog(@"%ld", (long)event.type);
     if (event.type == kIMAAdEvent_LOADED) {
         if ([self isFullScreen] == YES) {
-            [self.avPlayerController exitFullscreen:^{
+            [self.avPlayerController exitFullscreenWithCompletion:^{
                 self.isReturnFullScreenIfNeeded = YES;
                 [self.avPlayerController updateFocusIfNeeded];
                 [adsManager start];
