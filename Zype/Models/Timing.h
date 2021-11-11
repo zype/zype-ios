@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GAI.h"
+#import <GoogleAnalytics/GAI.h>
 
 @interface Timing : NSObject
 {

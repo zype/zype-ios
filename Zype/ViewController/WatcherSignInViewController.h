@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GAI.h"
+#import <GoogleAnalytics/GAI.h>
 #import "BorderedTextField.h"
 #import "CustomizeThemeTextField.h"
 #import "SubscriptionPlanDelegate.h"

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GAITrackedViewController.h"
+#import <GoogleAnalytics/GAITrackedViewController.h>
 #import "EPGCollectionViewLayout.h"
 #import "EPGDateView.h"
 #import "GuideModel.h"

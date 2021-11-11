@@ -11,8 +11,8 @@
 #import "Guest.h"
 #import "Favorite.h"
 #import "Notification.h"
-#import "GAI.h"
-#import "GAIFields.h"
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIFields.h>
 #import "NSString+AC.h"
 #import "ACSTokenManager.h"
 #import "ACSPersistenceManager.h"

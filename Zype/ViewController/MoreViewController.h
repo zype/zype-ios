@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GAIDictionaryBuilder.h"
-#import "GAI.h"
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
 #import "SubscriptionPlanDelegate.h"
 
 @interface MoreViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate, SubscriptionPlanDelegate>
