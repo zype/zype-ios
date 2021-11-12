@@ -11,7 +11,7 @@
 #import "ACSTokenManager.h"
 #import "ACSAlertViewManager.h"
 #import "ACSDataManager.h"
-#import "GAIDictionaryBuilder.h"
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+UIView_CustomizeTheme.h"
 #import "UIViewController+AC.h"

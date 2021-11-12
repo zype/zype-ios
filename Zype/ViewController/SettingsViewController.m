@@ -14,8 +14,8 @@
 #import "ACSDataManager.h"
 #import "ACDownloadManager.h"
 #import "ACSTokenManager.h"
-#import "GAI.h"
-#import "GAIDictionaryBuilder.h"
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
 #import "Timing.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ACPurchaseManager.h"

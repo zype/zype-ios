@@ -9,8 +9,8 @@
 #import <AdSupport/ASIdentifierManager.h>
 #import "MoreViewController.h"
 #import "SettingsViewController.h"
-#import "GAI.h"
-#import "GAITrackedViewController.h"
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
 #import "Timing.h"
 #import "AppDelegate.h"
 #import "UIView+UIView_CustomizeTheme.h"

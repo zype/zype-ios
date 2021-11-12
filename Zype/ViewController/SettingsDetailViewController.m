@@ -9,7 +9,7 @@
 #import <AdSupport/ASIdentifierManager.h>
 #import "SettingsDetailViewController.h"
 #import "Timing.h"
-#import "GAIDictionaryBuilder.h"
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
 #import "AppDelegate.h"
 
 @interface SettingsDetailViewController ()

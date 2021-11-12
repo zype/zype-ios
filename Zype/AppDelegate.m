@@ -18,7 +18,7 @@
 #import "DownloadsViewController.h"
 #import "FavoritesViewController.h"
 #import "HighlightsViewController.h"
-#import "GAI.h"
+#import <GoogleAnalytics/GAI.h>
 #import "ACPurchaseManager.h"
 #import "ACAnalyticsManager.h"
 #import "ACSTokenManager.h"
@@ -28,7 +28,7 @@
 #import "UIColor+AC.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <Analytics/SEGAnalytics.h>
-#import <FBSDKCoreKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 
 @import Firebase;

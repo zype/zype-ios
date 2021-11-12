@@ -7,10 +7,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "GAI.h"
-#import "GAIDictionaryBuilder.h"
-#import "GAITrackedViewController.h"
-#import "GAIFields.h"
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
+#import <GoogleAnalytics/GAIFields.h>
+#import <GoogleAnalytics/GAITrackedViewController.h>
 #import "RESTServiceController.h"
 #import "BaseCollectionController.h"
 #import "BaseTableController.h"

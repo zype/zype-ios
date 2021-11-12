@@ -7,8 +7,8 @@
 //
 
 #import "Timing.h"
-#import "GAI.h"
-#import "GAIDictionaryBuilder.h"
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
 #import "ZypeCommon.h"
 
 @implementation Timing
