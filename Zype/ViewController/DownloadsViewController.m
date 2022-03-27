@@ -10,6 +10,7 @@
 #import "ACDownloadManager.h"
 #import "ACSPersistenceManager.h"
 #import "AppDelegate.h"
+#import "Reachability.h"
 
 @interface DownloadsViewController ()
 
@@ -86,6 +87,9 @@
 #pragma mark - Download Cleanup
 
 - (void)fetchDownloadedVideos{
+    
+    if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable)  {
+    
     NSArray *downloadedVideos = [ACSPersistenceManager videosWithDownloads];
     dispatch_group_t fetchDownloadedVideosGroup = dispatch_group_create();
     for (Video *video in downloadedVideos) {
@@ -111,6 +115,9 @@
                 [self.episodeController loadDownloadedVideos];
 //            });
         });
+    }
+    }else{
+        [self.episodeController loadDownloadedVideos];
     }
 }
 
