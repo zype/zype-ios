@@ -88,37 +88,72 @@
 
 - (void)fetchDownloadedVideos{
     
-    if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable)  {
+//    if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable)  {
+//
+//    NSArray *downloadedVideos = [ACSPersistenceManager videosWithDownloads];
+//    dispatch_group_t fetchDownloadedVideosGroup = dispatch_group_create();
+//    for (Video *video in downloadedVideos) {
+//        dispatch_group_enter(fetchDownloadedVideosGroup);
+//        [[RESTServiceController sharedInstance] loadVideoObjectWithId:video.vId withCompletionHandler:^(NSData *data, NSError *error) {
+//            if (error == nil){
+//                NSError *localError = nil;
+//                NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+//                if (localError == nil){
+//                    NSDictionary *videoData = [parsedObject objectForKey:@"response"];
+//                    Video *videoInDB = [ACSPersistenceManager videoWithID:video.vId];
+//                    BOOL isVideoActive = [[videoData valueForKey:@"active"] boolValue];
+//                    if (isVideoActive == NO){
+//                        [ACSPersistenceManager deleteVideo:videoInDB];
+//                    }
+//                }
+//            }
+//            dispatch_group_leave(fetchDownloadedVideosGroup);
+//        }];
+//
+//        dispatch_group_notify(fetchDownloadedVideosGroup, dispatch_get_main_queue(), ^{
+////            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.episodeController loadDownloadedVideos];
+////            });
+//        });
+//    }
+//    }else{
+//        [self.episodeController loadDownloadedVideos];
+//    }
     
-    NSArray *downloadedVideos = [ACSPersistenceManager videosWithDownloads];
-    dispatch_group_t fetchDownloadedVideosGroup = dispatch_group_create();
-    for (Video *video in downloadedVideos) {
-        dispatch_group_enter(fetchDownloadedVideosGroup);
-        [[RESTServiceController sharedInstance] loadVideoObjectWithId:video.vId withCompletionHandler:^(NSData *data, NSError *error) {
-            if (error == nil){
-                NSError *localError = nil;
-                NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
-                if (localError == nil){
-                    NSDictionary *videoData = [parsedObject objectForKey:@"response"];
-                    Video *videoInDB = [ACSPersistenceManager videoWithID:video.vId];
-                    BOOL isVideoActive = [[videoData valueForKey:@"active"] boolValue];
-                    if (isVideoActive == NO){
-                        [ACSPersistenceManager deleteVideo:videoInDB];
+    if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable)  {
+    [ACSPersistenceManager filteredVideosForDownloads:kRootPlaylistId withCompletionHandler: ^(NSArray *downloadedVideos) {
+        dispatch_group_t fetchDownloadedVideosGroup = dispatch_group_create();
+        
+        for (Video *video in downloadedVideos) {
+            dispatch_group_enter(fetchDownloadedVideosGroup);
+            [[RESTServiceController sharedInstance] loadVideoObjectWithId:video.vId withCompletionHandler:^(NSData *data, NSError *error) {
+                if (error == nil){
+                    NSError *localError = nil;
+                    NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+                    if (localError == nil){
+                        NSDictionary *videoData = [parsedObject objectForKey:@"response"];
+                        Video *videoInDB = [ACSPersistenceManager videoWithID:video.vId];
+                        BOOL isVideoActive = [[videoData valueForKey:@"active"] boolValue];
+                        if (isVideoActive == NO){
+                            [ACSPersistenceManager deleteVideo:videoInDB];
+                        }
                     }
                 }
-            }
-            dispatch_group_leave(fetchDownloadedVideosGroup);
-        }];
-        
+                dispatch_group_leave(fetchDownloadedVideosGroup);
+            }];
+        }
+
         dispatch_group_notify(fetchDownloadedVideosGroup, dispatch_get_main_queue(), ^{
 //            dispatch_async(dispatch_get_main_queue(), ^{
                 [self.episodeController loadDownloadedVideos];
 //            });
         });
-    }
+        
+    }];
     }else{
         [self.episodeController loadDownloadedVideos];
     }
+    
 }
 
 - (void)cleanupDownloads{

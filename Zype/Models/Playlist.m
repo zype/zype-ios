@@ -21,6 +21,7 @@
 @dynamic playlist_item_count;
 @dynamic priority;
 @dynamic thumbnail_layout;
+@dynamic children_video_ids;
 
 @dynamic playlistVideo;
 

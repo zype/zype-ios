@@ -433,6 +433,7 @@ static const CGSize IpadPosterLayoutSize = {126, 208};
 #define kAppKey_Type               @"type"
 #define kAppKey_Description        @"description"
 #define kAppKey_Thumbnails         @"thumbnails"
+#define kAppKey_ChildrenVideoIds   @"children_video_ids"
 #define kAppKey_Pictures           @"pictures"
 #define kAppKey_Images             @"images"
 #define kAppKey_Width              @"width"
