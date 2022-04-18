@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSNumber * playlist_item_count;
 @property (nonatomic, retain) NSNumber * priority;
 @property (nonatomic, retain) NSString * thumbnail_layout;
+@property (nonatomic, retain) id children_video_ids;
 
 
 @property (nonatomic, retain) NSSet<PlaylistVideo *> *playlistVideo;

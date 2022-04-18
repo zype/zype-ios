@@ -24,6 +24,7 @@
 
 + (NSArray *)videosFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 + (NSArray *)videosWithDownloads;
++ (void)filteredVideosForDownloads:(NSString *)playlistId withCompletionHandler:(void (^)(NSArray *videos))completionHandler;
 + (NSArray *)downloadableVideosSortedByMostRecent;
 
 + (Video *)newVideo;

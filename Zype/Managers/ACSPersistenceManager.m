@@ -124,6 +124,33 @@
     
 }
 
++ (void)filteredVideosForDownloads:(NSString *)playlistId withCompletionHandler:(void (^)(NSArray *videos))completionHandler{
+    [[RESTServiceController sharedInstance] syncPlaylistWithId:kRootPlaylistId withCompletionHandler:^(NSString *errorString) {
+        if (errorString == nil) {
+            NSMutableArray *filteredVideos = [NSMutableArray new];
+            Playlist *playlist = [ACSPersistenceManager playlistWithID:kRootPlaylistId];
+            if (playlist != nil) {
+                NSArray *downloadedVideos = [ACSPersistenceManager videosWithDownloads];
+                for (Video *video in downloadedVideos) {
+                    bool videoExists = false;
+                    NSArray *childrenVideo = playlist.children_video_ids;
+                    if ([childrenVideo indexOfObject:video.vId] != NSNotFound){
+                        // Video exists in playlist
+                        videoExists = true;
+                    }
+                    if (videoExists == true){
+                        filteredVideos = [filteredVideos arrayByAddingObject:video];
+                    }else{
+                        [ACDownloadManager deleteDownloadedVideo:video];
+                    }
+                }
+            }
+            completionHandler(filteredVideos);
+            return;
+        }
+    }];
+}
+
 + (NSArray *)downloadableVideosSortedByMostRecent{
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:kEntityVideo];
@@ -479,7 +506,9 @@
             
             if ([key isEqualToString:kAppKey_Id]){
                 playlist.pId = [dictionary valueForKey:key];
-            } else if ([key isEqualToString:kAppKey_Thumbnails]){
+            }else if ([key isEqualToString:kAppKey_ChildrenVideoIds]){
+                playlist.children_video_ids = [dictionary valueForKey:key];
+            }else if ([key isEqualToString:kAppKey_Thumbnails]){
                 //don't load regular thumbnail if mobile image is added
                 if ( ! customThumbnailImageIsLoaded) {
                     playlist.thumbnailUrl = [UIUtil thumbnailUrlFromArray:[dictionary valueForKey:key]];

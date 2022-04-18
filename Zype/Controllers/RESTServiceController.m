@@ -560,7 +560,7 @@
                 //remove old relationship
                 //                [ACSPersistenceManager resetPlaylistChilds:parentId];
                 //
-                if ([parsedObject[@"response"][@"active"] intValue] == 1) {
+                if ([parsedObject[@"response"][@"active"] intValue] == 1 || playlistId == kRootPlaylistId) {
                     [ACSPersistenceManager populatePlaylistFromDictionary:parsedObject];
                 }
                 if (errorString) errorString(nil);
