@@ -1,8 +1,10 @@
-Don't know what Zype is? Check this [overview](http://www.zype.com/).
+Want to learn more about Zype’s solutions for OTT apps, video streaming and playout? Visit our [website](http://www.zype.com/).
 
 # Zype iOS Template
 
-This SDK allows you to set up an eye-catching, easy to use iOS video streaming app integrated with the Zype platform with minimal coding and configuration. The app is built with Objective-C and the Zype API. With minimal setup you can have your iOS up and running.
+This legacy open source app template is no longer supported by Zype. If you are looking to build streaming applications for OTT, we recommend using [Zype Apps Creator](https://www.zype.com/product/apps-creator) for the latest app building features and functionality. 
+
+The app is built with Objective-C and the Zype API. 
 
 ## Prerequisites
 
@@ -71,9 +73,6 @@ A step by step series of examples that tell you how to get a new app running. A 
 
 Image made with draw.io and source file can be opened via the follwing link: https://drive.google.com/file/d/0B9aYmGA7O0ZYTFRXaVR2bzU5WGc/view?usp=sharing
 
-## Contributing
-
-Please submit pull requests to us.
 
 ## Versioning
 
