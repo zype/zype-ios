@@ -458,20 +458,21 @@
         switch (item.type) {
             case TermsOfService: {
                 NSString *htmlString = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingKey_Terms];
-                
-                UIViewController *viewController = [UIViewController new];
-                viewController.view.frame = self.view.bounds;
-                
-                WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
-                WKWebView *webview = [[WKWebView alloc] initWithFrame:viewController.view.bounds configuration:wkWebConfig];
-            
-                [viewController.view addSubview:webview];
-                
-                NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'></header>";
-                [webview loadHTMLString:[headerString stringByAppendingString:htmlString] baseURL:nil];
+					if (htmlString) {
+					UIViewController *viewController = [UIViewController new];
+					viewController.view.frame = self.view.bounds;
+					
+					WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+					WKWebView *webview = [[WKWebView alloc] initWithFrame:viewController.view.bounds configuration:wkWebConfig];
+				
+					[viewController.view addSubview:webview];
+					
+					NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'></header>";
+					[webview loadHTMLString:[headerString stringByAppendingString:htmlString] baseURL:nil];
 
-                //[webview loadHTMLString:htmlString baseURL:nil];
-                [self.navigationController pushViewController:viewController animated:YES];
+					//[webview loadHTMLString:htmlString baseURL:nil];
+					[self.navigationController pushViewController:viewController animated:YES];
+				}
                 
                 break;
             }
